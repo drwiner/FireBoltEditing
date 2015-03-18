@@ -1,0 +1,22 @@
+<Actors>
+	<Actor>
+		<Name> </Name>
+		<Model> </Model>
+		<AnimationSet>
+			<AnimationMapping>
+				<Animation>
+					<Name> </Name>
+					<Duration> </Duration>
+					<CreatedObjects>
+						<CreatedObject>
+							<Name> </Name>
+							<Model> </Model>
+							<FadeInTime> </FadeInTime>
+							<RelativeLocation> </RelativeLocation>
+						</CreatedObject>
+					</CreatedObjects>
+				</Animation>
+			</AnimationMapping>
+		</AnimationSet>
+	</Actor>
+</Actors>

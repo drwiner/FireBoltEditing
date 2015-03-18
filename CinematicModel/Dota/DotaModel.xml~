@@ -1,0 +1,58 @@
+<Actors>
+	<Actor>
+		<Name>Pudge</Name>
+		<Model>pudge_model</Model>
+		<AnimationSet>
+			<AnimationMapping>
+				<Action>die</Action>
+				<Animation>
+					<Name>pudge_death</Name>
+					<Duration>1917</Duration>
+					<CreatedObjects>
+						<CreatedObject>
+							<Name> </Name>
+							<Model> </Model>
+							<FadeInTime> </FadeInTime>
+							<RelativeLocation> </RelativeLocation>
+						</CreatedObject>
+					</CreatedObjects>
+				</Animation>
+			</AnimationMapping>
+				<AnimationMapping>
+				<Action>move</Action>
+				<Animation>
+					<Name>pudge_walkN</Name>
+					<Duration>1292</Duration>					
+				</Animation>
+				</AnimationMapping>
+			<AnimationMapping>
+				<Action>attack</Action>
+				<Animation>
+					<Name>pudge_attack1</Name>
+					<Duration>1708</Duration>
+				</Animation>
+			</AnimationMapping>
+		</AnimationSet>
+	</Actor>
+	<Actor>
+		<Name>Pudge</Name>
+		<Model>pudge_model</Model>
+		<AnimationSet>
+			<AnimationMapping>
+				<Action>die</Action>
+				<Animation>
+					<Name>pudge_death</Name>
+					<Duration>1917</Duration>
+					<CreatedObjects>
+						<CreatedObject>
+							<Name> </Name>
+							<Model> </Model>
+							<FadeInTime> </FadeInTime>
+							<RelativeLocation> </RelativeLocation>
+						</CreatedObject>
+					</CreatedObjects>
+				</Animation>
+			</AnimationMapping>
+		</AnimationSet>
+	</Actor>
+</Actors>
