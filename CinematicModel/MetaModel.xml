@@ -1,6 +1,6 @@
 <cinematicModel>
   <actions>
-    <action name="" paramCount="" >
+    <action name="" id="" paramCount="" >
       <params>
         <param id="" cardinality="" effector="" effected=""/><!--cardinality in {?,+,1..n}--> <!--symbolic locations for moves here..somewhere-->
       </params>
@@ -10,8 +10,8 @@
 	  <actor name="" model="" >
 		  <animationSet>
 			  <animationMapping>
-				  <action name="" paramId=""/><!--support action type hierarchy-->
-				  <animation name="" duration="" effectorImpactTime="">	<!--for coordinated animations, how do i reference animations for other actors-->
+				  <action id="" parentId="" paramId=""/><!--support action type hierarchy-->
+				  <animation name="" duration="" loop="" effectorImpactTime="" >	<!--for coordinated animations, how do i reference animations for other actors-->
 					  <createdObjects>
 						  <createdObject name="" model="" spawnTime="" fadeInTime="" relativeLocation="" />
 						</createdObjects>

@@ -1,3 +1,38 @@
+<cinematicModel>
+  <actions>
+    <action name="dance" id="0" paramCount="1" >
+      <params>
+        <param id="0" cardinality="1" effector="false" effected="false"/>
+        <!--cardinality in {?,+,1..n}-->
+        <!--symbolic locations for moves here..somewhere-->
+      </params>
+    </action>
+    <action name="sleep" id="1" paramCount="1" >
+      <params>
+        <param id="0" cardinality="1" effector="false" effected="false"/>
+        <!--cardinality in {?,+,1..n}-->
+        <!--symbolic locations for moves here..somewhere-->
+      </params>
+    </action>
+  </actions>
+  <actors>
+    <actor name="Pudge" model="pudge_model" >
+      <animationSet>
+        <animationMapping>
+          <action id="0" parentId="" paramId="0"/>
+          <!--support action type hierarchy-->
+          <animation name="pudge_death" duration="1917" loop="false" effectorImpactTime="" >
+            <!--for coordinated animations, how do i reference animations for other actors-->
+            <createdObjects>
+              <createdObject name="" model="" spawnTime="" fadeInTime="" relativeLocation="" />
+            </createdObjects>
+          </animation>
+        </animationMapping>
+      </animationSet>
+    </actor>
+  </actors>
+</cinematicModel>
+
 <Actors>
 	<Actor>
 		<Name>Pudge</Name>
