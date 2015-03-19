@@ -1,23 +1,23 @@
 <cinematicModel>
-  <actions>
-    <action name="" id="" paramCount="" >
+  <domainActions>
+    <domainAction name="" id="" paramCount="" parentId="">
       <params>
-        <param id="" cardinality="" effector="" effected=""/><!--cardinality in {?,+,1..n}--> <!--symbolic locations for moves here..somewhere-->
+        <param id="" cardinality="" effector="" affected=""/><!--symbolic locations for moves here..somewhere-->
       </params>
-    </action>
-  </actions>
+    </domainAction>
+  </domainActions>
   <actors>
-	  <actor name="" model="" >
-		  <animationSet>
-			  <animationMapping>
-				  <action id="" parentId="" paramId=""/><!--support action type hierarchy-->
-				  <animation name="" duration="" loop="" effectorImpactTime="" >	<!--for coordinated animations, how do i reference animations for other actors-->
-					  <createdObjects>
-						  <createdObject name="" model="" spawnTime="" fadeInTime="" relativeLocation="" />
-						</createdObjects>
-				  </animation>
-			  </animationMapping>
-		  </animationSet>
-	  </actor>
+		<actor name="" id="" model="" >
+		 	<animations>
+				<animation name="" id="" duration=""/>
+			</animations>
+		</actor>
   </actors>
+	<animationMappings>
+		<animationMapping actionId="" actionParamId="" actorId="" animationId="" loopAnimation="" effectorTimeOffset="">
+		  <createdObjects>
+							<createdObject actorId="" animationTimeOffset="" fadeInTime="" relativeLocation="" /> <!actorId is a problem here...we should make instances of models, not actors/>
+			</createdObjects>
+		</animationMapping>
+	</animationMappings>
 </cinematicModel>

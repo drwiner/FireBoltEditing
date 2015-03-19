@@ -1,157 +1,23 @@
 <cinematicModel>
-  <actions>
-    <action name="dance" id="0" paramCount="1" >
+  <domainActions>
+		<domainAction name="dance" id="0" paramCount="1"> 
       <params>
-        <param id="0" cardinality="1" effector="false" effected="false"/>
-        <!--cardinality in {?,+,1..n}-->
-        <!--symbolic locations for moves here..somewhere-->
+        <param id="1" cardinality="1" effector="false" affected="false"/><!--symbolic locations for moves here..somewhere-->
       </params>
-    </action>
-    <action name="sleep" id="1" paramCount="1" >
-      <params>
-        <param id="0" cardinality="1" effector="false" effected="false"/>
-        <!--cardinality in {?,+,1..n}-->
-        <!--symbolic locations for moves here..somewhere-->
-      </params>
-    </action>
-  </actions>
+    </domainAction>
+  </domainActions>
   <actors>
-    <actor name="Pudge" model="pudge_model" >
-      <animationSet>
-        <animationMapping>
-          <action id="0" parentId="" paramId="0"/>
-          <!--support action type hierarchy-->
-          <animation name="pudge_death" duration="1917" loop="false" effectorImpactTime="" >
-            <!--for coordinated animations, how do i reference animations for other actors-->
-            <createdObjects>
-              <createdObject name="" model="" spawnTime="" fadeInTime="" relativeLocation="" />
-            </createdObjects>
-          </animation>
-        </animationMapping>
-      </animationSet>
-    </actor>
+		<actor name="pudge" id="2" model="pudge_model" >
+		 	<animations>
+				<animation name="pudge_walkN" id="3" duration="1917"/>
+			</animations>
+		</actor>
   </actors>
+	<animationMappings>
+		<animationMapping actionId="0" actionParamId="1" actorId="2" animationId="3" loopAnimation="true" effectorTimeOffset="50">
+		  <createdObjects>
+	  	  <createdObject actorId="5" animationTimeOffset="25" fadeInTime="100" relativeLocation="90" />
+			</createdObjects>
+		</animationMapping>
+	</animationMappings>
 </cinematicModel>
-
-<Actors>
-	<Actor>
-		<Name>Pudge</Name>
-		<Model>pudge_model</Model>
-		<AnimationSet>
-			<AnimationMapping>
-				<Action>die</Action>
-				<Animation>
-					<Name>pudge_death</Name>
-          <Duration>1917</Duration>					
-				</Animation>
-			</AnimationMapping>
-				<AnimationMapping>
-				<Action>move</Action>
-				<Animation>
-					<Name>pudge_walkN</Name>
-					<Duration>1292</Duration>					
-				</Animation>
-				</AnimationMapping>
-			<AnimationMapping>
-				<Action>attack</Action>
-				<Animation>
-					<Name>pudge_attack1</Name>
-					<Duration>1708</Duration>
-				</Animation>
-			</AnimationMapping>
-		</AnimationSet>
-	</Actor>
-	<Actor>
-		<Name>Skywrath Mage</Name>
-		<Model>skywrath_mage_model</Model>
-		<AnimationSet>
-			<AnimationMapping>
-				<Action>die</Action>
-				<Animation>
-					<Name>skywrath_mage_death_alt</Name>
-					<Duration>3125</Duration>					
-				</Animation>
-			</AnimationMapping>
-      <AnimationMapping>
-        <Action>move</Action>
-        <Animation>
-          <Name>skywrath_mage_run_aggressive</Name>
-          <Duration>1333</Duration>
-        </Animation>
-      </AnimationMapping>
-      <AnimationMapping>
-        <Action>attack</Action>
-        <Animation>
-          <Name>skywrath_mage_attack_alt</Name>
-          <Duration>1583</Duration>
-          <CreatedObject>
-            <Name>Arcane Bolt</Name>
-            <Model>????</Model>
-            <FadeInTime>0</FadeInTime>
-            <RelativeLocation>??</RelativeLocation>
-          </CreatedObject>
-        </Animation>
-      </AnimationMapping>
-		</AnimationSet>
-	</Actor>
-  <Actor>
-    <Name>Crystal Maiden</Name>
-    <Model>crystal_maiden_model</Model>
-    <AnimationSet>
-      <AnimationMapping>
-        <Action>die</Action>
-        <Animation>
-          <Name>die</Name>
-          <Duration>1375</Duration>
-        </Animation>
-      </AnimationMapping>
-      <AnimationMapping>
-        <Action>move</Action>
-        <Animation>
-          <Name>CM_run</Name>
-          <Duration>1292</Duration>
-        </Animation>
-      </AnimationMapping>
-      <AnimationMapping>
-        <Action>attack</Action>
-        <Animation>
-          <Name>CM_attack2</Name>
-          <Duration>1458</Duration>
-        </Animation>
-      </AnimationMapping>
-    </AnimationSet>
-  </Actor>
-  <Actor>
-    <Name>Mirana</Name>
-    <Model>mirana_model</Model>
-    <AnimationSet>
-      <AnimationMapping>
-        <Action>die</Action>
-        <Animation>
-          <Name>death</Name>
-          <Duration>2583</Duration>
-        </Animation>
-      </AnimationMapping>
-      <AnimationMapping>
-        <Action>move</Action>
-        <Animation>
-          <Name>run</Name>
-          <Duration>667</Duration>
-        </Animation>
-      </AnimationMapping>
-      <AnimationMapping>
-        <Action>attack</Action>
-        <Animation>
-          <Name>attack_alt</Name>
-          <Duration>1250</Duration>
-          <CreatedObject>
-            <Name>arrow</Name>
-            <Model></Model>
-            <FadeInTime> </FadeInTime>
-            <RelativeLocation> </RelativeLocation>
-          </CreatedObject>
-        </Animation>
-      </AnimationMapping>
-    </AnimationSet>
-  </Actor>
-</Actors>
