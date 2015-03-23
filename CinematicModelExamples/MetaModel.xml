@@ -7,14 +7,11 @@
     </domainAction>
   </domainActions>
   <actors>
-		<actor name="" id="" model="" >
-		 	<animations>
-				<animation name="" id="" duration=""/>
-			</animations>
-		</actor>
+		<actor name="" id="" model="" />
   </actors>
 	<animationMappings>
-		<animationMapping actionId="" actionParamId="" actorId="" animationId="" loopAnimation="" effectorTimeOffset="">
+		<animationMapping actionId="" actionParamId="" actorId="" >
+			<animationDescription name="" loopAnimation="" effectorTimeOffset="" duration=""/>
 		  <createdObjects>
 							<createdObject actorId="" animationTimeOffset="" fadeInTime="" relativeLocation="" /> <!actorId is a problem here...we should make instances of models, not actors/>
 			</createdObjects>

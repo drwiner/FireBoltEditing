@@ -10,17 +10,22 @@ namespace CinematicModel
     public class Parser
     {
         
-        XmlSerializer xs;
-        public Parser()
+        static XmlSerializer xs;
+        static Parser parser;
+        private Parser()
         {
             xs = new XmlSerializer(typeof(CinematicModel));
         }
 
-        public CinematicModel Parse(string filename)
+        public static CinematicModel Parse(string filename)
         {
+            if (parser == null)
+            {
+                parser = new Parser();
+            }
             FileStream fs = new FileStream(filename, FileMode.Open);
             CinematicModel model = (CinematicModel)xs.Deserialize(fs);
-            return model;
+            return model; //ggoing to need a more easily traversable data structure...something keyed on actor and action names
         }
     }
 }

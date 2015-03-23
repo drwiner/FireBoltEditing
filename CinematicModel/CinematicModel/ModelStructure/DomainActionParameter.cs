@@ -13,7 +13,7 @@ namespace CinematicModel
         /// correlates positional value of parameter with animations to be played
         /// </summary>
         [XmlAttribute(AttributeName="id")]
-        public int Id { get; set; }
+        public string Id { get; set; }
 
         //TODO currently only supports numeric values, should eventually support ranges
         [XmlAttribute(AttributeName="cardinality")]

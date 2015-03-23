@@ -38,7 +38,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="ModelStructure\Animation.cs" />
+    <Compile Include="ModelStructure\AnimationDescription.cs" />
     <Compile Include="ModelStructure\AnimationMapping.cs" />
     <Compile Include="ModelStructure\CreatedObject.cs" />
     <Compile Include="ModelStructure\DomainAction.cs" />

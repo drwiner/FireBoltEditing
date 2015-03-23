@@ -10,9 +10,9 @@ namespace CinematicModel.Tester
         static void Main(string[] args)
         {
             //Console.Write("enter a filename to parse: ");
-            Parser p = new Parser();
-            CinematicModel cm = p.Parse("DotaModel.xml");
+            CinematicModel cm = Parser.Parse("DotaModel.xml");
 
+            AnimationDescription ad = cm.FindAnimationDescription("pudge", "dance", "source");
         }
     }
 }
