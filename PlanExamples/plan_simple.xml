@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8"?>
+<plan name="plan_simple" xmlns="http://liquidnarrative.csc.ncsu.edu/impulse/v0.1">
+  <steps>
+    <step id="1">
+      <name>enter</name>
+      <parameters>
+        <parameter name="actor">pudge</parameter>
+        <parameter name="origin">0,3,0</parameter>
+      </parameters>
+    </step>
+    <step id="2">
+      <name>dance</name>
+      <parameters>
+        <parameter name="start-tick">50</parameter>
+        <parameter name="actor">CubeGuy</parameter>
+        <parameter name="end-tick">250</parameter>
+      </parameters>
+    </step>
+  </steps>
+</plan>
