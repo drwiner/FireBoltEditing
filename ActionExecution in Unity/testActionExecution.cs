@@ -5,15 +5,14 @@ using CommandPattern;
 public class testActionExecution : MonoBehaviour {
 
 	public GameObject someGameObject;
-	// Use this for initialization
+
 	void Start () {
-		playAnimation newPlayAnim = new playAnimation (someGameObject, "hacking");
+
+		playMecanim newPlayAnim = new playMecanim (someGameObject, "hacking");
+		//playLegacy anotherPlayAnim = new playLegacy(someGameObject, "animName");
+
 		actionExecution.play (newPlayAnim);
+		//actionExecution.play(anotherPlayAnim);
 	}
-	
-	// Update is called once per frame
-	void Update () {
 
-
-	}
 }
