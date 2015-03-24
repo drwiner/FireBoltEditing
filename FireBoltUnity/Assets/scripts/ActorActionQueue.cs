@@ -5,7 +5,7 @@ using System.Text;
 
 namespace Assets.scripts
 {
-    class StoryPlan
+    class ActorActionQueue : Queue<IActorAction>
     {
     }
 }

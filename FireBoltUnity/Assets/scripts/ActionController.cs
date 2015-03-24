@@ -6,27 +6,59 @@ using System.IO;
 using System.Collections;
 using Bolt.Legacy;
 using Assets.scripts;
+using System.Collections.Generic;
 
 public class ActionController : MonoBehaviour {
 
     StoryPlan storyPlan;
+    ActorActionQueue aaq;
+    List<IActorAction> executingActions;
+    long currentTick;
 
 	// Use this for initialization
 	void Start () {
-	
+	    //load plans
+        //load cinematic model
+        aaq = new ActorActionQueue();
+        executingActions = new List<IActorAction>();
+        //build stuff for the queue
 	}
 
 	
 	// Update is called once per frame
 	void Update () {
-	
+        foreach (IActorAction actorAction in executingActions)
+        {
+            if (actorAction.EndTick < currentTick)
+            {
+                actionExecution.stop(actorAction);
+            }
+        }
+        while(aaq.Peek().tick >= currentTick)
+        {
+
+            executingActions.Add(aaq.Dequeue);
+        }
 	}
+
+    void LateUpdate()
+    {
+        foreach (IActorAction actorAction in executingActions)
+        {
+            actionExecution.play(actorAction);
+        }
+    }
 
     /// <summary>
     /// interacts with implulse to load the given story plan file
     /// </summary>
     /// <param name="planFileName"></param>
     private void LoadStoryPlan(string planFileName){
+
+    }
+
+    private void LoadCinematicModel(string cinematicModelFileName)
+    {
 
     }
 

@@ -5,7 +5,8 @@ using System.Text;
 
 namespace Assets.scripts
 {
-    class StoryPlan
-    {
+    public interface IActorAction {
+	     void Execute();
     }
+
 }

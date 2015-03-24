@@ -54,13 +54,19 @@
     <Reference Include="UnityEngine.UI">
       <HintPath>Library\UnityAssemblies\UnityEngine.UI.dll</HintPath>
     </Reference>
-    <Reference Include="UnityEngine.UI">
-      <HintPath>Library\UnityAssemblies\UnityEngine.UI.dll</HintPath>
+    <Reference Include="Impulse">
+      <HintPath>Assets\plugins\Impulse.dll</HintPath>
     </Reference>
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Assets\scripts\ActionController.cs" />
+    <Compile Include="Assets\scripts\actionExecution.cs" />
+    <Compile Include="Assets\scripts\ActorActionQueue.cs" />
+    <Compile Include="Assets\scripts\IActorAction.cs" />
+    <Compile Include="Assets\scripts\playLegacy.cs" />
+    <Compile Include="Assets\scripts\playMecanim.cs" />
     <Compile Include="Assets\scripts\StoryPlan.cs" />
+    <Compile Include="Assets\scripts\testActionExecution.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath)\SyntaxTree\UnityVS\2013\UnityVS.CSharp.targets" />
 </Project>
