@@ -7,6 +7,7 @@ public class playMecanim : MonoBehaviour, IActorAction{
 
 	private Animator thisAnim;
 	private int animationHash;
+    private long startTick;
 
 		public playMecanim(GameObject someGameObject, string animName) {
 		thisAnim = someGameObject.GetComponent<Animator> ();
@@ -16,6 +17,11 @@ public class playMecanim : MonoBehaviour, IActorAction{
 	public void Execute () {
 		thisAnim.SetTrigger (animationHash);
 	}
+
+    public long startTick()
+    {
+        return startTick;
+    }
 	
 }
 

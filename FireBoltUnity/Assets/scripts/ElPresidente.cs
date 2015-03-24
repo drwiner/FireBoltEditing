@@ -8,7 +8,7 @@ using Bolt.Legacy;
 using Assets.scripts;
 using System.Collections.Generic;
 
-public class ActionController : MonoBehaviour {
+public class ElPresidente : MonoBehaviour {
 
     StoryPlan storyPlan;
     ActorActionQueue aaq;
@@ -29,15 +29,16 @@ public class ActionController : MonoBehaviour {
 	void Update () {
         foreach (IActorAction actorAction in executingActions)
         {
-            if (actorAction.EndTick < currentTick)
+            if (actorAction.endTick() < currentTick)
             {
-                actionExecution.stop(actorAction);
+                actorAction.Stop();
             }
         }
-        while(aaq.Peek().tick >= currentTick)
+        while(aaq.Peek().startTick() >= currentTick)
         {
-
-            executingActions.Add(aaq.Dequeue);
+            IActorAction iaa = aaq.Dequeue();
+            iaa.Init();
+            executingActions.Add(iaa);
         }
 	}
 
@@ -45,7 +46,7 @@ public class ActionController : MonoBehaviour {
     {
         foreach (IActorAction actorAction in executingActions)
         {
-            actionExecution.play(actorAction);
+            actorAction.Execute();            
         }
     }
 

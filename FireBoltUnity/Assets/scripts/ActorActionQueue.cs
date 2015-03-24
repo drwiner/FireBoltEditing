@@ -5,6 +5,7 @@ using System.Text;
 
 namespace Assets.scripts
 {
+    //TODO priority on ticks and stuff
     class ActorActionQueue : Queue<IActorAction>
     {
     }

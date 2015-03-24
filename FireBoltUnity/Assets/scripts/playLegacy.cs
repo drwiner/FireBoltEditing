@@ -12,8 +12,7 @@ public class playLegacy : MonoBehaviour, IActorAction{
 	}
 	
 	public void Execute () {
-		animation.Play (thisAnim);
-        Time.d      
+		animation.Play (thisAnim);    
 	}
 	
 }

@@ -6,7 +6,11 @@ using System.Text;
 namespace Assets.scripts
 {
     public interface IActorAction {
-	     void Execute();
+        long startTick();
+        long endTick();
+	    void Execute();
+        void Stop();
+        void Init();
     }
 
 }
