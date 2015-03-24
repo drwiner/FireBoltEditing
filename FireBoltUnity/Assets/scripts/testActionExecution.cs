@@ -11,10 +11,9 @@ namespace Assets.scripts
         void Start()
         {
 
-            playMecanim newPlayAnim = new playMecanim(someGameObject, "hacking");
+            PlayMecanim newPlayAnim = new PlayMecanim(someGameObject, "hacking");
             //playLegacy anotherPlayAnim = new playLegacy(someGameObject, "animName");
 
-            actionExecution.play(newPlayAnim);
             //actionExecution.play(anotherPlayAnim);
         }
 

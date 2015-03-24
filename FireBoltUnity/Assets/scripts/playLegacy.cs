@@ -3,18 +3,38 @@ using System.Collections;
 
 namespace Assets.scripts {
 //concrete
-public class playLegacy : MonoBehaviour, IActorAction{
+public class PlayLegacy : MonoBehaviour, IActorAction{
 
 	private string thisAnim;
 
-		public playLegacy(GameObject someGameObject, string animName) {
+		public PlayLegacy(GameObject someGameObject, string animName) {
 		thisAnim = animName;
 	}
 	
 	public void Execute () {
-		animation.Play (thisAnim);    
+		GetComponent<Animation>().Play (thisAnim);    
 	}
-	
+
+
+    public long StartTick()
+    {
+        throw new System.NotImplementedException();
+    }
+
+    public long endTick()
+    {
+        throw new System.NotImplementedException();
+    }
+
+    public void Stop()
+    {
+        throw new System.NotImplementedException();
+    }
+
+    public void Init()
+    {
+        throw new System.NotImplementedException();
+    }
 }
 
 }
