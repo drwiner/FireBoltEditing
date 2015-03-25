@@ -3,7 +3,7 @@ using System.Collections;
 using Impulse.v_0_1;
 using ImpulsePlan = Impulse.v_0_1.Plan;
 using System.IO;
-using CinematicModel;
+using CinematicModel.ModelStructure;
 
 namespace Assets.scripts{
     public class ActorActionFactory  {

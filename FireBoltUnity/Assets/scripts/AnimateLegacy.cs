@@ -3,11 +3,11 @@ using System.Collections;
 
 namespace Assets.scripts {
 //concrete
-public class PlayLegacy : MonoBehaviour, IActorAction{
+public class AnimateLegacy : MonoBehaviour, IActorAction{
 
 	private string thisAnim;
 
-		public PlayLegacy(GameObject someGameObject, string animName) {
+		public AnimateLegacy(GameObject someGameObject, string animName) {
 		thisAnim = animName;
 	}
 	

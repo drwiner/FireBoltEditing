@@ -6,7 +6,6 @@ using System.Xml.Serialization;
 
 namespace CinematicModel
 {
-    //[XmlElement(ElementName="createdObject")]
     public class CreatedObject
     {
         [XmlAttribute(AttributeName = "actorId")]

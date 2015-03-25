@@ -3,13 +3,13 @@ using System.Collections;
 
 namespace Assets.scripts {
 //concrete
-    public class PlayMecanim : MonoBehaviour, IActorAction{
+    public class AnimateMecanim : MonoBehaviour, IActorAction{
 
 	    private Animator thisAnim;
 	    private int animationHash;
         private long startTick;
 
-	    public PlayMecanim(GameObject someGameObject, string animName) 
+	    public AnimateMecanim(GameObject someGameObject, string animName) 
         {
 		    thisAnim = someGameObject.GetComponent<Animator> ();
 		    animationHash = Animator.StringToHash (animName);

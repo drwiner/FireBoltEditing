@@ -52,6 +52,9 @@
     <Reference Include="UnityEngine.UI">
       <HintPath>Library\UnityAssemblies\UnityEngine.UI.dll</HintPath>
     </Reference>
+    <Reference Include="CinematicModel">
+      <HintPath>Assets\plugins\CinematicModel.dll</HintPath>
+    </Reference>
     <Reference Include="Impulse">
       <HintPath>Assets\plugins\Impulse.dll</HintPath>
     </Reference>
@@ -59,11 +62,11 @@
   <ItemGroup>
     <Compile Include="Assets\scripts\ActorActionFactory.cs" />
     <Compile Include="Assets\scripts\ActorActionQueue.cs" />
+    <Compile Include="Assets\scripts\AnimateLegacy.cs" />
+    <Compile Include="Assets\scripts\AnimateMecanim.cs" />
     <Compile Include="Assets\scripts\ElPresidente.cs" />
     <Compile Include="Assets\scripts\IActorAction.cs" />
     <Compile Include="Assets\scripts\StoryPlan.cs" />
-    <Compile Include="Assets\scripts\playLegacy.cs" />
-    <Compile Include="Assets\scripts\playMecanim.cs" />
     <Compile Include="Assets\scripts\testActionExecution.cs" />
   </ItemGroup>
   <ItemGroup>

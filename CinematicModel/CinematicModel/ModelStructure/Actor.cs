@@ -6,7 +6,6 @@ using System.Xml.Serialization;
 
 namespace CinematicModel
 {
-    //[XmlElement(ElementName="actor")]
     public class Actor
     {
         [XmlAttribute(AttributeName="name")]

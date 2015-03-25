@@ -4,9 +4,8 @@ using System.Linq;
 using System.Text;
 using System.Xml.Serialization;
 
-namespace CinematicModel.ModelStructure
+namespace CinematicModel
 {
-    //[XmlElement(ElementName="animationMapping")]
     public class AnimationMapping
     {
         [XmlAttribute(AttributeName = "actionId")]

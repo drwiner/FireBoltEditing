@@ -6,7 +6,6 @@ using System.Xml.Serialization;
 
 namespace CinematicModel
 {
-    //[XmlElement(ElementName="param")]
     public class DomainActionParameter
     {
         /// <summary>
