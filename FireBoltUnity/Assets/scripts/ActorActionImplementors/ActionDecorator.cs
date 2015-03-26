@@ -3,42 +3,78 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 
-namespace Assets.scripts.ActorActionImplementors
+namespace Assets.scripts
 {
     public abstract class ActionDecorator : IActorAction
     {
-        private IActorAction interiorAction;
-        
-        public ActionDecorator(IActorAction iaa)
+        private IActorAction nestedAction;
+        private float startTick;
+        private float? endTick;
+
+        protected ActionDecorator(float startTick, float? endTick, IActorAction nestedAction)
         {
-            this.interiorAction = iaa;
+            this.startTick = startTick;
+            this.endTick = endTick;
+            this.nestedAction = nestedAction;
         }
 
-
-
-        public long StartTick()
+        public IActorAction NestedAction { 
+            get
+            {
+                return nestedAction;
+            } 
+            set
+            {
+                //should i log or throw exceptions when we try to assign
+                //to an already existing action and fail?
+                if (nestedAction == null)
+                {
+                    nestedAction = value;
+                }
+            }
+        }
+                
+        public float StartTick()
         {
-            throw new NotImplementedException();
+            return startTick;
         }
 
-        public long endTick()
+        public float? EndTick()
         {
-            throw new NotImplementedException();
+            return endTick;
         }
 
         public void Execute()
         {
-            throw new NotImplementedException();
+            if (nestedAction != null)
+            {
+                nestedAction.Execute();
+            }
+            execute();
         }
+
+        private abstract void execute();
 
         public void Stop()
         {
-            throw new NotImplementedException();
+            if (nestedAction != null)
+            {
+                nestedAction.Stop();
+            }
+            stop();
         }
+
+        private abstract void stop();
 
         public void Init()
         {
-            throw new NotImplementedException();
+            if (nestedAction != null)
+            {
+                nestedAction.Init();
+            }
+            init();
         }
+
+        private abstract void init();
     }
 }

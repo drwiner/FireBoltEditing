@@ -22,6 +22,13 @@ namespace Assets.scripts{
             CM.CinematicModel cm = loadCinematicModel(cinematicModelPath);
             
             //generate some actions
+            foreach(Step step in storyPlan.Steps)
+            {
+                //check for enter action
+                //create a Create
+                //add it to the queue
+            }
+            
             return aaq;
         }
 

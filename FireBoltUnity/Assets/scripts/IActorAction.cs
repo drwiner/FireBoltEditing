@@ -7,7 +7,7 @@ namespace Assets.scripts
 {
     public interface IActorAction {
         long StartTick();
-        long endTick();
+        long EndTick();
 	    void Execute();
         void Stop();
         void Init();

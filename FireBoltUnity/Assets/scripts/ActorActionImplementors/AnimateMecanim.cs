@@ -26,7 +26,7 @@ namespace Assets.scripts {
 
 
 
-        public long endTick()
+        public long EndTick()
         {
             throw new System.NotImplementedException();
         }

@@ -21,7 +21,7 @@ public class AnimateLegacy : MonoBehaviour, IActorAction{
         throw new System.NotImplementedException();
     }
 
-    public long endTick()
+    public long EndTick()
     {
         throw new System.NotImplementedException();
     }
