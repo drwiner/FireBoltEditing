@@ -6,24 +6,26 @@ using System.IO;
 using System.Collections;
 using Assets.scripts;
 using System.Collections.Generic;
+using System;
 
 public class ElPresidente : MonoBehaviour {
 
     ActorActionQueue aaq;
     List<IActorAction> executingActions;
-    long currentTick;
+    float currentTick;
     public string storyPlanPath;
     public string cinematicModelPath;
 
 	// Use this for initialization
 	void Start () {
         executingActions = new List<IActorAction>();
-        aaq = ActorActionFactory.CreateStoryActions(storyPlanPath, cinematicModelPath);
+        aaq = ActorActionFactory.CreateStoryActions(storyPlanPath, cinematicModelPath);        
     }
 
 	
 	// Update is called once per frame
 	void Update () {
+        currentTick = Time.time;
         foreach (IActorAction actorAction in executingActions)
         {
             if (actorAction.endTick() < currentTick)

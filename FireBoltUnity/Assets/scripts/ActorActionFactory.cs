@@ -10,25 +10,30 @@ namespace Assets.scripts{
         /// <summary>
         /// 
         /// </summary>
-        /// <param name="storyPlanName">this is the text in the name attribute of the 
-        /// story plan to load...this sucks</param>
-        /// <param name="cinematicModel"></param>
+        /// <param name="storyPlanPath">path to the story plan to load</param>
+        /// <param name="cinematicModelPath">path to the cinematic model to load</param>
         /// <returns></returns>
-        public static ActorActionQueue CreateStoryActions(string storyPlanName, string cinematicModel)
+        public static ActorActionQueue CreateStoryActions(string storyPlanPath, string cinematicModelPath)
         {
             ActorActionQueue aaq = new ActorActionQueue();
-
-            //load impulse
-            string storyPlanXml = File.ReadAllText(storyPlanName + ".xml");
-            ImpulsePlan.LoadFromString(storyPlanName);
-            ImpulsePlan storyPlan = ImpulsePlan.GetPlan(storyPlanName);
             
-            //load cinematic model
-            CM.CinematicModel cm = CM.Parser.Parse(cinematicModel);
+            ImpulsePlan storyPlan = loadImpulsePlan(storyPlanPath);                    
+            CM.CinematicModel cm = loadCinematicModel(cinematicModelPath);
             
             //generate some actions
             return aaq;
         }
 
+        private static ImpulsePlan loadImpulsePlan(string storyPlanPath){
+            string storyPlanXml = File.ReadAllText(storyPlanPath);
+            string storyPlanName = Path.GetFileNameWithoutExtension(storyPlanPath);
+            ImpulsePlan.LoadFromString(storyPlanXml);
+            return ImpulsePlan.GetPlan(storyPlanName);
+        }
+
+        private static CM.CinematicModel loadCinematicModel(string cinematicModelPath)
+        {
+            return CM.Parser.Parse(cinematicModelPath);
+        }
     }
 }

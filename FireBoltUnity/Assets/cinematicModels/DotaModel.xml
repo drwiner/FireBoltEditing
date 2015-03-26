@@ -1,0 +1,20 @@
+<cinematicModel>
+  <domainActions>
+		<domainAction name="dance" id="0" paramCount="1"> 
+      <params>
+        <param id="source" cardinality="1" effector="false" affected="false"/><!--symbolic locations for moves here..somewhere-->
+      </params>
+    </domainAction>
+  </domainActions>
+  <actors>
+		<actor name="pudge" id="2" model="pudge_model" />
+  </actors>
+	<animationMappings>
+		<animationMapping actionId="0" actionParamId="source" actorId="2">
+			<animationDescription name="pudge_walkN" duration="1917" loopAnimation="true" effectorTimeOffset="50"/>
+		  <createdObjects>
+	  	  <createdObject actorId="5" animationTimeOffset="25" fadeInTime="100" relativeLocation="90" />
+			</createdObjects>
+		</animationMapping>
+	</animationMappings>
+</cinematicModel>
