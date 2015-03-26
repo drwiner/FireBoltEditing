@@ -3,7 +3,7 @@ using System.Collections;
 using Impulse.v_0_1;
 using ImpulsePlan = Impulse.v_0_1.Plan;
 using System.IO;
-using CinematicModel.ModelStructure;
+using CM = CinematicModel;
 
 namespace Assets.scripts{
     public class ActorActionFactory  {
@@ -24,7 +24,7 @@ namespace Assets.scripts{
             ImpulsePlan storyPlan = ImpulsePlan.GetPlan(storyPlanName);
             
             //load cinematic model
-            CinematicModel cm = Parser.Parse(cinematicModel);
+            CM.CinematicModel cm = CM.Parser.Parse(cinematicModel);
             
             //generate some actions
             return aaq;
