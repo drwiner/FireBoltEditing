@@ -3,36 +3,29 @@ using System.Collections;
 
 namespace Assets.scripts {
 //concrete
-public class AnimateLegacy : MonoBehaviour, IActorAction{
+public class AnimateLegacy : ActionDecorator{
 
 	private string thisAnim;
 
-		public AnimateLegacy(GameObject someGameObject, string animName) {
+		public AnimateLegacy(float startTick, float? endTick, string actorName,  
+            IActorAction nestedAction, string animName) :
+            base(startTick,endTick,nestedAction) {
 		thisAnim = animName;
 	}
 	
-	public void Execute () {
-		GetComponent<Animation>().Play (thisAnim);    
+	private void execute () {
+		   
 	}
 
-
-    public long StartTick()
+    private void stop()
     {
         throw new System.NotImplementedException();
     }
 
-    public long EndTick()
+    private void init()
     {
-        throw new System.NotImplementedException();
-    }
-
-    public void Stop()
-    {
-        throw new System.NotImplementedException();
-    }
-
-    public void Init()
-    {
+        //look up actor, get component and play animation on it
+        //GetComponent<Animation>().Play (thisAnim); 
         throw new System.NotImplementedException();
     }
 }

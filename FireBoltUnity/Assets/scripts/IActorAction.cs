@@ -6,8 +6,8 @@ using System.Text;
 namespace Assets.scripts
 {
     public interface IActorAction {
-        long StartTick();
-        long EndTick();
+        float StartTick();
+        float? EndTick();
 	    void Execute();
         void Stop();
         void Init();

@@ -1,43 +1,42 @@
 ﻿using UnityEngine;
 using System.Collections;
 
-namespace Assets.scripts {
-//concrete
-    public class AnimateMecanim : MonoBehaviour, IActorAction{
-
-	    private Animator thisAnim;
-	    private int animationHash;
+namespace Assets.scripts
+{
+    public class AnimateMecanim : ActionDecorator
+    {
+        private Animator thisAnim;
+        private int animationHash;
         private long startTick;
 
-	    public AnimateMecanim(GameObject someGameObject, string animName) 
+        public AnimateMecanim(float startTick, float? endTick, string actorName,
+            IActorAction nestedAction, string animName) :
+            base(startTick, endTick, nestedAction)
         {
-		    thisAnim = someGameObject.GetComponent<Animator> ();
-		    animationHash = Animator.StringToHash (animName);
-	    }
-	
-	    public void Execute () {
-		    thisAnim.SetTrigger (animationHash);
-	    }
 
-        public long StartTick()
-        {
-            return startTick;
+
         }
 
+        public void Execute()
+        {
 
+        }
 
-        public long EndTick()
+        private void execute()
+        {
+            thisAnim.SetTrigger(animationHash);
+        }
+
+        private void stop()
         {
             throw new System.NotImplementedException();
         }
 
-        public void Stop()
+        private void init()
         {
-            throw new System.NotImplementedException();
-        }
-
-        public void Init()
-        {
+            //look up actor, get component and play animation on it
+            //thisAnim = someGameObject.GetComponent<Animator> ();
+            //animationHash = Animator.StringToHash(animName);
             throw new System.NotImplementedException();
         }
     }
