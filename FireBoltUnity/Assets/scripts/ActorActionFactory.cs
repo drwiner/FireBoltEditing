@@ -4,6 +4,7 @@ using Impulse.v_0_1;
 using ImpulsePlan = Impulse.v_0_1.Plan;
 using System.IO;
 using CM = CinematicModel;
+using System;
 
 namespace Assets.scripts{
     public class ActorActionFactory  {
@@ -25,9 +26,16 @@ namespace Assets.scripts{
         }
 
         private static ImpulsePlan loadImpulsePlan(string storyPlanPath){
-            string storyPlanXml = File.ReadAllText(storyPlanPath);
-            string storyPlanName = Path.GetFileNameWithoutExtension(storyPlanPath);
-            ImpulsePlan.LoadFromString(storyPlanXml);
+            
+                string storyPlanXml = File.ReadAllText(storyPlanPath);
+                string storyPlanName = Path.GetFileNameWithoutExtension(storyPlanPath);
+                try { 
+                    ImpulsePlan.LoadFromString(storyPlanXml);
+                }
+                catch (Exception e)
+                {
+                    Debug.Log("Exception loading impulse plan: " + e.Message);
+                }
             return ImpulsePlan.GetPlan(storyPlanName);
         }
 

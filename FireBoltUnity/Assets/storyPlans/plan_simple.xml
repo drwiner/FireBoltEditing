@@ -23,5 +23,32 @@
         <parameter name="tick">150</parameter>
         <parameter name="actor">pudge</parameter>
       </parameters>
+			</step>
   </steps>
+	<parameter-definitions>
+        <parameter name="impact-tick" type="int" is-list="false"/>
+        <parameter name="source" type="string" is-list="false"/>
+        <parameter name="actor" type="string" is-list="false"/>
+        <parameter name="target-rotation" type="double" is-list="false"/>
+        <parameter name="max-health" type="int" is-list="false"/>
+        <parameter name="type" type="string" is-list="false"/>
+        <parameter name="illusion" type="string" is-list="false"/>
+        <parameter name="building" type="string" is-list="false"/>
+        <parameter name="start-tick" type="int" is-list="false"/>
+        <parameter name="ability" type="string" is-list="false"/>
+        <parameter name="courier" type="string" is-list="false"/>
+        <parameter name="time" type="double" is-list="false"/>
+        <parameter name="rotation" type="double" is-list="false"/>
+        <parameter name="tick" type="int" is-list="false"/>
+        <parameter name="count" type="int" is-list="false"/>
+        <parameter name="target" type="string" is-list="false"/>
+        <parameter name="level" type="int" is-list="false"/>
+        <parameter name="hit-at" type="int" is-list="false"/>
+        <parameter name="item" type="string" is-list="false"/>
+        <parameter name="amount" type="int" is-list="false"/>
+        <parameter name="source-rotation" type="double" is-list="false"/>
+        <parameter name="team" type="string" is-list="false"/>
+        <parameter name="gold-left" type="int" is-list="false"/>
+        <parameter name="end-tick" type="int" is-list="false"/>
+	</parameter-definitions>
 </plan>

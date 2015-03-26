@@ -33,9 +33,9 @@ public class ElPresidente : MonoBehaviour {
                 actorAction.Stop();
             }
         }
-        while(aaq.Peek().StartTick() >= currentTick)
+        while(aaq.Peek() != null && aaq.Peek().StartTick() >= currentTick)
         {
-            IActorAction iaa = aaq.Dequeue();
+            IActorAction iaa = aaq.Pop();
             iaa.Init();
             executingActions.Add(iaa);
         }
