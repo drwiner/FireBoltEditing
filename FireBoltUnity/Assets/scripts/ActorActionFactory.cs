@@ -1,7 +1,6 @@
 ﻿using UnityEngine;
 using System.Collections;
 using Impulse.v_0_1;
-using ImpulsePlan = Impulse.v_0_1.Plan;  //TODO use structured plan instead
 using System.IO;
 using CM = CinematicModel;
 using System;
@@ -19,15 +18,15 @@ namespace Assets.scripts{
         {
             ActorActionQueue aaq = new ActorActionQueue();
             
-            ImpulsePlan storyPlan = loadImpulsePlan(storyPlanPath);                    
+            StructuredPlan storyPlan = loadStructuredImpulsePlan(storyPlanPath);                    
             CM.CinematicModel cm = loadCinematicModel(cinematicModelPath);
             
-            //generate some actions
-            foreach(Step step in storyPlan.Steps)
+            //generate some actions for the steps
+            foreach(StructuredStep step in storyPlan.Steps.Values)
             {
                 Dictionary<string,string> parameterMap;
                 ActionDecorator action;
-                foreach(Parameter p in step.Parameters){
+                foreach(Parameter p in step.){
 
                 }
                 
@@ -43,15 +42,16 @@ namespace Assets.scripts{
             return aaq;
         }
 
-        private static ImpulsePlan loadImpulsePlan(string storyPlanPath){
-            string storyPlanXml = File.ReadAllText(storyPlanPath);
+        private static StructuredPlan loadStructuredImpulsePlan(string storyPlanPath){
             string storyPlanName = Path.GetFileNameWithoutExtension(storyPlanPath);
-            try { 
-                    ImpulsePlan.LoadFromString(storyPlanXml);
+            try 
+            { 
+                Impulse.v_0_1.StructuredPlan.LoadFromPlan(Impulse.v_0_1.Plan.Load(storyPlanPath));
+
             }catch (Exception e){
                 Debug.Log("Exception loading impulse plan: " + e.Message);
             }
-            return ImpulsePlan.GetPlan(storyPlanName);
+            return Impulse.v_0_1.StructuredPlan.CurrentPlan;
         }
 
         private static CM.CinematicModel loadCinematicModel(string cinematicModelPath)
