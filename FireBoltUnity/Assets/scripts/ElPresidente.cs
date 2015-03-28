@@ -31,6 +31,7 @@ public class ElPresidente : MonoBehaviour {
             if (actorAction.EndTick().HasValue && actorAction.EndTick().Value > currentTick)
             {
                 actorAction.Stop();
+                executingActions.Remove(actorAction);//TODO need to recycle completed actions to somewhere for backward scrubbing
             }
         }
         while(aaq.Peek() != null && aaq.Peek().StartTick() >= currentTick)

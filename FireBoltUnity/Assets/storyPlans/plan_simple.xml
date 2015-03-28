@@ -6,7 +6,6 @@
       <parameters>
         <parameter name="start-tick">0</parameter>
         <parameter name="actor">pudge</parameter>
-        <parameter name="origin">0,3,0</parameter>
       </parameters>
     </step>
 		<step id="1">
@@ -14,13 +13,13 @@
      	<parameters>
       	<parameter name="start-tick">50</parameter>
       	<parameter name="actor">pudge</parameter>
-        <parameter name="end-tick">100</parameter>
+        <parameter name="end-tick">1000</parameter>
       </parameters>
     </step>
     <step id="3">
       <name>die</name>
       <parameters>
-        <parameter name="tick">150</parameter>
+        <parameter name="tick">1500</parameter>
         <parameter name="actor">pudge</parameter>
       </parameters>
 			</step>

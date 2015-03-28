@@ -5,12 +5,12 @@ using System.Text;
 
 namespace Assets.scripts
 {
-    public interface IActorAction {
-        float StartTick();
-        float? EndTick();
+    public interface IActorAction {        
+        void Init();
 	    void Execute();
         void Stop();
-        void Init();
+        float StartTick();
+        float? EndTick();
     }
 
 }

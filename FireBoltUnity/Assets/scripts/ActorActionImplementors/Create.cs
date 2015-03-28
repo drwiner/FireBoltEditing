@@ -20,8 +20,8 @@ namespace Assets.scripts
 
         public override void init()
         {
-            GameObject actor = GameObject.Instantiate(Resources.Load(modelName)) as GameObject; 
-            actor.transform.position = position;
+            Quaternion rotation = Quaternion.Euler(new Vector3(90, 0, 0));
+            GameObject actor = GameObject.Instantiate(Resources.Load(modelName),position,rotation) as GameObject; 
             actor.name = actorName;
         }
         public override void execute()

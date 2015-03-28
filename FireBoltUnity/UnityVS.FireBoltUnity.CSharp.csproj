@@ -76,7 +76,9 @@
     <Compile Include="Assets\scripts\testActionExecution.cs" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="Assets\cinematicModels\DotaModel.xml" />
+    <None Include="Assets\cinematicModels\DotaModel.xml">
+      <SubType>Designer</SubType>
+    </None>
     <None Include="Assets\storyPlans\plan_simple.xml" />
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath)\SyntaxTree\UnityVS\2013\UnityVS.CSharp.targets" />

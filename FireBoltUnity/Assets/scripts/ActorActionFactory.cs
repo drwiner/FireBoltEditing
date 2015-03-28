@@ -28,37 +28,64 @@ namespace Assets.scripts
             //generate some actions for the steps
             foreach(StructuredStep step in storyPlan.Steps.Values)
             {
-                ActionDecorator action = null;
-
                 //check for domain action the cinematic model knows about
                 CM.DomainAction domainAction = getStoryDomainAction(step);
                 if(domainAction == null) continue;
                 
-                //check if it made something new in the world
-                List<CM.Actor> createdObjects  = cm.FindCreatedObjects(domainAction.Name);
-                if(createdObjects.Count > 0)
-                {
-                    //need to create everything in the list
-
-                    float startTick = 0;
-                    if(step.Has_int("start-tick")){//abstractify this "start-tick" to extract from plan somehow?  seems hard for little gain.  plans should have ticks named as ticks
-                        startTick = step.Get_int("start-tick").Value;
-                    }
-                    
-                    action = new Create(startTick,createdObjects[0].Name,createdObjects[0].Model,Vector3.zero);
-                }
-
-                //check for an animation
-                //TODO create animation instatiating code
-
-                if (action != null)
-                {
-                    //add it to the queue
-                    aaq.Add(action);
-                }
+                enqueueCreateActions(step, domainAction, aaq);
+                enqueueAnimateActions(step, domainAction, aaq);
+            
             }
             
             return aaq;
+        }
+
+        private static void enqueueAnimateActions(StructuredStep step, CM.DomainAction domainAction, ActorActionQueue aaq)
+        {
+            string actorName = null;
+            float startTick=0;
+            float? endTick = null;
+            foreach(var param in step.Parameters)
+            {
+                if (string.Equals(param.Name, "actor", StringComparison.OrdinalIgnoreCase)) //TODO this belongs in an XSLT that's knowledge engineered for each domain
+                {                    
+                    actorName = (string)param.Value;
+                }
+                if (string.Equals(param.Name, "start-tick", StringComparison.OrdinalIgnoreCase)) //TODO this belongs in an XSLT that's knowledge engineered for each domain
+                {                    
+                    startTick = (int)param.Value;
+                }
+                if (string.Equals(param.Name, "end-tick", StringComparison.OrdinalIgnoreCase)) //TODO this belongs in an XSLT that's knowledge engineered for each domain
+                {                    
+                    endTick = (int)param.Value;
+                }
+            }
+            if (actorName == null)
+            {
+                Debug.Log("story plan actorName not set for action[" + domainAction.Name + "]");
+                return;
+            }
+            CM.AnimationInstance ai = cm.FindAnimationInstance(actorName, domainAction.Name, "actor");
+            if(ai == null)
+            {
+                Debug.Log("cinematic model animation instance undefined for actor["+ actorName+"] action["+domainAction.Name+"] paramName[actor]");
+                return;
+            }
+            aaq.Add(new AnimateMecanim(startTick, endTick, actorName, ai.AnimationName));
+        }
+
+        private static void enqueueCreateActions(StructuredStep step, CM.DomainAction domainAction, ActorActionQueue aaq)
+        {
+            List<CM.Actor> createdObjects = cm.FindCreatedObjects(domainAction.Name);
+            foreach(CM.Actor createdObject in createdObjects)
+            {
+                float startTick = 0;
+                if (step.Has_int("start-tick"))
+                {
+                    startTick = step.Get_int("start-tick").Value;
+                }
+                aaq.Add(new Create(startTick, createdObject.Name, createdObject.Model, Vector3.zero));
+            }
         }
 
         private static CM.DomainAction getStoryDomainAction(StructuredStep step)
@@ -75,8 +102,7 @@ namespace Assets.scripts
             return matchedAction;
         }
 
-        private static StructuredPlan loadStructuredImpulsePlan(string storyPlanPath){
-            string storyPlanName = Path.GetFileNameWithoutExtension(storyPlanPath);
+        private static StructuredPlan loadStructuredImpulsePlan(string storyPlanPath){            
             try 
             { 
                 Impulse.v_0_1.StructuredPlan.LoadFromPlan(Impulse.v_0_1.Plan.Load(storyPlanPath));
