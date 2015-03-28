@@ -6,7 +6,7 @@ using System.Text;
 namespace Assets.scripts
 {
     //code stolen from Bardic...need to encapsulate and extract library of shared utils
-    public class PriorityQueue<T>
+    public class PriorityQueue<T> 
     {
         private readonly List<T> heap;
         private readonly IComparer<T> comparer;
@@ -73,7 +73,11 @@ namespace Assets.scripts
 
         public T Peek()
         {
-            return heap[0];
+            if(heap.Count > 0)
+            {
+                return heap[0];
+            }
+            return default(T);
         }
 
         public T Pop()

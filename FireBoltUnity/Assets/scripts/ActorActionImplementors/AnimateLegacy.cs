@@ -12,17 +12,18 @@ public class AnimateLegacy : ActionDecorator{
             base(startTick,endTick,nestedAction) {
 		thisAnim = animName;
 	}
-	
-	private void execute () {
+
+        public override void execute()
+        {
 		   
 	}
 
-    private void stop()
+        public override void stop()
     {
         throw new System.NotImplementedException();
     }
 
-    private void init()
+        public override void init()
     {
         //look up actor, get component and play animation on it
         //GetComponent<Animation>().Play (thisAnim); 

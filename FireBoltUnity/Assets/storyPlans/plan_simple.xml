@@ -4,6 +4,7 @@
     <step id="0">
       <name>enter</name>
       <parameters>
+        <parameter name="start-tick">0</parameter>
         <parameter name="actor">pudge</parameter>
         <parameter name="origin">0,3,0</parameter>
       </parameters>
@@ -11,10 +12,9 @@
 		<step id="1">
     	<name>buy-item</name>
      	<parameters>
-      	<parameter name="item">item_gauntlets</parameter>
-      	<parameter name="tick">50</parameter>
-      	<parameter name="gold-left">0</parameter>
+      	<parameter name="start-tick">50</parameter>
       	<parameter name="actor">pudge</parameter>
+        <parameter name="end-tick">100</parameter>
       </parameters>
     </step>
     <step id="3">

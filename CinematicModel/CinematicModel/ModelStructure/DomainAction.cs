@@ -17,9 +17,13 @@ namespace CinematicModel
         [XmlAttribute(AttributeName="paramCount")]
         public int ParamCount { get; set; }
 
-        [XmlArray(ElementName="params")]
-        [XmlArrayItem(ElementName="param")]
-        public List<DomainActionParameter> Params;
+        [XmlArray(ElementName = "params")]
+        [XmlArrayItem(ElementName = "param")]
+        public List<DomainActionParameter> Params { get; set; }
+
+        [XmlArray(ElementName = "createdObjects")]
+        [XmlArrayItem(ElementName = "createdObject")]
+        public List<CreatedObject> CreatedObjects { get; set; }
 
     }
 }

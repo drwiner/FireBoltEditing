@@ -12,7 +12,7 @@ namespace CinematicModel
         public int ActionId { get; set; }
 
         [XmlAttribute(AttributeName = "actionParamId")]
-        public string ActionParamId { get; set; }
+        public int ActionParamId { get; set; }
 
         [XmlAttribute(AttributeName = "actorId")]
         public int ActorId { get; set; }
@@ -20,8 +20,6 @@ namespace CinematicModel
         [XmlElement(ElementName= "animationDescription")]
         public AnimationDescription AnimationDescription { get; set; } 
 
-        [XmlArray(ElementName = "createdObjects")]
-        [XmlArrayItem(ElementName = "createdObject")]
-        public List<CreatedObject> CreatedObjects { get; set; }
+
     }
 }

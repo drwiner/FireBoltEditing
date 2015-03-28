@@ -12,7 +12,8 @@ namespace CinematicModel.Tester
             //Console.Write("enter a filename to parse: ");
             CinematicModel cm = Parser.Parse("DotaModel.xml");
 
-            AnimationDescription ad = cm.FindAnimationDescription("pudge", "dance", "source");
+            AnimationDescription ad = cm.FindAnimationDescription("pudge", "enter", "actor");
+            List<Actor> actorNames = cm.FindCreatedObjects("enter");
         }
     }
 }

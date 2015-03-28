@@ -18,20 +18,18 @@ namespace Assets.scripts
             this.position = position;
         }
 
-        private void init()
+        public override void init()
         {
-            GameObject actor = new GameObject(actorName);
-            actor.AddComponent<MeshRenderer>();
-            actor.AddComponent<MeshFilter>();
-            GameObject modelMesh = Resources.Load(modelName) as GameObject;
-            actor.GetComponent<MeshFilter>().mesh = modelMesh.GetComponent<MeshFilter>().sharedMesh;
+            GameObject actor = GameObject.Instantiate(Resources.Load(modelName)) as GameObject; 
             actor.transform.position = position;
+            actor.name = actorName;
+            //add to actor dictionary
         }
-        private void execute()
+        public override void execute()
         {
             //nothing to execute
         }
-        private void stop()
+        public override void stop()
         {
             //nothing to end
         }

@@ -2,7 +2,7 @@
   <domainActions>
     <domainAction name="" id="" paramCount="" parentId="">
       <params>
-        <param id="" cardinality="" effector="" affected=""/><!--symbolic locations for moves here..somewhere-->
+        <param name="" id="" cardinality="" effector="" affected=""/><!--symbolic locations for moves here..somewhere-->
       </params>
     </domainAction>
   </domainActions>
@@ -13,7 +13,7 @@
 		<animationMapping actionId="" actionParamId="" actorId="" >
 			<animationDescription name="" loopAnimation="" effectorTimeOffset="" duration=""/>
 		  <createdObjects>
-							<createdObject actorId="" animationTimeOffset="" fadeInTime="" relativeLocation="" /> <!actorId is a problem here...we should make instances of models, not actors/>
+							<createdObject actorId="" animationTimeOffset="" fadeInTime="" relativeLocation="" /> <!--actorId is a problem here...we should make instances of models, not actors-->
 			</createdObjects>
 		</animationMapping>
 	</animationMappings>

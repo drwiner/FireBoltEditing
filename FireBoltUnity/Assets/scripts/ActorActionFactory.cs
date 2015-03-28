@@ -6,8 +6,13 @@ using CM = CinematicModel;
 using System;
 using System.Collections.Generic;
 
-namespace Assets.scripts{
-    public class ActorActionFactory  {
+namespace Assets.scripts
+{
+    public class ActorActionFactory
+    {
+        private static CM.CinematicModel cm;
+        private static StructuredPlan storyPlan;
+
         /// <summary>
         /// 
         /// </summary>
@@ -16,30 +21,54 @@ namespace Assets.scripts{
         /// <returns></returns>
         public static ActorActionQueue CreateStoryActions(string storyPlanPath, string cinematicModelPath)
         {
-            ActorActionQueue aaq = new ActorActionQueue();
-            
-            StructuredPlan storyPlan = loadStructuredImpulsePlan(storyPlanPath);                    
-            CM.CinematicModel cm = loadCinematicModel(cinematicModelPath);
+            ActorActionQueue aaq = new ActorActionQueue();            
+            storyPlan = loadStructuredImpulsePlan(storyPlanPath);                    
+            cm = loadCinematicModel(cinematicModelPath);
             
             //generate some actions for the steps
             foreach(StructuredStep step in storyPlan.Steps.Values)
             {
-                Dictionary<string,string> parameterMap;
-                ActionDecorator action;
-                foreach(Parameter p in step.){
+                ActionDecorator action = null;
 
-                }
+                //check for domain action the cinematic model knows about
+                CM.DomainAction domainAction = getStoryDomainAction(step);
+                if(domainAction == null) continue;
                 
-                //check for enter action
-                if(string.Equals(step.Name,"enter",StringComparison.OrdinalIgnoreCase))//this is a special case
+                //check if it made something new in the world
+                List<CM.Actor> createdObjects  = cm.FindCreatedObjects(domainAction.Name);
+                if(createdObjects.Count > 0)
                 {
-                   // action = new Create(step)
+                    //need to create everything in the list
+
+                    float startTick = 0;
+                    if(step.Has_int("start-tick")){//abstractify this "start-tick" to extract from plan somehow?  seems hard for little gain.  plans should have ticks named as ticks
+                        startTick = step.Get_int("start-tick").Value;
+                    }
+                    
+                    action = new Create(startTick,createdObjects[0].Name,createdObjects[0].Model,Vector3.zero);
                 }
-                //create a Create
-                //add it to the queue
+                if (action != null)
+                {
+                    //add it to the queue
+                    aaq.Add(action);
+                }
             }
             
             return aaq;
+        }
+
+        private static CM.DomainAction getStoryDomainAction(StructuredStep step)
+        {
+            CM.DomainAction matchedAction = null;
+            //check if the step action is in the domain of cinematic model
+            foreach(CM.DomainAction  domainAction in cm.DomainActions)
+            {
+                if(string.Equals(domainAction.Name,step.Name,StringComparison.OrdinalIgnoreCase))
+                {
+                    matchedAction = domainAction;
+                }
+            }
+            return matchedAction;
         }
 
         private static StructuredPlan loadStructuredImpulsePlan(string storyPlanPath){

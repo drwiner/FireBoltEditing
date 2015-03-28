@@ -3,7 +3,8 @@ using System.Collections;
 using CommandPattern;
 namespace CommandPattern {
 //concrete
-public class playMecanim: ICommand{
+public class playMecanim//: ICommand
+{
 
 	private Animator thisAnim;
 	private static int animationHash = Animator.StringToHash ("trigger");

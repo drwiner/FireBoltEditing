@@ -1,20 +1,24 @@
 <cinematicModel>
   <domainActions>
-		<domainAction name="dance" id="0" paramCount="1"> 
+		<domainAction name="buy-item" id="0" paramCount="1"> 
       <params>
-        <param id="source" cardinality="1" effector="false" affected="false"/><!--symbolic locations for moves here..somewhere-->
+        <param name="actor" id="1" cardinality="1" effector="false" affected="false"/>
       </params>
+    </domainAction>
+    <domainAction name="enter" id="1" paramCount="2">      
+      <createdObjects>
+        <createdObject actorId="2" />
+      </createdObjects>
     </domainAction>
   </domainActions>
   <actors>
 		<actor name="pudge" id="2" model="pudge_model" />
   </actors>
 	<animationMappings>
-		<animationMapping actionId="0" actionParamId="source" actorId="2">
-			<animationDescription name="pudge_walkN" duration="1917" loopAnimation="true" effectorTimeOffset="50"/>
-		  <createdObjects>
-	  	  <createdObject actorId="5" animationTimeOffset="25" fadeInTime="100" relativeLocation="90" />
-			</createdObjects>
+		<animationMapping actionId="0" actionParamId="1" actorId="2">
+			<animationDescription name="pudge_walkN" duration="1917" loopAnimation="true" effectorTimeOffset="50"/>		  
 		</animationMapping>
+    <animationMapping actionId="1" actionParamId="1" actorId="2">
+    </animationMapping>
 	</animationMappings>
 </cinematicModel>

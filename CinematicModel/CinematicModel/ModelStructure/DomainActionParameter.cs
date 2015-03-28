@@ -9,10 +9,16 @@ namespace CinematicModel
     public class DomainActionParameter
     {
         /// <summary>
-        /// correlates positional value of parameter with animations to be played
+        /// correlates name of parameter with parameter in xImpulse domain model
+        /// </summary>
+        [XmlAttribute(AttributeName = "name")]
+        public string Name { get; set; }
+
+        /// <summary>
+        /// correlates value of parameter with animations to be played
         /// </summary>
         [XmlAttribute(AttributeName="id")]
-        public string Id { get; set; }
+        public int Id { get; set; }
 
         //TODO currently only supports numeric values, should eventually support ranges
         [XmlAttribute(AttributeName="cardinality")]

@@ -56,7 +56,7 @@ namespace Assets.scripts
         /// <summary>
         /// override me for implementation specific execution
         /// </summary>
-        private void execute() { }
+        public abstract void execute();
 
         public void Stop()
         {
@@ -70,7 +70,7 @@ namespace Assets.scripts
         /// <summary>
         /// override me for implementation specific execution
         /// </summary>
-        private void stop() { }
+        public abstract void stop();
 
         public void Init()
         {
@@ -84,6 +84,6 @@ namespace Assets.scripts
         /// <summary>
         /// override me for implementation specific execution
         /// </summary>
-        private void init() { }
+        public abstract void init();
     }
 }

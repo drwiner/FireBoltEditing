@@ -17,22 +17,17 @@ namespace Assets.scripts
 
         }
 
-        public void Execute()
-        {
-
-        }
-
-        private void execute()
+        public override void execute()
         {
             thisAnim.SetTrigger(animationHash);
         }
 
-        private void stop()
+        public override void stop()
         {
             throw new System.NotImplementedException();
         }
 
-        private void init()
+        public override void init()
         {
             //look up actor, get component and play animation on it
             //thisAnim = someGameObject.GetComponent<Animator> ();

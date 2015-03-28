@@ -28,7 +28,7 @@ public class ElPresidente : MonoBehaviour {
         currentTick = Time.time;
         foreach (IActorAction actorAction in executingActions)
         {
-            if (actorAction.EndTick() < currentTick)
+            if (actorAction.EndTick().HasValue && actorAction.EndTick().Value > currentTick)
             {
                 actorAction.Stop();
             }
