@@ -6,14 +6,8 @@ using System.Xml.Serialization;
 
 namespace CinematicModel
 {
-    public class AnimationDescription
+    public class AnimationProperties
     {
-        [XmlAttribute(AttributeName="name")]
-        public string Name { get; set; }
-
-        [XmlAttribute(AttributeName = "duration")]
-        public int Duration { get; set; }
-
         [XmlAttribute(AttributeName = "loopAnimation")]
         public bool LoopAnimation { get; set; }
 

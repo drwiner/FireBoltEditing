@@ -23,7 +23,6 @@ namespace Assets.scripts
             GameObject actor = GameObject.Instantiate(Resources.Load(modelName)) as GameObject; 
             actor.transform.position = position;
             actor.name = actorName;
-            //add to actor dictionary
         }
         public override void execute()
         {

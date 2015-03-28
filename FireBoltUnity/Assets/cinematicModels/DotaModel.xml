@@ -12,13 +12,15 @@
     </domainAction>
   </domainActions>
   <actors>
-		<actor name="pudge" id="2" model="pudge_model" />
+    <actor name="pudge" id="2" model="pudge_model" >
+      <animations>
+        <animation name="pudge_walkN" id="0" duration="1917"/>
+      </animations>
+    </actor>
   </actors>
 	<animationMappings>
-		<animationMapping actionId="0" actionParamId="1" actorId="2">
-			<animationDescription name="pudge_walkN" duration="1917" loopAnimation="true" effectorTimeOffset="50"/>		  
-		</animationMapping>
-    <animationMapping actionId="1" actionParamId="1" actorId="2">
-    </animationMapping>
+		<animationMapping actionId="0" actionParamId="1" actorId="2" animationId="0">
+			<animationProperties  loopAnimation="true" effectorTimeOffset="50"/>		  
+		</animationMapping>    
 	</animationMappings>
 </cinematicModel>

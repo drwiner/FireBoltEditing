@@ -22,19 +22,31 @@ namespace CinematicModel
         public List<AnimationMapping> AnimationMappings { get; set; }
 
         //TODO querying
-        public AnimationDescription FindAnimationDescription(string actorName, string actionName, string actionParamName)
+        public AnimationInstance FindAnimationDescription(string actorName, string actionName, string actionParamName)
         {
             //assuming uniqueness of names.  probably should be doing validation somewhere...perhaps with an xsd?
-            int actorId = (from a in Actors where string.Equals(a.Name, actorName, StringComparison.OrdinalIgnoreCase) select a.Id).FirstOrDefault();            
-            DomainAction action = (from a in DomainActions where string.Equals(a.Name, actionName, StringComparison.OrdinalIgnoreCase) select a).FirstOrDefault();
-            int actionParamId = (from p in action.Params where string.Equals(p.Name, actionParamName, StringComparison.OrdinalIgnoreCase) select p.Id).FirstOrDefault();
+            Actor actor = (from a in Actors where string.Equals(a.Name, actorName, StringComparison.OrdinalIgnoreCase) select a).FirstOrDefault();
+            if (actor == null) { throw new Exception("actor[" + actorName + "] not found."); }
 
-            AnimationDescription ad = (from am in AnimationMappings 
+            DomainAction action = (from a in DomainActions where string.Equals(a.Name, actionName, StringComparison.OrdinalIgnoreCase) select a).FirstOrDefault();
+            if (action == null) { throw new Exception("action[" + actionName + "] not found."); }
+
+            DomainActionParameter dap = (from p in action.Params where string.Equals(p.Name, actionParamName, StringComparison.OrdinalIgnoreCase) select p).FirstOrDefault();
+            if (dap == null) { throw new Exception("action parameter[actionName=\"" + actionName+ "\",actionParamName=\""+actionParamName+"\"] not found."); }
+
+            AnimationMapping animationMapping = (from am in AnimationMappings 
                                        where am.ActionId == action.Id && 
-                                             am.ActorId == actorId &&
-                                             am.ActionParamId == actionParamId
-                                       select am.AnimationDescription).FirstOrDefault<AnimationDescription>();
-            return ad;
+                                             am.ActorId == actor.Id &&
+                                             am.ActionParamId == dap.Id
+                                       select am).FirstOrDefault<AnimationMapping>();
+            if (animationMapping == null) { throw new Exception("animationMapping [actionName=\"" + actionName + 
+                "\",actionParamName=\"" + actionParamName + "\",actorName=\"" + actorName + "\"] not found."); }
+
+            Animation animation = (from anim in actor.Animations where anim.Id == animationMapping.AnimationId select anim).FirstOrDefault<Animation>();
+            if (animation == null) { throw new Exception("animation[actorName=\"" + actorName + "\",animationId=\"" + animationMapping.AnimationId+ "\"] not found."); }
+
+            //build a container and return
+            return new AnimationInstance(animation,animationMapping.AnimationProperties);
             
         }
 

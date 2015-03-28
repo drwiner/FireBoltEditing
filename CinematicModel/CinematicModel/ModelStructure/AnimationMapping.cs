@@ -17,8 +17,11 @@ namespace CinematicModel
         [XmlAttribute(AttributeName = "actorId")]
         public int ActorId { get; set; }
 
-        [XmlElement(ElementName= "animationDescription")]
-        public AnimationDescription AnimationDescription { get; set; } 
+        [XmlAttribute(AttributeName = "animationId")]
+        public int AnimationId { get; set; }
+
+        [XmlElement(ElementName= "animationProperties")]
+        public AnimationProperties AnimationProperties { get; set; } 
 
 
     }

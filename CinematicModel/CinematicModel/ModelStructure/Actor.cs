@@ -16,5 +16,9 @@ namespace CinematicModel
 
         [XmlAttribute(AttributeName = "model")]
         public string Model { get; set; }
+
+        [XmlArray(ElementName= "animations")]
+        [XmlArrayItem(ElementName= "animation")]
+        public List<Animation> Animations { get; set; }
     }
 }

@@ -47,6 +47,10 @@ namespace Assets.scripts
                     
                     action = new Create(startTick,createdObjects[0].Name,createdObjects[0].Model,Vector3.zero);
                 }
+
+                //check for an animation
+                //TODO create animation instatiating code
+
                 if (action != null)
                 {
                     //add it to the queue
