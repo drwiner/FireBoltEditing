@@ -15,6 +15,7 @@ public class ElPresidente : MonoBehaviour {
     float currentTick;
     public string storyPlanPath;
     public string cinematicModelPath;
+    private float lastTickLogged;
 
 	// Use this for initialization
 	void Start () {
@@ -26,15 +27,22 @@ public class ElPresidente : MonoBehaviour {
 	// Update is called once per frame
 	void Update () {
         currentTick = Time.time;
+        logTicks();
+        List<IActorAction> removeList = new List<IActorAction>();
         foreach (IActorAction actorAction in executingActions)
         {
             if (actorAction.EndTick().HasValue && actorAction.EndTick().Value > currentTick)
             {
                 actorAction.Stop();
-                executingActions.Remove(actorAction);//TODO need to recycle completed actions to somewhere for backward scrubbing
+                //TODO need to recycle completed actions to somewhere for backward scrubbing
+                removeList.Add(actorAction);
             }
         }
-        while(aaq.Peek() != null && aaq.Peek().StartTick() >= currentTick)
+        foreach (IActorAction iaa in removeList)
+        {
+            executingActions.Remove(iaa);
+        }
+        while(aaq.Peek() != null && aaq.Peek().StartTick() <= currentTick)
         {
             IActorAction iaa = aaq.Pop();
             iaa.Init();
@@ -47,6 +55,15 @@ public class ElPresidente : MonoBehaviour {
         foreach (IActorAction actorAction in executingActions)
         {
             actorAction.Execute();            
+        }
+    }
+
+    void logTicks()
+    {
+        if (currentTick - lastTickLogged > 1)
+        {
+            Debug.Log(currentTick);
+            lastTickLogged = currentTick;
         }
     }
 }

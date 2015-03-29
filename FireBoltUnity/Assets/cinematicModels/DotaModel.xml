@@ -12,7 +12,7 @@
     </domainAction>
   </domainActions>
   <actors>
-    <actor name="pudge" id="2" model="pudge_model" >
+    <actor name="pudge" id="2" model="m005" >
       <animations>
         <animation name="humanoid_sneak.fbx" id="0" duration="1917"/>
       </animations>

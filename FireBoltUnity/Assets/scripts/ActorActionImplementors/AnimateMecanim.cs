@@ -37,14 +37,15 @@ namespace Assets.scripts
             }
             //doing all this ever time we start an animation seems expensive. what else can we do?
             AnimatorOverrideController animatorOverride = new AnimatorOverrideController();
-            animatorOverride.runtimeAnimatorController = animator.runtimeAnimatorController;
-            //animation = Resources.Load("Animations/" + animName) as AnimationClip;
+            animatorOverride.runtimeAnimatorController = Resources.Load<RuntimeAnimatorController>("AnimatorControllers/Generic");
+            animator.runtimeAnimatorController = animatorOverride;
             animation = Resources.LoadAssetAtPath<AnimationClip>("Assets/Resources/Animations/" + animName);
             if (!animation)
             {
                 Debug.LogError("Missing animation asset");
             }
-            animatorOverride["Idle_Glance"] = animation;
+            animatorOverride["animating"] = animation;
+           
         }
 
 	    public void Execute () {
@@ -53,7 +54,7 @@ namespace Assets.scripts
 
         public void Stop()
         {
- 	        throw new System.NotImplementedException();
+ 	        
         }
 
         public float StartTick()

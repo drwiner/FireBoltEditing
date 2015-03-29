@@ -4,22 +4,22 @@
     <step id="0">
       <name>enter</name>
       <parameters>
-        <parameter name="start-tick">0</parameter>
+        <parameter name="start-tick">5</parameter>
         <parameter name="actor">pudge</parameter>
       </parameters>
     </step>
 		<step id="1">
     	<name>buy-item</name>
      	<parameters>
-      	<parameter name="start-tick">50</parameter>
+      	<parameter name="start-tick">10</parameter>
       	<parameter name="actor">pudge</parameter>
-        <parameter name="end-tick">1000</parameter>
+        <parameter name="end-tick">100</parameter>
       </parameters>
     </step>
     <step id="3">
       <name>die</name>
       <parameters>
-        <parameter name="tick">1500</parameter>
+        <parameter name="tick">125</parameter>
         <parameter name="actor">pudge</parameter>
       </parameters>
 			</step>
