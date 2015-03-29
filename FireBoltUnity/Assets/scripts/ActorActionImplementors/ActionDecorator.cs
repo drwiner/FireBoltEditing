@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 
-namespace Assets.scripts
+namespace Assets.scripts.obsolete
 {
     //TODO do we even need to decorate actions?  couldn't we just let them all run separately.  it's about the same but without all this OO patterny stuff
     public abstract class ActionDecorator : IActorAction

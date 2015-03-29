@@ -6,31 +6,44 @@ using System.Text;
 
 namespace Assets.scripts
 {
-    public class Create : ActionDecorator
+    public class Create : IActorAction
     {
+        float startTick;
         string actorName,modelName;
         Vector3 position;
-        public Create(float startTick, string actorName, string modelName, Vector3 position) : 
-            base(startTick, null, null)
+        public Create(float startTick, string actorName, string modelName, Vector3 position) 
         {
+            this.startTick = startTick;
             this.actorName = actorName;
             this.modelName = modelName;
             this.position = position;
         }
 
-        public override void init()
+        public void Init()
         {
             //Quaternion rotation = Quaternion.Euler(new Vector3(90, 0, 0));
-            GameObject actor = GameObject.Instantiate(Resources.Load(modelName),position,Quaternion.identity) as GameObject; 
+            GameObject actor = GameObject.Instantiate(Resources.Load(modelName), position, Quaternion.identity) as GameObject;
             actor.name = actorName;
         }
-        public override void execute()
+
+        public void Execute()
         {
-            //nothing to execute
+            //nothing to do
         }
-        public override void stop()
+
+        public void Stop()
         {
-            //nothing to end
+            //nothing to stop
+        }
+
+        public float StartTick()
+        {
+            return startTick;
+        }
+
+        public float? EndTick()
+        {
+            return null;
         }
     }
 }
