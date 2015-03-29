@@ -44,7 +44,7 @@ namespace Assets.scripts
             {
                 Debug.LogError("Missing animation asset");
             }
-            animatorOverride["animating"] = animation;
+            animatorOverride["Idle_Glance"] = animation;
            
         }
 
