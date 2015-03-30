@@ -21,7 +21,6 @@ namespace Assets.scripts
 
         public void Init()
         {
-            //Quaternion rotation = Quaternion.Euler(new Vector3(90, 0, 0));
             GameObject actor = GameObject.Instantiate(Resources.Load(modelName), position, Quaternion.identity) as GameObject;
             actor.name = actorName;
         }
