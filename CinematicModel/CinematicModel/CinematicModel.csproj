@@ -42,11 +42,13 @@
     <Compile Include="ModelStructure\AnimationInstance.cs" />
     <Compile Include="ModelStructure\AnimationProperties.cs" />
     <Compile Include="ModelStructure\AnimationMapping.cs" />
+    <Compile Include="ModelStructure\FireBoltAction.cs" />
     <Compile Include="ModelStructure\CreatedObject.cs" />
     <Compile Include="ModelStructure\DomainAction.cs" />
     <Compile Include="ModelStructure\DomainActionParameter.cs" />
     <Compile Include="ModelStructure\Actor.cs" />
     <Compile Include="ModelStructure\CinematicModel.cs" />
+    <Compile Include="ModelStructure\FireBoltActions\CreateAction.cs" />
     <Compile Include="Parser.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>

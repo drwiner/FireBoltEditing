@@ -58,7 +58,7 @@ namespace CinematicModel
             {
                 if (string.Equals(da.Name, actionName, StringComparison.OrdinalIgnoreCase))
                 {
-                    createdObjects = da.CreatedObjects;
+                    //createdObjects = da.CreatedObjects;
                 }
             }
             foreach (CreatedObject co in createdObjects)

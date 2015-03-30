@@ -5,10 +5,14 @@
         <param name="actor" id="1" cardinality="1" effector="false" affected="false"/>
       </params>
     </domainAction>
-    <domainAction name="enter" id="1" paramCount="2">      
-      <createdObjects>
-        <createdObject actorId="2" />
-      </createdObjects>
+    <domainAction name="enter" id="1" paramCount="2">
+      <params>
+        <param name="actor" id="1" cardinality="1" effector="false" affected="false"/>
+        <param name="origin" id="2" cardinality="1" effector="false" affected="false"/>
+      </params>
+      <fireBoltActions>
+        <createAction actorNameParamId="1" originParamId="2"/>
+      </fireBoltActions>
     </domainAction>
   </domainActions>
   <actors>
