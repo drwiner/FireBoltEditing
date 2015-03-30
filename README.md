@@ -1,4 +1,4 @@
 FireBolt
 ========
-assumptions
-ActorActionFactory does not traverse step hierarchies, so does not support dpocl
+a reimagining of temporally oriented fabula realization
+
