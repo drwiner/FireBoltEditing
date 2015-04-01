@@ -5,6 +5,7 @@ using System.IO;
 using CM = CinematicModel;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 
 namespace Assets.scripts
 {
@@ -68,7 +69,7 @@ namespace Assets.scripts
             CM.AnimationInstance ai = cm.FindAnimationInstance(actorName, domainAction.Name, "actor");
             if(ai == null)
             {
-                Debug.Log("cinematic model animation instance undefined for actor["+ actorName+"] action["+domainAction.Name+"] paramName[actor]");
+                Debug.Log("cinematic model animation instance undefined for actor["+ actorName+"] action["+domainAction.Name+"] paramName[actor]");     
                 return;
             }
             aaq.Add(new AnimateMecanim(startTick, endTick, actorName, ai.AnimationName));
@@ -76,6 +77,30 @@ namespace Assets.scripts
 
         private static void enqueueCreateActions(StructuredStep step, CM.DomainAction domainAction, ActorActionQueue aaq)
         {
+            foreach (CM.CreateAction ca in domainAction.CreateActions)
+            {
+                float startTick = 0 ;
+                string actorName = null;
+                string modelName = null;
+                foreach (CM.DomainActionParameter domainActionParameter in domainAction.Params) 
+                {
+                    if (domainActionParameter.Id == ca.StartTickParamId)
+                    {
+                        startTick = Convert.ToInt32((from xImpulseStepParam in step.Parameters //TODO a little sketchy on the type conversion here...what do i want to do with it?
+                                                    where string.Equals(xImpulseStepParam.Name,domainActionParameter.Name,StringComparison.OrdinalIgnoreCase) 
+                                                    select xImpulseStepParam.Value).FirstOrDefault());
+                    }
+                    else if (domainActionParameter.Id == ca.ActorNameParamId)
+                    {
+                        actorName = Convert.ToString((from xImpulseStepParam in step.Parameters //TODO a little sketchy on the type conversion here...what do i want to do with it?
+                                                    where string.Equals(xImpulseStepParam.Name,domainActionParameter.Name,StringComparison.OrdinalIgnoreCase) 
+                                                    select xImpulseStepParam.Value).FirstOrDefault());
+                    }
+                }
+                Create create = new Create(startTick,actorName,modelName, new Vector3());
+            }
+
+
             List<CM.Actor> createdObjects = cm.FindCreatedObjects(domainAction.Name);
             foreach(CM.Actor createdObject in createdObjects)
             {

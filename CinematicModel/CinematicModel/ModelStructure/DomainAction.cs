@@ -21,9 +21,8 @@ namespace CinematicModel
         [XmlArrayItem(ElementName = "param")]
         public List<DomainActionParameter> Params { get; set; }
 
-        [XmlArray(ElementName = "fireBoltActions")]
-        [XmlArrayItem("createAction",typeof(CreateAction))]
-        public List<FireBoltAction> FireBoltActions { get; set; }
-
+        [XmlArray("createActions")]
+        [XmlArrayItem("createAction")]
+        public List<CreateAction> CreateActions { get; set; }
     }
 }

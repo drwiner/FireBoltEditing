@@ -10,9 +10,9 @@
         <param name="actor" id="1" cardinality="1" effector="false" affected="false"/>
         <param name="origin" id="2" cardinality="1" effector="false" affected="false"/>
       </params>
-      <fireBoltActions>
+      <createActions>
         <createAction actorNameParamId="1" originParamId="2"/>
-      </fireBoltActions>
+      </createActions>
     </domainAction>
   </domainActions>
   <actors>
