@@ -48,7 +48,6 @@
   <ItemGroup>
      <Compile Include="Assets\mecanim related\playMecanim.cs" />
      <Compile Include="Assets\scripts\ActorActionFactory.cs" />
-     <Compile Include="Assets\scripts\ActorActionImplementors\ActionDecorator.cs" />
      <Compile Include="Assets\scripts\ActorActionImplementors\AnimateLegacy.cs" />
      <Compile Include="Assets\scripts\ActorActionImplementors\AnimateMecanim.cs" />
      <Compile Include="Assets\scripts\ActorActionImplementors\Create.cs" />

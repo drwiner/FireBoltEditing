@@ -35,6 +35,7 @@ namespace Assets.scripts
                 actor.AddComponent<Animator>();
                 animator = actor.GetComponent<Animator>();
             }
+            animator.applyRootMotion = false;
             //doing all this ever time we start an animation seems expensive. what else can we do?
             AnimatorOverrideController animatorOverride = new AnimatorOverrideController();
             animatorOverride.runtimeAnimatorController = Resources.Load<RuntimeAnimatorController>("AnimatorControllers/Generic");
@@ -44,7 +45,7 @@ namespace Assets.scripts
             {
                 Debug.LogError("Missing animation asset");
             }
-            animatorOverride["teleport"] = animation;
+            animatorOverride["UNTY_Sneak_tk04"] = animation;
            
         }
 
