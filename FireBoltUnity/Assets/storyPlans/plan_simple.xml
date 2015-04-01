@@ -23,6 +23,13 @@
         <parameter name="actor">pudge</parameter>
       </parameters>
 			</step>
+    <step id="4">
+      <name>exit</name>
+      <parameters>
+        <parameter name="start-tick">10</parameter>
+        <parameter name="actor">pudge</parameter>
+      </parameters>
+    </step>
   </steps>
 	<parameter-definitions>
         <parameter name="actor" type="string" is-list="false"/>

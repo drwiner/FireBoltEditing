@@ -35,6 +35,7 @@ namespace Assets.scripts
                 
                 enqueueCreateActions(step, domainAction, aaq);
                 enqueueAnimateActions(step, domainAction, aaq);
+                enqueueDestroyActions(step, domainAction, aaq);
             
             }
             
@@ -112,6 +113,35 @@ namespace Assets.scripts
                     }
                 }
                 aaq.Add(new Create(startTick,actorName,modelName, new Vector3()));
+            }
+        }
+
+        private static void enqueueDestroyActions(StructuredStep step, CM.DomainAction domainAction, ActorActionQueue aaq)
+        {
+            foreach (CM.DestroyAction da in domainAction.DestroyActions)
+            {
+                float startTick = 0;
+                string actorName = null;
+                foreach (CM.DomainActionParameter domainActionParameter in domainAction.Params)
+                {
+                    if (domainActionParameter.Id == da.StartTickParamId)
+                    {
+                        startTick = Convert.ToInt32((from xImpulseStepParam in step.Parameters
+                                                     where string.Equals(xImpulseStepParam.Name, domainActionParameter.Name, StringComparison.OrdinalIgnoreCase)
+                                                     select xImpulseStepParam.Value).FirstOrDefault());
+                    }
+                    else if (domainActionParameter.Id == da.ActorNameParamId)
+                    {
+                        actorName = (from xImpulseStepParam in step.Parameters
+                                     where string.Equals(xImpulseStepParam.Name, domainActionParameter.Name, StringComparison.OrdinalIgnoreCase)
+                                     select xImpulseStepParam.Value as string).FirstOrDefault();
+                        if (actorName == null)
+                        {
+                            Debug.Log("actorName not set for stepId[" + step.ID + "]");
+                        }
+                    }
+                }
+                aaq.Add(new Destroy(startTick, actorName));
             }
         }
 

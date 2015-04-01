@@ -5,7 +5,7 @@
         <param name="actor" id="1" cardinality="1" effector="false" affected="false"/>
       </params>
     </domainAction>
-    <domainAction name="enter" id="1" paramCount="2">
+    <domainAction name="enter" id="1">
       <params>
         <param name="actor" id="1" cardinality="1" effector="false" affected="false"/>
         <param name="origin" id="2" cardinality="1" effector="false" affected="false"/>
@@ -14,6 +14,16 @@
       <createActions>
         <createAction actorNameParamId="1" originParamId="2" startTickParamId="3"/>
       </createActions>
+    </domainAction>
+    <domainAction name="exit" id="2">
+      <params>
+        <param name="actor" id="0" cardinality="1" effector="false" affected="false"/>
+        <param name="start-tick" id="1" cardinality="1" effector="false" affected ="false"/>
+      </params>
+      <createActions/>        
+      <destroyActions>
+        <destroyAction actorNameParamId="0" startTickParamId="1"/>
+      </destroyActions>
     </domainAction>
   </domainActions>
   <actors>
