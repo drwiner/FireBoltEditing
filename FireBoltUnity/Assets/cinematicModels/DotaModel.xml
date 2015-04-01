@@ -9,9 +9,10 @@
       <params>
         <param name="actor" id="1" cardinality="1" effector="false" affected="false"/>
         <param name="origin" id="2" cardinality="1" effector="false" affected="false"/>
+        <param name="start-tick" id="3" cardinality="1" effector="false" affected ="false"/>
       </params>
       <createActions>
-        <createAction actorNameParamId="1" originParamId="2"/>
+        <createAction actorNameParamId="1" originParamId="2" startTickParamId="3"/>
       </createActions>
     </domainAction>
   </domainActions>
