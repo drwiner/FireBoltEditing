@@ -44,7 +44,7 @@ namespace Assets.scripts
         private static void enqueueAnimateActions(StructuredStep step, CM.DomainAction domainAction, ActorActionQueue aaq)
         {
             string actorName = null;
-            float startTick=0;
+            float startTick = 0;          
             float? endTick = null;
             foreach(var param in step.Parameters)
             {
@@ -79,37 +79,39 @@ namespace Assets.scripts
         {
             foreach (CM.CreateAction ca in domainAction.CreateActions)
             {
-                float startTick = 0 ;
+                float startTick = 0;
                 string actorName = null;
                 string modelName = null;
                 foreach (CM.DomainActionParameter domainActionParameter in domainAction.Params) 
                 {
                     if (domainActionParameter.Id == ca.StartTickParamId)
                     {
-                        startTick = Convert.ToInt32((from xImpulseStepParam in step.Parameters //TODO a little sketchy on the type conversion here...what do i want to do with it?
+                        startTick = Convert.ToInt32((from xImpulseStepParam in step.Parameters 
                                                     where string.Equals(xImpulseStepParam.Name,domainActionParameter.Name,StringComparison.OrdinalIgnoreCase) 
-                                                    select xImpulseStepParam.Value).FirstOrDefault());
+                                                    select xImpulseStepParam.Value).FirstOrDefault());                        
                     }
                     else if (domainActionParameter.Id == ca.ActorNameParamId)
                     {
-                        actorName = Convert.ToString((from xImpulseStepParam in step.Parameters //TODO a little sketchy on the type conversion here...what do i want to do with it?
+                        actorName = (from xImpulseStepParam in step.Parameters 
                                                     where string.Equals(xImpulseStepParam.Name,domainActionParameter.Name,StringComparison.OrdinalIgnoreCase) 
-                                                    select xImpulseStepParam.Value).FirstOrDefault());
+                                                    select xImpulseStepParam.Value as string).FirstOrDefault();
+                        if (actorName == null)
+                        {
+                            Debug.Log("actorName not set for stepId[" + step.ID + "]");
+                        }
+                        else //actorName is defined, we can look up a model
+                        {
+                            modelName = (from actor in cm.Actors 
+                                             where string.Equals(actor.Name,actorName,StringComparison.OrdinalIgnoreCase)
+                                             select actor.Model).FirstOrDefault<string>();
+                            if(modelName == null)
+                            {
+                                Debug.Log("model name for actor[" + actorName + "] not found in cinematic model.");
+                            }
+                        }
                     }
                 }
-                Create create = new Create(startTick,actorName,modelName, new Vector3());
-            }
-
-
-            List<CM.Actor> createdObjects = cm.FindCreatedObjects(domainAction.Name);
-            foreach(CM.Actor createdObject in createdObjects)
-            {
-                float startTick = 0;
-                if (step.Has_int("start-tick"))
-                {
-                    startTick = step.Get_int("start-tick").Value;
-                }
-                aaq.Add(new Create(startTick, createdObject.Name, createdObject.Model, Vector3.zero));
+                aaq.Add(new Create(startTick,actorName,modelName, new Vector3()));
             }
         }
 
