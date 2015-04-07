@@ -28,5 +28,9 @@ namespace CinematicModel
         [XmlArray("destroyActions")]
         [XmlArrayItem("destroyAction")]
         public List<DestroyAction> DestroyActions { get; set; }
+
+        [XmlArray("moveActions")]
+        [XmlArrayItem("moveAction")]
+        public List<MoveAction> MoveActions { get; set; }
     }
 }

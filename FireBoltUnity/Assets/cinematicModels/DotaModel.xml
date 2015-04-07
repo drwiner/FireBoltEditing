@@ -25,6 +25,23 @@
         <destroyAction actorNameParamId="0" startTickParamId="1"/>
       </destroyActions>
     </domainAction>
+    <domainAction name="move" id="3">
+      <params>
+        <param name="actor" id="0" cardinality="1" effector="false" affected="false"/>
+        <param name="start-tick" id="1" cardinality="1" effector="false" affected ="false"/>        
+        <param name="end-tick" id="2" cardinality="1" effector="false" affected ="false"/>
+        <param name="destination" id="3" cardinality="1" effector="false" affected="false"/>        
+      </params>
+      <createActions/>
+      <destroyActions/>
+      <moveActions>
+        <moveAction actorNameParamId="0" startTickParamId="1" endTickParamId="2" destinationParamId="3"/>
+      </moveActions>
+      <animateActions>
+        <!--<animateAction actorNameParamId="0" startTickParamId="1" endTickParamId="2"/> animating is handled i
+        differently from everything else...why?-->
+      </animateActions>
+    </domainAction>
   </domainActions>
   <actors>
     <actor name="pudge" id="2" model="pudge_model" >

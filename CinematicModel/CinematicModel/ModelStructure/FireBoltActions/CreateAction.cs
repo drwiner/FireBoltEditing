@@ -9,9 +9,6 @@ namespace CinematicModel
     
     public class CreateAction : FireBoltAction
     {
-        [XmlAttribute(AttributeName = "actorNameParamId")]
-        public int ActorNameParamId { get; set; }
-
         [XmlAttribute(AttributeName = "originParamId")]
         public int OriginParamId { get; set; }
 

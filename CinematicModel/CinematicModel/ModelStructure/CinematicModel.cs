@@ -50,29 +50,6 @@ namespace CinematicModel
             
         }
 
-        public List<Actor> FindCreatedObjects(string actionName)
-        {
-            List<Actor> actors = new List<Actor>();
-            List<CreatedObject> createdObjects = null;
-            foreach (DomainAction da in DomainActions)
-            {
-                if (string.Equals(da.Name, actionName, StringComparison.OrdinalIgnoreCase))
-                {
-                    //createdObjects = da.CreatedObjects;
-                }
-            }
-            foreach (CreatedObject co in createdObjects)
-            {
-                foreach(Actor a in Actors)
-                {
-                    if(a.Id==co.ActorId){
-                        actors.Add(a);
-                    }
-                }
-            }
-            return actors;
-        }
-
         public Actor FindActor(int id)
         {
             return (from a in Actors where a.Id == id select a).FirstOrDefault();

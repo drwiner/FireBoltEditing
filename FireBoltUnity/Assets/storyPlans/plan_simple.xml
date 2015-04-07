@@ -17,10 +17,12 @@
       </parameters>
     </step>
     <step id="3">
-      <name>die</name>
+      <name>move</name>
       <parameters>
-        <parameter name="tick">125</parameter>
+        <parameter name="start-tick">6</parameter>
         <parameter name="actor">pudge</parameter>
+        <parameter name="end-tick">15</parameter>
+        <parameter name="destination">10,0,-5</parameter>
       </parameters>
 			</step>
     <step id="4">

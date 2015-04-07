@@ -36,11 +36,68 @@ namespace Assets.scripts
                 enqueueCreateActions(step, domainAction, aaq);
                 enqueueAnimateActions(step, domainAction, aaq);
                 enqueueDestroyActions(step, domainAction, aaq);
+                enqueueMoveActions(step, domainAction, aaq);
             
             }
             
             return aaq;
         }
+
+        private static void enqueueMoveActions(StructuredStep step, CM.DomainAction domainAction, ActorActionQueue aaq)
+        {
+            foreach (CM.MoveAction ma in domainAction.MoveActions)
+            {
+                float startTick = 0;
+                float endTick = 0;
+                string actorName = null;
+                string destinationString = null;
+                Vector3 destination = Vector3.zero;
+                foreach (CM.DomainActionParameter domainActionParameter in domainAction.Params)
+                {
+                    if (domainActionParameter.Id == ma.StartTickParamId)
+                    {
+                        startTick = Convert.ToInt32((from xImpulseStepParam in step.Parameters
+                                                     where string.Equals(xImpulseStepParam.Name, domainActionParameter.Name, StringComparison.OrdinalIgnoreCase)
+                                                     select xImpulseStepParam.Value).FirstOrDefault());
+                    }
+                    else if (domainActionParameter.Id == ma.ActorNameParamId)
+                    {
+                        actorName = (from xImpulseStepParam in step.Parameters
+                                     where string.Equals(xImpulseStepParam.Name, domainActionParameter.Name, StringComparison.OrdinalIgnoreCase)
+                                     select xImpulseStepParam.Value as string).FirstOrDefault();
+                        if (actorName == null)
+                        {
+                            Debug.LogError("actorName not set for stepId[" + step.ID + "]");
+                        }                        
+                    }
+                    else if(domainActionParameter.Id == ma.EndTickParamId)
+                    {
+                        endTick = Convert.ToInt32((from xImpulseStepParam in step.Parameters
+                                                   where string.Equals(xImpulseStepParam.Name, domainActionParameter.Name, StringComparison.OrdinalIgnoreCase)
+                                                   select xImpulseStepParam.Value).FirstOrDefault());
+                        if (endTick > .001)
+                        {
+                            Debug.LogError("endTick not set or 0 for stepId[" + step.ID + "]");
+                        }
+                    }
+                    else if(domainActionParameter.Id == ma.DestinationParamId)
+                    {
+                        destinationString = (from xImpulseStepParam in step.Parameters
+                                       where string.Equals(xImpulseStepParam.Name, domainActionParameter.Name, StringComparison.OrdinalIgnoreCase)
+                                       select xImpulseStepParam.Value as string).FirstOrDefault();
+                        if(destinationString == null)
+                        {
+                            Debug.LogError("endTick not set or 0 for stepId[" + step.ID + "]");
+                        }
+                        //TODO validate string format
+                        destination = Conversions.ParseVector3(destinationString);
+                    }
+                }
+                aaq.Add(new Move(startTick, endTick, actorName, destination));
+            }
+        }
+
+
 
         private static void enqueueAnimateActions(StructuredStep step, CM.DomainAction domainAction, ActorActionQueue aaq)
         {

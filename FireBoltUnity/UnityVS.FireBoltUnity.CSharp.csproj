@@ -65,9 +65,11 @@
     <Compile Include="Assets\scripts\ActorActionFactory.cs" />
     <Compile Include="Assets\scripts\ActorActionImplementors\AnimateLegacy.cs" />
     <Compile Include="Assets\scripts\ActorActionImplementors\AnimateMecanim.cs" />
+    <Compile Include="Assets\scripts\ActorActionImplementors\Move.cs" />
     <Compile Include="Assets\scripts\ActorActionImplementors\Destroy.cs" />
     <Compile Include="Assets\scripts\ActorActionImplementors\Create.cs" />
     <Compile Include="Assets\scripts\ActorActionQueue.cs" />
+    <Compile Include="Assets\scripts\Conversions.cs" />
     <Compile Include="Assets\scripts\ElPresidente.cs" />
     <Compile Include="Assets\scripts\IActorAction.cs" />
     <Compile Include="Assets\scripts\PriorityQueue.cs" />
