@@ -27,7 +27,7 @@ namespace Assets.scripts
         public void Init()
         {
             actor = GameObject.Find(actorName);
-            if (actor == null) Debug.Log("actor[" + actorName + "] not found.  cannot animate");
+            if (actor == null) Debug.LogError("actor[" + actorName + "] not found.  cannot animate");
 
             animator = actor.GetComponent<Animator>();
             if (animator == null)
@@ -45,7 +45,7 @@ namespace Assets.scripts
             {
                 Debug.LogError("Missing animation asset");
             }
-            //animatorOverride["UNTY_Sneak_tk04"] = animation;
+            animatorOverride["UNTY_Sneak_tk04"] = animation;
            
         }
 
