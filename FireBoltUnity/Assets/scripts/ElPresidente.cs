@@ -31,7 +31,7 @@ public class ElPresidente : MonoBehaviour {
         List<IActorAction> removeList = new List<IActorAction>();
         foreach (IActorAction actorAction in executingActions)
         {
-            if (actorAction.EndTick().HasValue && actorAction.EndTick().Value > currentTick)
+            if (actorActionComplete(actorAction) )
             {
                 actorAction.Stop();
                 //TODO need to recycle completed actions to somewhere for backward scrubbing
@@ -65,5 +65,10 @@ public class ElPresidente : MonoBehaviour {
             Debug.Log(currentTick);
             lastTickLogged = currentTick;
         }
+    }
+
+    bool actorActionComplete(IActorAction iaa)
+    {
+        return iaa.EndTick().HasValue && iaa.EndTick().Value < currentTick || iaa.EndTick() == null;
     }
 }

@@ -40,7 +40,10 @@ namespace Assets.scripts
         {
             //move enough to get where we're going before endTick
             float moveTimeElapsed = Time.time - lastUpdateTime;
-            Vector3 newPosition = new Vector3(requiredVelocity.x * moveTimeElapsed, requiredVelocity.y * moveTimeElapsed, requiredVelocity.z * moveTimeElapsed) + actor.transform.position;
+            Vector3 newPosition = new Vector3(requiredVelocity.x * moveTimeElapsed, 
+                                              requiredVelocity.y * moveTimeElapsed, 
+                                              requiredVelocity.z * moveTimeElapsed) + actor.transform.position;
+            actor.transform.position = newPosition;
             lastUpdateTime = Time.time;
         }
 
