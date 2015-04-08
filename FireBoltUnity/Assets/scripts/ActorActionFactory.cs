@@ -37,10 +37,65 @@ namespace Assets.scripts
                 enqueueAnimateActions(step, domainAction, aaq);
                 enqueueDestroyActions(step, domainAction, aaq);
                 enqueueMoveActions(step, domainAction, aaq);
+                enqueueRotateActions(step, domainAction, aaq);
             
             }
             
             return aaq;
+        }
+
+        private static void enqueueRotateActions(StructuredStep step, CM.DomainAction domainAction, ActorActionQueue aaq)
+        {
+            foreach (CM.RotateAction ra in domainAction.RotateActions)
+            {
+                float startTick = 0;
+                float endTick = 0;
+                string actorName = null;
+                string destinationString = null;
+                Vector3 destination = Vector3.zero;
+                foreach (CM.DomainActionParameter domainActionParameter in domainAction.Params)
+                {
+                    if (domainActionParameter.Id == ra.StartTickParamId)
+                    {
+                        startTick = Convert.ToInt32((from xImpulseStepParam in step.Parameters
+                                                     where string.Equals(xImpulseStepParam.Name, domainActionParameter.Name, StringComparison.OrdinalIgnoreCase)
+                                                     select xImpulseStepParam.Value).FirstOrDefault());
+                    }
+                    else if (domainActionParameter.Id == ra.ActorNameParamId)
+                    {
+                        actorName = (from xImpulseStepParam in step.Parameters
+                                     where string.Equals(xImpulseStepParam.Name, domainActionParameter.Name, StringComparison.OrdinalIgnoreCase)
+                                     select xImpulseStepParam.Value as string).FirstOrDefault();
+                        if (actorName == null)
+                        {
+                            Debug.LogError("actorName not set for stepId[" + step.ID + "]");
+                        }
+                    }
+                    else if (domainActionParameter.Id == ra.EndTickParamId)
+                    {
+                        endTick = Convert.ToInt32((from xImpulseStepParam in step.Parameters
+                                                   where string.Equals(xImpulseStepParam.Name, domainActionParameter.Name, StringComparison.OrdinalIgnoreCase)
+                                                   select xImpulseStepParam.Value).FirstOrDefault());
+                        if (endTick > .001)
+                        {
+                            Debug.LogError("endTick not set or 0 for stepId[" + step.ID + "]");
+                        }
+                    }
+                    else if (domainActionParameter.Id == ra.DestinationParamId)
+                    {
+                        destinationString = (from xImpulseStepParam in step.Parameters
+                                             where string.Equals(xImpulseStepParam.Name, domainActionParameter.Name, StringComparison.OrdinalIgnoreCase)
+                                             select xImpulseStepParam.Value as string).FirstOrDefault();
+                        if (destinationString == null)
+                        {
+                            Debug.LogError("endTick not set or 0 for stepId[" + step.ID + "]");
+                        }
+                        //TODO validate string format
+                        destination = destinationString.ParseVector3();
+                    }
+                }
+                aaq.Add(new Rotate(startTick, endTick, actorName, destination));
+            }
         }
 
         private static void enqueueMoveActions(StructuredStep step, CM.DomainAction domainAction, ActorActionQueue aaq)
@@ -90,10 +145,10 @@ namespace Assets.scripts
                             Debug.LogError("endTick not set or 0 for stepId[" + step.ID + "]");
                         }
                         //TODO validate string format
-                        destination = Conversions.ParseVector3(destinationString);
+                        destination = destinationString.ParseVector3();
                     }
                 }
-                aaq.Add(new Move(startTick, endTick, actorName, destination));
+                aaq.Add(new Translate(startTick, endTick, actorName, destination));
             }
         }
 

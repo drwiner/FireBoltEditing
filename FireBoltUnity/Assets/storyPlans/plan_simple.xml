@@ -4,16 +4,16 @@
     <step id="0">
       <name>enter</name>
       <parameters>
-        <parameter name="start-tick">3</parameter>
+        <parameter name="start-tick">2</parameter>
         <parameter name="actor">pudge</parameter>
       </parameters>
     </step>
 		<step id="1">
     	<name>buy-item</name>
      	<parameters>
-      	<parameter name="start-tick">6</parameter>
+      	<parameter name="start-tick">4</parameter>
       	<parameter name="actor">pudge</parameter>
-        <parameter name="end-tick">100</parameter>
+        <parameter name="end-tick">8</parameter>
       </parameters>
     </step>
     <step id="3">
@@ -21,14 +21,14 @@
       <parameters>
         <parameter name="start-tick">6</parameter>
         <parameter name="actor">pudge</parameter>
-        <parameter name="end-tick">15</parameter>
+        <parameter name="end-tick">10</parameter>
         <parameter name="destination">10,0,-5</parameter>
       </parameters>
 			</step>
     <step id="4">
       <name>exit</name>
       <parameters>
-        <parameter name="start-tick">15</parameter>
+        <parameter name="start-tick">20</parameter>
         <parameter name="actor">pudge</parameter>
       </parameters>
     </step>

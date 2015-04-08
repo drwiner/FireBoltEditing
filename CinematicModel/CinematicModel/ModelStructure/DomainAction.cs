@@ -32,5 +32,10 @@ namespace CinematicModel
         [XmlArray("moveActions")]
         [XmlArrayItem("moveAction")]
         public List<MoveAction> MoveActions { get; set; }
+
+        [XmlArray("rotateActions")]
+        [XmlArrayItem("rotateAction")]
+        public List<RotateAction> RotateActions { get; set; }
+
     }
 }

@@ -48,6 +48,7 @@
     <Compile Include="ModelStructure\DomainActionParameter.cs" />
     <Compile Include="ModelStructure\Actor.cs" />
     <Compile Include="ModelStructure\CinematicModel.cs" />
+    <Compile Include="ModelStructure\FireBoltActions\RotateAction.cs" />
     <Compile Include="ModelStructure\FireBoltActions\MoveAction.cs" />
     <Compile Include="ModelStructure\FireBoltActions\DestroyAction.cs" />
     <Compile Include="ModelStructure\FireBoltActions\CreateAction.cs" />
