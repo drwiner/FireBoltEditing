@@ -156,37 +156,83 @@ namespace Assets.scripts
 
         private static void enqueueAnimateActions(StructuredStep step, CM.DomainAction domainAction, ActorActionQueue aaq)
         {
-            string actorName = null;
-            float startTick = 0;          
-            float? endTick = null;
-            foreach(var param in step.Parameters)
+            foreach(CM.AnimateAction aa in domainAction.AnimateActions)
             {
-                if (string.Equals(param.Name, "actor", StringComparison.OrdinalIgnoreCase)) //TODO this belongs in an XSLT that's knowledge engineered for each domain
-                {                    
-                    actorName = (string)param.Value;
+                string actorName = null;
+                float startTick = 0;
+                float endTick = 0;
+                CM.AnimationInstance ai = null;
+                foreach(CM.DomainActionParameter domainActionParameter in domainAction.Params)
+                {
+                    if (domainActionParameter.Id == aa.StartTickParamId)
+                    {
+                        startTick = Convert.ToInt32((from xImpulseStepParam in step.Parameters
+                                                     where string.Equals(xImpulseStepParam.Name, domainActionParameter.Name, StringComparison.OrdinalIgnoreCase)
+                                                     select xImpulseStepParam.Value).FirstOrDefault());
+                    }
+                    else if (domainActionParameter.Id == aa.EndTickParamId)
+                    {
+                        endTick = Convert.ToInt32((from xImpulseStepParam in step.Parameters
+                                                   where string.Equals(xImpulseStepParam.Name, domainActionParameter.Name, StringComparison.OrdinalIgnoreCase)
+                                                   select xImpulseStepParam.Value).FirstOrDefault());
+                        if (endTick > .001)
+                        {
+                            Debug.LogError("endTick not set or 0 for stepId[" + step.ID + "]");
+                        }
+                    }
+                    else if (domainActionParameter.Id == aa.ActorNameParamId)
+                    {
+                        actorName = (from xImpulseStepParam in step.Parameters
+                                     where string.Equals(xImpulseStepParam.Name, domainActionParameter.Name, StringComparison.OrdinalIgnoreCase)
+                                     select xImpulseStepParam.Value as string).FirstOrDefault();
+                        if (actorName == null)
+                        {
+                            Debug.LogError("actorName not set for stepId[" + step.ID + "]");
+                            return;
+                        }
+                        else
+                        {
+                            ai = cm.FindAnimationInstance(actorName, domainAction.Name, domainActionParameter.Name);
+                            if (ai == null)
+                            {
+                                Debug.Log("cinematic model animation instance undefined for actor[" + 
+                                    actorName + "] action[" + domainAction.Name + "] paramName[" + domainActionParameter.Name + "]");
+                                return;
+                            }
+                        }
+                    }
                 }
-                if (string.Equals(param.Name, "start-tick", StringComparison.OrdinalIgnoreCase)) //TODO this belongs in an XSLT that's knowledge engineered for each domain
-                {                    
-                    startTick = (int)param.Value;
-                }
-                if (string.Equals(param.Name, "end-tick", StringComparison.OrdinalIgnoreCase)) //TODO this belongs in an XSLT that's knowledge engineered for each domain
-                {                    
-                    endTick = (int)param.Value;
-                }
+                aaq.Add(new AnimateMecanim(startTick, endTick, actorName, ai.AnimationName));
             }
-            if (actorName == null)
-            {
-                Debug.Log("story plan actorName not set for action[" + domainAction.Name + "]");
-                return;
-            }
-            CM.AnimationInstance ai = cm.FindAnimationInstance(actorName, domainAction.Name, "actor");
-            if(ai == null)
-            {
-                Debug.Log("cinematic model animation instance undefined for actor["+ actorName+"] action["+domainAction.Name+"] paramName[actor]");     
-                return;
-            }
-            aaq.Add(new AnimateMecanim(startTick, endTick, actorName, ai.AnimationName));
         }
+
+        
+            //foreach(var param in step.Parameters)
+            //{
+            //    if (string.Equals(param.Name, "actor", StringComparison.OrdinalIgnoreCase)) //TODO this belongs in an XSLT that's knowledge engineered for each domain
+            //    {                    
+            //        actorName = (string)param.Value;
+            //    }
+            //    if (string.Equals(param.Name, "start-tick", StringComparison.OrdinalIgnoreCase)) //TODO this belongs in an XSLT that's knowledge engineered for each domain
+            //    {                    
+            //        startTick = (int)param.Value;
+            //    }
+            //    if (string.Equals(param.Name, "end-tick", StringComparison.OrdinalIgnoreCase)) //TODO this belongs in an XSLT that's knowledge engineered for each domain
+            //    {                    
+            //        endTick = (int)param.Value;
+            //    }
+            //}
+            //if (actorName == null)
+            //{
+            //    Debug.Log("story plan actorName not set for action[" + domainAction.Name + "]");
+            //    return;
+            //}
+            //CM.AnimationInstance ai = cm.FindAnimationInstance(actorName, domainAction.Name, "actor");
+            //if(ai == null)
+            //{
+            //    Debug.Log("cinematic model animation instance undefined for actor["+ actorName+"] action["+domainAction.Name+"] paramName[actor]");     
+            //    return;
+            //}
 
         private static void enqueueCreateActions(StructuredStep step, CM.DomainAction domainAction, ActorActionQueue aaq)
         {

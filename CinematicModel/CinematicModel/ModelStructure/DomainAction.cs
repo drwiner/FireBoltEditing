@@ -14,9 +14,6 @@ namespace CinematicModel
         [XmlAttribute(AttributeName="id")]
         public int Id { get; set; }
 
-        [XmlAttribute(AttributeName="paramCount")]
-        public int ParamCount { get; set; }
-
         [XmlArray(ElementName = "params")]
         [XmlArrayItem(ElementName = "param")]
         public List<DomainActionParameter> Params { get; set; }
@@ -36,6 +33,10 @@ namespace CinematicModel
         [XmlArray("rotateActions")]
         [XmlArrayItem("rotateAction")]
         public List<RotateAction> RotateActions { get; set; }
+
+        [XmlArray("animateActions")]
+        [XmlArrayItem("animateAction")]
+        public List<AnimateAction> AnimateActions { get; set; }
 
     }
 }

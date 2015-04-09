@@ -7,7 +7,7 @@ namespace Assets.scripts
     {
        
         private float startTick;
-        private float? endTick;
+        private float endTick;
         private string actorName;
         private GameObject actor;
         private string animName;
@@ -15,7 +15,7 @@ namespace Assets.scripts
         private AnimationClip animation;
         private int animationHash; 
 
-        public AnimateMecanim(float startTick, float? endTick, string actorName, string animName) 
+        public AnimateMecanim(float startTick, float endTick, string actorName, string animName) 
         {
             this.startTick = startTick;
             this.endTick = endTick;

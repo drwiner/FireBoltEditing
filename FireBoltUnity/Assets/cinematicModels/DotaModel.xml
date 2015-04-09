@@ -1,9 +1,14 @@
 <cinematicModel>
   <domainActions>
-		<domainAction name="buy-item" id="0" paramCount="1"> 
+		<domainAction name="buy-item" id="0" > 
       <params>
-        <param name="actor" id="1" cardinality="1" effector="false" affected="false"/>
+        <param name="actor" id="0" cardinality="1" effector="false" affected="false"/>
+        <param name="start-tick" id="1" cardinality="1" effector="false" affected ="false"/>
+        <param name="end-tick" id="2" cardinality="1" effector="false" affected ="false"/>
       </params>
+      <animateActions>
+        <animateAction actorNameParamId="0" startTickParamId="1" endTickParamId="2"/>
+      </animateActions>
     </domainAction>
     <domainAction name="enter" id="1">
       <params>
@@ -40,10 +45,9 @@
       <rotateActions>
         <rotateAction actorNameParamId="0" startTickParamId="1" endTickParamId="2" destinationParamId="3"/>
       </rotateActions>
-      <animateActions>
-        <!--<animateAction actorNameParamId="0" startTickParamId="1" endTickParamId="2"/> animating is handled i
-        differently from everything else...why?-->
-      </animateActions>
+      <!--<animateActions>
+        <animateAction actorNameParamId="0" startTickParamId="1" endTickParamId="2"/> 
+      </animateActions>-->
     </domainAction>
   </domainActions>
   <actors>
@@ -54,8 +58,11 @@
     </actor>
   </actors>
 	<animationMappings>
-		<animationMapping actionId="0" actionParamId="1" actorId="2" animationId="0">
+		<animationMapping actionId="0" actionParamId="0" actorId="2" animationId="0">
 			<animationProperties  loopAnimation="true" effectorTimeOffset="50"/>		  
-		</animationMapping>    
-	</animationMappings>
+		</animationMapping>
+    <animationMapping actionId="3" actionParamId="1" actorId="2" animationId="0">
+      <animationProperties  loopAnimation="true" effectorTimeOffset="50"/>
+    </animationMapping>
+  </animationMappings>
 </cinematicModel>

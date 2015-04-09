@@ -25,7 +25,7 @@ namespace CinematicModel
             }
             FileStream fs = new FileStream(filename, FileMode.Open);
             CinematicModel model = (CinematicModel)xs.Deserialize(fs);
-            return model; //ggoing to need a more easily traversable data structure...something keyed on actor and action names
+            return model; 
         }
     }
 }
