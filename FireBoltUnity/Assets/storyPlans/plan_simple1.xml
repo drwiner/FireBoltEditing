@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="utf-8"?>
+<plan name="plan_simple" xmlns="http://liquidnarrative.csc.ncsu.edu/impulse/v0.1">
+  <steps>
+    <step id="0">
+      <name>enter</name>
+      <parameters>
+        <parameter name="start-tick">2</parameter>
+        <parameter name="actor">pudge</parameter>
+      </parameters>
+    </step>
+		<step id="1">
+    	<name>buy-item</name>
+     	<parameters>
+      	<parameter name="start-tick">4</parameter>
+      	<parameter name="actor">pudge</parameter>
+        <parameter name="end-tick">8</parameter>
+      </parameters>
+    </step>
+    <step id="3">
+      <name>rotate</name>
+      <parameters>
+        <parameter name="start-tick">6</parameter>
+        <parameter name="actor">pudge</parameter>
+        <parameter name="end-tick">8</parameter>
+        <parameter name="destination">10,0,-5</parameter>
+      </parameters>
+			</step>
+    <step id="4">
+      <name>move</name>
+      <parameters>
+        <parameter name="start-tick">8</parameter>
+        <parameter name="actor">pudge</parameter>
+        <parameter name="end-tick">11</parameter>
+        <parameter name="destination">10,0,-5</parameter>
+      </parameters>
+    </step>
+    <step id="5">
+      <name>exit</name>
+      <parameters>
+        <parameter name="start-tick">15</parameter>
+        <parameter name="actor">pudge</parameter>
+      </parameters>
+    </step>
+  </steps>
+	<parameter-definitions>
+        <parameter name="actor" type="string" is-list="false"/>
+        <parameter name="start-tick" type="int" is-list="false"/>
+        <parameter name="tick" type="int" is-list="false"/>
+        <parameter name="target" type="string" is-list="false"/>
+        <parameter name="end-tick" type="int" is-list="false"/>
+	</parameter-definitions>
+</plan>

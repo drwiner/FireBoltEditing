@@ -60,14 +60,15 @@
      <Compile Include="Assets\scripts\PriorityQueue.cs" />
      <None Include="Assets\cinematicModels\DotaModel.xml" />
      <None Include="Assets\storyPlans\plan_simple.xml" />
+     <None Include="Assets\storyPlans\plan_simple1.xml" />
  <Reference Include="UnityEngine.UI">
  <HintPath>C:/Program Files/Unity/Editor/Data/UnityExtensions/Unity/GUISystem/UnityEngine.UI.dll</HintPath>
  </Reference>
  <Reference Include="CinematicModel">
- <HintPath>C:/Users/brthorne/np/FireBolt/FireBoltUnity/Assets/plugins/CinematicModel.dll</HintPath>
+ <HintPath>C:/Users/rob/np/FireBolt/FireBoltUnity/Assets/plugins/CinematicModel.dll</HintPath>
  </Reference>
  <Reference Include="Impulse">
- <HintPath>C:/Users/brthorne/np/FireBolt/FireBoltUnity/Assets/plugins/Impulse.dll</HintPath>
+ <HintPath>C:/Users/rob/np/FireBolt/FireBoltUnity/Assets/plugins/Impulse.dll</HintPath>
  </Reference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

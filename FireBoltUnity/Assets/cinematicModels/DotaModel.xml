@@ -45,6 +45,24 @@
       <rotateActions>
         <rotateAction actorNameParamId="0" startTickParamId="1" endTickParamId="2" destinationParamId="3"/>
       </rotateActions>
+      <animateActions>
+        <animateAction actorNameParamId="0" startTickParamId="1" endTickParamId="2"/> 
+        
+      </animateActions>
+    </domainAction>
+    <domainAction name=" " id="4">
+      <params>
+        <param name="actor" id="0" cardinality="1" effector="false" affected="false"/>
+        <param name="start-tick" id="1" cardinality="1" effector="false" affected ="false"/>
+        <param name="end-tick" id="2" cardinality="1" effector="false" affected ="false"/>
+        <param name="destination" id="3" cardinality="1" effector="false" affected="false"/>
+      </params>
+      <createActions/>
+      <destroyActions/>
+      <moveActions/>        
+      <rotateActions>
+        <rotateAction actorNameParamId="0" startTickParamId="1" endTickParamId="2" destinationParamId="3"/>
+      </rotateActions>
       <!--<animateActions>
         <animateAction actorNameParamId="0" startTickParamId="1" endTickParamId="2"/> 
       </animateActions>-->
@@ -53,7 +71,10 @@
   <actors>
     <actor name="pudge" id="2" model="m005" >
       <animations>
-        <animation name="pudge_attack1.fbx" id="0" duration="1917"/>
+        <animation name="pudge_attack1.fbx" id="0" />
+        <animation name="UNTY_Sneak_tk04.fbx" id="1"/>
+        <animation name="Unity_Falling_Down_Dying_tk01.fbx" id="2"/>
+        <animation name="pudge_walk.fbx" id="3"/>
       </animations>
     </actor>
   </actors>
@@ -61,7 +82,7 @@
 		<animationMapping actionId="0" actionParamId="0" actorId="2" animationId="0">
 			<animationProperties  loopAnimation="true" effectorTimeOffset="50"/>		  
 		</animationMapping>
-    <animationMapping actionId="3" actionParamId="1" actorId="2" animationId="0">
+    <animationMapping actionId="3" actionParamId="0" actorId="2" animationId="3">
       <animationProperties  loopAnimation="true" effectorTimeOffset="50"/>
     </animationMapping>
   </animationMappings>
