@@ -55,36 +55,36 @@ namespace Assets.scripts
                 Vector3 destination = Vector3.zero;
                 foreach (CM.DomainActionParameter domainActionParameter in domainAction.Params)
                 {
-                    if (domainActionParameter.Id == ra.StartTickParamId)
+                    if (domainActionParameter.Name == ra.StartTickParamName)
                     {
                         startTick = Convert.ToInt32((from xImpulseStepParam in step.Parameters
-                                                     where string.Equals(xImpulseStepParam.Name, domainActionParameter.Name, StringComparison.OrdinalIgnoreCase)
+                                                     where xImpulseStepParam.Name == domainActionParameter.Name
                                                      select xImpulseStepParam.Value).FirstOrDefault());
                     }
-                    else if (domainActionParameter.Id == ra.ActorNameParamId)
+                    else if (domainActionParameter.Name == ra.ActorNameParamName)
                     {
                         actorName = (from xImpulseStepParam in step.Parameters
-                                     where string.Equals(xImpulseStepParam.Name, domainActionParameter.Name, StringComparison.OrdinalIgnoreCase)
+                                     where xImpulseStepParam.Name == domainActionParameter.Name
                                      select xImpulseStepParam.Value as string).FirstOrDefault();
                         if (actorName == null)
                         {
                             Debug.LogError("actorName not set for stepId[" + step.ID + "]");
                         }
                     }
-                    else if (domainActionParameter.Id == ra.EndTickParamId)
+                    else if (domainActionParameter.Name == ra.EndTickParamName)
                     {
                         endTick = Convert.ToInt32((from xImpulseStepParam in step.Parameters
-                                                   where string.Equals(xImpulseStepParam.Name, domainActionParameter.Name, StringComparison.OrdinalIgnoreCase)
+                                                   where xImpulseStepParam.Name == domainActionParameter.Name
                                                    select xImpulseStepParam.Value).FirstOrDefault());
                         if (endTick > .001)
                         {
                             Debug.LogError("endTick not set or 0 for stepId[" + step.ID + "]");
                         }
                     }
-                    else if (domainActionParameter.Id == ra.DestinationParamId)
+                    else if (domainActionParameter.Name == ra.DestinationParamName)
                     {
                         destinationString = (from xImpulseStepParam in step.Parameters
-                                             where string.Equals(xImpulseStepParam.Name, domainActionParameter.Name, StringComparison.OrdinalIgnoreCase)
+                                             where xImpulseStepParam.Name == domainActionParameter.Name
                                              select xImpulseStepParam.Value as string).FirstOrDefault();
                         if (destinationString == null)
                         {
@@ -109,36 +109,36 @@ namespace Assets.scripts
                 Vector3 destination = Vector3.zero;
                 foreach (CM.DomainActionParameter domainActionParameter in domainAction.Params)
                 {
-                    if (domainActionParameter.Id == ma.StartTickParamId)
+                    if (domainActionParameter.Name == ma.StartTickParamName)
                     {
                         startTick = Convert.ToInt32((from xImpulseStepParam in step.Parameters
-                                                     where string.Equals(xImpulseStepParam.Name, domainActionParameter.Name, StringComparison.OrdinalIgnoreCase)
+                                                     where xImpulseStepParam.Name == domainActionParameter.Name
                                                      select xImpulseStepParam.Value).FirstOrDefault());
                     }
-                    else if (domainActionParameter.Id == ma.ActorNameParamId)
+                    else if (domainActionParameter.Name == ma.ActorNameParamName)
                     {
                         actorName = (from xImpulseStepParam in step.Parameters
-                                     where string.Equals(xImpulseStepParam.Name, domainActionParameter.Name, StringComparison.OrdinalIgnoreCase)
+                                     where xImpulseStepParam.Name == domainActionParameter.Name
                                      select xImpulseStepParam.Value as string).FirstOrDefault();
                         if (actorName == null)
                         {
                             Debug.LogError("actorName not set for stepId[" + step.ID + "]");
                         }                        
                     }
-                    else if(domainActionParameter.Id == ma.EndTickParamId)
+                    else if(domainActionParameter.Name == ma.EndTickParamName)
                     {
                         endTick = Convert.ToInt32((from xImpulseStepParam in step.Parameters
-                                                   where string.Equals(xImpulseStepParam.Name, domainActionParameter.Name, StringComparison.OrdinalIgnoreCase)
+                                                   where xImpulseStepParam.Name == domainActionParameter.Name
                                                    select xImpulseStepParam.Value).FirstOrDefault());
                         if (endTick > .001)
                         {
                             Debug.LogError("endTick not set or 0 for stepId[" + step.ID + "]");
                         }
                     }
-                    else if(domainActionParameter.Id == ma.DestinationParamId)
+                    else if(domainActionParameter.Name == ma.DestinationParamName)
                     {
                         destinationString = (from xImpulseStepParam in step.Parameters
-                                       where string.Equals(xImpulseStepParam.Name, domainActionParameter.Name, StringComparison.OrdinalIgnoreCase)
+                                       where xImpulseStepParam.Name == domainActionParameter.Name
                                        select xImpulseStepParam.Value as string).FirstOrDefault();
                         if(destinationString == null)
                         {
@@ -164,26 +164,26 @@ namespace Assets.scripts
                 CM.AnimationInstance ai = null;
                 foreach(CM.DomainActionParameter domainActionParameter in domainAction.Params)
                 {
-                    if (domainActionParameter.Id == aa.StartTickParamId)
+                    if (domainActionParameter.Name == aa.StartTickParamName)
                     {
                         startTick = Convert.ToInt32((from xImpulseStepParam in step.Parameters
-                                                     where string.Equals(xImpulseStepParam.Name, domainActionParameter.Name, StringComparison.OrdinalIgnoreCase)
+                                                     where xImpulseStepParam.Name == domainActionParameter.Name
                                                      select xImpulseStepParam.Value).FirstOrDefault());
                     }
-                    else if (domainActionParameter.Id == aa.EndTickParamId)
+                    else if (domainActionParameter.Name == aa.EndTickParamName)
                     {
                         endTick = Convert.ToInt32((from xImpulseStepParam in step.Parameters
-                                                   where string.Equals(xImpulseStepParam.Name, domainActionParameter.Name, StringComparison.OrdinalIgnoreCase)
+                                                   where xImpulseStepParam.Name == domainActionParameter.Name
                                                    select xImpulseStepParam.Value).FirstOrDefault());
                         if (endTick > .001)
                         {
                             Debug.LogError("endTick not set or 0 for stepId[" + step.ID + "]");
                         }
                     }
-                    else if (domainActionParameter.Id == aa.ActorNameParamId)
+                    else if (domainActionParameter.Name == aa.ActorNameParamName)
                     {
                         actorName = (from xImpulseStepParam in step.Parameters
-                                     where string.Equals(xImpulseStepParam.Name, domainActionParameter.Name, StringComparison.OrdinalIgnoreCase)
+                                     where xImpulseStepParam.Name == domainActionParameter.Name
                                      select xImpulseStepParam.Value as string).FirstOrDefault();
                         if (actorName == null)
                         {
@@ -206,34 +206,6 @@ namespace Assets.scripts
             }
         }
 
-        
-            //foreach(var param in step.Parameters)
-            //{
-            //    if (string.Equals(param.Name, "actor", StringComparison.OrdinalIgnoreCase)) //TODO this belongs in an XSLT that's knowledge engineered for each domain
-            //    {                    
-            //        actorName = (string)param.Value;
-            //    }
-            //    if (string.Equals(param.Name, "start-tick", StringComparison.OrdinalIgnoreCase)) //TODO this belongs in an XSLT that's knowledge engineered for each domain
-            //    {                    
-            //        startTick = (int)param.Value;
-            //    }
-            //    if (string.Equals(param.Name, "end-tick", StringComparison.OrdinalIgnoreCase)) //TODO this belongs in an XSLT that's knowledge engineered for each domain
-            //    {                    
-            //        endTick = (int)param.Value;
-            //    }
-            //}
-            //if (actorName == null)
-            //{
-            //    Debug.Log("story plan actorName not set for action[" + domainAction.Name + "]");
-            //    return;
-            //}
-            //CM.AnimationInstance ai = cm.FindAnimationInstance(actorName, domainAction.Name, "actor");
-            //if(ai == null)
-            //{
-            //    Debug.Log("cinematic model animation instance undefined for actor["+ actorName+"] action["+domainAction.Name+"] paramName[actor]");     
-            //    return;
-            //}
-
         private static void enqueueCreateActions(StructuredStep step, CM.DomainAction domainAction, ActorActionQueue aaq)
         {
             foreach (CM.CreateAction ca in domainAction.CreateActions)
@@ -243,16 +215,16 @@ namespace Assets.scripts
                 string modelName = null;
                 foreach (CM.DomainActionParameter domainActionParameter in domainAction.Params) 
                 {
-                    if (domainActionParameter.Id == ca.StartTickParamId)
+                    if (domainActionParameter.Name == ca.StartTickParamName)
                     {
                         startTick = Convert.ToInt32((from xImpulseStepParam in step.Parameters 
-                                                    where string.Equals(xImpulseStepParam.Name,domainActionParameter.Name,StringComparison.OrdinalIgnoreCase) 
+                                                    where xImpulseStepParam.Name == domainActionParameter.Name
                                                     select xImpulseStepParam.Value).FirstOrDefault());                        
                     }
-                    else if (domainActionParameter.Id == ca.ActorNameParamId)
+                    else if (domainActionParameter.Name == ca.ActorNameParamName)
                     {
                         actorName = (from xImpulseStepParam in step.Parameters 
-                                                    where string.Equals(xImpulseStepParam.Name,domainActionParameter.Name,StringComparison.OrdinalIgnoreCase) 
+                                                    where xImpulseStepParam.Name == domainActionParameter.Name
                                                     select xImpulseStepParam.Value as string).FirstOrDefault();
                         if (actorName == null)
                         {
@@ -282,16 +254,16 @@ namespace Assets.scripts
                 string actorName = null;
                 foreach (CM.DomainActionParameter domainActionParameter in domainAction.Params)
                 {
-                    if (domainActionParameter.Id == da.StartTickParamId)
+                    if (domainActionParameter.Name == da.StartTickParamName)
                     {
                         startTick = Convert.ToInt32((from xImpulseStepParam in step.Parameters
-                                                     where string.Equals(xImpulseStepParam.Name, domainActionParameter.Name, StringComparison.OrdinalIgnoreCase)
+                                                     where xImpulseStepParam.Name == domainActionParameter.Name
                                                      select xImpulseStepParam.Value).FirstOrDefault());
                     }
-                    else if (domainActionParameter.Id == da.ActorNameParamId)
+                    else if (domainActionParameter.Name == da.ActorNameParamName)
                     {
                         actorName = (from xImpulseStepParam in step.Parameters
-                                     where string.Equals(xImpulseStepParam.Name, domainActionParameter.Name, StringComparison.OrdinalIgnoreCase)
+                                     where xImpulseStepParam.Name == domainActionParameter.Name
                                      select xImpulseStepParam.Value as string).FirstOrDefault();
                         if (actorName == null)
                         {
