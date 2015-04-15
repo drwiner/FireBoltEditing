@@ -24,21 +24,14 @@ namespace CinematicModel
         //TODO querying
         public AnimationInstance FindAnimationInstance(string actorName, string actionName, string actionParamName)
         {
-            //assuming uniqueness of names.  probably should be doing validation somewhere...perhaps with an xsd?
+            ////assuming uniqueness of names.  probably should be doing validation somewhere...perhaps with an xsd?
             Actor actor = (from a in Actors where string.Equals(a.Name, actorName, StringComparison.OrdinalIgnoreCase) select a).FirstOrDefault();
             if (actor == null) { throw new Exception("actor[" + actorName + "] not found."); }
 
-            DomainAction action = (from a in DomainActions where string.Equals(a.Name, actionName, StringComparison.OrdinalIgnoreCase) select a).FirstOrDefault();
-            if (action == null) { throw new Exception("action[" + actionName + "] not found."); }
-
-            DomainActionParameter dap = (from p in action.Params where string.Equals(p.Name, actionParamName, StringComparison.OrdinalIgnoreCase) select p).FirstOrDefault();
-            //if (dap == null) { throw new Exception("action parameter[actionName=\"" + actionName+ "\",actionParamName=\""+actionParamName+"\"] not found."); }
-            if (dap == null) return null; //we didn't find the sought action parameter on this action
-
             AnimationMapping animationMapping = (from am in AnimationMappings 
-                                       where am.ActionId == action.Id && 
-                                             am.ActorId == actor.Id &&
-                                             am.ActionParamId == dap.Id
+                                       where am.ActionName == actionName && 
+                                             am.ActorName == actorName &&
+                                             am.ActionParamName == actionParamName
                                        select am).FirstOrDefault<AnimationMapping>();
             if (animationMapping == null) return null; //does not have to be a mapping, do not throw exceptions here
 

@@ -1,67 +1,66 @@
 <cinematicModel>
   <domainActions>
-		<domainAction name="buy-item" id="0" > 
+		<domainAction name="buy-item" > 
       <params>
-        <param name="actor" id="0" cardinality="1" effector="false" affected="false"/>
-        <param name="start-tick" id="1" cardinality="1" effector="false" affected ="false"/>
-        <param name="end-tick" id="2" cardinality="1" effector="false" affected ="false"/>
+        <param name="actor" />
+        <param name="start-tick" />
+        <param name="end-tick" />
       </params>
       <animateActions>
-        <animateAction actorNameParamId="0" startTickParamId="1" endTickParamId="2"/>
+        <animateAction actorNameParamName="actor" startTickParamName="start-tick" endTickParamName="end-tick"/>
       </animateActions>
     </domainAction>
-    <domainAction name="enter" id="1">
+    <domainAction name="enter" >
       <params>
-        <param name="actor" id="1" cardinality="1" effector="false" affected="false"/>
-        <param name="origin" id="2" cardinality="1" effector="false" affected="false"/>
-        <param name="start-tick" id="3" cardinality="1" effector="false" affected ="false"/>
+        <param name="actor" />
+        <param name="origin" />
+        <param name="start-tick" />
       </params>
       <createActions>
-        <createAction actorNameParamId="1" originParamId="2" startTickParamId="3"/>
+        <createAction actorNameParamName="actor" startTickParamName="start-tick" originParamName="origin" />
       </createActions>
     </domainAction>
-    <domainAction name="exit" id="2">
+    <domainAction name="exit" >
       <params>
-        <param name="actor" id="0" cardinality="1" effector="false" affected="false"/>
-        <param name="start-tick" id="1" cardinality="1" effector="false" affected ="false"/>
+        <param name="actor" />
+        <param name="start-tick" />
       </params>
       <createActions/>        
       <destroyActions>
-        <destroyAction actorNameParamId="0" startTickParamId="1"/>
+        <destroyAction actorNameParamName="actor" startTickParamName="start-tick"/>
       </destroyActions>
     </domainAction>
-    <domainAction name="move" id="3">
+    <domainAction name="move" >
       <params>
-        <param name="actor" id="0" cardinality="1" effector="false" affected="false"/>
-        <param name="start-tick" id="1" cardinality="1" effector="false" affected ="false"/>        
-        <param name="end-tick" id="2" cardinality="1" effector="false" affected ="false"/>
-        <param name="destination" id="3" cardinality="1" effector="false" affected="false"/>        
+        <param name="actor" />
+        <param name="start-tick" />        
+        <param name="end-tick" />
+        <param name="destination" />        
       </params>
       <createActions/>
       <destroyActions/>
       <moveActions>
-        <moveAction actorNameParamId="0" startTickParamId="1" endTickParamId="2" destinationParamId="3"/>
+        <moveAction  actorNameParamName="actor" startTickParamName="start-tick" endTickParamName="end-tick" destinationParamName="destination"/>
       </moveActions>
       <rotateActions>
-        <rotateAction actorNameParamId="0" startTickParamId="1" endTickParamId="2" destinationParamId="3"/>
+        <rotateAction  actorNameParamName="actor" startTickParamName="start-tick" endTickParamName="end-tick" destinationParamName="destination"/>
       </rotateActions>
       <animateActions>
-        <animateAction actorNameParamId="0" startTickParamId="1" endTickParamId="2"/> 
-        
+        <animateAction  actorNameParamName="actor" startTickParamName="start-tick" endTickParamName="end-tick"/>    
       </animateActions>
     </domainAction>
-    <domainAction name=" " id="4">
+    <domainAction name="rotate">
       <params>
-        <param name="actor" id="0" cardinality="1" effector="false" affected="false"/>
-        <param name="start-tick" id="1" cardinality="1" effector="false" affected ="false"/>
-        <param name="end-tick" id="2" cardinality="1" effector="false" affected ="false"/>
-        <param name="destination" id="3" cardinality="1" effector="false" affected="false"/>
+        <param name="actor" />
+        <param name="start-tick" />
+        <param name="end-tick" />
+        <param name="destination" />
       </params>
       <createActions/>
       <destroyActions/>
       <moveActions/>        
       <rotateActions>
-        <rotateAction actorNameParamId="0" startTickParamId="1" endTickParamId="2" destinationParamId="3"/>
+        <rotateAction actorNameParamName="actor" startTickParamName="start-tick" endTickParamName="end-tick" destinationParamName="destination"/>
       </rotateActions>
       <!--<animateActions>
         <animateAction actorNameParamId="0" startTickParamId="1" endTickParamId="2"/> 
@@ -79,7 +78,7 @@
     </actor>
   </actors>
 	<animationMappings>
-		<animationMapping actionId="0" actionParamId="0" actorId="2" animationId="0">
+		<animationMapping actionName="buy-item" actionParamName="actor" actorName="pudge" animationId="0">
 			<animationProperties  loopAnimation="true" effectorTimeOffset="50"/>		  
 		</animationMapping>
     <animationMapping actionId="3" actionParamId="0" actorId="2" animationId="3">

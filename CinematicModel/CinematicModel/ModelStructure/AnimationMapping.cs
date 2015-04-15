@@ -8,14 +8,14 @@ namespace CinematicModel
 {
     public class AnimationMapping
     {
-        [XmlAttribute(AttributeName = "actionId")]
-        public int ActionId { get; set; }
+        [XmlAttribute(AttributeName = "actionName")]
+        public string ActionName { get; set; }
 
-        [XmlAttribute(AttributeName = "actionParamId")]
-        public int ActionParamId { get; set; }
+        [XmlAttribute(AttributeName = "actionParamName")]
+        public string ActionParamName { get; set; }
 
-        [XmlAttribute(AttributeName = "actorId")]
-        public int ActorId { get; set; }
+        [XmlAttribute(AttributeName = "actorName")]
+        public string ActorName { get; set; }
 
         [XmlAttribute(AttributeName = "animationId")]
         public int AnimationId { get; set; }

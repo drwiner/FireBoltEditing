@@ -11,9 +11,6 @@ namespace CinematicModel
         [XmlAttribute(AttributeName="name")]
         public string Name { get; set; }
 
-        [XmlAttribute(AttributeName="id")]
-        public int Id { get; set; }
-
         [XmlArray(ElementName = "params")]
         [XmlArrayItem(ElementName = "param")]
         public List<DomainActionParameter> Params { get; set; }

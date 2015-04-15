@@ -9,10 +9,10 @@ namespace CinematicModel
     
     public class FireBoltAction  
     {
-        [XmlAttribute(AttributeName = "actorNameParamId")]
-        public int ActorNameParamId { get; set; }
+        [XmlAttribute(AttributeName = "actorNameParamName")]
+        public string ActorNameParamName { get; set; }
 
-        [XmlAttribute(AttributeName = "startTickParamId")]
-        public int StartTickParamId { get; set; }
+        [XmlAttribute(AttributeName = "startTickParamName")]
+        public string StartTickParamName { get; set; }
     }
 }

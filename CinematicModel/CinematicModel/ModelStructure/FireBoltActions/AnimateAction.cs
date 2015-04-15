@@ -9,8 +9,7 @@ namespace CinematicModel
     
     public class AnimateAction : FireBoltAction
     {
-        [XmlAttribute(AttributeName = "endTickParamId")]
-        public int EndTickParamId { get; set; }
-
+        [XmlAttribute(AttributeName = "endTickParamName")]
+        public string EndTickParamName { get; set; }
     }
 }
