@@ -23,9 +23,24 @@ namespace CinematicModel
             {
                 parser = new Parser();
             }
-            FileStream fs = new FileStream(filename, FileMode.Open);
-            CinematicModel model = (CinematicModel)xs.Deserialize(fs);
+            CinematicModel model = null;
+            using (FileStream fs = new FileStream(filename, FileMode.Open))
+            {
+                model = (CinematicModel)xs.Deserialize(fs);
+            }
             return model; 
+        }
+
+        public static void Write(string filename, CinematicModel model)
+        {
+            if (parser == null)
+            {
+                parser = new Parser();
+            }
+            using (FileStream fs = new FileStream(filename, FileMode.Create))
+            {
+                xs.Serialize(fs, model);
+            }
         }
     }
 }
