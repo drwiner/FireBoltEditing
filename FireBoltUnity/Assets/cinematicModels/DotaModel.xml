@@ -81,8 +81,5 @@
 		<animationMapping actionName="buy-item" actionParamName="actor" actorName="pudge" animationId="0">
 			<animationProperties  loopAnimation="true" effectorTimeOffset="50"/>		  
 		</animationMapping>
-    <animationMapping actionId="3" actionParamId="0" actorId="2" animationId="3">
-      <animationProperties  loopAnimation="true" effectorTimeOffset="50"/>
-    </animationMapping>
   </animationMappings>
 </cinematicModel>

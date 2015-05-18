@@ -14,7 +14,7 @@ namespace Assets.scripts
         private Animator animator;
         private AnimationClip animation;
         private int animationHash; 
-		private bool doesLoop;
+		private bool loop;
 
         public AnimateMecanim(float startTick, float endTick, string actorName, string animName, bool loop) 
         {
@@ -22,7 +22,7 @@ namespace Assets.scripts
             this.endTick = endTick;
             this.actorName = actorName;
             this.animName = animName;
-			doesLoop = loop;
+			this.loop = loop;
             animationHash = Animator.StringToHash("trigger");
         }
 
@@ -48,7 +48,7 @@ namespace Assets.scripts
             {
                 Debug.LogError("Missing animation asset");
             }
-			if (doesLoop) {
+			if (loop) {
 				oldAnim.wrapMode = WrapMode.Loop;
 			} else
 				oldAnim.wrapMode = WrapMode.Once;
