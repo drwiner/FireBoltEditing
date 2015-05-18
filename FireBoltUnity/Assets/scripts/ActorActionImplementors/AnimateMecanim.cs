@@ -14,13 +14,15 @@ namespace Assets.scripts
         private Animator animator;
         private AnimationClip animation;
         private int animationHash; 
+		private bool doesLoop;
 
-        public AnimateMecanim(float startTick, float endTick, string actorName, string animName) 
+        public AnimateMecanim(float startTick, float endTick, string actorName, string animName, bool loop) 
         {
             this.startTick = startTick;
             this.endTick = endTick;
             this.actorName = actorName;
             this.animName = animName;
+			doesLoop = loop;
             animationHash = Animator.StringToHash("trigger");
         }
 
@@ -41,10 +43,16 @@ namespace Assets.scripts
             animatorOverride.runtimeAnimatorController = Resources.Load<RuntimeAnimatorController>("AnimatorControllers/Generic");
             animator.runtimeAnimatorController = animatorOverride;
             animation = Resources.LoadAssetAtPath<AnimationClip>("Assets/Resources/Animations/" + animName);
-            if (!animation)
+			AnimationClip oldAnim = Resources.LoadAssetAtPath<AnimationClip>("Assets/Resources/Animations/humanoid_sneak.fbx");
+            if (!animation || !oldAnim)
             {
                 Debug.LogError("Missing animation asset");
             }
+			if (doesLoop) {
+				oldAnim.wrapMode = WrapMode.Loop;
+			} else
+				oldAnim.wrapMode = WrapMode.Once;
+
             animatorOverride["UNTY_Sneak_tk04"] = animation;
            
         }

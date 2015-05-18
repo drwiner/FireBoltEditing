@@ -202,7 +202,7 @@ namespace Assets.scripts
                         }
                     }
                 }
-                aaq.Add(new AnimateMecanim(startTick, endTick, actorName, ai.AnimationName));
+                aaq.Add(new AnimateMecanim(startTick, endTick, actorName, ai.AnimationName, ai.LoopAnimation));
             }
         }
 
