@@ -76,7 +76,7 @@ namespace Assets.scripts
                         endTick = Convert.ToInt32((from xImpulseStepParam in step.Parameters
                                                    where xImpulseStepParam.Name == domainActionParameter.Name
                                                    select xImpulseStepParam.Value).FirstOrDefault());
-                        if (endTick > .001)
+                        if (endTick < .001)
                         {
                             Debug.LogError("endTick not set or 0 for stepId[" + step.ID + "]");
                         }
@@ -88,12 +88,13 @@ namespace Assets.scripts
                                              select xImpulseStepParam.Value as string).FirstOrDefault();
                         if (destinationString == null)
                         {
-                            Debug.LogError("endTick not set or 0 for stepId[" + step.ID + "]");
+                            Debug.LogError("destination not set or 0 for stepId[" + step.ID + "]");
                         }
                         //TODO validate string format
                         destination = destinationString.ParseVector3();
                     }
                 }
+                endTick = ra.MaxDuration.HasValue ? startTick + ra.MaxDuration.Value : endTick;
                 aaq.Add(new Rotate(startTick, endTick, actorName, destination));
             }
         }
@@ -130,7 +131,7 @@ namespace Assets.scripts
                         endTick = Convert.ToInt32((from xImpulseStepParam in step.Parameters
                                                    where xImpulseStepParam.Name == domainActionParameter.Name
                                                    select xImpulseStepParam.Value).FirstOrDefault());
-                        if (endTick > .001)
+                        if (endTick < .001)
                         {
                             Debug.LogError("endTick not set or 0 for stepId[" + step.ID + "]");
                         }
@@ -142,12 +143,13 @@ namespace Assets.scripts
                                        select xImpulseStepParam.Value as string).FirstOrDefault();
                         if(destinationString == null)
                         {
-                            Debug.LogError("endTick not set or 0 for stepId[" + step.ID + "]");
+                            Debug.LogError("destination not set or 0 for stepId[" + step.ID + "]");
                         }
                         //TODO validate string format
                         destination = destinationString.ParseVector3();
                     }
                 }
+                endTick = ma.MaxDuration.HasValue ? startTick + ma.MaxDuration.Value : endTick;
                 aaq.Add(new Translate(startTick, endTick, actorName, destination));
             }
         }
@@ -175,7 +177,7 @@ namespace Assets.scripts
                         endTick = Convert.ToInt32((from xImpulseStepParam in step.Parameters
                                                    where xImpulseStepParam.Name == domainActionParameter.Name
                                                    select xImpulseStepParam.Value).FirstOrDefault());
-                        if (endTick > .001)
+                        if (endTick < .001)
                         {
                             Debug.LogError("endTick not set or 0 for stepId[" + step.ID + "]");
                         }
@@ -202,6 +204,7 @@ namespace Assets.scripts
                         }
                     }
                 }
+                endTick = aa.MaxDuration.HasValue ? startTick + aa.MaxDuration.Value : endTick;
                 aaq.Add(new AnimateMecanim(startTick, endTick, actorName, ai.AnimationName, ai.LoopAnimation));
             }
         }

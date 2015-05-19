@@ -33,18 +33,18 @@ namespace Assets.scripts
             Vector3 direction = (destination - actor.transform.position);
             float moveDuration = endTick - startTick;
             requiredVelocity = new Vector3(direction.x/moveDuration, direction.y/moveDuration, direction.z/moveDuration);
-            lastUpdateTime = Time.time;
+            lastUpdateTime = Time.time * 1000;
         }
 
         public void Execute()
         {
             //move enough to get where we're going before endTick
-            float moveTimeElapsed = Time.time - lastUpdateTime;
+            float moveTimeElapsed = Time.time * 1000 - lastUpdateTime;
             Vector3 newPosition = new Vector3(requiredVelocity.x * moveTimeElapsed, 
                                               requiredVelocity.y * moveTimeElapsed, 
                                               requiredVelocity.z * moveTimeElapsed) + actor.transform.position;
             actor.transform.position = newPosition;
-            lastUpdateTime = Time.time;
+            lastUpdateTime = Time.time * 1000;
         }
 
         public void Stop()

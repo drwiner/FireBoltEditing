@@ -63,6 +63,22 @@
         <rotateAction actorNameParamName="actor" startTickParamName="start-tick" endTickParamName="end-tick" destinationParamName="destination"/>
       </rotateActions>
     </domainAction>
+    <domainAction name="punch">
+      <params>
+        <param name="actor" />
+        <param name="target" />
+        <param name="start-tick" />
+        <param name="end-tick" />
+      </params>
+      <createActions/>
+      <destroyActions/>
+      <moveActions/>
+      <rotateActions/>
+      <animateActions>
+        <animateAction actorNameParamName="actor" startTickParamName="start-tick" endTickParamName="end-tick" />
+        <animateAction actorNameParamName="target" startTickParamName="start-tick" endTickParamName="end-tick" />
+      </animateActions>
+    </domainAction>
   </domainActions>
   <actors>
     <actor name="pudge" id="2" model="pudge_model" >
@@ -71,6 +87,7 @@
         <animation id="1"/>
         <animation id="2"/>
         <animation id="3"/>
+        <animation id="4"/>
       </animations>
     </actor>
     <actor name="secretAgentMan" id="0" model="m005" >
@@ -79,6 +96,7 @@
         <animation id="1"/>
         <animation id="2"/>
         <animation id="3"/>
+        <animation id="5"/>
       </animations>
     </actor>
   </actors>
@@ -91,10 +109,21 @@
     <animation name="UNTY_Sneak_tk04.fbx" id="1"/>
     <animation name="Unity_Falling_Down_Dying_tk01.fbx" id="2"/>
     <animation name="pudge_walk.fbx" id="3"/>
+    <animation name="falcon_punch.fbx" id="4"/>
+      <animationIndices>
+        <animationIndex name="fullExtension" timeOffset="100"/>
+      </animationIndices>
+    <animation name="get_falcon_punched.fbx" id="5"/>
   </animations>
   <animationMappings>
     <animationMapping actionName="buy-item" actionParamName="actor" actorName="pudge" animationId="0">
-      <animationProperties  loopAnimation="true" effectorTimeOffset="50"/>
+      <animationProperties  loopAnimation="true" />
+    </animationMapping>
+    <animationMapping actionName="punch" actionParamName="actor" actorName="pudge" animationId="4">
+      <animationProperties  loopAnimation="false" />
+    </animationMapping>
+    <animationMapping actionName="punch" actionParamName="target" actorName="secretAgentMan" animationId="5">
+      <animationProperties  loopAnimation="false" />
     </animationMapping>
   </animationMappings>
 </cinematicModel>

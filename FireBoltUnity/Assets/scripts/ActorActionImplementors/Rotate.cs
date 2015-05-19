@@ -34,17 +34,17 @@ namespace Assets.scripts
             float rotateDuration = endTick - startTick; //may want to condition this on something 
             float totalRotationRequired = actor.transform.position.GetXZAngleTo(destination);
             requiredVelocity = totalRotationRequired/rotateDuration;
-            lastUpdateTime = Time.time;
+            lastUpdateTime = Time.time * 1000;
         }
 
         public void Execute()
         {
-            float rotateTimeElapsed = Time.time - lastUpdateTime;
+            float rotateTimeElapsed = Time.time * 1000 - lastUpdateTime;
             Vector3 newRotation = new Vector3(actor.transform.eulerAngles.x,
                               actor.transform.eulerAngles.y + requiredVelocity * rotateTimeElapsed,
                               actor.transform.eulerAngles.z);
             actor.transform.eulerAngles = newRotation;
-            lastUpdateTime = Time.time;
+            lastUpdateTime = Time.time * 1000;
         }
 
         public void Stop()

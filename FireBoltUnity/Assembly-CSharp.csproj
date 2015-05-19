@@ -60,6 +60,7 @@
      <Compile Include="Assets\scripts\PriorityQueue.cs" />
      <None Include="Assets\cinematicModels\DotaModel.xml" />
      <None Include="Assets\cinematicModels\TimeOffsetModel.xml" />
+     <None Include="Assets\storyPlans\plan_simple2.xml" />
      <None Include="Assets\storyPlans\plan_simple.xml" />
      <None Include="Assets\storyPlans\plan_simple1.xml" />
  <Reference Include="UnityEngine.UI">

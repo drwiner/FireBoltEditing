@@ -23,10 +23,8 @@ public class ElPresidente : MonoBehaviour {
         aaq = ActorActionFactory.CreateStoryActions(storyPlanPath, cinematicModelPath);        
     }
 
-	
-	// Update is called once per frame
 	void Update () {
-        currentTick = Time.time;
+        currentTick = Time.time * 1000;
         logTicks();
         List<IActorAction> removeList = new List<IActorAction>();
         foreach (IActorAction actorAction in executingActions)

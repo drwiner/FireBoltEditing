@@ -1,4 +1,4 @@
-<cinematicModel>
+<cinematicModel millisPerTick="1">
   <domainActions>
 		<domainAction name="buy-item" > 
       <params>
@@ -43,7 +43,7 @@
         <moveAction  actorNameParamName="actor" startTickParamName="start-tick" endTickParamName="end-tick" destinationParamName="destination"/>
       </moveActions>
       <rotateActions>
-        <rotateAction  actorNameParamName="actor" startTickParamName="start-tick" endTickParamName="end-tick" destinationParamName="destination"/>
+        <rotateAction  actorNameParamName="actor" startTickParamName="start-tick" endTickParamName="end-tick" destinationParamName="destination" maxDuration="400"/>
       </rotateActions>
       <animateActions>
         <animateAction  actorNameParamName="actor" startTickParamName="start-tick" endTickParamName="end-tick"/>    
