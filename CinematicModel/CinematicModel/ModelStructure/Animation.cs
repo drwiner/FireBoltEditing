@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Xml.Serialization;
+using CinematicModel.ModelStructure;
 
 namespace CinematicModel
 {
@@ -11,10 +12,14 @@ namespace CinematicModel
         [XmlAttribute(AttributeName = "name")]
         public string Name { get; set; }
 
-        [XmlAttribute(AttributeName = "duration")]
+        [XmlAttribute(AttributeName = "fileName")]
+        public string FileName { get; set; }
+
+        [XmlAttribute("duration")]
         public int Duration { get; set; }
 
-        [XmlAttribute(AttributeName = "id")]
-        public int Id { get; set; }
+        [XmlArray("AnimationIndices")]
+        [XmlArrayItem("AnimationIndex")]
+        public List<AnimationIndex> AnimationIndices { get; set; }
     }
 }

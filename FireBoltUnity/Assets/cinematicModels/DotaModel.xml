@@ -68,15 +68,26 @@
     </domainAction>
   </domainActions>
   <actors>
-    <actor name="pudge" id="2" model="m005" >
-      <animations>
-        <animation name="pudge_attack1.fbx" id="0" />
-        <animation name="UNTY_Sneak_tk04.fbx" id="1"/>
-        <animation name="Unity_Falling_Down_Dying_tk01.fbx" id="2"/>
-        <animation name="pudge_walk.fbx" id="3"/>
-      </animations>
+    <actor name="pudge" model="m005" >
+      <animationNames>
+        <animationName>verticalSwipe</animationName>
+        <animationName>sneak</animationName>
+        <animationName>die</animationName>
+        <animationName>walk</animationName>
+      </animationNames>
     </actor>
   </actors>
+  <animations>
+    <animation fileName="pudge_attack1.fbx" name="verticalSwipe">
+      <animationIndices>
+        <animationIndex name="maxY" timeOffset="150"/>
+        <animationIndex name="minY" timeOffset="170"/>
+      </animationIndices>
+    </animation>
+    <animation fileName="UNTY_Sneak_tk04.fbx" name="sneak"/>
+    <animation fileName="Unity_Falling_Down_Dying_tk01.fbx" name="die"/>
+    <animation fileName="pudge_walk.fbx" name="walk"/>
+  </animations>
 	<animationMappings>
 		<animationMapping actionName="buy-item" actionParamName="actor" actorName="pudge" animationId="0">
 			<animationProperties  loopAnimation="true" effectorTimeOffset="50"/>		  
