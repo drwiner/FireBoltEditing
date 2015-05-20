@@ -105,13 +105,13 @@
         <rotateAction  actorNameParamName="actor" startTickParamName="start-tick" endTickParamName="end-tick"
                        destinationParamName="destination" maxDuration="700"/>
         <rotateAction  actorNameParamName="observer" startTickParamName="start-tick" endTickParamName="end-tick"
-                       destinationParamName="destination" maxDuration="800" effectorOffsetIndexName="sneakAWhileMore"/>
+                       destinationParamName="destination" maxDuration="800" effectorOffsetIndexName="sneakAWhile"/>
       </rotateActions>
       <animateActions>
         <animateAction name="sneak" actorNameParamName="actor" startTickParamName="start-tick"
                        endTickParamName="end-tick" effector="true"/>
         <animateAction name="observe" actorNameParamName="observer" startTickParamName="start-tick"
-                       endTickParamName="end-tick" effector="false" effectorOffsetIndexName="sneakAWhileMore"/>
+                       endTickParamName="end-tick" effector="false" effectorOffsetIndexName="sneakAWhile"/>
       </animateActions>
     </domainAction>
     <domainAction name="doNothing">
@@ -153,7 +153,7 @@
     <animation fileName="humanoid_sneak.fbx" name="sneak">
       <animationIndices>
         <animationIndex name="sneakAWhile" timeOffset ="2200"/>
-        <animationIndex name="sneakAWhileMore" timeOffset ="5000"/>
+        <animationIndex name="sneakAWhileMore" timeOffset ="2220"/>
       </animationIndices>
     </animation>
     <animation fileName="Unity_Falling_Down_Dying_tk01.fbx" name="die"/>

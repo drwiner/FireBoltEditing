@@ -16,6 +16,12 @@ namespace Assets.scripts
                 {
                     return 1;
                 }
+                else if (x.StartTick() == y.StartTick())
+                {
+                    if (x is Create) return -1;
+
+                    else if (y is Create) return 1;                        
+                }
                 return -1;
             }
         }
