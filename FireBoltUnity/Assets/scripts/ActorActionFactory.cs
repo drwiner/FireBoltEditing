@@ -32,7 +32,8 @@ namespace Assets.scripts
                 //check for domain action the cinematic model knows about
                 CM.DomainAction domainAction = getStoryDomainAction(step);
                 if(domainAction == null) continue;
-                
+                //TODO get effector Animation to construct timing for all FireBolt actions in the domain action
+                //currently only using timing offsets in animations
                 enqueueCreateActions(step, domainAction, aaq);
                 enqueueAnimateActions(step, domainAction, aaq);
                 enqueueDestroyActions(step, domainAction, aaq);
@@ -88,7 +89,7 @@ namespace Assets.scripts
                                              select xImpulseStepParam.Value as string).FirstOrDefault();
                         if (destinationString == null)
                         {
-                            Debug.LogError("destination not set or 0 for stepId[" + step.ID + "]");
+                            Debug.LogError("destination not set for stepId[" + step.ID + "]");
                         }
                         //TODO validate string format
                         destination = destinationString.ParseVector3();
@@ -143,7 +144,7 @@ namespace Assets.scripts
                                        select xImpulseStepParam.Value as string).FirstOrDefault();
                         if(destinationString == null)
                         {
-                            Debug.LogError("destination not set or 0 for stepId[" + step.ID + "]");
+                            Debug.LogError("destination not set for stepId[" + step.ID + "]");
                         }
                         //TODO validate string format
                         destination = destinationString.ParseVector3();
@@ -154,16 +155,51 @@ namespace Assets.scripts
             }
         }
 
+        private static CM.Animation getEffectingAnimation(StructuredStep step, CM.DomainAction domainAction)
+        {
+            //find effector if any
+            CM.AnimateAction effectorAnimateAction = domainAction.AnimateActions.Find(x => x.Effector);
+            //didn't find an effector for this domain action...move along; nothing to see here
+            if (effectorAnimateAction == null) return null;
 
+            string effectorActorName = null;
+            CM.AnimationMapping effectorAnimationMapping = null;
+            CM.Animation effectingAnimation = null;
+            foreach (CM.DomainActionParameter domainActionParameter in domainAction.Params)
+            {
+                if (domainActionParameter.Name == effectorAnimateAction.ActorNameParamName)
+                {
+                    effectorActorName = (from xImpulseStepParam in step.Parameters
+                                 where xImpulseStepParam.Name == domainActionParameter.Name
+                                 select xImpulseStepParam.Value as string).FirstOrDefault();
+                    if (effectorActorName == null)
+                    {
+                        Debug.LogError("actorName not set for stepId[" + step.ID + "]");
+                        return null;
+                    }
+                    effectorAnimationMapping = cm.FindAnimationMapping(effectorActorName, effectorAnimateAction.Name);
+                    if (effectorAnimationMapping == null)
+                    {
+                        Debug.Log("cinematic model animation instance undefined for actor[" +
+                            effectorActorName + "] action[" + domainAction.Name + "] paramName[" + domainActionParameter.Name + "]");
+                        return null;
+                    }
+                    effectingAnimation = cm.FindAnimation(effectorAnimationMapping.AnimationName);
+                }
+            }
+            return effectingAnimation;
+        }
 
         private static void enqueueAnimateActions(StructuredStep step, CM.DomainAction domainAction, ActorActionQueue aaq)
         {
+            CM.Animation effectingAnimation = getEffectingAnimation(step,domainAction);
             foreach(CM.AnimateAction aa in domainAction.AnimateActions)
             {
                 string actorName = null;
                 float startTick = 0;
                 float endTick = 0;
-                CM.AnimationInstance ai = null;
+                CM.AnimationMapping animMapping = null;
+                CM.Animation animation = null;
                 foreach(CM.DomainActionParameter domainActionParameter in domainAction.Params)
                 {
                     if (domainActionParameter.Name == aa.StartTickParamName)
@@ -192,21 +228,37 @@ namespace Assets.scripts
                             Debug.LogError("actorName not set for stepId[" + step.ID + "]");
                             return;
                         }
-                        else
+                        animMapping = cm.FindAnimationMapping(actorName, aa.Name);
+                        if (animMapping == null)
                         {
-                            ai = cm.FindAnimationInstance(actorName, domainAction.Name, domainActionParameter.Name);
-                            if (ai == null)
-                            {
-                                Debug.Log("cinematic model animation instance undefined for actor[" + 
-                                    actorName + "] action[" + domainAction.Name + "] paramName[" + domainActionParameter.Name + "]");
-                                return;
-                            }
+                            Debug.Log("cinematic model animation instance undefined for actor[" +
+                                actorName + "] action[" + domainAction.Name + "] paramName[" + domainActionParameter.Name + "]");
+                            return;
                         }
+                        animation = cm.FindAnimation(animMapping.AnimationName);
                     }
                 }
-                endTick = aa.MaxDuration.HasValue ? startTick + aa.MaxDuration.Value : endTick;
-                aaq.Add(new AnimateMecanim(startTick, endTick, actorName, ai.AnimationName, ai.LoopAnimation));
+                startTick += getEffectorAnimationOffset(effectingAnimation, aa);
+                endTick = aa.MaxDuration.HasValue ? startTick + aa.MaxDuration.Value : endTick; //TODO encode max duration into the endTick property
+                aaq.Add(new AnimateMecanim(startTick, endTick, actorName, animation.FileName, animMapping.LoopAnimation));
             }
+        }
+
+        private static float getEffectorAnimationOffset(CM.Animation effectingAnimation, CM.AnimateAction animateAction)
+        {
+            float offset = 0;
+            //now that we have our parameters filled out, we need to shore up the start and end points of the animations
+            //relative to the effecting animation if there is one.
+            if (effectingAnimation != null)
+            {
+                CM.AnimationIndex effectingIndex = effectingAnimation.AnimationIndices.Find(x => x.Name == animateAction.EffectorOffsetIndexName);
+                if (effectingIndex != null)
+                {
+                    offset = effectingIndex.TimeOffset;
+                }
+
+            }
+            return offset;
         }
 
         private static void enqueueCreateActions(StructuredStep step, CM.DomainAction domainAction, ActorActionQueue aaq)

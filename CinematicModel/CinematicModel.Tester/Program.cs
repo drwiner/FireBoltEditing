@@ -11,9 +11,6 @@ namespace CinematicModel.Tester
         {
             //Console.Write("enter a filename to parse: ");
             CinematicModel cm = Parser.Parse("../../../../FireBoltUnity/Assets/cinematicModels/DotaModel.xml");
-
-            AnimationInstance ai = cm.FindAnimationInstance("pudge", "buy-item", "actor");
-            
         }
     }
 }

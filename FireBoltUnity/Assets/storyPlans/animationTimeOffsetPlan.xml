@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="utf-8"?>
+<plan name="plan_simple" xmlns="http://liquidnarrative.csc.ncsu.edu/impulse/v0.1">
+  <steps>
+    <step id="0">
+      <name>enter</name>
+      <parameters>
+        <parameter name="start-tick">200</parameter>
+        <parameter name="actor">pudge</parameter>
+      </parameters>
+    </step>
+    <step id="1">
+      <name>enter</name>
+      <parameters>
+        <parameter name="start-tick">1000</parameter>
+        <parameter name="actor">secretAgentMan</parameter>
+      </parameters>
+    </step>
+		<step id="2">
+    	<name>doubleSwipe</name>
+     	<parameters>
+      	<parameter name="start-tick">4000</parameter>
+      	<parameter name="actor1">pudge</parameter>
+        <parameter name="actor2">secretAgentMan</parameter>
+        <parameter name="end-tick">8000</parameter>
+      </parameters>
+    </step>
+    <step id="5">
+      <name>exit</name>
+      <parameters>
+        <parameter name="start-tick">15000</parameter>
+        <parameter name="actor">pudge</parameter>
+      </parameters>
+    </step>
+  </steps>
+	<parameter-definitions>
+        <parameter name="actor" type="string" is-list="false"/>
+        <parameter name="start-tick" type="int" is-list="false"/>
+        <parameter name="tick" type="int" is-list="false"/>
+        <parameter name="target" type="string" is-list="false"/>
+        <parameter name="end-tick" type="int" is-list="false"/>
+	</parameter-definitions>
+</plan>

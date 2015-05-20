@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Xml.Serialization;
-using CinematicModel.ModelStructure;
 
 namespace CinematicModel
 {
@@ -18,8 +17,8 @@ namespace CinematicModel
         [XmlAttribute("duration")]
         public int Duration { get; set; }
 
-        [XmlArray("AnimationIndices")]
-        [XmlArrayItem("AnimationIndex")]
+        [XmlArray("animationIndices")]
+        [XmlArrayItem("animationIndex")]
         public List<AnimationIndex> AnimationIndices { get; set; }
     }
 }

@@ -40,8 +40,6 @@
   <ItemGroup>
     <Compile Include="ModelStructure\Animation.cs" />
     <Compile Include="ModelStructure\AnimationIndex.cs" />
-    <Compile Include="ModelStructure\AnimationInstance.cs" />
-    <Compile Include="ModelStructure\AnimationProperties.cs" />
     <Compile Include="ModelStructure\AnimationMapping.cs" />
     <Compile Include="ModelStructure\FireBoltAction.cs" />
     <Compile Include="ModelStructure\CreatedObject.cs" />

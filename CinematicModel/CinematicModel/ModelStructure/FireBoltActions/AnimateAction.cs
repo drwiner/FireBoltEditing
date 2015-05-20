@@ -11,5 +11,14 @@ namespace CinematicModel
     {
         [XmlAttribute(AttributeName = "endTickParamName")]
         public string EndTickParamName { get; set; }
+
+        [XmlAttribute("name")]
+        public string Name { get; set; }
+
+        [XmlAttribute("effector")]
+        public bool Effector { get; set; }
+
+        [XmlAttribute("effectorOffsetIndexName")]
+        public string EffectorOffsetIndexName { get; set; }
     }
 }

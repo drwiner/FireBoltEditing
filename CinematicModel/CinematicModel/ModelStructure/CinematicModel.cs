@@ -9,6 +9,9 @@ namespace CinematicModel
     [XmlRoot(ElementName="cinematicModel")]
     public class CinematicModel
     {
+        [XmlAttribute("millisPerTick")]
+        public int MillisPerTick { get; set; }
+
         [XmlArray(ElementName = "domainActions")]
         [XmlArrayItem(ElementName = "domainAction")]
         public List<DomainAction> DomainActions { get; set; }
@@ -25,31 +28,19 @@ namespace CinematicModel
         [XmlArrayItem(ElementName = "animation")]
         public List<Animation> Animations { get; set; }
 
-        //TODO querying
-        public AnimationInstance FindAnimationInstance(string actorName, string actionName, string actionParamName)
+        public AnimationMapping FindAnimationMapping(string actorName, string animateActionName)
         {
-            //////assuming uniqueness of names.  probably should be doing validation somewhere...perhaps with an xsd?
-            //Actor actor = (from a in Actors where string.Equals(a.Name, actorName, StringComparison.OrdinalIgnoreCase) select a).FirstOrDefault();
-            //if (actor == null) { throw new Exception("actor[" + actorName + "] not found."); }
-
-            //AnimationMapping animationMapping = (from am in AnimationMappings 
-            //                           where am.ActionName == actionName && 
-            //                                 am.ActorName == actorName &&
-            //                                 am.ActionParamName == actionParamName
-            //                           select am).FirstOrDefault<AnimationMapping>();
-            //if (animationMapping == null) return null; //does not have to be a mapping, do not throw exceptions here
-
-            //Animation animation = (from anim in actor.Animations where anim.Id == animationMapping.AnimationId select anim).FirstOrDefault<Animation>();
-            //if (animation == null) { throw new Exception("animation[actorName=\"" + actorName + "\",animationId=\"" + animationMapping.AnimationId+ "\"] not found."); }
-
-            ////build a container and return
-            //return new AnimationInstance(animation,animationMapping.AnimationProperties);
-            return null;
+            return AnimationMappings.Find(x => x.ActorName == actorName && x.AnimateActionName == animateActionName);
         }
 
-        public Actor FindActor(int id)
+        public Animation FindAnimation(string animationName)
         {
-            return (from a in Actors where a.Id == id select a).FirstOrDefault();
+            return Animations.Find(x => x.Name == animationName);
+        }
+
+        public Actor FindActor(string actorName)
+        {
+            return Actors.Find(x => x.Name == actorName);
         }
 
     }

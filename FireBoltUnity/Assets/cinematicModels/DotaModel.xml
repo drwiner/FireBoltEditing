@@ -7,7 +7,22 @@
         <param name="end-tick" />
       </params>
       <animateActions>
-        <animateAction actorNameParamName="actor" startTickParamName="start-tick" endTickParamName="end-tick"/>
+        <animateAction name="buy-item1" actorNameParamName="actor" startTickParamName="start-tick" 
+                       endTickParamName="end-tick"/>
+      </animateActions>
+    </domainAction>
+    <domainAction name="doubleSwipe" >
+      <params>
+        <param name="actor1" />
+        <param name="actor2" />        
+        <param name="start-tick" />
+        <param name="end-tick" />
+      </params>
+      <animateActions>
+        <animateAction name="firstSwipe" actorNameParamName="actor1" startTickParamName="start-tick" 
+                       endTickParamName="end-tick" effector="true"/>
+        <animateAction name="secondSwipe" actorNameParamName="actor2" startTickParamName="start-tick"
+                       endTickParamName="end-tick" effectorOffsetIndexName="maxY"/>
       </animateActions>
     </domainAction>
     <domainAction name="enter" >
@@ -40,13 +55,16 @@
       <createActions/>
       <destroyActions/>
       <moveActions>
-        <moveAction  actorNameParamName="actor" startTickParamName="start-tick" endTickParamName="end-tick" destinationParamName="destination"/>
+        <moveAction  actorNameParamName="actor" startTickParamName="start-tick" endTickParamName="end-tick" 
+                     destinationParamName="destination"/>
       </moveActions>
       <rotateActions>
-        <rotateAction  actorNameParamName="actor" startTickParamName="start-tick" endTickParamName="end-tick" destinationParamName="destination" maxDuration="400"/>
+        <rotateAction  actorNameParamName="actor" startTickParamName="start-tick" endTickParamName="end-tick" 
+                       destinationParamName="destination" maxDuration="400"/>
       </rotateActions>
       <animateActions>
-        <animateAction  actorNameParamName="actor" startTickParamName="start-tick" endTickParamName="end-tick"/>    
+        <animateAction  name="walk" actorNameParamName="actor" startTickParamName="start-tick" 
+                        endTickParamName="end-tick" />    
       </animateActions>
     </domainAction>
     <domainAction name="rotate">
@@ -60,15 +78,22 @@
       <destroyActions/>
       <moveActions/>        
       <rotateActions>
-        <rotateAction actorNameParamName="actor" startTickParamName="start-tick" endTickParamName="end-tick" destinationParamName="destination"/>
+        <rotateAction actorNameParamName="actor" startTickParamName="start-tick" endTickParamName="end-tick" 
+                      destinationParamName="destination"/>
       </rotateActions>
-      <!--<animateActions>
-        <animateAction actorNameParamId="0" startTickParamId="1" endTickParamId="2"/> 
-      </animateActions>-->
+      <animateActions/>
     </domainAction>
   </domainActions>
   <actors>
-    <actor name="pudge" model="m005" >
+    <actor name="secretAgentMan" model="m005" >
+      <animationNames>
+        <animationName>verticalSwipe</animationName>
+        <animationName>sneak</animationName>
+        <animationName>die</animationName>
+        <animationName>walk</animationName>
+      </animationNames>
+    </actor>
+    <actor name="pudge" model="pudge_model" >
       <animationNames>
         <animationName>verticalSwipe</animationName>
         <animationName>sneak</animationName>
@@ -89,8 +114,13 @@
     <animation fileName="pudge_walk.fbx" name="walk"/>
   </animations>
 	<animationMappings>
-		<animationMapping actionName="buy-item" actionParamName="actor" actorName="pudge" animationId="0">
-			<animationProperties  loopAnimation="true" effectorTimeOffset="50"/>		  
-		</animationMapping>
+    <animationMapping animateActionName="walk" actorName="pudge"
+                      animationName="walk" loopAnimation="true" />
+    <animationMapping animateActionName="buy-item1" actorName="pudge" 
+                      animationName="verticalSwipe" loopAnimation="true" />
+    <animationMapping animateActionName="firstSwipe" actorName="pudge" 
+                      animationName="verticalSwipe" loopAnimation="false" />
+    <animationMapping animateActionName="secondSwipe" actorName="secretAgentMan"
+                      animationName="verticalSwipe" loopAnimation="false" />
   </animationMappings>
 </cinematicModel>
