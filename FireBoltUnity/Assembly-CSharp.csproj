@@ -58,6 +58,7 @@
      <Compile Include="Assets\scripts\Extensions.cs" />
      <Compile Include="Assets\scripts\IActorAction.cs" />
      <None Include="Assets\cinematicModels\DotaModel.xml" />
+     <None Include="Assets\storyPlans\sneakyDancePlan.xml" />
      <None Include="Assets\cinematicModels\TimeOffsetModel.xml" />
      <None Include="Assets\storyPlans\rotateMaxDurationPlan.xml" />
      <None Include="Assets\storyPlans\animationTimeOffsetPlan.xml" />

@@ -28,5 +28,8 @@ namespace CinematicModel
             get { return (MaxDuration.HasValue) ? MaxDuration.ToString() : null; }
             set { MaxDuration = !string.IsNullOrEmpty(value) ? int.Parse(value) : default(int?); }
         }
+
+        [XmlAttribute("effectorOffsetIndexName")]
+        public string EffectorOffsetIndexName { get; set; }
     }
 }

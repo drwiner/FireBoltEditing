@@ -40,7 +40,7 @@ public class ElPresidente : MonoBehaviour {
         {
             executingActions.Remove(iaa);
         }
-        while(aaq.Peek() != null && aaq.Peek().StartTick() <= currentTick)
+        while(!aaq.Empty && aaq.Peek().StartTick() <= currentTick)
         {
             IActorAction iaa = aaq.Pop();
             iaa.Init();

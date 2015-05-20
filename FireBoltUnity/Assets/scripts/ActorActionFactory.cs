@@ -33,19 +33,21 @@ namespace Assets.scripts
                 CM.DomainAction domainAction = getStoryDomainAction(step);
                 if(domainAction == null) continue;
                 //TODO get effector Animation to construct timing for all FireBolt actions in the domain action
+                CM.Animation effectingAnimation = getEffectingAnimation(step, domainAction);
                 //currently only using timing offsets in animations
-                enqueueCreateActions(step, domainAction, aaq);
-                enqueueAnimateActions(step, domainAction, aaq);
-                enqueueDestroyActions(step, domainAction, aaq);
-                enqueueMoveActions(step, domainAction, aaq);
-                enqueueRotateActions(step, domainAction, aaq);
+                enqueueCreateActions(step, domainAction, effectingAnimation, aaq);
+                enqueueAnimateActions(step, domainAction, effectingAnimation, aaq);
+                enqueueDestroyActions(step, domainAction, effectingAnimation, aaq);
+                enqueueMoveActions(step, domainAction, effectingAnimation, aaq);
+                enqueueRotateActions(step, domainAction, effectingAnimation, aaq);
             
             }
             
             return aaq;
         }
 
-        private static void enqueueRotateActions(StructuredStep step, CM.DomainAction domainAction, ActorActionQueue aaq)
+        private static void enqueueRotateActions(StructuredStep step, CM.DomainAction domainAction, 
+                                                 CM.Animation effectingAnimation, ActorActionQueue aaq)
         {
             foreach (CM.RotateAction ra in domainAction.RotateActions)
             {
@@ -95,12 +97,14 @@ namespace Assets.scripts
                         destination = destinationString.ParseVector3();
                     }
                 }
+                startTick += getEffectorAnimationOffset(effectingAnimation, ra);
                 endTick = ra.MaxDuration.HasValue ? startTick + ra.MaxDuration.Value : endTick;
                 aaq.Add(new Rotate(startTick, endTick, actorName, destination));
             }
         }
 
-        private static void enqueueMoveActions(StructuredStep step, CM.DomainAction domainAction, ActorActionQueue aaq)
+        private static void enqueueMoveActions(StructuredStep step, CM.DomainAction domainAction, 
+                                               CM.Animation effectingAnimation, ActorActionQueue aaq)
         {
             foreach (CM.MoveAction ma in domainAction.MoveActions)
             {
@@ -150,6 +154,7 @@ namespace Assets.scripts
                         destination = destinationString.ParseVector3();
                     }
                 }
+                startTick += getEffectorAnimationOffset(effectingAnimation, ma);
                 endTick = ma.MaxDuration.HasValue ? startTick + ma.MaxDuration.Value : endTick;
                 aaq.Add(new Translate(startTick, endTick, actorName, destination));
             }
@@ -190,9 +195,9 @@ namespace Assets.scripts
             return effectingAnimation;
         }
 
-        private static void enqueueAnimateActions(StructuredStep step, CM.DomainAction domainAction, ActorActionQueue aaq)
+        private static void enqueueAnimateActions(StructuredStep step, CM.DomainAction domainAction, CM.Animation effectingAnimation, ActorActionQueue aaq)
         {
-            CM.Animation effectingAnimation = getEffectingAnimation(step,domainAction);
+            
             foreach(CM.AnimateAction aa in domainAction.AnimateActions)
             {
                 string actorName = null;
@@ -232,7 +237,7 @@ namespace Assets.scripts
                         if (animMapping == null)
                         {
                             Debug.Log("cinematic model animation instance undefined for actor[" +
-                                actorName + "] action[" + domainAction.Name + "] paramName[" + domainActionParameter.Name + "]");
+                                actorName + "] animateAction[" + aa.Name + "]");
                             return;
                         }
                         animation = cm.FindAnimation(animMapping.AnimationName);
@@ -244,14 +249,14 @@ namespace Assets.scripts
             }
         }
 
-        private static float getEffectorAnimationOffset(CM.Animation effectingAnimation, CM.AnimateAction animateAction)
+        private static float getEffectorAnimationOffset(CM.Animation effectingAnimation, CM.FireBoltAction fireBoltAction)
         {
             float offset = 0;
             //now that we have our parameters filled out, we need to shore up the start and end points of the animations
             //relative to the effecting animation if there is one.
             if (effectingAnimation != null)
             {
-                CM.AnimationIndex effectingIndex = effectingAnimation.AnimationIndices.Find(x => x.Name == animateAction.EffectorOffsetIndexName);
+                CM.AnimationIndex effectingIndex = effectingAnimation.AnimationIndices.Find(x => x.Name == fireBoltAction.EffectorOffsetIndexName);
                 if (effectingIndex != null)
                 {
                     offset = effectingIndex.TimeOffset;
@@ -261,7 +266,7 @@ namespace Assets.scripts
             return offset;
         }
 
-        private static void enqueueCreateActions(StructuredStep step, CM.DomainAction domainAction, ActorActionQueue aaq)
+        private static void enqueueCreateActions(StructuredStep step, CM.DomainAction domainAction, CM.Animation effectingAnimation, ActorActionQueue aaq )
         {
             foreach (CM.CreateAction ca in domainAction.CreateActions)
             {
@@ -297,11 +302,13 @@ namespace Assets.scripts
                         }
                     }
                 }
+                startTick += getEffectorAnimationOffset(effectingAnimation, ca);
                 aaq.Add(new Create(startTick,actorName,modelName, new Vector3()));
             }
         }
 
-        private static void enqueueDestroyActions(StructuredStep step, CM.DomainAction domainAction, ActorActionQueue aaq)
+        private static void enqueueDestroyActions(StructuredStep step, CM.DomainAction domainAction, 
+                                                    CM.Animation effectingAnimation, ActorActionQueue aaq)
         {
             foreach (CM.DestroyAction da in domainAction.DestroyActions)
             {
@@ -326,6 +333,7 @@ namespace Assets.scripts
                         }
                     }
                 }
+                startTick += getEffectorAnimationOffset(effectingAnimation, da);
                 aaq.Add(new Destroy(startTick, actorName));
             }
         }

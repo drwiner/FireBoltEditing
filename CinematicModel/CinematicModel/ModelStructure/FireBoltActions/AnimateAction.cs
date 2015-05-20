@@ -17,8 +17,5 @@ namespace CinematicModel
 
         [XmlAttribute("effector")]
         public bool Effector { get; set; }
-
-        [XmlAttribute("effectorOffsetIndexName")]
-        public string EffectorOffsetIndexName { get; set; }
     }
 }
