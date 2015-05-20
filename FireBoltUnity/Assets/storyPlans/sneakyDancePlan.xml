@@ -6,6 +6,7 @@
       <parameters>
         <parameter name="start-tick">250</parameter>
         <parameter name="actor">pudge</parameter>
+        <parameter name="origin">0,0,0</parameter>
       </parameters>
     </step>
     <step id="1">

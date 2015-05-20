@@ -273,6 +273,7 @@ namespace Assets.scripts
                 float startTick = 0;
                 string actorName = null;
                 string modelName = null;
+                Vector3 destination = new Vector3();
                 foreach (CM.DomainActionParameter domainActionParameter in domainAction.Params) 
                 {
                     if (domainActionParameter.Name == ca.StartTickParamName)
@@ -301,9 +302,21 @@ namespace Assets.scripts
                             }
                         }
                     }
+                    else if (domainActionParameter.Name == ca.OriginParamName)
+                    {
+                        string destinationString = (from xImpulseStepParam in step.Parameters
+                                             where xImpulseStepParam.Name == domainActionParameter.Name
+                                             select xImpulseStepParam.Value as string).FirstOrDefault();
+                        if (destinationString == null)
+                        {
+                            Debug.LogError("destination not set for stepId[" + step.ID + "]");
+                        }
+                        //TODO validate string format
+                        destination = destinationString.ParseVector3();
+                    }
                 }
                 startTick += getEffectorAnimationOffset(effectingAnimation, ca);
-                aaq.Add(new Create(startTick,actorName,modelName, new Vector3()));
+                aaq.Add(new Create(startTick, actorName, modelName, destination));
             }
         }
 
