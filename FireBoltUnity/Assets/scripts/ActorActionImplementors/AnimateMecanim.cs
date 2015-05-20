@@ -53,7 +53,7 @@ namespace Assets.scripts
 			} else
 				oldAnim.wrapMode = WrapMode.Once;
 
-            animatorOverride["UNTY_Sneak_tk04"] = animation;
+            animatorOverride["idle"] = animation;
            
         }
 
