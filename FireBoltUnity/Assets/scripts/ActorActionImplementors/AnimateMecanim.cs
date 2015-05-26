@@ -43,7 +43,7 @@ namespace Assets.scripts
             animatorOverride.runtimeAnimatorController = Resources.Load<RuntimeAnimatorController>("AnimatorControllers/Generic");
             animator.runtimeAnimatorController = animatorOverride;
             animation = Resources.LoadAssetAtPath<AnimationClip>("Assets/Resources/Animations/" + animName);
-			AnimationClip oldAnim = Resources.LoadAssetAtPath<AnimationClip>("Assets/Resources/Animations/humanoid_sneak.fbx");
+			AnimationClip oldAnim = Resources.LoadAssetAtPath<AnimationClip>("Assets/Resources/Animations/humanoid_idle.fbx");
             if (!animation || !oldAnim)
             {
                 Debug.LogError("Missing animation asset");
