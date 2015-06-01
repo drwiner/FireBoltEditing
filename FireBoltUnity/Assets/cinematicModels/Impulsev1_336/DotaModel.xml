@@ -1,0 +1,180 @@
+<cinematicModel millisPerTick="1">
+  <domainActions>
+		<domainAction name="buy-item" > 
+      <params>
+        <param name="actor" />
+        <param name="start-tick" />
+        <param name="end-tick" />
+      </params>
+      <animateActions>
+        <animateAction name="buy-item1" actorNameParamName="actor" startTickParamName="start-tick" 
+                       endTickParamName="end-tick"/>
+      </animateActions>
+    </domainAction>
+    <domainAction name="doubleSwipe" >
+      <params>
+        <param name="actor1" />
+        <param name="actor2" />        
+        <param name="start-tick" />
+        <param name="end-tick" />
+      </params>
+      <animateActions>
+        <animateAction name="firstSwipe" actorNameParamName="actor1" startTickParamName="start-tick" 
+                       endTickParamName="end-tick" effector="true"/>
+        <animateAction name="secondSwipe" actorNameParamName="actor2" startTickParamName="start-tick"
+                       endTickParamName="end-tick" effectorOffsetIndexName="maxY"/>
+      </animateActions>
+    </domainAction>
+    <domainAction name="enter" >
+      <params>
+        <param name="actor" />
+        <param name="origin" />
+        <param name="start-tick" />
+      </params>
+      <createActions>
+        <createAction actorNameParamName="actor" startTickParamName="start-tick" originParamName="origin" />
+      </createActions>
+    </domainAction>
+    <domainAction name="exit" >
+      <params>
+        <param name="actor" />
+        <param name="start-tick" />
+      </params>
+      <createActions/>        
+      <destroyActions>
+        <destroyAction actorNameParamName="actor" startTickParamName="start-tick"/>
+      </destroyActions>
+    </domainAction>
+    <domainAction name="move" >
+      <params>
+        <param name="actor" />
+        <param name="start-tick" />        
+        <param name="end-tick" />
+        <param name="destination" />        
+      </params>
+      <createActions/>
+      <destroyActions/>
+      <moveActions>
+        <moveAction  actorNameParamName="actor" startTickParamName="start-tick" endTickParamName="end-tick" 
+                     destinationParamName="destination"/>
+      </moveActions>
+      <rotateActions>
+        <rotateAction  actorNameParamName="actor" startTickParamName="start-tick" endTickParamName="end-tick" 
+                       destinationParamName="destination" maxDuration="400"/>
+      </rotateActions>
+      <animateActions>
+        <animateAction  name="walk" actorNameParamName="actor" startTickParamName="start-tick" 
+                        endTickParamName="end-tick" />    
+      </animateActions>
+    </domainAction>
+    <domainAction name="rotate">
+      <params>
+        <param name="actor" />
+        <param name="start-tick" />
+        <param name="end-tick" />
+        <param name="destination" />
+      </params>
+      <createActions/>
+      <destroyActions/>
+      <moveActions/>        
+      <rotateActions>
+        <rotateAction actorNameParamName="actor" startTickParamName="start-tick" endTickParamName="end-tick" 
+                      destinationParamName="destination"/>
+      </rotateActions>
+      <animateActions/>
+    </domainAction>
+    <domainAction name="notSoSneaky">
+      <params>
+        <param name="actor" />
+        <param name="observer" />
+        <param name="start-tick" />
+        <param name="end-tick" />
+        <param name="destination" />
+        <param name="spawnLocation" />
+      </params>
+      <createActions>
+        <createAction actorNameParamName="observer" startTickParamName="start-tick" originParamName="spawnLocation" 
+                      effectorOffsetIndexName="sneakAWhile"/>
+      </createActions>
+      <destroyActions/>
+      <moveActions>
+        <moveAction  actorNameParamName="actor" startTickParamName="start-tick" endTickParamName="end-tick"
+                     destinationParamName="destination"/>
+      </moveActions>
+      <rotateActions>
+        <rotateAction  actorNameParamName="actor" startTickParamName="start-tick" endTickParamName="end-tick"
+                       destinationParamName="destination" maxDuration="700"/>
+        <rotateAction  actorNameParamName="observer" startTickParamName="start-tick" endTickParamName="end-tick"
+                       destinationParamName="destination" maxDuration="800" effectorOffsetIndexName="sneakAWhile"/>
+      </rotateActions>
+      <animateActions>
+        <animateAction name="sneak" actorNameParamName="actor" startTickParamName="start-tick"
+                       endTickParamName="end-tick" effector="true"/>
+        <animateAction name="observe" actorNameParamName="observer" startTickParamName="start-tick"
+                       endTickParamName="end-tick" effector="false" effectorOffsetIndexName="sneakAWhile"/>
+      </animateActions>
+    </domainAction>
+    <domainAction name="doNothing">
+      <params>
+        <param name="actor"/>
+        <param name="start-tick"/>
+        <param name="end-tick" />
+      </params>
+      <animateActions>
+        <animateAction name="standAround" actorNameParamName="actor" startTickParamName="start-tick" endTickParamName="end-tick"/>
+      </animateActions>
+    </domainAction>
+  </domainActions>
+  <actors>
+    <actor name="secretAgentMan" model="m005" >
+      <animationNames>
+        <animationName>verticalSwipe</animationName>
+        <animationName>sneak</animationName>
+        <animationName>die</animationName>
+        <animationName>walk</animationName>
+      </animationNames>
+    </actor>
+    <actor name="pudge" model="pudge_model" >
+      <animationNames>
+        <animationName>verticalSwipe</animationName>
+        <animationName>sneak</animationName>
+        <animationName>die</animationName>
+        <animationName>walk</animationName>
+      </animationNames>
+    </actor>
+  </actors>
+  <animations>
+    <animation fileName="pudge_attack1.fbx" name="verticalSwipe">
+      <animationIndices>
+        <animationIndex name="maxY" timeOffset="150"/>
+        <animationIndex name="minY" timeOffset="170"/>
+      </animationIndices>
+    </animation>
+    <animation fileName="humanoid_sneak.fbx" name="sneak">
+      <animationIndices>
+        <animationIndex name="sneakAWhile" timeOffset ="2200"/>
+        <animationIndex name="sneakAWhileMore" timeOffset ="2220"/>
+      </animationIndices>
+    </animation>
+    <animation fileName="Unity_Falling_Down_Dying_tk01.fbx" name="die"/>
+    <animation fileName="pudge_walk.fbx" name="walk"/>
+    <animation fileName="humanoid_idle.fbx" name="idle">
+    </animation>
+  </animations>
+	<animationMappings>
+    <animationMapping animateActionName="standAround" actorName="pudge"
+                      animationName="idle" loopAnimation="true" />
+    <animationMapping animateActionName="observe" actorName="secretAgentMan"
+                      animationName="idle" loopAnimation="true" />
+    <animationMapping animateActionName="sneak" actorName="pudge"
+                      animationName="sneak" loopAnimation="true" />
+    <animationMapping animateActionName="walk" actorName="pudge"
+                      animationName="walk" loopAnimation="true" />
+    <animationMapping animateActionName="buy-item1" actorName="pudge" 
+                      animationName="verticalSwipe" loopAnimation="true" />
+    <animationMapping animateActionName="firstSwipe" actorName="pudge" 
+                      animationName="verticalSwipe" loopAnimation="false" />
+    <animationMapping animateActionName="secondSwipe" actorName="secretAgentMan"
+                      animationName="verticalSwipe" loopAnimation="false" />
+  </animationMappings>
+</cinematicModel>

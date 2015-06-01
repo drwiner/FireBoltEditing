@@ -58,7 +58,7 @@ public class ElPresidente : MonoBehaviour {
 
     void logTicks()
     {
-        if (currentTick - lastTickLogged > 1)
+        if (currentTick - lastTickLogged > 1000)
         {
             Debug.Log(currentTick);
             lastTickLogged = currentTick;

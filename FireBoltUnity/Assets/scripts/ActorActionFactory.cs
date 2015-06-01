@@ -1,6 +1,13 @@
 ﻿using UnityEngine;
 using System.Collections;
 using Impulse.v_0_1;
+using Impulse.v_1_336;
+using Impulse.v_1_336.Sentences;
+using Impulse.v_1_336.Intervals;
+using Impulse.v_1_336.Constants;
+using UintT = Impulse.v_1_336.Interval<Impulse.v_1_336.Constants.ValueConstant<uint>, uint>;
+using UintV = Impulse.v_1_336.Constants.ValueConstant<uint>;
+
 using System.IO;
 using CM = CinematicModel;
 using System;
@@ -12,7 +19,9 @@ namespace Assets.scripts
     public class ActorActionFactory
     {
         private static CM.CinematicModel cm;
-        private static StructuredPlan storyPlan;
+        private static AStory<Impulse.v_1_336.Constants.ValueConstant<uint>, UintT,
+                                    IIntervalSet<Impulse.v_1_336.Constants.ValueConstant<uint>,
+                                    UintT>> story;
 
         /// <summary>
         /// 
@@ -23,27 +32,49 @@ namespace Assets.scripts
         public static ActorActionQueue CreateStoryActions(string storyPlanPath, string cinematicModelPath)
         {
             ActorActionQueue aaq = new ActorActionQueue();            
-            storyPlan = loadStructuredImpulsePlan(storyPlanPath);                    
+            loadStructuredImpulsePlan(storyPlanPath);                    
             cm = loadCinematicModel(cinematicModelPath);
-            
+
+            extractInitialState();
+
             //generate some actions for the steps
-            foreach(StructuredStep step in storyPlan.Steps.Values)
+            foreach(var action in story.Actions.Values)
             {
                 //check for domain action the cinematic model knows about
-                CM.DomainAction domainAction = getStoryDomainAction(step);
+                CM.DomainAction domainAction = getStoryDomainAction(action);
                 if(domainAction == null) continue;
-                //TODO get effector Animation to construct timing for all FireBolt actions in the domain action
-                CM.Animation effectingAnimation = getEffectingAnimation(step, domainAction);
-                //currently only using timing offsets in animations
-                enqueueCreateActions(step, domainAction, effectingAnimation, aaq);
-                enqueueAnimateActions(step, domainAction, effectingAnimation, aaq);
-                enqueueDestroyActions(step, domainAction, effectingAnimation, aaq);
-                enqueueMoveActions(step, domainAction, effectingAnimation, aaq);
-                enqueueRotateActions(step, domainAction, effectingAnimation, aaq);
+                //CM.Animation effectingAnimation = getEffectingAnimation(step, domainAction);
+                ////currently only using timing offsets in animations
+                //enqueueCreateActions(step, domainAction, effectingAnimation, aaq);
+                //enqueueAnimateActions(step, domainAction, effectingAnimation, aaq);
+                //enqueueDestroyActions(step, domainAction, effectingAnimation, aaq);
+                //enqueueMoveActions(step, domainAction, effectingAnimation, aaq);
+                //enqueueRotateActions(step, domainAction, effectingAnimation, aaq);
             
             }
             
             return aaq;
+        }
+
+        private static void extractInitialState()
+        {
+            var interval = new UintT(new UintV(0), new UintV(1));
+            var query = from sentence in story.Sentences
+                        where sentence is Predicate
+                        let p = (Predicate) sentence
+                        where story.IntervalSet.IncludesOrMeetsStartOf<UintV, UintT>((UintT)p.Time, interval) && 
+                              p.Name == "at" && 
+                              p.Temporal &&
+                              p.Time is UintT && 
+                              p.Terms[0] is IConstant && 
+                              p.Terms[1] is IConstant<Coordinate2D>
+                        select new { Actor = p.Terms[0].Name, Location = (p.Terms[1] as IConstant<Coordinate2D>).Value };
+            foreach (var initPos in query)
+            {
+                Debug.Log(initPos.Actor + ", " + initPos.Location.ToString());
+            }
+
+
         }
 
         private static void enqueueRotateActions(StructuredStep step, CM.DomainAction domainAction, 
@@ -351,29 +382,30 @@ namespace Assets.scripts
             }
         }
 
-        private static CM.DomainAction getStoryDomainAction(StructuredStep step)
+        private static CM.DomainAction getStoryDomainAction(IStoryAction action)
         {
-            CM.DomainAction matchedAction = null;
             //check if the step action is in the domain of cinematic model
-            foreach(CM.DomainAction  domainAction in cm.DomainActions)
+            foreach(CM.DomainAction domainAction in cm.DomainActions)
             {
-                if(string.Equals(domainAction.Name,step.Name,StringComparison.OrdinalIgnoreCase))
+                if(string.Equals(domainAction.Name,action.ActionType.Name,StringComparison.OrdinalIgnoreCase))
                 {
-                    matchedAction = domainAction;
+                    return domainAction;
                 }
             }
-            return matchedAction;
+            return null;
         }
 
-        private static StructuredPlan loadStructuredImpulsePlan(string storyPlanPath){            
-            try 
-            { 
-                Impulse.v_0_1.StructuredPlan.LoadFromPlan(Impulse.v_0_1.Plan.Load(storyPlanPath));
-
-            }catch (Exception e){
-                Debug.Log("Exception loading impulse plan: " + e.Message);
-            }
-            return Impulse.v_0_1.StructuredPlan.CurrentPlan;
+        private static void loadStructuredImpulsePlan(string storyPlanPath){            
+            //try 
+            //{ 
+                var xml = Impulse.v_1_336.Xml.Story.LoadFromFile(storyPlanPath);
+            //}
+            //catch (Exception ex)
+            //{
+                //Debug.LogError("Exception loading impulse plan: " + ex.ToString());
+            //}
+                var factory = Impulse.v_1_336.StoryParsingFactories.GetUnsignedIntergerIntervalFactory();
+                story = factory.ParseStory(xml, false);
         }
 
         private static CM.CinematicModel loadCinematicModel(string cinematicModelPath)

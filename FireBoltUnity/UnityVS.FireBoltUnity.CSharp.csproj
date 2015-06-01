@@ -58,6 +58,9 @@
     <Reference Include="Impulse">
       <HintPath>Assets\plugins\Impulse.dll</HintPath>
     </Reference>
+    <Reference Include="Impulse.XmlSerializers">
+      <HintPath>Assets\plugins\Impulse.XmlSerializers.dll</HintPath>
+    </Reference>
     <Reference Include="LN.Utilities">
       <HintPath>Assets\plugins\LN.Utilities.dll</HintPath>
     </Reference>
@@ -77,8 +80,10 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="Assets\cinematicModels\DotaModel.xml" />
+    <None Include="Assets\cinematicModels\Impulsev1_336\DotaModel.xml" />
     <None Include="Assets\cinematicModels\TimeOffsetModel.xml" />
     <None Include="Assets\storyPlans\animationTimeOffsetPlan.xml" />
+    <None Include="Assets\storyPlans\Impulsev1_336\600924233.xml" />
     <None Include="Assets\storyPlans\plan_simple.xml" />
     <None Include="Assets\storyPlans\plan_simple1.xml" />
     <None Include="Assets\storyPlans\rotateMaxDurationPlan.xml" />
