@@ -38,14 +38,15 @@ namespace Assets.scripts
             extractInitialState();
 
             //generate some actions for the steps
-            foreach(var action in story.Actions.Values)
+            foreach(IStoryAction<UintT> action in story.Actions.Values)
             {
                 //check for domain action the cinematic model knows about
                 CM.DomainAction domainAction = getStoryDomainAction(action);
                 if(domainAction == null) continue;
-                //CM.Animation effectingAnimation = getEffectingAnimation(step, domainAction);
+
+                CM.Animation effectingAnimation = getEffectingAnimation(action, domainAction);
                 ////currently only using timing offsets in animations
-                //enqueueCreateActions(step, domainAction, effectingAnimation, aaq);
+                enqueueCreateActions(action, domainAction, effectingAnimation, aaq);
                 //enqueueAnimateActions(step, domainAction, effectingAnimation, aaq);
                 //enqueueDestroyActions(step, domainAction, effectingAnimation, aaq);
                 //enqueueMoveActions(step, domainAction, effectingAnimation, aaq);
@@ -55,6 +56,8 @@ namespace Assets.scripts
             
             return aaq;
         }
+
+
 
         private static void extractInitialState()
         {
@@ -89,6 +92,7 @@ namespace Assets.scripts
                 Vector3 destination = Vector3.zero;
                 foreach (CM.DomainActionParameter domainActionParameter in domainAction.Params)
                 {
+                    //look up with tryGetProperty of AStoryAction<...>
                     if (domainActionParameter.Name == ra.StartTickParamName)
                     {
                         startTick = Convert.ToInt32((from xImpulseStepParam in step.Parameters
@@ -191,7 +195,7 @@ namespace Assets.scripts
             }
         }
 
-        private static CM.Animation getEffectingAnimation(StructuredStep step, CM.DomainAction domainAction)
+        private static CM.Animation getEffectingAnimation(IStoryAction<UintT> step, CM.DomainAction domainAction)
         {
             //find effector if any
             CM.AnimateAction effectorAnimateAction = domainAction.AnimateActions.Find(x => x.Effector);
@@ -205,6 +209,8 @@ namespace Assets.scripts
             {
                 if (domainActionParameter.Name == effectorAnimateAction.ActorNameParamName)
                 {
+                    //TODO finish converting to impulse 1.336
+                    
                     effectorActorName = (from xImpulseStepParam in step.Parameters
                                  where xImpulseStepParam.Name == domainActionParameter.Name
                                  select xImpulseStepParam.Value as string).FirstOrDefault();
