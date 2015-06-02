@@ -10,7 +10,7 @@ namespace CinematicModel
     public class CinematicModel
     {
         [XmlAttribute("millisPerTick")]
-        public int MillisPerTick { get; set; }
+        public uint MillisPerTick { get; set; }
 
         [XmlArray(ElementName = "domainActions")]
         [XmlArrayItem(ElementName = "domainAction")]

@@ -18,10 +18,11 @@ namespace Assets.scripts
 {
     public class ActorActionFactory
     {
+        //TODO add support for assigning full numeric extended name to duplicate actors (creeps) so we can move and animate them uniquely
+        //TODO speedify by adding caching to lookup methods
         private static CM.CinematicModel cm;
-        private static AStory<Impulse.v_1_336.Constants.ValueConstant<uint>, UintT,
-                                    IIntervalSet<Impulse.v_1_336.Constants.ValueConstant<uint>,
-                                    UintT>> story;
+        private static AStory<UintV, UintT, IIntervalSet<UintV, UintT>> story;
+        private static readonly char[] uniqueActorIdentifierSeparators = { ' ' };
 
         /// <summary>
         /// 
@@ -35,18 +36,17 @@ namespace Assets.scripts
             loadStructuredImpulsePlan(storyPlanPath);                    
             cm = loadCinematicModel(cinematicModelPath);
 
-            extractInitialState();
+            buildInitialState(aaq);
 
-            //generate some actions for the steps
-            foreach(IStoryAction<UintT> action in story.Actions.Values)
+            //generate FireBolt actions for the steps
+            foreach(IStoryAction<UintT> storyAction in story.Actions.Values)
             {
-                //check for domain action the cinematic model knows about
-                CM.DomainAction domainAction = getStoryDomainAction(action);
+                CM.DomainAction domainAction = getStoryDomainAction(storyAction);
                 if(domainAction == null) continue;
 
-                CM.Animation effectingAnimation = getEffectingAnimation(action, domainAction);
-                ////currently only using timing offsets in animations
-                enqueueCreateActions(action, domainAction, effectingAnimation, aaq);
+                CM.Animation effectingAnimation = getEffectingAnimation(storyAction, domainAction);
+
+                enqueueCreateActions(storyAction, domainAction, effectingAnimation, aaq);
                 //enqueueAnimateActions(step, domainAction, effectingAnimation, aaq);
                 //enqueueDestroyActions(step, domainAction, effectingAnimation, aaq);
                 //enqueueMoveActions(step, domainAction, effectingAnimation, aaq);
@@ -59,10 +59,10 @@ namespace Assets.scripts
 
 
 
-        private static void extractInitialState()
+        private static void buildInitialState(ActorActionQueue aaq)
         {
             var interval = new UintT(new UintV(0), new UintV(1));
-            var query = from sentence in story.Sentences
+            var initialPositions = from sentence in story.Sentences
                         where sentence is Predicate
                         let p = (Predicate) sentence
                         where story.IntervalSet.IncludesOrMeetsStartOf<UintV, UintT>((UintT)p.Time, interval) && 
@@ -72,12 +72,26 @@ namespace Assets.scripts
                               p.Terms[0] is IConstant && 
                               p.Terms[1] is IConstant<Coordinate2D>
                         select new { Actor = p.Terms[0].Name, Location = (p.Terms[1] as IConstant<Coordinate2D>).Value };
-            foreach (var initPos in query)
+
+            Debug.Log("building init state creations");
+            foreach (var initPos in initialPositions)
             {
                 Debug.Log(initPos.Actor + ", " + initPos.Location.ToString());
+                CM.Actor actor = cm.FindActor(initPos.Actor);
+                if(actor == null)
+                {
+                    Debug.Log("actor [" + initPos.Actor + "] not found in cinematic model.");
+                    continue;
+                }
+
+                string modelFileName = actor.Model; 
+                if (string.IsNullOrEmpty(modelFileName))
+                {
+                    Debug.Log("model name for actor[" + initPos.Actor + "] not found in cinematic model.");
+                    continue;
+                }                    
+                aaq.Add(new Create(0, initPos.Actor, modelFileName, initPos.Location.ToVector3()));
             }
-
-
         }
 
         private static void enqueueRotateActions(StructuredStep step, CM.DomainAction domainAction, 
@@ -171,7 +185,7 @@ namespace Assets.scripts
                         endTick = Convert.ToInt32((from xImpulseStepParam in step.Parameters
                                                    where xImpulseStepParam.Name == domainActionParameter.Name
                                                    select xImpulseStepParam.Value).FirstOrDefault());
-                        if (endTick < .001)
+                        if (endTick < float.Epsilon)
                         {
                             Debug.LogError("endTick not set or 0 for stepId[" + step.ID + "]");
                         }
@@ -195,7 +209,7 @@ namespace Assets.scripts
             }
         }
 
-        private static CM.Animation getEffectingAnimation(IStoryAction<UintT> step, CM.DomainAction domainAction)
+        private static CM.Animation getEffectingAnimation(IStoryAction<UintT> storyAction, CM.DomainAction domainAction)
         {
             //find effector if any
             CM.AnimateAction effectorAnimateAction = domainAction.AnimateActions.Find(x => x.Effector);
@@ -209,14 +223,14 @@ namespace Assets.scripts
             {
                 if (domainActionParameter.Name == effectorAnimateAction.ActorNameParamName)
                 {
-                    //TODO finish converting to impulse 1.336
-                    
-                    effectorActorName = (from xImpulseStepParam in step.Parameters
-                                 where xImpulseStepParam.Name == domainActionParameter.Name
-                                 select xImpulseStepParam.Value as string).FirstOrDefault();
+                    IActionProperty actorNameProperty;
+                    if(storyAction.TryGetProperty(domainActionParameter.Name, out actorNameProperty))
+                    {
+                        effectorActorName = actorNameProperty.Value.Name; 
+                    }
                     if (effectorActorName == null)
                     {
-                        Debug.LogError("actorName not set for stepId[" + step.ID + "]");
+                        Debug.LogError("actorName not set for stepId[" + storyAction.Name + "]");
                         return null;
                     }
                     effectorAnimationMapping = cm.FindAnimationMapping(effectorActorName, effectorAnimateAction.Name);
@@ -303,7 +317,44 @@ namespace Assets.scripts
             return offset;
         }
 
-        private static void enqueueCreateActions(StructuredStep step, CM.DomainAction domainAction, CM.Animation effectingAnimation, ActorActionQueue aaq )
+        private static bool getActorName(IStoryAction<UintT> storyAction, CM.DomainActionParameter domainActionParameter, out string actorName)
+        {
+            actorName = null;
+            IActionProperty actorNameProperty;
+            if (storyAction.TryGetProperty(domainActionParameter.Name, out actorNameProperty))
+            {
+                actorName = actorNameProperty.Value.Name;
+                return true;
+            }
+
+            Debug.Log("actorName not set for stepId[" + storyAction.Name + "]");
+            return false;
+        }
+
+        private static bool getActorModel(string actorName, out string modelFileName)
+        {
+            modelFileName = null;
+            CM.Actor actor = cm.FindActor(actorName);
+            if (actor == null)
+            {
+                Debug.Log("actor[" + actorName + "] not found in cinematic model");
+            }
+            else
+            {                
+                if (actor.Model != null)
+                {                    
+                    modelFileName = actor.Model;
+                    return true;
+                }
+                else
+                {
+                    Debug.Log("model name for actor[" + actorName + "] not found in cinematic model.");
+                }
+            }
+            return false;
+        }
+
+        private static void enqueueCreateActions(IStoryAction<UintT> storyAction, CM.DomainAction domainAction, CM.Animation effectingAnimation, ActorActionQueue aaq )
         {
             foreach (CM.CreateAction ca in domainAction.CreateActions)
             {
@@ -311,49 +362,40 @@ namespace Assets.scripts
                 string actorName = null;
                 string modelName = null;
                 Vector3 destination = new Vector3();
-                foreach (CM.DomainActionParameter domainActionParameter in domainAction.Params) 
+                foreach (CM.DomainActionParameter domainActionParameter in domainAction.Params)
                 {
-                    if (domainActionParameter.Name == ca.StartTickParamName)
+                    if (domainActionParameter.Name == ca.ActorNameParamName)
                     {
-                        startTick = Convert.ToInt32((from xImpulseStepParam in step.Parameters 
-                                                    where xImpulseStepParam.Name == domainActionParameter.Name
-                                                    select xImpulseStepParam.Value).FirstOrDefault());                        
-                    }
-                    else if (domainActionParameter.Name == ca.ActorNameParamName)
-                    {
-                        actorName = (from xImpulseStepParam in step.Parameters 
-                                                    where xImpulseStepParam.Name == domainActionParameter.Name
-                                                    select xImpulseStepParam.Value as string).FirstOrDefault();
-                        if (actorName == null)
+                        if (getActorName(storyAction, domainActionParameter, out actorName))//actorName is defined, we can look up a model
                         {
-                            Debug.Log("actorName not set for stepId[" + step.ID + "]");
-                        }
-                        else //actorName is defined, we can look up a model
-                        {
-                            modelName = (from actor in cm.Actors 
-                                             where string.Equals(actor.Name,actorName,StringComparison.OrdinalIgnoreCase)
-                                             select actor.Model).FirstOrDefault<string>();
-                            if(modelName == null)
+                            actorName = actorName.Split(uniqueActorIdentifierSeparators)[0];
+                            if (!getActorModel(actorName, out modelName))
                             {
-                                Debug.Log("model name for actor[" + actorName + "] not found in cinematic model.");
+                                break;//didn't find all our datas.  give up on this create action and move to the next one
                             }
                         }
                     }
                     else if (domainActionParameter.Name == ca.OriginParamName)
                     {
-                        string destinationString = (from xImpulseStepParam in step.Parameters
-                                             where xImpulseStepParam.Name == domainActionParameter.Name
-                                             select xImpulseStepParam.Value as string).FirstOrDefault();
-                        if (destinationString == null)
+                        IActionProperty coord;
+                        if(storyAction.TryGetProperty(domainActionParameter.Name, out coord))
                         {
-                            Debug.LogError("destination not set for stepId[" + step.ID + "]");
+                            destination = ((Coordinate2D)coord.Value.Value).ToVector3();
                         }
-                        //TODO validate string format
-                        destination = destinationString.ParseVector3();
+                        else
+                        {
+                            Debug.LogError("origin not set for stepId[" + storyAction.Name + "]");
+                        }                        
                     }
                 }
+                startTick = storyAction.Time.Start.ToMillis(cm.MillisPerTick);
                 startTick += getEffectorAnimationOffset(effectingAnimation, ca);
-                aaq.Add(new Create(startTick, actorName, modelName, destination));
+                if(!string.IsNullOrEmpty(modelName) && //validate necessary params
+                   !string.IsNullOrEmpty(actorName))
+                {
+                    aaq.Add(new Create(startTick, actorName, modelName, destination));
+                }
+                
             }
         }
 
@@ -401,17 +443,11 @@ namespace Assets.scripts
             return null;
         }
 
-        private static void loadStructuredImpulsePlan(string storyPlanPath){            
-            //try 
-            //{ 
-                var xml = Impulse.v_1_336.Xml.Story.LoadFromFile(storyPlanPath);
-            //}
-            //catch (Exception ex)
-            //{
-                //Debug.LogError("Exception loading impulse plan: " + ex.ToString());
-            //}
-                var factory = Impulse.v_1_336.StoryParsingFactories.GetUnsignedIntergerIntervalFactory();
-                story = factory.ParseStory(xml, false);
+        private static void loadStructuredImpulsePlan(string storyPlanPath)
+        {
+            var xml = Impulse.v_1_336.Xml.Story.LoadFromFile(storyPlanPath);
+            var factory = Impulse.v_1_336.StoryParsingFactories.GetUnsignedIntergerIntervalFactory();
+            story = factory.ParseStory(xml, false);//TODO true!
         }
 
         private static CM.CinematicModel loadCinematicModel(string cinematicModelPath)

@@ -1,10 +1,17 @@
-<cinematicModel millisPerTick="1">
+<cinematicModel millisPerTick="33">
   <domainActions>
+    <domainAction name="spawn-creep" >
+      <params>
+        <param name="actor" />
+        <param name="position" />
+      </params>
+      <createActions>
+        <createAction actorNameParamName="actor" originParamName="position" />
+      </createActions>
+    </domainAction>
 		<domainAction name="buy-item" > 
       <params>
         <param name="actor" />
-        <param name="start-tick" />
-        <param name="end-tick" />
       </params>
       <animateActions>
         <animateAction name="buy-item1" actorNameParamName="actor" startTickParamName="start-tick" 
@@ -126,7 +133,7 @@
     </domainAction>
   </domainActions>
   <actors>
-    <actor name="secretAgentMan" model="m005" >
+    <actor name="secretAgentMan" model="m005.fbx" >
       <animationNames>
         <animationName>verticalSwipe</animationName>
         <animationName>sneak</animationName>
@@ -134,7 +141,7 @@
         <animationName>walk</animationName>
       </animationNames>
     </actor>
-    <actor name="pudge" model="pudge_model" >
+    <actor name="Pudge" model="Heroes/pudge/pudge_model.fbx" >
       <animationNames>
         <animationName>verticalSwipe</animationName>
         <animationName>sneak</animationName>
@@ -142,9 +149,60 @@
         <animationName>walk</animationName>
       </animationNames>
     </actor>
+    <actor name="Ember Spirit" model="Heroes/pudge/pudge_model.fbx" >
+      <animationNames>
+        <animationName>verticalSwipe</animationName>
+        <animationName>sneak</animationName>
+        <animationName>die</animationName>
+        <animationName>walk</animationName>
+      </animationNames>
+    </actor>
+
+    <actor name="Crystal Maiden" model="Heroes/crystal_maiden/crystal_maiden_model.fbx" >
+      <animationNames>
+        <animationName>verticalSwipe</animationName>
+        <animationName>sneak</animationName>
+        <animationName>die</animationName>
+        <animationName>walk</animationName>
+      </animationNames>
+    </actor>
+    <actor name="Skywrath Mage" model="Heroes/skywrath_mage/skywrath_mage_model.fbx" >
+      <animationNames>
+        <animationName>verticalSwipe</animationName>
+        <animationName>sneak</animationName>
+        <animationName>die</animationName>
+        <animationName>walk</animationName>
+      </animationNames>
+    </actor>
+
+    <actor name="npc_dota_creep_badguys_melee" model="Non-heroes/creep_bad_melee/creep_bad_melee_model.fbx" >
+      <animationNames>
+        <animationName>verticalSwipe</animationName>
+        <animationName>sneak</animationName>
+        <animationName>die</animationName>
+        <animationName>walk</animationName>
+      </animationNames>
+    </actor>
+    <actor name="npc_dota_creep_goodguys_melee" model="Non-heroes/creep_good_melee/creep_good_melee_model.fbx" >
+      <animationNames>
+        <animationName>verticalSwipe</animationName>
+        <animationName>sneak</animationName>
+        <animationName>die</animationName>
+        <animationName>walk</animationName>
+      </animationNames>
+    </actor>
+    
+
+    <actor name="radiant_observer_ward" model="Non-heroes/ward/ward_model.fbx" >
+      <animationNames>        
+      </animationNames>
+    </actor>
+
+    
+
   </actors>
   <animations>
-    <animation fileName="pudge_attack1.fbx" name="verticalSwipe">
+    <animation fileName="Pudge_attack1.fbx" name="verticalSwipe">
       <animationIndices>
         <animationIndex name="maxY" timeOffset="150"/>
         <animationIndex name="minY" timeOffset="170"/>
@@ -157,22 +215,22 @@
       </animationIndices>
     </animation>
     <animation fileName="Unity_Falling_Down_Dying_tk01.fbx" name="die"/>
-    <animation fileName="pudge_walk.fbx" name="walk"/>
+    <animation fileName="Pudge_walk.fbx" name="walk"/>
     <animation fileName="humanoid_idle.fbx" name="idle">
     </animation>
   </animations>
 	<animationMappings>
-    <animationMapping animateActionName="standAround" actorName="pudge"
+    <animationMapping animateActionName="standAround" actorName="Pudge"
                       animationName="idle" loopAnimation="true" />
     <animationMapping animateActionName="observe" actorName="secretAgentMan"
                       animationName="idle" loopAnimation="true" />
-    <animationMapping animateActionName="sneak" actorName="pudge"
+    <animationMapping animateActionName="sneak" actorName="Pudge"
                       animationName="sneak" loopAnimation="true" />
-    <animationMapping animateActionName="walk" actorName="pudge"
+    <animationMapping animateActionName="walk" actorName="Pudge"
                       animationName="walk" loopAnimation="true" />
-    <animationMapping animateActionName="buy-item1" actorName="pudge" 
+    <animationMapping animateActionName="buy-item1" actorName="Pudge" 
                       animationName="verticalSwipe" loopAnimation="true" />
-    <animationMapping animateActionName="firstSwipe" actorName="pudge" 
+    <animationMapping animateActionName="firstSwipe" actorName="Pudge" 
                       animationName="verticalSwipe" loopAnimation="false" />
     <animationMapping animateActionName="secondSwipe" actorName="secretAgentMan"
                       animationName="verticalSwipe" loopAnimation="false" />

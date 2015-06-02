@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using CM=CinematicModel;
+using UnityEditor;
 
 namespace Assets.scripts
 {
@@ -22,7 +23,7 @@ namespace Assets.scripts
 
         public void Init()
         {
-            GameObject actor = GameObject.Instantiate(Resources.Load(modelName), position, Quaternion.identity) as GameObject;
+            GameObject actor = GameObject.Instantiate(AssetDatabase.LoadAssetAtPath<GameObject>("Assets/Resources/Models/" + modelName), position, Quaternion.identity) as GameObject;
             actor.name = actorName;
         }
 
