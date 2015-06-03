@@ -39,9 +39,9 @@
       </params>
       <createActions/>
       <destroyActions/>
-      <moveActions>
-        <moveAction  actorNameParamName="actor" startTickParamName="start-tick" endTickParamName="end-tick" destinationParamName="destination"/>
-      </moveActions>
+      <translateActions>
+        <translateAction  actorNameParamName="actor" startTickParamName="start-tick" endTickParamName="end-tick" destinationParamName="destination"/>
+      </translateActions>
       <rotateActions>
         <rotateAction  actorNameParamName="actor" startTickParamName="start-tick" endTickParamName="end-tick" destinationParamName="destination"/>
       </rotateActions>
@@ -58,7 +58,7 @@
       </params>
       <createActions/>
       <destroyActions/>
-      <moveActions/>
+      <translateActions/>
       <rotateActions>
         <rotateAction actorNameParamName="actor" startTickParamName="start-tick" endTickParamName="end-tick" destinationParamName="destination"/>
       </rotateActions>
@@ -72,7 +72,7 @@
       </params>
       <createActions/>
       <destroyActions/>
-      <moveActions/>
+      <translateActions/>
       <rotateActions/>
       <animateActions>
         <animateAction actorNameParamName="actor" startTickParamName="start-tick" endTickParamName="end-tick" />

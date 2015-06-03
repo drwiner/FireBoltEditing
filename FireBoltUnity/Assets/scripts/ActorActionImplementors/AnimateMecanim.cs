@@ -1,6 +1,7 @@
 ﻿using UnityEngine;
 using System.Collections;
 using UnityEditor;
+using CM = CinematicModel;
 
 namespace Assets.scripts
 {
@@ -16,6 +17,13 @@ namespace Assets.scripts
         private AnimationClip animation;
         private int animationHash; 
 		private bool loop;
+
+        public static bool ValidForConstruction(string actorName, CM.Animation animation)
+        {
+            if (string.IsNullOrEmpty(actorName) || animation == null || string.IsNullOrEmpty(animation.FileName))
+                return false;
+            return true;
+        }
 
         public AnimateMecanim(float startTick, float endTick, string actorName, string animName, bool loop) 
         {

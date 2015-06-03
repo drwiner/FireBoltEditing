@@ -7,11 +7,8 @@ using System.Xml.Serialization;
 namespace CinematicModel
 {
     
-    public class MoveAction : FireBoltAction
+    public class TranslateAction : FireBoltAction
     {
-        [XmlAttribute(AttributeName = "endTickParamName")]
-        public string EndTickParamName { get; set; }
-
         [XmlAttribute(AttributeName = "destinationParamName")]
         public string DestinationParamName { get; set; }
 

@@ -13,6 +13,14 @@ namespace Assets.scripts
         float startTick;
         string actorName,modelName;
         Vector3 position;
+
+        public static bool ValidForConstruction(string actorName, string modelName)
+        {
+            if (string.IsNullOrEmpty(actorName) || string.IsNullOrEmpty(modelName))
+                return false;
+            return true;
+        }
+
         public Create(float startTick, string actorName, string modelName, Vector3 position) 
         {
             this.startTick = startTick;

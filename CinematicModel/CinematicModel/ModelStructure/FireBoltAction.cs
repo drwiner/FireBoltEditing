@@ -12,9 +12,6 @@ namespace CinematicModel
         [XmlAttribute(AttributeName = "actorNameParamName")]
         public string ActorNameParamName { get; set; }
 
-        [XmlAttribute(AttributeName = "startTickParamName")]
-        public string StartTickParamName { get; set; }
-
         [XmlIgnore]
         public int? MaxDuration { get; set; }
 

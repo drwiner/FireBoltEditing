@@ -49,7 +49,7 @@
     <Compile Include="ModelStructure\CinematicModel.cs" />
     <Compile Include="ModelStructure\FireBoltActions\AnimateAction.cs" />
     <Compile Include="ModelStructure\FireBoltActions\RotateAction.cs" />
-    <Compile Include="ModelStructure\FireBoltActions\MoveAction.cs" />
+    <Compile Include="ModelStructure\FireBoltActions\TranslateAction.cs" />
     <Compile Include="ModelStructure\FireBoltActions\DestroyAction.cs" />
     <Compile Include="ModelStructure\FireBoltActions\CreateAction.cs" />
     <Compile Include="Parser.cs" />

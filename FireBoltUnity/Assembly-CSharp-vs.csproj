@@ -65,7 +65,6 @@
      <None Include="Assets\storyPlans\animationTimeOffsetPlan.xml" />
      <None Include="Assets\storyPlans\plan_simple.xml" />
      <None Include="Assets\storyPlans\plan_simple1.xml" />
-     <None Include="Assets\cinematicModels\Impulsev1_336\DotaModel.xml" />
  <Reference Include="UnityEngine.UI">
  <HintPath>C:/Program Files/Unity/Editor/Data/UnityExtensions/Unity/GUISystem/UnityEngine.UI.dll</HintPath>
  </Reference>

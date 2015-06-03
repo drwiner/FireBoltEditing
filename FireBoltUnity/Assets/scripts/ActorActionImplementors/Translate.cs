@@ -15,6 +15,14 @@ namespace Assets.scripts
         Vector3 destination;
         GameObject actor;
         Vector3 requiredVelocity;
+
+        public static bool ValidForConstruction(string actorName)
+        {
+            if (string.IsNullOrEmpty(actorName))
+                return false;
+            return true;
+        }
+
         public Translate(float startTick, float endTick, string actorName, Vector3 destination) 
         {
             this.startTick = startTick;

@@ -14,79 +14,64 @@
         <param name="actor" />
       </params>
       <animateActions>
-        <animateAction name="buy-item1" actorNameParamName="actor" startTickParamName="start-tick" 
-                       endTickParamName="end-tick"/>
+        <animateAction name="buy-item1" actorNameParamName="actor"/>
       </animateActions>
     </domainAction>
     <domainAction name="doubleSwipe" >
       <params>
         <param name="actor1" />
-        <param name="actor2" />        
-        <param name="start-tick" />
-        <param name="end-tick" />
+        <param name="actor2" />                
       </params>
       <animateActions>
-        <animateAction name="firstSwipe" actorNameParamName="actor1" startTickParamName="start-tick" 
-                       endTickParamName="end-tick" effector="true"/>
-        <animateAction name="secondSwipe" actorNameParamName="actor2" startTickParamName="start-tick"
-                       endTickParamName="end-tick" effectorOffsetIndexName="maxY"/>
+        <animateAction name="firstSwipe" actorNameParamName="actor1" effector="true"/>
+        <animateAction name="secondSwipe" actorNameParamName="actor2" effectorOffsetIndexName="maxY"/>
       </animateActions>
     </domainAction>
     <domainAction name="enter" >
       <params>
         <param name="actor" />
         <param name="origin" />
-        <param name="start-tick" />
       </params>
       <createActions>
-        <createAction actorNameParamName="actor" startTickParamName="start-tick" originParamName="origin" />
+        <createAction actorNameParamName="actor" originParamName="origin" />
       </createActions>
     </domainAction>
     <domainAction name="exit" >
       <params>
         <param name="actor" />
-        <param name="start-tick" />
       </params>
       <createActions/>        
       <destroyActions>
-        <destroyAction actorNameParamName="actor" startTickParamName="start-tick"/>
+        <destroyAction actorNameParamName="actor" />
       </destroyActions>
     </domainAction>
     <domainAction name="move" >
       <params>
         <param name="actor" />
-        <param name="start-tick" />        
-        <param name="end-tick" />
         <param name="destination" />        
       </params>
       <createActions/>
       <destroyActions/>
-      <moveActions>
-        <moveAction  actorNameParamName="actor" startTickParamName="start-tick" endTickParamName="end-tick" 
-                     destinationParamName="destination"/>
-      </moveActions>
-      <rotateActions>
-        <rotateAction  actorNameParamName="actor" startTickParamName="start-tick" endTickParamName="end-tick" 
-                       destinationParamName="destination" maxDuration="400"/>
-      </rotateActions>
+      <translateActions>
+        <translateAction  actorNameParamName="actor" destinationParamName="destination"/>
+      </translateActions>
+      <!--<rotateActions>
+        <rotateAction  actorNameParamName="actor" destinationParamName="destination" maxDuration="400"/>
+      </rotateActions>-->
       <animateActions>
-        <animateAction  name="walk" actorNameParamName="actor" startTickParamName="start-tick" 
-                        endTickParamName="end-tick" />    
+        <animateAction  name="walk" actorNameParamName="actor" />    
       </animateActions>
     </domainAction>
     <domainAction name="rotate">
       <params>
         <param name="actor" />
-        <param name="start-tick" />
-        <param name="end-tick" />
-        <param name="destination" />
+        <param name="end-angle" />
       </params>
       <createActions/>
       <destroyActions/>
-      <moveActions/>        
+      <translateActions/>        
       <rotateActions>
-        <rotateAction actorNameParamName="actor" startTickParamName="start-tick" endTickParamName="end-tick" 
-                      destinationParamName="destination"/>
+        <rotateAction actorNameParamName="actor" destinationParamName="end-angle"/>
       </rotateActions>
       <animateActions/>
     </domainAction>
@@ -94,41 +79,31 @@
       <params>
         <param name="actor" />
         <param name="observer" />
-        <param name="start-tick" />
-        <param name="end-tick" />
         <param name="destination" />
         <param name="spawnLocation" />
       </params>
       <createActions>
-        <createAction actorNameParamName="observer" startTickParamName="start-tick" originParamName="spawnLocation" 
-                      effectorOffsetIndexName="sneakAWhile"/>
+        <createAction actorNameParamName="observer" originParamName="spawnLocation" effectorOffsetIndexName="sneakAWhile"/>
       </createActions>
       <destroyActions/>
-      <moveActions>
-        <moveAction  actorNameParamName="actor" startTickParamName="start-tick" endTickParamName="end-tick"
-                     destinationParamName="destination"/>
-      </moveActions>
+      <translateActions>
+        <translateAction  actorNameParamName="actor" destinationParamName="destination"/>
+      </translateActions>
       <rotateActions>
-        <rotateAction  actorNameParamName="actor" startTickParamName="start-tick" endTickParamName="end-tick"
-                       destinationParamName="destination" maxDuration="700"/>
-        <rotateAction  actorNameParamName="observer" startTickParamName="start-tick" endTickParamName="end-tick"
-                       destinationParamName="destination" maxDuration="800" effectorOffsetIndexName="sneakAWhile"/>
+        <rotateAction  actorNameParamName="actor" destinationParamName="destination" maxDuration="700"/>
+        <rotateAction  actorNameParamName="observer" destinationParamName="destination" maxDuration="800" effectorOffsetIndexName="sneakAWhile"/>
       </rotateActions>
       <animateActions>
-        <animateAction name="sneak" actorNameParamName="actor" startTickParamName="start-tick"
-                       endTickParamName="end-tick" effector="true"/>
-        <animateAction name="observe" actorNameParamName="observer" startTickParamName="start-tick"
-                       endTickParamName="end-tick" effector="false" effectorOffsetIndexName="sneakAWhile"/>
+        <animateAction name="sneak" actorNameParamName="actor" effector="true"/>
+        <animateAction name="observe" actorNameParamName="observer" effector="false" effectorOffsetIndexName="sneakAWhile"/>
       </animateActions>
     </domainAction>
     <domainAction name="doNothing">
       <params>
         <param name="actor"/>
-        <param name="start-tick"/>
-        <param name="end-tick" />
       </params>
       <animateActions>
-        <animateAction name="standAround" actorNameParamName="actor" startTickParamName="start-tick" endTickParamName="end-tick"/>
+        <animateAction name="standAround" actorNameParamName="actor"/>
       </animateActions>
     </domainAction>
   </domainActions>
@@ -191,15 +166,10 @@
         <animationName>walk</animationName>
       </animationNames>
     </actor>
-    
-
     <actor name="radiant_observer_ward" model="Non-heroes/ward/ward_model.fbx" >
       <animationNames>        
       </animationNames>
     </actor>
-
-    
-
   </actors>
   <animations>
     <animation fileName="Pudge_attack1.fbx" name="verticalSwipe">
@@ -234,5 +204,9 @@
                       animationName="verticalSwipe" loopAnimation="false" />
     <animationMapping animateActionName="secondSwipe" actorName="secretAgentMan"
                       animationName="verticalSwipe" loopAnimation="false" />
+    <animationMapping animateActionName="walk" actorName="npc_dota_creep_badguys_melee"
+                          animationName="walk" loopAnimation="true" />
+    <animationMapping animateActionName="walk" actorName="npc_dota_creep_goodguys_melee"
+                          animationName="walk" loopAnimation="true" />
   </animationMappings>
 </cinematicModel>

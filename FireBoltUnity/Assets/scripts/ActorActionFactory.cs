@@ -47,17 +47,13 @@ namespace Assets.scripts
                 CM.Animation effectingAnimation = getEffectingAnimation(storyAction, domainAction);
 
                 enqueueCreateActions(storyAction, domainAction, effectingAnimation, aaq);
-                //enqueueAnimateActions(step, domainAction, effectingAnimation, aaq);
-                //enqueueDestroyActions(step, domainAction, effectingAnimation, aaq);
-                //enqueueMoveActions(step, domainAction, effectingAnimation, aaq);
-                //enqueueRotateActions(step, domainAction, effectingAnimation, aaq);
-            
-            }
-            
+                enqueueAnimateActions(storyAction, domainAction, effectingAnimation, aaq);
+                enqueueDestroyActions(storyAction, domainAction, effectingAnimation, aaq);
+                enqueuetranslateActions(storyAction, domainAction, effectingAnimation, aaq);
+                enqueueRotateActions(storyAction, domainAction, effectingAnimation, aaq);            
+            }            
             return aaq;
         }
-
-
 
         private static void buildInitialState(ActorActionQueue aaq)
         {
@@ -94,7 +90,7 @@ namespace Assets.scripts
             }
         }
 
-        private static void enqueueRotateActions(StructuredStep step, CM.DomainAction domainAction, 
+        private static void enqueueRotateActions(IStoryAction<UintT> storyAction, CM.DomainAction domainAction, 
                                                  CM.Animation effectingAnimation, ActorActionQueue aaq)
         {
             foreach (CM.RotateAction ra in domainAction.RotateActions)
@@ -102,110 +98,80 @@ namespace Assets.scripts
                 float startTick = 0;
                 float endTick = 0;
                 string actorName = null;
-                string destinationString = null;
-                Vector3 destination = Vector3.zero;
+                float targetRadians,targetDegrees;
+                Vector3 targetVector = Vector3.zero;
                 foreach (CM.DomainActionParameter domainActionParameter in domainAction.Params)
                 {
-                    //look up with tryGetProperty of AStoryAction<...>
-                    if (domainActionParameter.Name == ra.StartTickParamName)
+                    if (domainActionParameter.Name == ra.ActorNameParamName)
                     {
-                        startTick = Convert.ToInt32((from xImpulseStepParam in step.Parameters
-                                                     where xImpulseStepParam.Name == domainActionParameter.Name
-                                                     select xImpulseStepParam.Value).FirstOrDefault());
-                    }
-                    else if (domainActionParameter.Name == ra.ActorNameParamName)
-                    {
-                        actorName = (from xImpulseStepParam in step.Parameters
-                                     where xImpulseStepParam.Name == domainActionParameter.Name
-                                     select xImpulseStepParam.Value as string).FirstOrDefault();
-                        if (actorName == null)
+                        if (!getActorName(storyAction, domainActionParameter, out actorName))
                         {
-                            Debug.LogError("actorName not set for stepId[" + step.ID + "]");
-                        }
-                    }
-                    else if (domainActionParameter.Name == ra.EndTickParamName)
-                    {
-                        endTick = Convert.ToInt32((from xImpulseStepParam in step.Parameters
-                                                   where xImpulseStepParam.Name == domainActionParameter.Name
-                                                   select xImpulseStepParam.Value).FirstOrDefault());
-                        if (endTick < .001)
-                        {
-                            Debug.LogError("endTick not set or 0 for stepId[" + step.ID + "]");
+                            break;
                         }
                     }
                     else if (domainActionParameter.Name == ra.DestinationParamName)
                     {
-                        destinationString = (from xImpulseStepParam in step.Parameters
-                                             where xImpulseStepParam.Name == domainActionParameter.Name
-                                             select xImpulseStepParam.Value as string).FirstOrDefault();
-                        if (destinationString == null)
+                        IActionProperty targetOrientation;
+                        if (storyAction.TryGetProperty(domainActionParameter.Name, out targetOrientation))
                         {
-                            Debug.LogError("destination not set for stepId[" + step.ID + "]");
+                            targetDegrees = (float)(double)targetOrientation.Value.Value;
+                            targetRadians = Mathf.Deg2Rad * targetDegrees;
+                            targetVector = new Vector3(Mathf.Cos(targetRadians), 0f, Mathf.Sin(targetRadians));
                         }
-                        //TODO validate string format
-                        destination = destinationString.ParseVector3();
+                        else
+                        {
+                            Debug.LogError("orientation not set for stepId[" + storyAction.Name + "]");
+                        }
                     }
                 }
-                startTick += getEffectorAnimationOffset(effectingAnimation, ra);
-                endTick = ra.MaxDuration.HasValue ? startTick + ra.MaxDuration.Value : endTick;
-                aaq.Add(new Rotate(startTick, endTick, actorName, destination));
+                startTick = getStartTick(storyAction, ra, effectingAnimation);
+                endTick = getEndTick(storyAction, ra, effectingAnimation, startTick);
+                if (Rotate.ValidForConstruction(actorName))
+                {
+                    aaq.Add(new Rotate(startTick, endTick, actorName, targetVector));
+                }                
             }
         }
 
-        private static void enqueueMoveActions(StructuredStep step, CM.DomainAction domainAction, 
+        private static void enqueuetranslateActions(IStoryAction<UintT> storyAction, CM.DomainAction domainAction, 
                                                CM.Animation effectingAnimation, ActorActionQueue aaq)
         {
-            foreach (CM.MoveAction ma in domainAction.MoveActions)
+            foreach (CM.TranslateAction ta in domainAction.TranslateActions)
             {
                 float startTick = 0;
                 float endTick = 0;
                 string actorName = null;
-                string destinationString = null;
                 Vector3 destination = Vector3.zero;
                 foreach (CM.DomainActionParameter domainActionParameter in domainAction.Params)
                 {
-                    if (domainActionParameter.Name == ma.StartTickParamName)
+                    if (domainActionParameter.Name == ta.DestinationParamName)
                     {
-                        startTick = Convert.ToInt32((from xImpulseStepParam in step.Parameters
-                                                     where xImpulseStepParam.Name == domainActionParameter.Name
-                                                     select xImpulseStepParam.Value).FirstOrDefault());
-                    }
-                    else if (domainActionParameter.Name == ma.ActorNameParamName)
-                    {
-                        actorName = (from xImpulseStepParam in step.Parameters
-                                     where xImpulseStepParam.Name == domainActionParameter.Name
-                                     select xImpulseStepParam.Value as string).FirstOrDefault();
-                        if (actorName == null)
+                        IActionProperty coord;
+                        if (storyAction.TryGetProperty(domainActionParameter.Name, out coord))
                         {
-                            Debug.LogError("actorName not set for stepId[" + step.ID + "]");
-                        }                        
-                    }
-                    else if(domainActionParameter.Name == ma.EndTickParamName)
-                    {
-                        endTick = Convert.ToInt32((from xImpulseStepParam in step.Parameters
-                                                   where xImpulseStepParam.Name == domainActionParameter.Name
-                                                   select xImpulseStepParam.Value).FirstOrDefault());
-                        if (endTick < float.Epsilon)
+
+                            destination = ((Coordinate2D)coord.Value.Value).ToVector3();
+                           
+                        }
+                        else
                         {
-                            Debug.LogError("endTick not set or 0 for stepId[" + step.ID + "]");
+                            Debug.LogError("destination not set for stepId[" + storyAction.Name + "]");
                         }
                     }
-                    else if(domainActionParameter.Name == ma.DestinationParamName)
+                    else if (domainActionParameter.Name == ta.ActorNameParamName)
                     {
-                        destinationString = (from xImpulseStepParam in step.Parameters
-                                       where xImpulseStepParam.Name == domainActionParameter.Name
-                                       select xImpulseStepParam.Value as string).FirstOrDefault();
-                        if(destinationString == null)
+                        if (!getActorName(storyAction, domainActionParameter, out actorName))
                         {
-                            Debug.LogError("destination not set for stepId[" + step.ID + "]");
+                            break;
                         }
-                        //TODO validate string format
-                        destination = destinationString.ParseVector3();
                     }
                 }
-                startTick += getEffectorAnimationOffset(effectingAnimation, ma);
-                endTick = ma.MaxDuration.HasValue ? startTick + ma.MaxDuration.Value : endTick;
-                aaq.Add(new Translate(startTick, endTick, actorName, destination));
+                startTick = getStartTick(storyAction,ta,effectingAnimation);
+                endTick = getEndTick(storyAction, ta, effectingAnimation, startTick);
+                if (Translate.ValidForConstruction(actorName))
+                {
+                    aaq.Add(new Translate(startTick, endTick, actorName, destination));
+                }
             }
         }
 
@@ -246,9 +212,8 @@ namespace Assets.scripts
             return effectingAnimation;
         }
 
-        private static void enqueueAnimateActions(StructuredStep step, CM.DomainAction domainAction, CM.Animation effectingAnimation, ActorActionQueue aaq)
-        {
-            
+        private static void enqueueAnimateActions(IStoryAction<UintT> storyAction, CM.DomainAction domainAction, CM.Animation effectingAnimation, ActorActionQueue aaq)
+        {            
             foreach(CM.AnimateAction aa in domainAction.AnimateActions)
             {
                 string actorName = null;
@@ -258,53 +223,58 @@ namespace Assets.scripts
                 CM.Animation animation = null;
                 foreach(CM.DomainActionParameter domainActionParameter in domainAction.Params)
                 {
-                    if (domainActionParameter.Name == aa.StartTickParamName)
+                    if (domainActionParameter.Name == aa.ActorNameParamName)
                     {
-                        startTick = Convert.ToInt32((from xImpulseStepParam in step.Parameters
-                                                     where xImpulseStepParam.Name == domainActionParameter.Name
-                                                     select xImpulseStepParam.Value).FirstOrDefault());
-                    }
-                    else if (domainActionParameter.Name == aa.EndTickParamName)
-                    {
-                        endTick = Convert.ToInt32((from xImpulseStepParam in step.Parameters
-                                                   where xImpulseStepParam.Name == domainActionParameter.Name
-                                                   select xImpulseStepParam.Value).FirstOrDefault());
-                        if (endTick < .001)
+                        if (getActorName(storyAction, domainActionParameter, out actorName))
                         {
-                            Debug.LogError("endTick not set or 0 for stepId[" + step.ID + "]");
+                            string homogenousActorName = actorName.Split(uniqueActorIdentifierSeparators)[0];
+                            animMapping = cm.FindAnimationMapping(homogenousActorName, aa.Name);
+                            if (animMapping == null)
+                            {
+                                Debug.Log("cinematic model animation instance undefined for actor[" +
+                                    homogenousActorName + "] animateAction[" + aa.Name + "]");
+                                break;
+                            }
+                            animation = cm.FindAnimation(animMapping.AnimationName);
+                            if (animation == null)
+                            {
+                                Debug.Log(string.Format("animation name [{0}] undefined",animMapping.AnimationName));
+                                break;
+                            }
                         }
-                    }
-                    else if (domainActionParameter.Name == aa.ActorNameParamName)
-                    {
-                        actorName = (from xImpulseStepParam in step.Parameters
-                                     where xImpulseStepParam.Name == domainActionParameter.Name
-                                     select xImpulseStepParam.Value as string).FirstOrDefault();
-                        if (actorName == null)
-                        {
-                            Debug.LogError("actorName not set for stepId[" + step.ID + "]");
-                            return;
-                        }
-                        animMapping = cm.FindAnimationMapping(actorName, aa.Name);
-                        if (animMapping == null)
-                        {
-                            Debug.Log("cinematic model animation instance undefined for actor[" +
-                                actorName + "] animateAction[" + aa.Name + "]");
-                            return;
-                        }
-                        animation = cm.FindAnimation(animMapping.AnimationName);
                     }
                 }
-                startTick += getEffectorAnimationOffset(effectingAnimation, aa);
-                endTick = aa.MaxDuration.HasValue ? startTick + aa.MaxDuration.Value : endTick; //TODO encode max duration into the endTick property
-                aaq.Add(new AnimateMecanim(startTick, endTick, actorName, animation.FileName, animMapping.LoopAnimation));
+                startTick = getStartTick(storyAction, aa, effectingAnimation);
+                endTick = getEndTick(storyAction, aa, effectingAnimation, startTick);
+                if (AnimateMecanim.ValidForConstruction(actorName, animation))
+                {
+                    aaq.Add(new AnimateMecanim(startTick, endTick, actorName, animation.FileName, animMapping.LoopAnimation));
+                }
             }
+        }
+
+        private static float getStartTick(IStoryAction<UintT> storyAction, CM.FireBoltAction fireBoltAction, CM.Animation effectingAnimation)
+        {
+            float startTick = 0;
+            startTick = storyAction.Time.Start.ToMillis(cm.MillisPerTick);
+            startTick += getEffectorAnimationOffset(effectingAnimation, fireBoltAction);
+            return startTick;
+        }
+
+        private static float getEndTick(IStoryAction<UintT> storyAction, CM.FireBoltAction fireBoltAction, CM.Animation effectingAnimation, float startTick)
+        {
+            float endTick = storyAction.Time.End.ToMillis(cm.MillisPerTick);
+            if (fireBoltAction.MaxDuration.HasValue &&
+                fireBoltAction.MaxDuration.Value < storyAction.Time.End - storyAction.Time.Start)
+            {
+                endTick = startTick + fireBoltAction.MaxDuration.Value;
+            }
+            return endTick;
         }
 
         private static float getEffectorAnimationOffset(CM.Animation effectingAnimation, CM.FireBoltAction fireBoltAction)
         {
             float offset = 0;
-            //now that we have our parameters filled out, we need to shore up the start and end points of the animations
-            //relative to the effecting animation if there is one.
             if (effectingAnimation != null)
             {
                 CM.AnimationIndex effectingIndex = effectingAnimation.AnimationIndices.Find(x => x.Name == fireBoltAction.EffectorOffsetIndexName);
@@ -312,7 +282,6 @@ namespace Assets.scripts
                 {
                     offset = effectingIndex.TimeOffset;
                 }
-
             }
             return offset;
         }
@@ -326,7 +295,6 @@ namespace Assets.scripts
                 actorName = actorNameProperty.Value.Name;
                 return true;
             }
-
             Debug.Log("actorName not set for stepId[" + storyAction.Name + "]");
             return false;
         }
@@ -368,8 +336,8 @@ namespace Assets.scripts
                     {
                         if (getActorName(storyAction, domainActionParameter, out actorName))//actorName is defined, we can look up a model
                         {
-                            actorName = actorName.Split(uniqueActorIdentifierSeparators)[0];
-                            if (!getActorModel(actorName, out modelName))
+                            string homogenousActorName = actorName.Split(uniqueActorIdentifierSeparators)[0]; //handle numerically specified actor copies, looking up model for the base-name
+                            if (!getActorModel(homogenousActorName, out modelName))
                             {
                                 break;//didn't find all our datas.  give up on this create action and move to the next one
                             }
@@ -388,18 +356,15 @@ namespace Assets.scripts
                         }                        
                     }
                 }
-                startTick = storyAction.Time.Start.ToMillis(cm.MillisPerTick);
-                startTick += getEffectorAnimationOffset(effectingAnimation, ca);
-                if(!string.IsNullOrEmpty(modelName) && //validate necessary params
-                   !string.IsNullOrEmpty(actorName))
+                startTick = getStartTick(storyAction, ca, effectingAnimation);                
+                if(Create.ValidForConstruction(actorName,modelName))
                 {
                     aaq.Add(new Create(startTick, actorName, modelName, destination));
-                }
-                
+                }                
             }
         }
 
-        private static void enqueueDestroyActions(StructuredStep step, CM.DomainAction domainAction, 
+        private static void enqueueDestroyActions(IStoryAction<UintT> storyAction, CM.DomainAction domainAction, 
                                                     CM.Animation effectingAnimation, ActorActionQueue aaq)
         {
             foreach (CM.DestroyAction da in domainAction.DestroyActions)
@@ -408,25 +373,19 @@ namespace Assets.scripts
                 string actorName = null;
                 foreach (CM.DomainActionParameter domainActionParameter in domainAction.Params)
                 {
-                    if (domainActionParameter.Name == da.StartTickParamName)
+                    if (domainActionParameter.Name == da.ActorNameParamName)
                     {
-                        startTick = Convert.ToInt32((from xImpulseStepParam in step.Parameters
-                                                     where xImpulseStepParam.Name == domainActionParameter.Name
-                                                     select xImpulseStepParam.Value).FirstOrDefault());
-                    }
-                    else if (domainActionParameter.Name == da.ActorNameParamName)
-                    {
-                        actorName = (from xImpulseStepParam in step.Parameters
-                                     where xImpulseStepParam.Name == domainActionParameter.Name
-                                     select xImpulseStepParam.Value as string).FirstOrDefault();
-                        if (actorName == null)
+                        if (!getActorName(storyAction, domainActionParameter, out actorName))
                         {
-                            Debug.Log("actorName not set for stepId[" + step.ID + "]");
+                            break;
                         }
                     }
                 }
-                startTick += getEffectorAnimationOffset(effectingAnimation, da);
-                aaq.Add(new Destroy(startTick, actorName));
+                startTick = getStartTick(storyAction,da,effectingAnimation);
+                if (Destroy.ValidForConstruction(actorName))
+                {
+                    aaq.Add(new Destroy(startTick, actorName));
+                }
             }
         }
 
