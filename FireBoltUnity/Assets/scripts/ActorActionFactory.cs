@@ -150,7 +150,7 @@ namespace Assets.scripts
                         if (storyAction.TryGetProperty(domainActionParameter.Name, out coord))
                         {
 
-                            destination = ((Coordinate2D)coord.Value.Value).ToVector3();
+                            destination = ((Coordinate2D)coord.Value.Value).ToVector3(cm.DomainDistancePerEngineDistance);
                            
                         }
                         else
@@ -404,9 +404,13 @@ namespace Assets.scripts
 
         private static void loadStructuredImpulsePlan(string storyPlanPath)
         {
+            Debug.Log("begin story plan xml load");
             var xml = Impulse.v_1_336.Xml.Story.LoadFromFile(storyPlanPath);
+            Debug.Log("end story plan xml load");
             var factory = Impulse.v_1_336.StoryParsingFactories.GetUnsignedIntergerIntervalFactory();
+            Debug.Log("begin story plan parse");
             story = factory.ParseStory(xml, false);//TODO true!
+            Debug.Log("end story plan parse");
         }
 
         private static CM.CinematicModel loadCinematicModel(string cinematicModelPath)

@@ -1,4 +1,4 @@
-<cinematicModel millisPerTick="33">
+<cinematicModel millisPerTick="33" domainDistancePerEngineDistance="80">
   <domainActions>
     <domainAction name="spawn-creep" >
       <params>
@@ -149,6 +149,57 @@
         <animationName>walk</animationName>
       </animationNames>
     </actor>
+    <actor name="Wisp" model="m005.fbx" >
+      <animationNames>
+      </animationNames>
+    </actor>
+
+    <actor name="Dazzle" model="m005.fbx" >
+      <animationNames>
+        <animationName>verticalSwipe</animationName>
+        <animationName>sneak</animationName>
+        <animationName>die</animationName>
+        <animationName>walk</animationName>
+      </animationNames>
+    </actor>
+
+    <actor name="Legion Commander" model="m005.fbx" >
+      <animationNames>
+        <animationName>verticalSwipe</animationName>
+        <animationName>sneak</animationName>
+        <animationName>die</animationName>
+        <animationName>walk</animationName>
+      </animationNames>
+    </actor>
+
+    <actor name="Mirana" model="m005.fbx" >
+      <animationNames>
+        <animationName>verticalSwipe</animationName>
+        <animationName>sneak</animationName>
+        <animationName>die</animationName>
+        <animationName>walk</animationName>
+      </animationNames>
+    </actor>
+
+    <actor name="Ancient Apparition" model="m005.fbx" >
+      <animationNames>
+        <animationName>verticalSwipe</animationName>
+        <animationName>sneak</animationName>
+        <animationName>die</animationName>
+        <animationName>walk</animationName>
+      </animationNames>
+    </actor>
+
+    <actor name="Morphling" model="m005.fbx" >
+      <animationNames>
+        <animationName>verticalSwipe</animationName>
+        <animationName>sneak</animationName>
+        <animationName>die</animationName>
+        <animationName>walk</animationName>
+      </animationNames>
+    </actor>
+
+
 
     <actor name="npc_dota_creep_badguys_melee" model="Non-heroes/creep_bad_melee/creep_bad_melee_model.fbx" >
       <animationNames>

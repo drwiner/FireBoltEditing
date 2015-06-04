@@ -43,6 +43,11 @@ namespace Assets.scripts
             return new Vector3((float)from.X, 0, (float)from.Y);
         }
 
+        public static Vector3 ToVector3(this Impulse.v_1_336.Constants.Coordinate2D from, float domainToEngine)
+        {
+            return new Vector3((float)from.X, 0, (float)from.Y)*1/domainToEngine;
+        }
+
         public static float ToMillis(this uint tick, uint millisPerTick)
         {
             return tick * millisPerTick;
