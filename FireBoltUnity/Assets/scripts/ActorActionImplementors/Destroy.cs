@@ -32,10 +32,16 @@ namespace Assets.scripts
             this.actorName = actorName;
         }
 
-        public void Init()
+        public bool Init()
         {
             GameObject actor = GameObject.Find(actorName);
+            if (actor == null)
+            {
+                Debug.LogError(string.Format("actor[{0}] not found for destroy", actorName));
+                return false;
+            }
             actor.SetActive(false);
+            return true;
         }
 
         public void Execute()

@@ -9,6 +9,17 @@
         <createAction actorNameParamName="actor" originParamName="position" />
       </createActions>
     </domainAction>
+    <domainAction name="die" >
+      <params>
+        <param name="actor" />
+      </params>
+      <destroyActions>
+        <destroyAction actorNameParamName="actor" effector="false" effectorOffsetIndexName="onTheGround"/>
+      </destroyActions>
+      <animateActions>
+        <animateAction name="die" actorNameParamName="actor" effector="true"/>
+      </animateActions>
+    </domainAction>
 		<domainAction name="buy-item" > 
       <params>
         <param name="actor" />
@@ -203,20 +214,29 @@
 
     <actor name="npc_dota_creep_badguys_melee" model="Non-heroes/creep_bad_melee/creep_bad_melee_model.fbx" >
       <animationNames>
-        <animationName>verticalSwipe</animationName>
-        <animationName>sneak</animationName>
         <animationName>die</animationName>
         <animationName>walk</animationName>
       </animationNames>
     </actor>
     <actor name="npc_dota_creep_goodguys_melee" model="Non-heroes/creep_good_melee/creep_good_melee_model.fbx" >
       <animationNames>
-        <animationName>verticalSwipe</animationName>
-        <animationName>sneak</animationName>
         <animationName>die</animationName>
         <animationName>walk</animationName>
       </animationNames>
     </actor>
+    <actor name="npc_dota_creep_badguys_ranged" model="Non-heroes/creep_bad_ranged/creep_bad_ranged_model.fbx" >
+      <animationNames>
+        <animationName>die</animationName>
+        <animationName>walk</animationName>
+      </animationNames>
+    </actor>
+    <actor name="npc_dota_creep_goodguys_ranged" model="Non-heroes/creep_good_ranged/creep_good_ranged_model.fbx" >
+      <animationNames>
+        <animationName>die</animationName>
+        <animationName>walk</animationName>
+      </animationNames>
+    </actor>
+
     <actor name="radiant_observer_ward" model="Non-heroes/ward/ward_model.fbx" >
       <animationNames>        
       </animationNames>
@@ -235,7 +255,11 @@
         <animationIndex name="sneakAWhileMore" timeOffset ="2220"/>
       </animationIndices>
     </animation>
-    <animation fileName="Unity_Falling_Down_Dying_tk01.fbx" name="die"/>
+    <animation fileName="humanoid_dying.fbx" name="die">
+      <animationIndices>
+        <animationIndex name="onTheGround" timeOffset ="3125"/>
+      </animationIndices>
+    </animation>
     <animation fileName="Pudge_walk.fbx" name="walk"/>
     <animation fileName="humanoid_idle.fbx" name="idle">
     </animation>
@@ -259,5 +283,18 @@
                           animationName="walk" loopAnimation="true" />
     <animationMapping animateActionName="walk" actorName="npc_dota_creep_goodguys_melee"
                           animationName="walk" loopAnimation="true" />
+    <animationMapping animateActionName="die" actorName="npc_dota_creep_goodguys_melee"
+                      animationName="die" loopAnimation="false" />
+    <animationMapping animateActionName="die" actorName="npc_dota_creep_badguys_melee"
+                      animationName="die" loopAnimation="false" />
+
+    <animationMapping animateActionName="walk" actorName="npc_dota_creep_badguys_ranged"
+                      animationName="walk" loopAnimation="true" />
+    <animationMapping animateActionName="walk" actorName="npc_dota_creep_goodguys_ranged"
+                          animationName="walk" loopAnimation="true" />
+    <animationMapping animateActionName="die" actorName="npc_dota_creep_goodguys_ranged"
+                  animationName="die" loopAnimation="false" />
+    <animationMapping animateActionName="die" actorName="npc_dota_creep_badguys_ranged"
+                      animationName="die" loopAnimation="false" />
   </animationMappings>
 </cinematicModel>

@@ -35,10 +35,14 @@ namespace Assets.scripts
             animationHash = Animator.StringToHash("trigger");
         }
 
-        public void Init()
+        public bool Init()
         {
             actor = GameObject.Find(actorName);
-            if (actor == null) Debug.LogError("actor[" + actorName + "] not found.  cannot animate");
+            if (actor == null)
+            {
+                Debug.LogError("actor[" + actorName + "] not found.  cannot animate");
+                return false;
+            }
 
             animator = actor.GetComponent<Animator>();
             if (animator == null)
@@ -63,16 +67,18 @@ namespace Assets.scripts
 				oldAnim.wrapMode = WrapMode.Once;
 
             animatorOverride["idle"] = animation;
-           
+            return true;
         }
 
-	    public void Execute () {
-		    animator.SetTrigger(animationHash);
+	    public void Execute () 
+        {
+		    //let it roll
+            animator.SetTrigger(animationHash);
 	    }
 
         public void Stop()
         {
- 	        
+            animator.StopPlayback();    
         }
 
         public float StartTick()

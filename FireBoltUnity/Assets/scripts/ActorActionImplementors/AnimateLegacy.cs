@@ -19,7 +19,7 @@ namespace Assets.scripts
         }
 
 
-        public void Init()
+        public bool Init()
         {
             throw new System.NotImplementedException();
         }

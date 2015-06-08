@@ -57,6 +57,7 @@
      <Compile Include="Assets\scripts\ElPresidente.cs" />
      <Compile Include="Assets\scripts\Extensions.cs" />
      <Compile Include="Assets\scripts\IActorAction.cs" />
+     <Compile Include="Assets\scripts\rotationCaster.cs" />
      <None Include="Assets\cinematicModels\DotaModel.xml" />
      <None Include="Assets\storyPlans\Impulsev1_336\600924233.xml" />
      <None Include="Assets\storyPlans\sneakyDancePlan.xml" />

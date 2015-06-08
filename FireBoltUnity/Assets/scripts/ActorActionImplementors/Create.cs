@@ -29,10 +29,17 @@ namespace Assets.scripts
             this.position = position;
         }
 
-        public void Init()
+        public bool Init()
         {
-            GameObject actor = GameObject.Instantiate(AssetDatabase.LoadAssetAtPath<GameObject>("Assets/Resources/Models/" + modelName), position, Quaternion.identity) as GameObject;
+            GameObject model = AssetDatabase.LoadAssetAtPath<GameObject>("Assets/Resources/Models/" + modelName);
+            if (model == null)
+            {
+                Debug.LogError(string.Format("could not find model[{0}] to create",modelName));
+                return false;
+            }
+            GameObject actor = GameObject.Instantiate(model, position, Quaternion.identity) as GameObject;
             actor.name = actorName;
+            return true;
         }
 
         public void Execute()

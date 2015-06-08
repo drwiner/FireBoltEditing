@@ -43,8 +43,8 @@ public class ElPresidente : MonoBehaviour {
         while(!aaq.Empty && aaq.Peek().StartTick() <= currentTick)
         {
             IActorAction iaa = aaq.Pop();
-            iaa.Init();
-            executingActions.Add(iaa);
+            if (iaa.Init())
+                executingActions.Add(iaa);
         }
 	}
 

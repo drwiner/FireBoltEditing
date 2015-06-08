@@ -20,6 +20,8 @@ namespace Assets.scripts
     {
         //TODO add support for assigning full numeric extended name to duplicate actors (creeps) so we can move and animate them uniquely
         //TODO speedify by adding caching to lookup methods
+        //TODO concatenate looping subsequent animations on the same character into a single action?  would require even longer preprocessing...
+        //add binary search to the aaq to support animation concat
         private static CM.CinematicModel cm;
         private static AStory<UintV, UintT, IIntervalSet<UintV, UintT>> story;
         private static readonly char[] uniqueActorIdentifierSeparators = { ' ' };
@@ -98,8 +100,8 @@ namespace Assets.scripts
                 float startTick = 0;
                 float endTick = 0;
                 string actorName = null;
-                float targetRadians,targetDegrees;
-                Vector3 targetVector = Vector3.zero;
+                float targetDegrees=0;
+                //Vector3 targetVector = Vector3.zero;
                 foreach (CM.DomainActionParameter domainActionParameter in domainAction.Params)
                 {
                     if (domainActionParameter.Name == ra.ActorNameParamName)
@@ -115,8 +117,9 @@ namespace Assets.scripts
                         if (storyAction.TryGetProperty(domainActionParameter.Name, out targetOrientation))
                         {
                             targetDegrees = (float)(double)targetOrientation.Value.Value;
-                            targetRadians = Mathf.Deg2Rad * targetDegrees;
-                            targetVector = new Vector3(Mathf.Cos(targetRadians), 0f, Mathf.Sin(targetRadians));
+                            //targetRadians = Mathf.Deg2Rad * targetDegrees;
+                            //targetVector = new Vector3(Mathf.Cos(targetRadians), 0f, Mathf.Sin(targetRadians));
+                            
                         }
                         else
                         {
@@ -128,7 +131,7 @@ namespace Assets.scripts
                 endTick = getEndTick(storyAction, ra, effectingAnimation, startTick);
                 if (Rotate.ValidForConstruction(actorName))
                 {
-                    aaq.Add(new Rotate(startTick, endTick, actorName, targetVector));
+                    aaq.Add(new Rotate(startTick, endTick, actorName, targetDegrees));
                 }                
             }
         }
@@ -417,5 +420,7 @@ namespace Assets.scripts
         {
             return CM.Parser.Parse(cinematicModelPath);
         }
+
+        
     }
 }

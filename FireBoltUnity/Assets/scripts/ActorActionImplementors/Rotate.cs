@@ -13,8 +13,12 @@ namespace Assets.scripts
         float startTick, endTick;
         string actorName;
         Vector3 destination;
+        float targetDegrees;
         GameObject actor;
         float requiredVelocity;
+        float stepSize;
+        Quaternion target;
+
 
         public static bool ValidForConstruction(string actorName)
         {
@@ -23,36 +27,49 @@ namespace Assets.scripts
             return true;
         }
 
-        public Rotate(float startTick, float endTick, string actorName, Vector3 destination) 
+        public Rotate(float startTick, float endTick, string actorName, float targetDegrees) 
         {
             this.startTick = startTick;
             this.actorName = actorName;
             this.endTick = endTick;
-            this.destination = destination;
+            this.targetDegrees = targetDegrees;
         }
 
-        public void Init()
+        public bool Init()
         {
             actor = GameObject.Find(actorName);
             if(actor == null)
             {
                 Debug.LogError("actor name [" + actorName + "] not found. cannot rotate");
+                return false;
             }
-            Vector3 direction = (destination - actor.transform.position);
-            float rotateDuration = endTick - startTick; //may want to condition this on something 
-            float totalRotationRequired = actor.transform.position.GetXZAngleTo(destination);
+            
+            targetDegrees = convertSourceEngineToUnityRotation(targetDegrees);
+
+            float rotateDuration = endTick - startTick;
+            float totalRotationRequired = Mathf.Abs(actor.transform.rotation.eulerAngles.y - targetDegrees);            
             requiredVelocity = totalRotationRequired/rotateDuration;
+
+            target = Quaternion.Euler(0, targetDegrees, 0);
             lastUpdateTime = Time.time * 1000;
+            return true;
         }
 
         public void Execute()
         {
             float rotateTimeElapsed = Time.time * 1000 - lastUpdateTime;
-            Vector3 newRotation = new Vector3(actor.transform.eulerAngles.x,
-                              actor.transform.eulerAngles.y + requiredVelocity * rotateTimeElapsed,
-                              actor.transform.eulerAngles.z);
-            actor.transform.eulerAngles = newRotation;
+            //Vector3 newRotation = new Vector3(actor.transform.eulerAngles.x,
+            //                  actor.transform.eulerAngles.y + requiredVelocity * rotateTimeElapsed,
+            //                  actor.transform.eulerAngles.z);
+            //actor.transform.eulerAngles = newRotation;
+            actor.transform.rotation = Quaternion.RotateTowards(actor.transform.rotation, target, requiredVelocity * rotateTimeElapsed);
             lastUpdateTime = Time.time * 1000;
+        }
+
+        private float convertSourceEngineToUnityRotation(float sourceDegrees)
+        {
+            float unityDegrees = -sourceDegrees + 90 % 360;
+            return unityDegrees;
         }
 
         public void Stop()
