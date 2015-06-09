@@ -200,7 +200,13 @@ namespace Assets.scripts
                         Debug.LogError("actorName not set for stepId[" + storyAction.Name + "]");
                         return null;
                     }
-                    effectorAnimationMapping = cm.FindAnimationMapping(effectorActorName, effectorAnimateAction.Name);
+                    CM.Actor effectorActor = cm.FindActor(effectorActorName);
+                    if (effectorActor == null)
+                    {
+                        Debug.Log(string.Format("effector actor [{0}] undefined for step[{1}]",effectorActorName,storyAction.Name));
+                        return null;
+                    }
+                    effectorAnimationMapping = effectorActor.FindAnimationMapping(effectorAnimateAction.Name);
                     if (effectorAnimationMapping == null)
                     {
                         Debug.Log("cinematic model animation instance undefined for actor[" +
@@ -215,7 +221,7 @@ namespace Assets.scripts
 
         private static void enqueueAnimateActions(IStoryAction<UintT> storyAction, CM.DomainAction domainAction, CM.Animation effectingAnimation, ActorActionQueue aaq)
         {            
-            foreach(CM.AnimateAction aa in domainAction.AnimateActions)
+            foreach(CM.AnimateAction animateAction in domainAction.AnimateActions)
             {
                 string actorName = null;
                 float startTick = 0;
@@ -224,16 +230,22 @@ namespace Assets.scripts
                 CM.Animation animation = null;
                 foreach(CM.DomainActionParameter domainActionParameter in domainAction.Params)
                 {
-                    if (domainActionParameter.Name == aa.ActorNameParamName)
+                    if (domainActionParameter.Name == animateAction.ActorNameParamName)
                     {
                         if (getActorName(storyAction, domainActionParameter, out actorName))
                         {
                             string homogenousActorName = actorName.Split(uniqueActorIdentifierSeparators)[0];
-                            animMapping = cm.FindAnimationMapping(homogenousActorName, aa.Name);
+                            CM.Actor actor = cm.FindActor(actorName);
+                            if (actor == null)
+                            {
+                                Debug.Log(string.Format("actor[{0}] undefined",actorName));
+                                break;
+                            }
+                            animMapping = actor.FindAnimationMapping(animateAction.Name);
                             if (animMapping == null)
                             {
                                 Debug.Log("cinematic model animation instance undefined for actor[" +
-                                    homogenousActorName + "] animateAction[" + aa.Name + "]");
+                                    homogenousActorName + "] animateAction[" + animateAction.Name + "]");
                                 break;
                             }
                             animation = cm.FindAnimation(animMapping.AnimationName);
@@ -245,8 +257,8 @@ namespace Assets.scripts
                         }
                     }
                 }
-                startTick = getStartTick(storyAction, aa, effectingAnimation);
-                endTick = getEndTick(storyAction, aa, effectingAnimation, startTick);
+                startTick = getStartTick(storyAction, animateAction, effectingAnimation);
+                endTick = getEndTick(storyAction, animateAction, effectingAnimation, startTick);
                 if (AnimateMecanim.ValidForConstruction(actorName, animation))
                 {
                     aaq.Add(new AnimateMecanim(startTick, endTick, actorName, animation.FileName, animMapping.LoopAnimation));

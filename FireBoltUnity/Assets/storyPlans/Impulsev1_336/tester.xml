@@ -3,17 +3,17 @@
     <actions>
       <action type="spawn-hero" name="step7539">
         <property name="location" value="(0,0)"/>
-        <property name="actor" value="npc_dota_creep_goodguys_ranged"/>
+        <property name="actor" value="Steve Holt"/>
         <property name="time" value="2000-2001"/>
       </action>
       <action type="move" name="step7533">
         <property name="origin" value="(0, 0)"/>
         <property name="destination" value="(-10.0, 0)"/>
-        <property name="actor" value="npc_dota_creep_goodguys_ranged"/>
+        <property name="actor" value="Steve Holt"/>
         <property name="time" value="2001-15000"/>
       </action>
       <action type="die" name="step1450">
-        <property name="actor" value="npc_dota_creep_goodguys_ranged"/>
+        <property name="actor" value="Steve Holt"/>
         <property name="time" value="15000-20000"/>
       </action>
           <!--<action type="spawn-hero" name="step7539">

@@ -224,9 +224,9 @@
       </animationNames>
     </actor>
 
-    <actor name="Steve Holt" model="Heroes/pudge/pudge_model.fbx">
+    <actor name="Steve Holt" model="Heroes/crystal_maiden/crystal_maiden_model.fbx">
       <animationMappings>
-        <animationMapping animateActionName="walk" animationName="pudge_walk" loopAnimation="true"/>
+        <animationMapping animateActionName="walk" animationName="cm_walk" loopAnimation="true"/>
       </animationMappings>
     </actor>
   </actors>
