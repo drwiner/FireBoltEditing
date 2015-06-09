@@ -19,12 +19,13 @@ namespace Assets.scripts
     public class ActorActionFactory
     {
         //TODO add support for assigning full numeric extended name to duplicate actors (creeps) so we can move and animate them uniquely
-        //TODO speedify by adding caching to lookup methods
+        //TODO speedify by adding caching to lookup methods...initial effort done in cinematic model
         //TODO concatenate looping subsequent animations on the same character into a single action?  would require even longer preprocessing...
+        //TODO does rotate work with dota logs now?
         //add binary search to the aaq to support animation concat
         private static CM.CinematicModel cm;
         private static AStory<UintV, UintT, IIntervalSet<UintV, UintT>> story;
-        private static readonly char[] uniqueActorIdentifierSeparators = { ' ' };
+        private static readonly char[] uniqueActorIdentifierSeparators = { ':' };
 
         /// <summary>
         /// 
@@ -116,10 +117,7 @@ namespace Assets.scripts
                         IActionProperty targetOrientation;
                         if (storyAction.TryGetProperty(domainActionParameter.Name, out targetOrientation))
                         {
-                            targetDegrees = (float)(double)targetOrientation.Value.Value;
-                            //targetRadians = Mathf.Deg2Rad * targetDegrees;
-                            //targetVector = new Vector3(Mathf.Cos(targetRadians), 0f, Mathf.Sin(targetRadians));
-                            
+                            targetDegrees = (float)(double)targetOrientation.Value.Value;                           
                         }
                         else
                         {

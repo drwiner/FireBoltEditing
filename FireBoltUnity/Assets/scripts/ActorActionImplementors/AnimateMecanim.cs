@@ -15,7 +15,7 @@ namespace Assets.scripts
         private string animName;
         private Animator animator;
         private AnimationClip animation;
-        private int animationHash; 
+        private int playTriggerHash,stopTriggerHash; 
 		private bool loop;
 
         public static bool ValidForConstruction(string actorName, CM.Animation animation)
@@ -32,7 +32,8 @@ namespace Assets.scripts
             this.actorName = actorName;
             this.animName = animName;
 			this.loop = loop;
-            animationHash = Animator.StringToHash("trigger");
+            playTriggerHash = Animator.StringToHash("play");
+            stopTriggerHash = Animator.StringToHash("stop");
         }
 
         public bool Init()
@@ -62,9 +63,9 @@ namespace Assets.scripts
                 Debug.LogError("Missing animation asset");
             }
 			if (loop) {
-				oldAnim.wrapMode = WrapMode.Loop;
+				animation.wrapMode = WrapMode.Loop;
 			} else
-				oldAnim.wrapMode = WrapMode.Once;
+				animation.wrapMode = WrapMode.Once;
 
             animatorOverride["idle"] = animation;
             return true;
@@ -73,12 +74,12 @@ namespace Assets.scripts
 	    public void Execute () 
         {
 		    //let it roll
-            animator.SetTrigger(animationHash);
+            animator.SetTrigger(playTriggerHash);
 	    }
 
         public void Stop()
         {
-            animator.StopPlayback();    
+            animator.SetTrigger(stopTriggerHash);
         }
 
         public float StartTick()
