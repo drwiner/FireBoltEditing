@@ -38,15 +38,6 @@
         <createAction actorNameParamName="actor" originParamName="location" />
       </createActions>
     </domainAction>
-    <domainAction name="exit" >
-      <params>
-        <param name="actor" />
-      </params>
-      <createActions/>        
-      <destroyActions>
-        <destroyAction actorNameParamName="actor" />
-      </destroyActions>
-    </domainAction>
     <domainAction name="move" >
       <params>
         <param name="actor" />

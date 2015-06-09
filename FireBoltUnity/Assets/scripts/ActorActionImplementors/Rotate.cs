@@ -64,11 +64,20 @@ namespace Assets.scripts
             //actor.transform.eulerAngles = newRotation;
             actor.transform.rotation = Quaternion.RotateTowards(actor.transform.rotation, target, requiredVelocity * rotateTimeElapsed);
             lastUpdateTime = Time.time * 1000;
+            Debug.DrawRay(actor.transform.position + Vector3.up, actor.transform.forward,Color.magenta);
         }
 
         private float convertSourceEngineToUnityRotation(float sourceDegrees)
         {
             float unityDegrees = -sourceDegrees + 90 % 360;
+            while(unityDegrees > 180)
+            {
+                unityDegrees -= 360;
+            }
+            while(unityDegrees < -180)
+            {
+                unityDegrees += 360;
+            }
             return unityDegrees;
         }
 
