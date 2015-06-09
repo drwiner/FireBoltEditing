@@ -100,12 +100,9 @@
   </domainActions>
   <actors>
     <actor name="secretAgentMan" model="m005.fbx" >
-      <animationNames>
-        <animationName>verticalSwipe</animationName>
-        <animationName>sneak</animationName>
-        <animationName>die</animationName>
-        <animationName>walk</animationName>
-      </animationNames>
+      <animationMappings>
+      <animationMapping animateActionName="observe" animationName="idle" loopAnimation="true" />
+      </animationMappings>
     </actor>
     <actor name="Pudge" model="Heroes/pudge/pudge_model.fbx" >
       <animationNames>
@@ -270,8 +267,7 @@
     </animation>
   </animations>
 	<animationMappings>
-    <animationMapping animateActionName="observe" actorName="secretAgentMan"
-                      animationName="idle" loopAnimation="true" />
+
     
     <animationMapping animateActionName="sneak" actorName="Pudge"
                       animationName="sneak" loopAnimation="true" />

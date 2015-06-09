@@ -20,10 +20,6 @@ namespace CinematicModel
         [XmlAttribute(AttributeName = "model")]
         public string Model { get; set; }
 
-        [XmlArray("animationNames")]
-        [XmlArrayItem("animationName")]
-        public List<string> Animations { get; set; }
-
         [XmlArray(ElementName = "animationMappings")]
         [XmlArrayItem(ElementName = "animationMapping")]
         public List<AnimationMapping> AnimationMappings { get; set; }
