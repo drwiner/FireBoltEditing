@@ -2560,6 +2560,192 @@
             <constant value="bad_filler_15"/>
         </set>
     </objects>
-    <sentences>
-    </sentences>
+  <sentences>
+
+    <predicate name="at">
+      <constant value="Ancient Apparition"/>
+      <constant value="(-1809.0, -5964.0)"/>
+      <constant value="0-593"/>
+    </predicate>
+    <predicate name="modifier_morphling_morph_agi">
+      <constant value="dota_unknown"/>
+      <constant value="Morphling"/>
+      <constant value="601-687"/>
+    </predicate>
+    <predicate name="modifier_morphling_morph_agi">
+      <constant value="dota_unknown"/>
+      <constant value="Morphling"/>
+      <constant value="1071-1139"/>
+    </predicate>
+    <predicate name="at">
+      <constant value="Morphling"/>
+      <constant value="(-3189.0, 6079.0)"/>
+      <constant value="0-1147"/>
+    </predicate>
+    <predicate name="substep" temporal="false">
+      <constant value="step265"/>
+      <constant value="step264"/>
+    </predicate>
+    <predicate name="substep" temporal="false">
+      <constant value="step294"/>
+      <constant value="step293"/>
+    </predicate>
+    <predicate name="substep" temporal="false">
+      <constant value="step335"/>
+      <constant value="step334"/>
+    </predicate>
+    <predicate name="substep" temporal="false">
+      <constant value="step340"/>
+      <constant value="step339"/>
+    </predicate>
+    <predicate name="substep" temporal="false">
+      <constant value="step343"/>
+      <constant value="step342"/>
+    </predicate>
+    <predicate name="substep" temporal="false">
+      <constant value="step355"/>
+      <constant value="step354"/>
+    </predicate>
+    <predicate name="substep" temporal="false">
+      <constant value="step370"/>
+      <constant value="step369"/>
+    </predicate>
+    <predicate name="substep" temporal="false">
+      <constant value="step379"/>
+      <constant value="step378"/>
+    </predicate>
+    <predicate name="substep" temporal="false">
+      <constant value="step385"/>
+      <constant value="step384"/>
+    </predicate>
+    <predicate name="substep" temporal="false">
+      <constant value="step400"/>
+      <constant value="step399"/>
+    </predicate>
+    <predicate name="substep" temporal="false">
+      <constant value="step434"/>
+      <constant value="step433"/>
+    </predicate>
+    <predicate name="substep" temporal="false">
+      <constant value="step437"/>
+      <constant value="step436"/>
+    </predicate>
+    <predicate name="substep" temporal="false">
+      <constant value="step443"/>
+      <constant value="step442"/>
+    </predicate>
+    <predicate name="substep" temporal="false">
+      <constant value="step448"/>
+      <constant value="step447"/>
+    </predicate>
+    <predicate name="substep" temporal="false">
+      <constant value="step464"/>
+      <constant value="step463"/>
+    </predicate>
+    <predicate name="substep" temporal="false">
+      <constant value="step471"/>
+      <constant value="step470"/>
+    </predicate>
+    <predicate name="substep" temporal="false">
+      <constant value="step478"/>
+      <constant value="step477"/>
+    </predicate>
+    <predicate name="substep" temporal="false">
+      <constant value="step482"/>
+      <constant value="step481"/>
+    </predicate>
+    <predicate name="substep" temporal="false">
+      <constant value="step491"/>
+      <constant value="step490"/>
+    </predicate>
+    <predicate name="substep" temporal="false">
+      <constant value="step518"/>
+      <constant value="step517"/>
+    </predicate>
+    <predicate name="substep" temporal="false">
+      <constant value="step532"/>
+      <constant value="step531"/>
+    </predicate>
+    <predicate name="substep" temporal="false">
+      <constant value="step542"/>
+      <constant value="step541"/>
+    </predicate>
+    <predicate name="substep" temporal="false">
+      <constant value="step547"/>
+      <constant value="step546"/>
+    </predicate>
+    <predicate name="gamestate">
+      <constant value="pregame"/>
+      <constant value="1-2250"/>
+    </predicate>
+    <predicate name="at">
+      <constant value="npc_dota_creep_goodguys_melee 822380"/>
+      <constant value="(-6561.0, -4064.0)"/>
+      <constant value="2037-2248"/>
+    </predicate>
+    <predicate name="at">
+      <constant value="npc_dota_creep_badguys_melee 1471597"/>
+      <constant value="(6282.0, 3585.0)"/>
+      <constant value="2017-2248"/>
+    </predicate>
+    <predicate name="at">
+      <constant value="npc_dota_creep_badguys_melee 1408115"/>
+      <constant value="(6212.0, 3626.0)"/>
+      <constant value="1851-2248"/>
+    </predicate>
+    <predicate name="at">
+      <constant value="npc_dota_creep_goodguys_melee 1152120"/>
+      <constant value="(-6614.0, -4002.0)"/>
+      <constant value="1693-2248"/>
+    </predicate>
+    <predicate name="at">
+      <constant value="npc_dota_creep_goodguys_melee 595060"/>
+      <constant value="(-3585.0, -6112.0)"/>
+      <constant value="1823-2248"/>
+    </predicate>
+    <predicate name="at">
+      <constant value="npc_dota_creep_badguys_melee 1281145"/>
+      <constant value="(6240.0, 3702.0)"/>
+      <constant value="1683-2248"/>
+    </predicate>
+    <predicate name="at">
+      <constant value="npc_dota_creep_goodguys_melee 1471610"/>
+      <constant value="(-3638.0, -6175.0)"/>
+      <constant value="1665-2248"/>
+    </predicate>
+    <predicate name="at">
+      <constant value="npc_dota_creep_badguys_melee 760943"/>
+      <constant value="(3178.0, 5729.0)"/>
+      <constant value="1949-2248"/>
+    </predicate>
+    <predicate name="at">
+      <constant value="npc_dota_creep_goodguys_melee 455792"/>
+      <constant value="(-4886.0, -4447.0)"/>
+      <constant value="1933-2248"/>
+    </predicate>
+    <predicate name="at">
+      <constant value="npc_dota_creep_badguys_melee 1342581"/>
+      <constant value="(3108.0, 5770.0)"/>
+      <constant value="1799-2248"/>
+    </predicate>
+    <predicate name="at">
+      <constant value="npc_dota_creep_badguys_melee 1647739"/>
+      <constant value="(3136.0, 5846.0)"/>
+      <constant value="1649-2248"/>
+    </predicate>
+    <predicate name="substep" temporal="false">
+      <constant value="step570"/>
+      <constant value="step569"/>
+    </predicate>
+    <predicate name="at">
+      <constant value="npc_dota_creep_goodguys_melee 1199228"/>
+      <constant value="(-4956.0, -4406.0)"/>
+      <constant value="1641-2254"/>
+    </predicate>
+    <predicate name="at">
+      <constant value="npc_dota_creep_goodguys_melee 1993842"/>
+      <constant value="(-6614.0, -4127.0)"/>
+      <constant value="1865-2248"/>
+    </predicate>
+  </sentences>
 </story>

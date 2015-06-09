@@ -62,33 +62,33 @@ namespace Assets.scripts
         {
             var interval = new UintT(new UintV(0), new UintV(1));
             var initialPositions = from sentence in story.Sentences
-                        where sentence is Predicate
-                        let p = (Predicate) sentence
-                        where story.IntervalSet.IncludesOrMeetsStartOf<UintV, UintT>((UintT)p.Time, interval) && 
-                              p.Name == "at" && 
-                              p.Temporal &&
-                              p.Time is UintT && 
-                              p.Terms[0] is IConstant && 
-                              p.Terms[1] is IConstant<Coordinate2D>
-                        select new { Actor = p.Terms[0].Name, Location = (p.Terms[1] as IConstant<Coordinate2D>).Value };
+                                   where sentence is Predicate
+                                   let p = (Predicate)sentence
+                                   where p.Temporal &&      
+                                         p.Name == "at" &&
+                                         story.IntervalSet.IncludesOrMeetsStartOf<UintV, UintT>((UintT)p.Time, interval) &&
+                                         p.Time is UintT &&
+                                         p.Terms[0] is IConstant &&
+                                         p.Terms[1] is IConstant<Coordinate2D>
+                                   select new { Actor = p.Terms[0].Name, Location = (p.Terms[1] as IConstant<Coordinate2D>).Value };
 
-            Debug.Log("building init state creations");
+            Debug.Log("building init state creation actions");
             foreach (var initPos in initialPositions)
             {
                 Debug.Log(initPos.Actor + ", " + initPos.Location.ToString());
                 CM.Actor actor = cm.FindActor(initPos.Actor);
-                if(actor == null)
+                if (actor == null)
                 {
                     Debug.Log("actor [" + initPos.Actor + "] not found in cinematic model.");
                     continue;
                 }
 
-                string modelFileName = actor.Model; 
+                string modelFileName = actor.Model;
                 if (string.IsNullOrEmpty(modelFileName))
                 {
                     Debug.Log("model name for actor[" + initPos.Actor + "] not found in cinematic model.");
                     continue;
-                }                    
+                }
                 aaq.Add(new Create(0, initPos.Actor, modelFileName, initPos.Location.ToVector3()));
             }
         }
