@@ -10,13 +10,13 @@ namespace CinematicModel
     [XmlRoot(ElementName="cinematicModel")]
     public class CinematicModel
     {
-        private Dictionary<Tuple<string, string>, AnimationMapping> animationMappings;
+        //private Dictionary<Tuple<string, string>, AnimationMapping> animationMappings;
         private Dictionary<string, Actor> actors;
         private Dictionary<string, Animation> animations;
 
         public CinematicModel()
         {
-            animationMappings = new Dictionary<Tuple<string, string>, AnimationMapping>();
+            //animationMappings = new Dictionary<Tuple<string, string>, AnimationMapping>();
             actors = new Dictionary<string, Actor>();
             animations = new Dictionary<string, Animation>();
         }
@@ -35,26 +35,9 @@ namespace CinematicModel
         [XmlArrayItem(ElementName = "actor")]
         public List<Actor> Actors { get; set; }
 
-        [XmlArray(ElementName = "animationMappings")]
-        [XmlArrayItem(ElementName = "animationMapping")]
-        public List<AnimationMapping> AnimationMappings { get; set; }
-
         [XmlArray(ElementName = "animations")]
         [XmlArrayItem(ElementName = "animation")]
         public List<Animation> Animations { get; set; }
-
-        public AnimationMapping FindAnimationMapping(string actorName, string animateActionName)
-        {
-            Tuple<string,string> mappingKey = new Tuple<string,string>(actorName,animateActionName);
-            AnimationMapping animationMapping;
-            if(animationMappings.TryGetValue(mappingKey,out animationMapping))
-            {
-                return animationMapping;
-            }
-            animationMapping = AnimationMappings.Find(x => x.ActorName == actorName && x.AnimateActionName == animateActionName);
-            animationMappings.Add(mappingKey,animationMapping);
-            return animationMapping;
-        }
 
         public Animation FindAnimation(string animationName)
         {

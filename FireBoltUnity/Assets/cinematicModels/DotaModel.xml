@@ -223,6 +223,12 @@
       <animationNames>        
       </animationNames>
     </actor>
+
+    <actor name="Steve Holt" model="Heroes/pudge/pudge_model.fbx">
+      <animationMappings>
+        <animationMapping animateActionName="walk" animationName="pudge_walk" loopAnimation="true"/>
+      </animationMappings>
+    </actor>
   </actors>
   <animations>
     <animation fileName="crystal_maiden_die.fbx" name="cm_die">
@@ -259,6 +265,7 @@
       </animationIndices>
     </animation>
     <animation fileName="Pudge_walk.fbx" name="walk"/>
+    <animation fileName="Pudge_walk.fbx" name="pudge_walk"/>
     <animation fileName="humanoid_idle.fbx" name="idle">
     </animation>
   </animations>

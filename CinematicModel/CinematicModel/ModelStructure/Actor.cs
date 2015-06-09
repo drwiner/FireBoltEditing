@@ -8,6 +8,9 @@ namespace CinematicModel
 {
     public class Actor
     {
+        
+        private Dictionary<string, AnimationMapping> animationMappings;
+
         [XmlAttribute(AttributeName="name")]
         public string Name { get; set; }
 
@@ -20,5 +23,26 @@ namespace CinematicModel
         [XmlArray("animationNames")]
         [XmlArrayItem("animationName")]
         public List<string> Animations { get; set; }
+
+        [XmlArray(ElementName = "animationMappings")]
+        [XmlArrayItem(ElementName = "animationMapping")]
+        public List<AnimationMapping> AnimationMappings { get; set; }
+
+        public Actor()
+        {
+            animationMappings = new Dictionary<string, AnimationMapping>();
+        }
+
+        public AnimationMapping FindAnimationMapping(string animateActionName)
+        {
+            AnimationMapping mapping;
+            if (animationMappings.TryGetValue(animateActionName,out mapping))
+            {
+                return mapping;
+            }
+            mapping = AnimationMappings.Find(x => x.AnimateActionName == animateActionName);
+            animationMappings.Add(animateActionName, mapping);
+            return mapping;
+        }
     }
 }
