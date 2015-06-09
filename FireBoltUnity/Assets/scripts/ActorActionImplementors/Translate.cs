@@ -42,14 +42,14 @@ namespace Assets.scripts
             Vector3 direction = (destination - actor.transform.position);
             float moveDuration = endTick - startTick;
             requiredVelocity = new Vector3(direction.x/moveDuration, direction.y/moveDuration, direction.z/moveDuration);
-            lastUpdateTime = Time.time * 1000;
+            lastUpdateTime = ElPresidente.currentTime;
             return true;
         }
 
         public void Execute()
         {
             //move enough to get where we're going before endTick
-            float moveTimeElapsed = Time.time * 1000 - lastUpdateTime;
+            float moveTimeElapsed = ElPresidente.currentTime - lastUpdateTime;
             Vector3 newPosition = new Vector3();
             try
             {
@@ -62,7 +62,7 @@ namespace Assets.scripts
             {
                 Debug.LogError(newPosition.ToString());
             }
-            lastUpdateTime = Time.time * 1000;
+            lastUpdateTime = ElPresidente.currentTime;
         }
 
         public void Stop()

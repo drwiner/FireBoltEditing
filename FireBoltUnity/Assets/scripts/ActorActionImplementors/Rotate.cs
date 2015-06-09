@@ -51,20 +51,16 @@ namespace Assets.scripts
             requiredVelocity = totalRotationRequired/rotateDuration;
 
             target = Quaternion.Euler(0, targetDegrees, 0);
-            lastUpdateTime = Time.time * 1000;
+            lastUpdateTime = ElPresidente.currentTime;
             return true;
         }
 
         public void Execute()
         {
-            float rotateTimeElapsed = Time.time * 1000 - lastUpdateTime;
-            //Vector3 newRotation = new Vector3(actor.transform.eulerAngles.x,
-            //                  actor.transform.eulerAngles.y + requiredVelocity * rotateTimeElapsed,
-            //                  actor.transform.eulerAngles.z);
-            //actor.transform.eulerAngles = newRotation;
+            float rotateTimeElapsed = ElPresidente.currentTime - lastUpdateTime;
             actor.transform.rotation = Quaternion.RotateTowards(actor.transform.rotation, target, requiredVelocity * rotateTimeElapsed);
-            lastUpdateTime = Time.time * 1000;
-            Debug.DrawRay(actor.transform.position + Vector3.up, actor.transform.forward,Color.magenta);
+            lastUpdateTime = ElPresidente.currentTime;
+            //Debug.DrawRay(actor.transform.position + Vector3.up, actor.transform.forward,Color.magenta);
         }
 
         private float convertSourceEngineToUnityRotation(float sourceDegrees)
