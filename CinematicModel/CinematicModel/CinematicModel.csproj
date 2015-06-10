@@ -55,6 +55,7 @@
     <Compile Include="ModelStructure\FireBoltActions\TranslateAction.cs" />
     <Compile Include="ModelStructure\FireBoltActions\DestroyAction.cs" />
     <Compile Include="ModelStructure\FireBoltActions\CreateAction.cs" />
+    <Compile Include="ModelStructure\SmartModelSettings.cs" />
     <Compile Include="Parser.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>

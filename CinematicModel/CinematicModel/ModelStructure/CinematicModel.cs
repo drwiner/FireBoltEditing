@@ -27,6 +27,9 @@ namespace CinematicModel
         [XmlAttribute("domainDistancePerEngineDistance")]
         public float DomainDistancePerEngineDistance { get; set; }
 
+        [XmlElement("smartModelSettings")]
+        public SmartModelSettings SmartModelSettings { get; set; }
+
         [XmlArray(ElementName = "domainActions")]
         [XmlArrayItem(ElementName = "domainAction")]
         public List<DomainAction> DomainActions { get; set; }

@@ -23,8 +23,11 @@ namespace Assets.scripts
         //TODO concatenate looping subsequent animations on the same character into a single action?  would require even longer preprocessing...
         //TODO does rotate work with dota logs now?
         //add binary search to the aaq to support animation concat
+        //TODO 
         private static CM.CinematicModel cm;
         private static AStory<UintV, UintT, IIntervalSet<UintV, UintT>> story;
+        private static string[] orderedObjectSets;
+        private static string[] orderedActionTypes;
         private static readonly char[] uniqueActorIdentifierSeparators = { ':' };
 
         /// <summary>
@@ -36,8 +39,9 @@ namespace Assets.scripts
         public static ActorActionQueue CreateStoryActions(string storyPlanPath, string cinematicModelPath)
         {
             ActorActionQueue aaq = new ActorActionQueue();            
-            loadStructuredImpulsePlan(storyPlanPath);                    
+            loadStructuredImpulsePlan(storyPlanPath);                                
             cm = loadCinematicModel(cinematicModelPath);
+
 
             buildInitialState(aaq);
 
@@ -335,6 +339,12 @@ namespace Assets.scripts
             return false;
         }
 
+
+        //var asdf = (from set in orderedObjectSets
+        //           where story.ObjectSets[set].Contains(storyAction[domainActionParameter.Name])
+        //           select set).First();
+
+        //TODO limit depth
         private static void enqueueCreateActions(IStoryAction<UintT> storyAction, CM.DomainAction domainAction, CM.Animation effectingAnimation, ActorActionQueue aaq )
         {
             foreach (CM.CreateAction ca in domainAction.CreateActions)
@@ -349,10 +359,27 @@ namespace Assets.scripts
                     {
                         if (getActorName(storyAction, domainActionParameter, out actorName))//actorName is defined, we can look up a model
                         {
-                            string homogenousActorName = actorName.Split(uniqueActorIdentifierSeparators)[0]; //handle numerically specified actor copies, looking up model for the base-name
-                            if (!getActorModel(homogenousActorName, out modelName))
+                            getActorModel(actorName, out modelName);
+                            int objectSetIndex = 0;
+                            int actorHierarchyStepLevel = 1;                           
+                            while(string.IsNullOrEmpty(modelName) &&
+                                  objectSetIndex < orderedObjectSets.Length &&
+                                  actorHierarchyStepLevel <= cm.SmartModelSettings.ActorMaxSearchDepth)
                             {
-                                break;//didn't find all our datas.  give up on this create action and move to the next one
+                                if (story.ObjectSets[orderedObjectSets[objectSetIndex]].
+                                    Contains(new ClassConstant<string>(actorName)) )
+                                {
+                                    actorHierarchyStepLevel++;
+                                    if (getActorModel(orderedObjectSets[objectSetIndex], out modelName))
+                                    {
+                                        break;//quit looking up the hierarchy.  we found a more generic actor
+                                    }
+                                }
+                                objectSetIndex++;
+                            }
+                            if (string.IsNullOrEmpty(modelName))
+                            {
+                                break;//didn't find actor definition.  give up on this create action and move to the next one
                             }
                         }
                     }
@@ -424,6 +451,12 @@ namespace Assets.scripts
             Debug.Log("begin story plan parse");
             story = factory.ParseStory(xml, false);//TODO true!
             Debug.Log("end story plan parse");
+            Debug.Log("start object hierarchy sort");
+            orderedObjectSets = story.ObjectSetGraph.ReverseTopologicalSort().ToArray();
+            Debug.Log("end object hierarchy sort");
+            Debug.Log("begin action hierarchy sort");
+            orderedActionTypes = story.ActionTypeGraph.ReverseTopologicalSort().ToArray();
+            Debug.Log("end action hierarchy sort");           
         }
 
         private static CM.CinematicModel loadCinematicModel(string cinematicModelPath)

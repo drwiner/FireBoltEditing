@@ -1,5 +1,6 @@
 <cinematicModel millisPerTick="1" domainDistancePerEngineDistance="1">
   <!--millisPerTick="33" domainDistancePerEngineDistance="80"-->
+  <smartModelSettings maxActorSearchDepth="2" maxAnimationSearchDepth="2" />
   <domainActions>
     <domainAction name="spawn-creep" >
       <params>
