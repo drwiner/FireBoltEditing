@@ -4,7 +4,6 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using CM=CinematicModel;
-using UnityEditor;
 
 namespace Assets.scripts
 {
@@ -31,7 +30,8 @@ namespace Assets.scripts
 
         public bool Init()
         {
-            GameObject model = AssetDatabase.LoadAssetAtPath<GameObject>("Assets/Resources/Models/" + modelName);
+            //GameObject model = AssetDatabase.LoadAssetAtPath<GameObject>("Assets/Resources/Models/" + modelName);
+            GameObject model = Resources.Load<GameObject>("Models/" + modelName);
             if (model == null)
             {
                 Debug.LogError(string.Format("could not find model[{0}] to create",modelName));

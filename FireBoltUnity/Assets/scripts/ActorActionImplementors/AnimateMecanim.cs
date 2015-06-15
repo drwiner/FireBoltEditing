@@ -1,6 +1,5 @@
 ﻿using UnityEngine;
 using System.Collections;
-using UnityEditor;
 using CM = CinematicModel;
 
 namespace Assets.scripts
@@ -56,8 +55,10 @@ namespace Assets.scripts
             AnimatorOverrideController animatorOverride = new AnimatorOverrideController();
             animatorOverride.runtimeAnimatorController = Resources.Load<RuntimeAnimatorController>("AnimatorControllers/Generic");
             animator.runtimeAnimatorController = animatorOverride;
-            animation = AssetDatabase.LoadAssetAtPath<AnimationClip>("Assets/Resources/Animations/" + animName);
-            AnimationClip oldAnim = AssetDatabase.LoadAssetAtPath<AnimationClip>("Assets/Resources/Animations/humanoid_idle.fbx");
+            animation = Resources.Load<AnimationClip>("Animations/" + animName);
+            AnimationClip oldAnim = Resources.Load<AnimationClip>("Animations/humanoid_idle.fbx");
+            //animation = AssetDatabase.LoadAssetAtPath<AnimationClip>("Assets/Resources/Animations/" + animName);
+            //AnimationClip oldAnim = AssetDatabase.LoadAssetAtPath<AnimationClip>("Assets/Resources/Animations/humanoid_idle.fbx");
             if (!animation || !oldAnim)
             {
                 Debug.LogError("Missing animation asset");

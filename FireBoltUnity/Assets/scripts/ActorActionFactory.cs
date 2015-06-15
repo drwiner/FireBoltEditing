@@ -1,4 +1,5 @@
 ﻿using UnityEngine;
+using UnityEngine.UI;
 using System.Collections;
 using Impulse.v_0_1;
 using Impulse.v_1_336;
@@ -29,6 +30,7 @@ namespace Assets.scripts
         private static string[] orderedObjectSets;
         private static string[] orderedActionTypes;
         private static readonly char[] uniqueActorIdentifierSeparators = { ':' };
+        public static Text debugText;
 
         /// <summary>
         /// 
@@ -40,25 +42,25 @@ namespace Assets.scripts
         {
             ActorActionQueue aaq = new ActorActionQueue();            
             loadStructuredImpulsePlan(storyPlanPath);                                
-            cm = loadCinematicModel(cinematicModelPath);
+            //cm = loadCinematicModel(cinematicModelPath);
 
 
-            buildInitialState(aaq);
+            //buildInitialState(aaq);
 
-            //generate FireBolt actions for the steps
-            foreach(IStoryAction<UintT> storyAction in story.Actions.Values)
-            {
-                CM.DomainAction domainAction = getStoryDomainAction(storyAction);
-                if(domainAction == null) continue;
+            ////generate FireBolt actions for the steps
+            //foreach(IStoryAction<UintT> storyAction in story.Actions.Values)
+            //{
+            //    CM.DomainAction domainAction = getStoryDomainAction(storyAction);
+            //    if(domainAction == null) continue;
 
-                CM.Animation effectingAnimation = getEffectingAnimation(storyAction, domainAction);
+            //    CM.Animation effectingAnimation = getEffectingAnimation(storyAction, domainAction);
 
-                enqueueCreateActions(storyAction, domainAction, effectingAnimation, aaq);
-                enqueueAnimateActions(storyAction, domainAction, effectingAnimation, aaq);
-                enqueueDestroyActions(storyAction, domainAction, effectingAnimation, aaq);
-                enqueuetranslateActions(storyAction, domainAction, effectingAnimation, aaq);
-                enqueueRotateActions(storyAction, domainAction, effectingAnimation, aaq);            
-            }            
+            //    enqueueCreateActions(storyAction, domainAction, effectingAnimation, aaq);
+            //    enqueueAnimateActions(storyAction, domainAction, effectingAnimation, aaq);
+            //    enqueueDestroyActions(storyAction, domainAction, effectingAnimation, aaq);
+            //    enqueuetranslateActions(storyAction, domainAction, effectingAnimation, aaq);
+            //    enqueueRotateActions(storyAction, domainAction, effectingAnimation, aaq);            
+            //}            
             return aaq;
         }
 
@@ -444,19 +446,22 @@ namespace Assets.scripts
 
         private static void loadStructuredImpulsePlan(string storyPlanPath)
         {
+            debugText.text = "beginning load " + storyPlanPath;
             Debug.Log("begin story plan xml load");
             var xml = Impulse.v_1_336.Xml.Story.LoadFromFile(storyPlanPath);
             Debug.Log("end story plan xml load");
             var factory = Impulse.v_1_336.StoryParsingFactories.GetUnsignedIntergerIntervalFactory();
             Debug.Log("begin story plan parse");
             story = factory.ParseStory(xml, false);//TODO true!
+
             Debug.Log("end story plan parse");
             Debug.Log("start object hierarchy sort");
             orderedObjectSets = story.ObjectSetGraph.ReverseTopologicalSort().ToArray();
             Debug.Log("end object hierarchy sort");
             Debug.Log("begin action hierarchy sort");
             orderedActionTypes = story.ActionTypeGraph.ReverseTopologicalSort().ToArray();
-            Debug.Log("end action hierarchy sort");           
+            Debug.Log("end action hierarchy sort");
+            debugText.text = "story load done!";
         }
 
         private static CM.CinematicModel loadCinematicModel(string cinematicModelPath)

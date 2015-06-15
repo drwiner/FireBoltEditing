@@ -1,4 +1,5 @@
 ﻿using UnityEngine;
+using UnityEngine.UI;
 using Impulse.v_0_1;
 using ImpulsePlan = Impulse.v_0_1.Plan;
 using System.Xml;
@@ -17,6 +18,7 @@ public class ElPresidente : MonoBehaviour {
     private float lastTickLogged;
     [HideInInspector]
     public bool pause = false;
+    public Text debugText;
 
     /// <summary>
     /// FireBolt point of truth for time.  updated with but independent of time.deltaTime
@@ -25,7 +27,8 @@ public class ElPresidente : MonoBehaviour {
     public static float currentTime;
 
 	// Use this for initialization
-	void Start () {
+	void Awake () {
+        ActorActionFactory.debugText = debugText;
         executingActions = new List<IActorAction>();
         aaq = ActorActionFactory.CreateStoryActions(storyPlanPath, cinematicModelPath);
         currentTime = 0;
@@ -69,7 +72,6 @@ public class ElPresidente : MonoBehaviour {
                 executingActions.Add(iaa);
         }
     }
-
 
     void LateUpdate()
     {
