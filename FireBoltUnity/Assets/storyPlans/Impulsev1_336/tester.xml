@@ -13,12 +13,12 @@
       <property name="time" value="2000-2001"/>
     </action>-->
 
-    <action type="rotate" name="step1452">
+    <!--<action type="rotate" name="step1452">
       <property name="end-angle" value="835"/>
       <property name="start-angle" value="0"/>
       <property name="actor" value="npc_dota_creep_goodguys_ranged 1893510"/>
       <property name="time" value="2000-15000"/>
-    </action>
+    </action>-->
     <action type="spawn-hero" name="step7540">
       <property name="location" value="(0,0)"/>
       <property name="actor" value="npc_dota_creep_goodguys_ranged 1893510"/>
@@ -39,14 +39,14 @@
         <property name="location" value="(0,0)"/>
         <property name="actor" value="Crystal Maiden"/>
         <property name="time" value="2000-2001"/>
-      </action>
+      </action>-->
       <action type="move" name="step7533">
         <property name="origin" value="(0, 0)"/>
         <property name="destination" value="(-10.0, 0)"/>
-        <property name="actor" value="Crystal Maiden"/>
+        <property name="actor" value="npc_dota_creep_goodguys_ranged 1893510"/>
         <property name="time" value="2001-15000"/>
       </action>
-      <action type="die" name="step1450">
+      <!--<action type="die" name="step1450">
         <property name="actor" value="Crystal Maiden"/>
         <property name="time" value="15000-20000"/>
       </action>-->
@@ -2577,7 +2577,7 @@
   </objects>
   <sentences>
 
-    <predicate name="at">
+    <!--  <predicate name="at">
       <constant value="Ancient Apparition"/>
       <constant value="(-1809.0, -5964.0)"/>
       <constant value="0-593"/>
@@ -2761,6 +2761,6 @@
       <constant value="npc_dota_creep_goodguys_melee 1993842"/>
       <constant value="(-6614.0, -4127.0)"/>
       <constant value="1865-2248"/>
-    </predicate>
+    </predicate>-->
   </sentences>
 </story>

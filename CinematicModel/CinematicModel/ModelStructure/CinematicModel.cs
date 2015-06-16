@@ -54,7 +54,7 @@ namespace CinematicModel
             return animation;
         }
 
-        public Actor FindActor(string actorName)
+        private Actor findActor(string actorName)
         {
             Actor actor;
             if (actors.TryGetValue(actorName, out actor))
@@ -64,6 +64,13 @@ namespace CinematicModel
             actor = Actors.Find(x => x.Name == actorName);
             actors.Add(actorName,actor);
             return actor;
+        }
+
+        public bool TryGetActor(string actorName, out Actor actor)
+        {
+            actor = findActor(actorName);
+            if (actor == null) return false;
+            return true;
         }
 
     }

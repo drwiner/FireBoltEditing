@@ -1,6 +1,6 @@
 <cinematicModel millisPerTick="1" domainDistancePerEngineDistance="1">
   <!--millisPerTick="33" domainDistancePerEngineDistance="80"-->
-  <smartModelSettings maxActorSearchDepth="2" maxAnimationSearchDepth="2" />
+  <smartModelSettings maxActorSearchDepth="2" maxAnimationSearchDepth="2" /> <!-- animation search depth should generally be at least as deep as actor search depth-->
   <domainActions>
     <domainAction name="spawn-creep" >
       <params>
@@ -142,24 +142,24 @@
     </actor>
 
     <actor name="GoodGuysRanged" model="Heroes/crystal_maiden/crystal_maiden_model.fbx" >
-      <animationMapping>
+      <animationMappings>
         <animationMapping animateActionName="walk" animationName="swm_walk" loopAnimation="true" />
         <animationMapping animateActionName="die" animationName="swm_die" loopAnimation="false" />
-      </animationMapping>
+      </animationMappings>
     </actor>
 
     <actor name="Creeps" model="Heroes/pudge/pudge_model.fbx" >
-      <animationMapping>
+      <animationMappings>
         <animationMapping animateActionName="walk" animationName="swm_walk" loopAnimation="true" />
         <animationMapping animateActionName="die" animationName="swm_die" loopAnimation="false" />
-      </animationMapping>
+      </animationMappings>
     </actor>
 
     <actor name="Buildings" model="m005.fbx" >
-      <animationMapping>
+      <animationMappings>
         <animationMapping animateActionName="walk" animationName="swm_walk" loopAnimation="true" />
         <animationMapping animateActionName="die" animationName="swm_die" loopAnimation="false" />
-      </animationMapping>
+      </animationMappings>
     </actor>
 
     <!--<actor name="npc_dota_creep_badguys_melee" model="Non-heroes/creep_bad_melee/creep_bad_melee_model.fbx" >
@@ -182,8 +182,8 @@
     </actor>-->
     <actor name="npc_dota_creep_goodguys_ranged" model="Non-heroes/creep_good_ranged/creep_good_ranged_model.fbx" >
       <animationMappings>
-        <animationMapping animateActionName="walk" animationName="good_ranged_walk" loopAnimation="true" />
-        <animationMapping animateActionName="die" animationName="die" loopAnimation="false" />
+        <!--<animationMapping animateActionName="walk" animationName="good_ranged_walk" loopAnimation="true" />
+        <animationMapping animateActionName="die" animationName="die" loopAnimation="false" />-->
       </animationMappings>
     </actor>
 

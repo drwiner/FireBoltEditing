@@ -29,7 +29,7 @@ namespace CinematicModel
             animationMappings = new Dictionary<string, AnimationMapping>();
         }
 
-        public AnimationMapping FindAnimationMapping(string animateActionName)
+        private AnimationMapping findAnimationMapping(string animateActionName)
         {
             AnimationMapping mapping;
             if (animationMappings.TryGetValue(animateActionName,out mapping))
@@ -39,6 +39,13 @@ namespace CinematicModel
             mapping = AnimationMappings.Find(x => x.AnimateActionName == animateActionName);
             animationMappings.Add(animateActionName, mapping);
             return mapping;
+        }
+
+        public bool TryGetAnimationMapping(string animateActionName, out AnimationMapping animationMapping)
+        {
+            animationMapping = findAnimationMapping(animateActionName);
+            if (animationMapping == null) return false;
+            return true;
         }
     }
 }
