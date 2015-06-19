@@ -47,6 +47,8 @@ namespace Assets.scripts
 
             buildInitialState(aaq);
 
+            queryStory();
+
             //generate FireBolt actions for the steps
             foreach (IStoryAction<UintT> storyAction in story.Actions.Values)
             {
@@ -62,6 +64,16 @@ namespace Assets.scripts
                 enqueueRotateActions(storyAction, domainAction, effectingAnimation, aaq);
             }            
             return aaq;
+        }
+
+
+        private static void queryStory()
+        {
+            var q = (from a in story.Actions
+                    where a.Value.Time.Start == a.Value.Time.End &&
+                          a.Value.ActionType.Name == "move"
+                    select new {Actor=a.Value.GetProperty("actor").Name, Origin=a.Value.GetProperty("origin"),
+                        Destination=a.Value.GetProperty("destination"), ActionType=a.Value.ActionType.Name, Time=a.Value.Time.Start}).ToArray();
         }
 
         private static void buildInitialState(ActorActionQueue aaq) //TODO actor model defaulting a la create actions

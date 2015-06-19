@@ -1,6 +1,7 @@
-<cinematicModel millisPerTick="1" domainDistancePerEngineDistance="1">
-  <!--millisPerTick="33" domainDistancePerEngineDistance="80"-->
-  <smartModelSettings maxActorSearchDepth="2" maxAnimationSearchDepth="2" /> <!-- animation search depth should generally be at least as deep as actor search depth-->
+<!--<cinematicModel millisPerTick="1" domainDistancePerEngineDistance="1">-->
+<cinematicModel millisPerTick="33" domainDistancePerEngineDistance="80">
+  <smartModelSettings maxActorSearchDepth="0" maxAnimationSearchDepth="0" />
+  <!-- animation search depth should generally be at least as deep as actor search depth-->
   <domainActions>
     <domainAction name="spawn-creep" >
       <params>
@@ -22,7 +23,7 @@
         <animateAction name="die" actorNameParamName="actor" effector="true"/>
       </animateActions>
     </domainAction>
-		<domainAction name="buy-item" > 
+    <domainAction name="buy-item" >
       <params>
         <param name="actor" />
       </params>
@@ -42,7 +43,7 @@
     <domainAction name="move" >
       <params>
         <param name="actor" />
-        <param name="destination" />        
+        <param name="destination" />
       </params>
       <createActions/>
       <destroyActions/>
@@ -50,7 +51,7 @@
         <translateAction  actorNameParamName="actor" destinationParamName="destination"/>
       </translateActions>
       <animateActions>
-        <animateAction  name="walk" actorNameParamName="actor" />    
+        <animateAction  name="walk" actorNameParamName="actor" />
       </animateActions>
     </domainAction>
     <domainAction name="rotate">
@@ -60,9 +61,9 @@
       </params>
       <createActions/>
       <destroyActions/>
-      <translateActions/>        
+      <translateActions/>
       <rotateActions>
-        <rotateAction actorNameParamName="actor" destinationParamName="end-angle"/>
+        <rotateAction actorNameParamName="actor" destinationParamName="end-angle" maxDuration="400"/>
       </rotateActions>
       <animateActions/>
     </domainAction>
@@ -88,23 +89,23 @@
         <animateAction name="sneak" actorNameParamName="actor" effector="true"/>
         <animateAction name="observe" actorNameParamName="observer" effector="false" effectorOffsetIndexName="sneakAWhile"/>
       </animateActions>
-    </domainAction>   
+    </domainAction>
   </domainActions>
   <actors>
     <actor name="secretAgentMan" model="m005.fbx" >
       <animationMappings>
         <animationMapping animateActionName="observe" animationName="idle" loopAnimation="true" />
+        <animationMapping animateActionName="walk" animationName="cm_walk" loopAnimation="true" />
       </animationMappings>
     </actor>
     <actor name="Pudge" model="Heroes/pudge/pudge_model.fbx" >
-      <animationMapping>
+      <animationMappings>
         <animationMapping animateActionName="sneak" animationName="sneak" loopAnimation="true" />
         <animationMapping animateActionName="walk" animationName="walk" loopAnimation="true" />
         <animationMapping animateActionName="buy-item1" animationName="verticalSwipe" loopAnimation="true" />
-      </animationMapping>
+      </animationMappings>
     </actor>
-    <actor name="Ember Spirit" model="Heroes/pudge/pudge_model.fbx" >
-    </actor>
+
 
     <actor name="Mirana" model="Heroes/mirana/mirana_model.fbx" >
       <animationMappings>
@@ -119,10 +120,11 @@
       </animationMappings>
     </actor>
     <actor name="Skywrath Mage" model="Heroes/skywrath_mage/skywrath_mage_model.fbx" >
-      <animationNappings>
+      <animationMappings>
         <animationMapping animateActionName="walk" animationName="swm_walk" loopAnimation="true" />
-      </animationNappings>
+      </animationMappings>
     </actor>
+
     <actor name="Wisp" model="m005.fbx" >
     </actor>
 
@@ -140,15 +142,20 @@
 
     <actor name="Morphling" model="m005.fbx" >
     </actor>
+    <actor name="Ember Spirit" model="m005.fbx" >
+    </actor>
 
-    <actor name="GoodGuysRanged" model="Heroes/crystal_maiden/crystal_maiden_model.fbx" >
+    <!--<actor name="GoodGuysRanged" model="Heroes/crystal_maiden/crystal_maiden_model.fbx" >
       <animationMappings>
         <animationMapping animateActionName="walk" animationName="swm_walk" loopAnimation="true" />
         <animationMapping animateActionName="die" animationName="swm_die" loopAnimation="false" />
       </animationMappings>
-    </actor>
+    </actor>-->
 
-    <actor name="Creeps" model="Heroes/pudge/pudge_model.fbx" >
+    <actor name="Couriers" model="m005.fbx">
+
+    </actor>
+    <actor name="Creeps" model="m005.fbx" >
       <animationMappings>
         <animationMapping animateActionName="walk" animationName="swm_walk" loopAnimation="true" />
         <animationMapping animateActionName="die" animationName="swm_die" loopAnimation="false" />
@@ -158,14 +165,13 @@
     <actor name="Buildings" model="m005.fbx" >
       <animationMappings>
         <animationMapping animateActionName="walk" animationName="swm_walk" loopAnimation="true" />
-        <animationMapping animateActionName="die" animationName="swm_die" loopAnimation="false" />
       </animationMappings>
     </actor>
 
-    <!--<actor name="npc_dota_creep_badguys_melee" model="Non-heroes/creep_bad_melee/creep_bad_melee_model.fbx" >
+    <actor name="npc_dota_creep_badguys_melee" model="Non-heroes/creep_bad_melee/creep_bad_melee_model.fbx" >
       <animationMapping>
         <animationMapping animateActionName="walk" animationName="bad_melee_walk" loopAnimation="true" />
-        <animationMapping animateActionName="die" animationName="die" loopAnimation="false" />
+        <animationMapping animateActionName="die" animationName="swm_die" loopAnimation="false" />
       </animationMapping>
     </actor>
     <actor name="npc_dota_creep_goodguys_melee" model="Non-heroes/creep_good_melee/creep_good_melee_model.fbx" >
@@ -173,17 +179,17 @@
         <animationMapping animateActionName="walk" animationName="good_melee_walk" loopAnimation="true" />
         <animationMapping animateActionName="die" animationName="die" loopAnimation="false" />
       </animationMappings>
-    </actor>-->
-    <!--<actor name="npc_dota_creep_badguys_ranged" model="Non-heroes/creep_bad_ranged/creep_bad_ranged_model.fbx" >
+    </actor>
+    <actor name="npc_dota_creep_badguys_ranged" model="Non-heroes/creep_bad_ranged/creep_bad_ranged_model.fbx" >
       <animationMappings>
         <animationMapping animateActionName="die" animationName="die" loopAnimation="false" />
         <animationMapping animateActionName="walk" animationName="bad_ranged_walk" loopAnimation="true" />
       </animationMappings>
-    </actor>-->
+    </actor>
     <actor name="npc_dota_creep_goodguys_ranged" model="Non-heroes/creep_good_ranged/creep_good_ranged_model.fbx" >
       <animationMappings>
-        <!--<animationMapping animateActionName="walk" animationName="good_ranged_walk" loopAnimation="true" />
-        <animationMapping animateActionName="die" animationName="die" loopAnimation="false" />-->
+        <animationMapping animateActionName="walk" animationName="good_ranged_walk" loopAnimation="true" />
+        <animationMapping animateActionName="die" animationName="die" loopAnimation="false" />
       </animationMappings>
     </actor>
 

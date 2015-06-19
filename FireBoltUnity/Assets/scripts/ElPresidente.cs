@@ -42,11 +42,10 @@ public class ElPresidente : MonoBehaviour {
             Time.timeScale = 0f;
     }
 
-    public void backward()
+    public void speedToggle()
     {
-        Time.timeScale = -Time.timeScale;
+        Time.timeScale = (Time.timeScale + 1f) % 4;        
     }
-
     void Update()
     {
         currentTime += Time.deltaTime * 1000;
@@ -61,15 +60,15 @@ public class ElPresidente : MonoBehaviour {
                 removeList.Add(actorAction);
             }
         }
-        foreach (IActorAction iaa in removeList)
+        foreach (IActorAction action in removeList)
         {
-            executingActions.Remove(iaa);
+            executingActions.Remove(action);
         }
         while (!aaq.Empty && aaq.Peek().StartTick() <= currentTime)
         {
-            IActorAction iaa = aaq.Pop();
-            if (iaa.Init())
-                executingActions.Add(iaa);
+            IActorAction action = aaq.Pop();
+            if (action.Init())
+                executingActions.Add(action);
         }
     }
 
