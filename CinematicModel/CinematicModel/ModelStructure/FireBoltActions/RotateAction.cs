@@ -9,9 +9,6 @@ namespace CinematicModel
     
     public class RotateAction : FireBoltAction
     {
-        [XmlAttribute(AttributeName = "endTickParamName")]
-        public string EndTickParamName { get; set; }
-
         [XmlAttribute(AttributeName = "destinationParamName")]
         public string DestinationParamName { get; set; }
 

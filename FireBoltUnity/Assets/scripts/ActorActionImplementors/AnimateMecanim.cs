@@ -1,5 +1,7 @@
 ﻿using UnityEngine;
 using System.Collections;
+using CM = CinematicModel;
+using UnityEditor;
 
 namespace Assets.scripts
 {
@@ -13,8 +15,15 @@ namespace Assets.scripts
         private string animName;
         private Animator animator;
         private AnimationClip animation;
-        private int animationHash; 
+        private int playTriggerHash,stopTriggerHash; 
 		private bool loop;
+
+        public static bool ValidForConstruction(string actorName, CM.Animation animation)
+        {
+            if (string.IsNullOrEmpty(actorName) || animation == null || string.IsNullOrEmpty(animation.FileName))
+                return false;
+            return true;
+        }
 
         public AnimateMecanim(float startTick, float endTick, string actorName, string animName, bool loop) 
         {
@@ -23,13 +32,18 @@ namespace Assets.scripts
             this.actorName = actorName;
             this.animName = animName;
 			this.loop = loop;
-            animationHash = Animator.StringToHash("trigger");
+            playTriggerHash = Animator.StringToHash("play");
+            stopTriggerHash = Animator.StringToHash("stop");
         }
 
-        public void Init()
+        public bool Init()
         {
             actor = GameObject.Find(actorName);
-            if (actor == null) Debug.LogError("actor[" + actorName + "] not found.  cannot animate");
+            if (actor == null)
+            {
+                Debug.LogError("actor[" + actorName + "] not found.  cannot animate");
+                return false;
+            }
 
             animator = actor.GetComponent<Animator>();
             if (animator == null)
@@ -42,28 +56,32 @@ namespace Assets.scripts
             AnimatorOverrideController animatorOverride = new AnimatorOverrideController();
             animatorOverride.runtimeAnimatorController = Resources.Load<RuntimeAnimatorController>("AnimatorControllers/Generic");
             animator.runtimeAnimatorController = animatorOverride;
-            animation = Resources.LoadAssetAtPath<AnimationClip>("Assets/Resources/Animations/" + animName);
-			AnimationClip oldAnim = Resources.LoadAssetAtPath<AnimationClip>("Assets/Resources/Animations/humanoid_idle.fbx");
+            //animation = Resources.Load<AnimationClip>("Animations/" + animName);
+            //AnimationClip oldAnim = Resources.Load<AnimationClip>("Animations/humanoid_idle.fbx");
+            animation = AssetDatabase.LoadAssetAtPath<AnimationClip>("Assets/Resources/Animations/" + animName);
+            AnimationClip oldAnim = AssetDatabase.LoadAssetAtPath<AnimationClip>("Assets/Resources/Animations/humanoid_idle.fbx");
             if (!animation || !oldAnim)
             {
                 Debug.LogError("Missing animation asset");
             }
 			if (loop) {
-				oldAnim.wrapMode = WrapMode.Loop;
+				animation.wrapMode = WrapMode.Loop;
 			} else
-				oldAnim.wrapMode = WrapMode.Once;
+				animation.wrapMode = WrapMode.Once;
 
             animatorOverride["idle"] = animation;
-           
+            return true;
         }
 
-	    public void Execute () {
-		    animator.SetTrigger(animationHash);
+	    public void Execute () 
+        {
+		    //let it roll
+            animator.SetTrigger(playTriggerHash);
 	    }
 
         public void Stop()
         {
- 	        
+            animator.SetTrigger(stopTriggerHash);
         }
 
         public float StartTick()

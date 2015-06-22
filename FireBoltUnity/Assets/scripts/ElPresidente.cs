@@ -1,4 +1,5 @@
 ﻿using UnityEngine;
+using UnityEngine.UI;
 using Impulse.v_0_1;
 using ImpulsePlan = Impulse.v_0_1.Plan;
 using System.Xml;
@@ -12,61 +13,84 @@ public class ElPresidente : MonoBehaviour {
 
     ActorActionQueue aaq;
     List<IActorAction> executingActions;
-    float currentTick;
     public string storyPlanPath;
     public string cinematicModelPath;
     private float lastTickLogged;
+    [HideInInspector]
+    public bool pause = false;
+    public Text debugText;
+
+    /// <summary>
+    /// FireBolt point of truth for time.  updated with but independent of time.deltaTime
+    /// expressed in milliseconds
+    /// </summary>
+    public static float currentTime;
 
 	// Use this for initialization
-	void Start () {
+	void Awake () {
+        ActorActionFactory.debugText = debugText;
         executingActions = new List<IActorAction>();
-        aaq = ActorActionFactory.CreateStoryActions(storyPlanPath, cinematicModelPath);        
+        aaq = ActorActionFactory.CreateStoryActions(storyPlanPath, cinematicModelPath);
+        currentTime = 0;
     }
 
-	void Update () {
-        currentTick = Time.time * 1000;
+    public void togglePause()
+    {
+        if (Time.timeScale < float.Epsilon)
+            Time.timeScale = 1f;
+        else
+            Time.timeScale = 0f;
+    }
+
+    public void speedToggle()
+    {
+        Time.timeScale = (Time.timeScale + 1f) % 4;        
+    }
+    void Update()
+    {
+        currentTime += Time.deltaTime * 1000;
         logTicks();
         List<IActorAction> removeList = new List<IActorAction>();
         foreach (IActorAction actorAction in executingActions)
         {
-            if (actorActionComplete(actorAction) )
+            if (actorActionComplete(actorAction))
             {
                 actorAction.Stop();
                 //TODO need to recycle completed actions to somewhere for backward scrubbing
                 removeList.Add(actorAction);
             }
         }
-        foreach (IActorAction iaa in removeList)
+        foreach (IActorAction action in removeList)
         {
-            executingActions.Remove(iaa);
+            executingActions.Remove(action);
         }
-        while(!aaq.Empty && aaq.Peek().StartTick() <= currentTick)
+        while (!aaq.Empty && aaq.Peek().StartTick() <= currentTime)
         {
-            IActorAction iaa = aaq.Pop();
-            iaa.Init();
-            executingActions.Add(iaa);
+            IActorAction action = aaq.Pop();
+            if (action.Init())
+                executingActions.Add(action);
         }
-	}
+    }
 
     void LateUpdate()
     {
         foreach (IActorAction actorAction in executingActions)
         {
-            actorAction.Execute();            
+            actorAction.Execute();
         }
     }
 
     void logTicks()
     {
-        if (currentTick - lastTickLogged > 1)
+        if (currentTime - lastTickLogged > 1000)
         {
-            Debug.Log(currentTick);
-            lastTickLogged = currentTick;
+            Debug.Log(currentTime);
+            lastTickLogged = currentTime;
         }
     }
 
     bool actorActionComplete(IActorAction iaa)
     {
-        return iaa.EndTick().HasValue && iaa.EndTick().Value < currentTick || iaa.EndTick() == null;
+        return iaa.EndTick().HasValue && iaa.EndTick().Value < currentTime || iaa.EndTick() == null;
     }
 }

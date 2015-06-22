@@ -1,0 +1,628 @@
+<?xml version="1.0"?>
+<doc>
+    <assembly>
+        <name>Impulse</name>
+    </assembly>
+    <members>
+        <member name="T:Impulse.InvalidLiteralException">
+            <summary>
+            Exception raised when a literal is in the wrong format for parsing
+            </summary>
+        </member>
+        <member name="M:Impulse.InvalidLiteralException.#ctor(System.String,System.String,System.String)">
+            <summary>
+            Creates a new object representing an invalid literal exception
+            </summary>
+            <param name="message">The message for debugging purposes</param>
+            <param name="text">The text of the literal being parsed</param>
+            <param name="paramName">The name of the parameter the literal was stored in</param>
+        </member>
+        <member name="M:Impulse.InvalidLiteralException.#ctor(System.String,System.String,System.String,System.Exception)">
+            <summary>
+            Creates a new object representing an invalid literal exception
+            </summary>
+            <param name="message">The message for debugging purposes</param>
+            <param name="text">The text of the literal being parsed</param>
+            <param name="paramName">The name of the parameter the literal was stored in</param>
+            <param name="innerException">The inner exception causing this one</param>
+        </member>
+        <member name="P:Impulse.InvalidLiteralException.Text">
+            <summary>
+            Gets the text of the literal
+            </summary>
+        </member>
+        <member name="P:Impulse.InvalidLiteralException.ParameterName">
+            <summary>
+            Gets the parameter name
+            </summary>
+        </member>
+        <member name="T:Impulse.InvalidParameterException">
+            <summary>
+            Exception raised when a parameter causes an exception
+            </summary>
+        </member>
+        <member name="M:Impulse.InvalidParameterException.#ctor(System.String,System.Int32,System.String)">
+            <summary>
+            Creates an object representing an invalid parameter exception
+            </summary>
+            <param name="message">The message for debugging purposes</param>
+            <param name="stepID">The ID of the step containing the parameter</param>
+            <param name="paramName">The name of the parameter</param>
+        </member>
+        <member name="M:Impulse.InvalidParameterException.#ctor(System.String,System.Int32,System.String,System.Exception)">
+            <summary>
+            Creates an object representing an invalid parameter exception
+            </summary>
+            <param name="message">The message for debugging purposes</param>
+            <param name="stepID">The ID of the step containing the parameter</param>
+            <param name="paramName">The name of the parameter</param>
+            <param name="innerException">The inner excpetion causing this one</param>
+        </member>
+        <member name="P:Impulse.InvalidParameterException.StepID">
+            <summary>
+            Gets the ID of the step containing the parameter
+            </summary>
+        </member>
+        <member name="P:Impulse.InvalidParameterException.ParameterName">
+            <summary>
+            Gets the name of the parameter causing the exception
+            </summary>
+        </member>
+        <member name="T:Impulse.v_0_1.Binding">
+            <summary>
+            Class representing a binding
+            </summary>
+        </member>
+        <member name="M:Impulse.v_0_1.Binding.#ctor">
+            <summary>
+            Creates a new binding
+            </summary>
+        </member>
+        <member name="M:Impulse.v_0_1.Binding.#ctor(Impulse.v_0_1.Constant)">
+            <summary>
+            Creates a new binding bound to a particular constant
+            </summary>
+            <param name="binding">The constant to bind to</param>
+        </member>
+        <member name="M:Impulse.v_0_1.Binding.#ctor(Impulse.v_0_1.Constant,System.Collections.Generic.IEnumerable{Impulse.v_0_1.Variable})">
+            <summary>
+            Creates a new binding an enumeration of variables to a particular constant
+            </summary>
+            <param name="binding">The constant to bind to</param>
+            <param name="coBindings">The variables to bind</param>
+        </member>
+        <member name="M:Impulse.v_0_1.Binding.IsCoBound(Impulse.v_0_1.Variable)">
+            <summary>
+            Determines if a particular variable is contained in the binding
+            </summary>
+            <param name="variable">The variable to check</param>
+            <returns><see langword="true"/> if the variable is bound in this binding, <see langword="false"/> otherwise</returns>
+        </member>
+        <member name="M:Impulse.v_0_1.Binding.TryMerge(Impulse.v_0_1.Binding,Impulse.v_0_1.Binding,Impulse.v_0_1.Binding@)">
+            <summary>
+            Try to merge to sets of bindings together
+            </summary>
+            <param name="one">The first binding</param>
+            <param name="two">The second binding</param>
+            <param name="result">The resulting binding, if possible</param>
+            <returns><see langword="true"/> if the two bindings can be unified, <see langword="false"/> otherwise</returns>
+        </member>
+        <member name="P:Impulse.v_0_1.Binding.BoundConstant">
+            <summary>
+            Gets or sets the bound constant
+            </summary>
+        </member>
+        <member name="P:Impulse.v_0_1.Binding.Bound">
+            <summary>
+            Gets whether the binding is bound to a constant
+            </summary>
+        </member>
+        <member name="P:Impulse.v_0_1.Binding.CoBindings">
+            <summary>
+            Gets a list of the variables that are bound together
+            </summary>
+        </member>
+        <member name="T:Impulse.v_0_1.Bindings">
+            <summary>
+            Class represeting a dictionary of variables to bindings
+            </summary>
+        </member>
+        <member name="M:Impulse.v_0_1.Bindings.#ctor">
+            <summary>
+            Create a new dictionary of bindings
+            </summary>
+        </member>
+        <member name="M:Impulse.v_0_1.Bindings.GetBinding(Impulse.v_0_1.Variable,Impulse.v_0_1.Binding@)">
+            <summary>
+            Gets the binding for a given variable
+            </summary>
+            <param name="variable">The variable to look up</param>
+            <param name="binding">The resulting binding, if found</param>
+            <returns><see langword="true"/> if the varibale is found in this set of bindings, <see langword="false"/> otherwise</returns>
+        </member>
+        <member name="M:Impulse.v_0_1.Bindings.AddCoBinding(Impulse.v_0_1.Variable,Impulse.v_0_1.Variable)">
+            <summary>
+            Add a new binding between two variables if possible
+            </summary>
+            <param name="a">The first variable to bind</param>
+            <param name="b">The second variable to bind</param>
+            <returns><see langword="true"/> if the varibales can be bound together, <see langword="false"/> otherwise</returns>
+        </member>
+        <member name="M:Impulse.v_0_1.Bindings.AddBinding(Impulse.v_0_1.Variable,Impulse.v_0_1.Constant)">
+            <summary>
+            Add a new binding between a variable and a constant if possible
+            </summary>
+            <param name="a">The variable to bind</param>
+            <param name="b">The constant to bind</param>
+            <returns><see langword="true"/> if the terms can be bound together, <see langword="false"/> otherwise</returns>
+        </member>
+        <member name="M:Impulse.v_0_1.Bindings.TryMerge(Impulse.v_0_1.Bindings,Impulse.v_0_1.Bindings,Impulse.v_0_1.Bindings@)">
+            <summary>
+            Not implemented. Try to merge to sets of bindings together
+            </summary>
+            <param name="one">The first bindings</param>
+            <param name="two">The second bindings</param>
+            <param name="result">The resulting bindings, if possible</param>
+            <returns><see langword="true"/> if the two bindings can be unified, <see langword="false"/> otherwise</returns>
+        </member>
+        <member name="M:Impulse.v_0_1.Bindings.GetEnumerator">
+            <summary>
+            Gets an enumerator for the bindings, will likely contain duplicates
+            </summary>
+            <returns>An enumerator for the bindings</returns>
+        </member>
+        <member name="T:Impulse.v_0_1.Term">
+            <summary>
+            Class representing an abstract term
+            </summary>
+        </member>
+        <member name="M:Impulse.v_0_1.Term.#ctor(System.String)">
+            <summary>
+            Constructs a new term with the specified name
+            </summary>
+            <param name="name"></param>
+        </member>
+        <member name="M:Impulse.v_0_1.Term.Equals(System.Object)">
+            <summary>
+            Abstract. Determines if this term is equal to a given object
+            </summary>
+            <param name="obj">The object to compare</param>
+            <returns><see langword="true"/> if the objects are equal, <see langword="false"/> otherwise</returns>
+        </member>
+        <member name="M:Impulse.v_0_1.Term.Equals(Impulse.v_0_1.Term)">
+            <summary>
+            Abstract. Determines if this term is equal to another term
+            </summary>
+            <param name="obj">The term to compare</param>
+            <returns><see langword="true"/> if the terms are equal, <see langword="false"/> otherwise</returns>
+        </member>
+        <member name="M:Impulse.v_0_1.Term.GetHashCode">
+            <summary>
+            Abstract. Gets the hash code of the current term
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:Impulse.v_0_1.Term.ToString">
+            <summary>
+            Abstract. Converts the term to a string representation
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:Impulse.v_0_1.Term.Unify(Impulse.v_0_1.Term,Impulse.v_0_1.Term@)">
+            <summary>
+            Abstract. Unifies this term with another term
+            </summary>
+            <param name="term">The term to unify</param>
+            <param name="result">The resulting unified term</param>
+            <returns><see langword="true"/> if the terms unify, <see langword="false"/> otherwise</returns>
+        </member>
+        <member name="M:Impulse.v_0_1.Term.op_Equality(Impulse.v_0_1.Term,Impulse.v_0_1.Term)">
+            <summary>
+            Determines if two terms are equal
+            </summary>
+            <param name="left">The left hand side term to compare</param>
+            <param name="right">The right hand side term to compare</param>
+            <returns><see langword="true"/> if the objects are equal, <see langword="false"/> otherwise</returns>
+        </member>
+        <member name="M:Impulse.v_0_1.Term.op_Inequality(Impulse.v_0_1.Term,Impulse.v_0_1.Term)">
+            <summary>
+            Determines if two terms are equal
+            </summary>
+            <param name="left">The left hand side term to compare</param>
+            <param name="right">The right hand side term to compare</param>
+            <returns><see langword="false"/> if the objects are equal, <see langword="true"/> otherwise</returns>
+        </member>
+        <member name="P:Impulse.v_0_1.Term.Name">
+            <summary>
+            Gets or sets the name of this term
+            </summary>
+        </member>
+        <member name="T:Impulse.v_0_1.AtomicTerm">
+            <summary>
+            Class represting the base type of constants and variables
+            </summary>
+        </member>
+        <member name="M:Impulse.v_0_1.AtomicTerm.#ctor(System.String,System.String)">
+            <summary>
+            Creates a new atomic term with specified name and type
+            </summary>
+            <param name="name">The name of the term</param>
+            <param name="type">The type of the term, may be <see langword="null"/></param>
+        </member>
+        <member name="M:Impulse.v_0_1.AtomicTerm.ToString">
+            <summary>
+            Converts this term to is string representation
+            </summary>
+            <returns>The term's name</returns>
+        </member>
+        <member name="M:Impulse.v_0_1.AtomicTerm.FromString(System.String)">
+            <summary>
+            Constructs an atomic term from a string
+            </summary>
+            <param name="term">The text of the term</param>
+            <returns>Either a <see cref="T:Impulse.v_0_1.Constant"/> or a <see cref="T:Impulse.v_0_1.Variable"/> if the name starts with '?'</returns>
+        </member>
+        <member name="P:Impulse.v_0_1.AtomicTerm.Type">
+            <summary>
+            Gets or sets the type of the term
+            </summary>
+        </member>
+        <member name="T:Impulse.v_0_1.Constant">
+            <summary>
+            Class representing a constant term
+            </summary>
+        </member>
+        <member name="M:Impulse.v_0_1.Constant.#ctor(System.String)">
+            <summary>
+            Constructs a new constant with the specified name
+            </summary>
+            <param name="name">The name of the new constant, must not start with '?'</param>
+        </member>
+        <member name="M:Impulse.v_0_1.Constant.#ctor(System.String,System.String)">
+            <summary>
+            Constructs a new constant with the specified name and type
+            </summary>
+            <param name="name">The name of the new constant, must not start with '?'</param>
+            <param name="type">The type of the new constant</param>
+        </member>
+        <member name="M:Impulse.v_0_1.Constant.Equals(System.Object)">
+            <summary>
+            Determines if this constant is equal to a given object
+            </summary>
+            <param name="obj">The object to compare</param>
+            <returns><see langword="true"/> if the objects are equal, <see langword="false"/> otherwise</returns>
+        </member>
+        <member name="M:Impulse.v_0_1.Constant.Equals(Impulse.v_0_1.Term)">
+            <summary>
+            Determines if this constant is equal to a given term
+            </summary>
+            <param name="term">The term to compare</param>
+            <returns><see langword="true"/> if the terms are equal, <see langword="false"/> otherwise</returns>
+        </member>
+        <member name="M:Impulse.v_0_1.Constant.Equals(Impulse.v_0_1.Constant)">
+            <summary>
+            Determines if this constant is equal to another constant
+            </summary>
+            <param name="term">The constant to compare</param>
+            <returns><see langword="true"/> if the constants are equal, <see langword="false"/> otherwise</returns>
+        </member>
+        <member name="M:Impulse.v_0_1.Constant.GetHashCode">
+            <summary>
+            Gets the hash code of the constant, which is the hash of its name
+            </summary>
+            <returns>The hash code of the constant</returns>
+        </member>
+        <member name="M:Impulse.v_0_1.Constant.Unify(Impulse.v_0_1.Term,Impulse.v_0_1.Term@)">
+            <summary>
+            Unifies this constant with another term
+            </summary>
+            <param name="term">The term to unify</param>
+            <param name="result">The resulting unified term</param>
+            <returns><see langword="true"/> if the terms unify, <see langword="false"/> otherwise</returns>
+        </member>
+        <member name="M:Impulse.v_0_1.Variable.#ctor(System.String)">
+            <summary>
+            Constructs a new variable with the specified name
+            </summary>
+            <param name="name">The name of the new variable, must start with '?'</param>
+        </member>
+        <member name="M:Impulse.v_0_1.Variable.#ctor(System.String,System.String)">
+            <summary>
+            Constructs a new variable with the specified name and type
+            </summary>
+            <param name="name">The name of the new variable, must start with '?'</param>
+            <param name="type">The type of the new variable</param>
+        </member>
+        <member name="M:Impulse.v_0_1.Variable.Equals(System.Object)">
+            <summary>
+            Determines if this variable is equal to a given object
+            </summary>
+            <param name="obj">The object to compare</param>
+            <returns><see langword="true"/> if the objects are equal, <see langword="false"/> otherwise</returns>
+        </member>
+        <member name="M:Impulse.v_0_1.Variable.Equals(Impulse.v_0_1.Term)">
+            <summary>
+            Determines if this variable is equal to a given term
+            </summary>
+            <param name="term">The term to compare</param>
+            <returns><see langword="true"/> if the terms are equal, <see langword="false"/> otherwise</returns>
+        </member>
+        <member name="M:Impulse.v_0_1.Variable.Equals(Impulse.v_0_1.Variable)">
+            <summary>
+            Determines if this variable is equal to another constant
+            </summary>
+            <param name="term">The variable to compare</param>
+            <returns><see langword="true"/> if the variables are equal, <see langword="false"/> otherwise</returns>
+        </member>
+        <member name="M:Impulse.v_0_1.Variable.GetHashCode">
+            <summary>
+            Gets the hash code of the variable, which is the hash of its name
+            </summary>
+            <returns>The hash code of the variable</returns>
+        </member>
+        <member name="M:Impulse.v_0_1.Variable.ToBoundString">
+            <summary>
+            Converts this variable to a string representation using its bindings
+            </summary>
+            <returns>Either the name of the variable or the constant it is bound to if it exists</returns>
+        </member>
+        <member name="M:Impulse.v_0_1.Variable.Unify(Impulse.v_0_1.Term,Impulse.v_0_1.Term@)">
+            <summary>
+            Unifies this variable with another term
+            </summary>
+            <param name="term">The term to unify</param>
+            <param name="result">The resulting unified term</param>
+            <returns><see langword="true"/> if the terms unify, <see langword="false"/> otherwise</returns>
+        </member>
+        <member name="P:Impulse.v_0_1.Variable.Binding">
+            <summary>
+            Gets or sets the bindings of this variable
+            </summary>
+        </member>
+        <member name="T:Impulse.v_0_1.Literal">
+            <summary>
+            Class representing a literal
+            </summary>
+        </member>
+        <member name="F:Impulse.v_0_1.Literal.LiteralRegex">
+            <summary>
+            The regular expression defining a literal
+            </summary>
+        </member>
+        <member name="M:Impulse.v_0_1.Literal.#ctor(System.String)">
+            <summary>
+            Creates a literal with the specified name
+            </summary>
+            <param name="name">The name of the new literal</param>
+        </member>
+        <member name="M:Impulse.v_0_1.Literal.FromString(System.String)">
+            <summary>
+            Creates a literal from the specified string representation
+            </summary>
+            <param name="literal">The literal to parse</param>
+            <returns>A literal object from the given literal string</returns>
+        </member>
+        <member name="M:Impulse.v_0_1.Literal.ToString">
+            <summary>
+            Converts this literal into a string representation
+            </summary>
+            <returns>A strign representation of the literal</returns>
+        </member>
+        <member name="M:Impulse.v_0_1.Literal.ToPrefixedString">
+            <summary>
+            Converts this string into a LISP style representation
+            </summary>
+            <returns>A LISP style list representing the literal</returns>
+        </member>
+        <member name="M:Impulse.v_0_1.Literal.Equals(System.Object)">
+            <summary>
+            Determines if this literal is equal to a given object
+            </summary>
+            <param name="obj">The object to compare</param>
+            <returns><see langword="true"/> if the objects are equal, <see langword="false"/> otherwise</returns>
+        </member>
+        <member name="M:Impulse.v_0_1.Literal.Equals(Impulse.v_0_1.Term)">
+            <summary>
+            Determines if this literal is equal to a given term
+            </summary>
+            <param name="term">The term to compare</param>
+            <returns><see langword="true"/> if the terms are equal, <see langword="false"/> otherwise</returns>
+        </member>
+        <member name="M:Impulse.v_0_1.Literal.Equals(Impulse.v_0_1.Literal)">
+            <summary>
+            Determines if this literal is equal to another literal
+            </summary>
+            <param name="literal">The literal to compare</param>
+            <returns><see langword="true"/> if the literals are equal, <see langword="false"/> otherwise</returns>
+        </member>
+        <member name="M:Impulse.v_0_1.Literal.GetHashCode">
+            <summary>
+            Returns the hash code of this literal, which is the hash of its name
+            </summary>
+            <returns>The hash code of the literal</returns>
+        </member>
+        <member name="M:Impulse.v_0_1.Literal.Unify(Impulse.v_0_1.Term,Impulse.v_0_1.Term@)">
+            <summary>
+            Not implemented. Unifies this literal with another term
+            </summary>
+            <param name="term">The term to unify</param>
+            <param name="result">The resulting unified term</param>
+            <returns><see langword="true"/> if the terms unify, <see langword="false"/> otherwise</returns>
+        </member>
+        <member name="P:Impulse.v_0_1.Literal.Terms">
+            <summary>
+            Gets the list of terms of this literal
+            </summary>
+        </member>
+        <member name="P:Impulse.v_0_1.Literal.Positive">
+            <summary>
+            Gets or sets whether this literal is positive
+            </summary>
+        </member>
+        <member name="P:Impulse.v_0_1.Literal.LiteralText">
+            <summary>
+            Gets or sets the text representation of this literal
+            </summary>
+        </member>
+        <member name="M:Impulse.v_1_336.Xml.ObjectSet.#ctor">
+            <summary>
+            For XML Serializer use only.
+            </summary>
+        </member>
+        <member name="M:Impulse.v_1_336.Xml.ObjectSetRoot.#ctor">
+            <summary>
+            For XML Serializer use only.
+            </summary>
+        </member>
+        <member name="M:Impulse.v_1_336.Xml.ActionSet.#ctor">
+            <summary>
+            For XML Serializer use only.
+            </summary>
+        </member>
+        <member name="M:Impulse.v_1_336.Xml.ActionSetRoot.#ctor">
+            <summary>
+            For XML Serializer use only.
+            </summary>
+        </member>
+        <member name="M:Impulse.v_1_336.Xml.Constant.#ctor">
+            <summary>
+            For XML Serializer use only.
+            </summary>
+        </member>
+        <member name="M:Impulse.v_1_336.Xml.Function.#ctor">
+            <summary>
+            For XML Serializer use only.
+            </summary>
+        </member>
+        <member name="M:Impulse.v_1_336.Xml.SentenceReference.#ctor">
+            <summary>
+            For XML Serializer use only.
+            </summary>
+        </member>
+        <member name="M:Impulse.v_1_336.Xml.Predicate.#ctor">
+            <summary>
+            For XML Serializer use only.
+            </summary>
+        </member>
+        <member name="M:Impulse.v_1_336.Xml.Connective.#ctor">
+            <summary>
+            For XML Serializer use only.
+            </summary>
+        </member>
+        <member name="M:Impulse.v_1_336.Xml.And.#ctor">
+            <summary>
+            For XML Serializer use only.
+            </summary>
+        </member>
+        <member name="M:Impulse.v_1_336.Xml.Or.#ctor">
+            <summary>
+            For XML Serializer use only.
+            </summary>
+        </member>
+        <member name="M:Impulse.v_1_336.Xml.Implies.#ctor">
+            <summary>
+            For XML Serializer use only.
+            </summary>
+        </member>
+        <member name="M:Impulse.v_1_336.Xml.Modality.#ctor">
+            <summary>
+            For XML Serializer use only.
+            </summary>
+        </member>
+        <member name="M:Impulse.v_1_336.Xml.B.#ctor">
+            <summary>
+            For XML Serializer use only.
+            </summary>
+        </member>
+        <member name="M:Impulse.v_1_336.Xml.D.#ctor">
+            <summary>
+            For XML Serializer use only.
+            </summary>
+        </member>
+        <member name="M:Impulse.v_1_336.Xml.I.#ctor">
+            <summary>
+            For XML Serializer use only.
+            </summary>
+        </member>
+        <member name="M:Impulse.v_1_336.Xml.CBA.#ctor">
+            <summary>
+            For XML Serializer use only.
+            </summary>
+        </member>
+        <member name="M:Impulse.v_1_336.Xml.Quantifier.#ctor">
+            <summary>
+            For XML Serializer use only.
+            </summary>
+        </member>
+        <member name="M:Impulse.v_1_336.Xml.Exists.#ctor">
+            <summary>
+            For XML Serializer use only.
+            </summary>
+        </member>
+        <member name="M:Impulse.v_1_336.Xml.Forall.#ctor">
+            <summary>
+            For XML Serializer use only.
+            </summary>
+        </member>
+        <member name="M:Impulse.v_1_336.Xml.UnaryRelation.#ctor">
+            <summary>
+            For XML Serializer use only.
+            </summary>
+        </member>
+        <member name="M:Impulse.v_1_336.Xml.Not.#ctor">
+            <summary>
+            For XML Serializer use only.
+            </summary>
+        </member>
+        <member name="M:Impulse.v_1_336.Xml.WeakNot.#ctor">
+            <summary>
+            For XML Serializer use only.
+            </summary>
+        </member>
+        <member name="M:Impulse.v_1_336.Xml.BinaryRelation.#ctor">
+            <summary>
+            For XML Serializer use only.
+            </summary>
+        </member>
+        <member name="M:Impulse.v_1_336.Xml.ElementOf.#ctor">
+            <summary>
+            For XML Serializer use only.
+            </summary>
+        </member>
+        <member name="M:Impulse.v_1_336.Xml.BinaryRelationTemporal.#ctor">
+            <summary>
+            For XML Serializer use only.
+            </summary>
+        </member>
+        <member name="M:Impulse.v_1_336.Xml.BinaryRelationTyped.#ctor">
+            <summary>
+            For XML Serializer use only.
+            </summary>
+        </member>
+        <member name="M:Impulse.v_1_336.Xml.Equals.#ctor">
+            <summary>
+            For XML Serializer use only.
+            </summary>
+        </member>
+        <member name="M:Impulse.v_1_336.Xml.Meets.#ctor">
+            <summary>
+            For XML Serializer use only.
+            </summary>
+        </member>
+        <member name="M:Impulse.v_1_336.Xml.Precedes.#ctor">
+            <summary>
+            For XML Serializer use only.
+            </summary>
+        </member>
+        <member name="M:Impulse.v_1_336.Xml.Subinterval.#ctor">
+            <summary>
+            For XML Serializer use only.
+            </summary>
+        </member>
+        <member name="M:Impulse.v_1_336.Xml.Story.#ctor">
+            <summary>
+            For XML Serializer use only.
+            </summary>
+        </member>
+    </members>
+</doc>

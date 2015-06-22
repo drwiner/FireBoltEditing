@@ -10,10 +10,7 @@ namespace CinematicModel
     {
         [XmlAttribute("animateActionName")]
         public string AnimateActionName { get; set; }
-
-        [XmlAttribute("actorName")]
-        public string ActorName { get; set; }
-
+        
         [XmlAttribute("animationName")]
         public string AnimationName { get; set; }
 

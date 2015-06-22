@@ -6,7 +6,7 @@ using System.Text;
 namespace Assets.scripts
 {
     public interface IActorAction {        
-        void Init();
+        bool Init();
 	    void Execute();
         void Stop();
         float StartTick();

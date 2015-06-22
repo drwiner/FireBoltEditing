@@ -15,6 +15,14 @@ namespace Assets.scripts
         Vector3 destination;
         GameObject actor;
         Vector3 requiredVelocity;
+
+        public static bool ValidForConstruction(string actorName)
+        {
+            if (string.IsNullOrEmpty(actorName))
+                return false;
+            return true;
+        }
+
         public Translate(float startTick, float endTick, string actorName, Vector3 destination) 
         {
             this.startTick = startTick;
@@ -23,28 +31,38 @@ namespace Assets.scripts
             this.destination = destination;
         }
 
-        public void Init()
+        public bool Init()
         {
             actor = GameObject.Find(actorName);
             if(actor == null)
             {
                 Debug.LogError("actor name [" + actorName + "] not found. cannot move");
+                return false;
             }
             Vector3 direction = (destination - actor.transform.position);
             float moveDuration = endTick - startTick;
             requiredVelocity = new Vector3(direction.x/moveDuration, direction.y/moveDuration, direction.z/moveDuration);
-            lastUpdateTime = Time.time * 1000;
+            lastUpdateTime = ElPresidente.currentTime;
+            return true;
         }
 
         public void Execute()
         {
             //move enough to get where we're going before endTick
-            float moveTimeElapsed = Time.time * 1000 - lastUpdateTime;
-            Vector3 newPosition = new Vector3(requiredVelocity.x * moveTimeElapsed, 
+            float moveTimeElapsed = ElPresidente.currentTime - lastUpdateTime;
+            Vector3 newPosition = new Vector3();
+            try
+            {
+                newPosition = new Vector3(requiredVelocity.x * moveTimeElapsed, 
                                               requiredVelocity.y * moveTimeElapsed, 
                                               requiredVelocity.z * moveTimeElapsed) + actor.transform.position;
-            actor.transform.position = newPosition;
-            lastUpdateTime = Time.time * 1000;
+                actor.transform.position = newPosition;
+            }
+            catch (Exception ex)
+            {
+                Debug.LogError(newPosition.ToString());
+            }
+            lastUpdateTime = ElPresidente.currentTime;
         }
 
         public void Stop()

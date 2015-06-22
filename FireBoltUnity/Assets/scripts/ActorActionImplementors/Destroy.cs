@@ -18,16 +18,30 @@ namespace Assets.scripts
     {
         float startTick;
         string actorName;
+
+        public static bool ValidForConstruction(string actorName)
+        {
+            if (string.IsNullOrEmpty(actorName))
+                return false;
+            return true;
+        }
+
         public Destroy(float startTick, string actorName) 
         {
             this.startTick = startTick;
             this.actorName = actorName;
         }
 
-        public void Init()
+        public bool Init()
         {
             GameObject actor = GameObject.Find(actorName);
+            if (actor == null)
+            {
+                Debug.LogError(string.Format("actor[{0}] not found for destroy", actorName));
+                return false;
+            }
             actor.SetActive(false);
+            return true;
         }
 
         public void Execute()
