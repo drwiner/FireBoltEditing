@@ -84,7 +84,6 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="Assets\cinematicModels\DotaHierarchyModel.xml" />
-    <None Include="Assets\cinematicModels\DotaModel.xml" />
     <None Include="Assets\plugins\Impulse.XML" />
     <None Include="Assets\storyPlans\animationTimeOffsetPlan.xml" />
     <None Include="Assets\storyPlans\Impulsev1_336\600924233.xml" />

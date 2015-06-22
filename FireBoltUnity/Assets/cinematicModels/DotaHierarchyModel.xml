@@ -1,6 +1,6 @@
 <!--<cinematicModel millisPerTick="1" domainDistancePerEngineDistance="1">-->
 <cinematicModel millisPerTick="33" domainDistancePerEngineDistance="80">
-  <smartModelSettings maxActorSearchDepth="0" maxAnimationSearchDepth="0" />
+  <smartModelSettings maxActorSearchDepth="2" maxAnimationSearchDepth="2" />
   <!-- animation search depth should generally be at least as deep as actor search depth-->
   <domainActions>
     <domainAction name="spawn-creep" >
@@ -169,10 +169,10 @@
     </actor>
 
     <actor name="npc_dota_creep_badguys_melee" model="Non-heroes/creep_bad_melee/creep_bad_melee_model.fbx" >
-      <animationMapping>
+      <animationMappings>
         <animationMapping animateActionName="walk" animationName="bad_melee_walk" loopAnimation="true" />
         <animationMapping animateActionName="die" animationName="swm_die" loopAnimation="false" />
-      </animationMapping>
+      </animationMappings>
     </actor>
     <actor name="npc_dota_creep_goodguys_melee" model="Non-heroes/creep_good_melee/creep_good_melee_model.fbx" >
       <animationMappings>

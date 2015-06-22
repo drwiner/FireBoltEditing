@@ -21,7 +21,7 @@
     </action>-->
     <action type="spawn-hero" name="step7540">
       <property name="location" value="(0,0)"/>
-      <property name="actor" value="Pudge"/>
+      <property name="actor" value="npc_dota_creep_badguys_melee 1"/>
       <property name="time" value="2000-2001"/>
     </action>
     <!--<action type="move" name="step7533">
@@ -43,7 +43,7 @@
       <action type="move" name="step7533">
         <property name="origin" value="(0, 0)"/>
         <property name="destination" value="(-10.0, 0)"/>
-        <property name="actor" value="Pudge"/>
+        <property name="actor" value="npc_dota_creep_badguys_melee 1"/>
         <property name="time" value="2001-15000"/>
       </action>
       <!--<action type="die" name="step1450">
@@ -302,6 +302,9 @@
     <set name="Targets">
       <set-ref name="A"/>
       <constant value="null"/>
+    </set>
+    <set name="npc_dota_creep_badguys_melee">
+      <constant value="npc_dota_creep_badguys_melee 1"/>        
     </set>
     <set name="Creeps">
       <set name="GoodGuysRanged">

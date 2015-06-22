@@ -47,7 +47,7 @@ namespace Assets.scripts
 
             buildInitialState(aaq);
 
-            queryStory();
+            //queryStory();
 
             //generate FireBolt actions for the steps
             foreach (IStoryAction<UintT> storyAction in story.Actions.Values)
