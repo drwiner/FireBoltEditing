@@ -13,8 +13,10 @@ public class ElPresidente : MonoBehaviour {
 
     ActorActionQueue aaq;
     List<IActorAction> executingActions;
+    List<Keyframe> keyFrames;
     public string storyPlanPath;
     public string cinematicModelPath;
+    public float keyFrameFrequency=10000; //every ? milliseconds
     private float lastTickLogged;
     private int nextActionIndex;
     [HideInInspector]
@@ -31,6 +33,7 @@ public class ElPresidente : MonoBehaviour {
 	void Awake () {
         ActorActionFactory.debugText = debugText;
         executingActions = new List<IActorAction>();
+        keyFrames = new List<Keyframe>();
         aaq = ActorActionFactory.CreateStoryActions(storyPlanPath, cinematicModelPath);
         currentTime = 0;
         nextActionIndex = 0;
@@ -59,7 +62,6 @@ public class ElPresidente : MonoBehaviour {
             if (actorActionComplete(actorAction))
             {
                 actorAction.Stop();
-                //TODO need to recycle completed actions to somewhere for backward scrubbing
                 removeList.Add(actorAction);
             }
         }

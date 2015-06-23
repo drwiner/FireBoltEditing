@@ -80,6 +80,8 @@
     <Compile Include="Assets\scripts\ElPresidente.cs" />
     <Compile Include="Assets\scripts\Extensions.cs" />
     <Compile Include="Assets\scripts\IActorAction.cs" />
+    <Compile Include="Assets\scripts\KeyFrameStuff\ActiveActor.cs" />
+    <Compile Include="Assets\scripts\KeyFrameStuff\KeyFrame.cs" />
     <Compile Include="Assets\scripts\rotationCaster.cs" />
   </ItemGroup>
   <ItemGroup>
