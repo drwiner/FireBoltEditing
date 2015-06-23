@@ -6,7 +6,7 @@ using LN.Utilities.Collections;
 
 namespace Assets.scripts
 {
-    public class ActorActionQueue : PriorityQueue<IActorAction>
+    public class ActorActionQueue : SortedSet<IActorAction>
     {
         private class ActorActionComparer : IComparer<IActorAction>
         {
@@ -25,7 +25,6 @@ namespace Assets.scripts
                 return -1;
             }
         }
-
         public ActorActionQueue()
             : base(new ActorActionComparer())
         {

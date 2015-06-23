@@ -16,6 +16,7 @@ public class ElPresidente : MonoBehaviour {
     public string storyPlanPath;
     public string cinematicModelPath;
     private float lastTickLogged;
+    private int nextActionIndex;
     [HideInInspector]
     public bool pause = false;
     public Text debugText;
@@ -32,6 +33,7 @@ public class ElPresidente : MonoBehaviour {
         executingActions = new List<IActorAction>();
         aaq = ActorActionFactory.CreateStoryActions(storyPlanPath, cinematicModelPath);
         currentTime = 0;
+        nextActionIndex = 0;
     }
 
     public void togglePause()
@@ -46,6 +48,7 @@ public class ElPresidente : MonoBehaviour {
     {
         Time.timeScale = (Time.timeScale + 1f) % 4;        
     }
+
     void Update()
     {
         currentTime += Time.deltaTime * 1000;
@@ -64,9 +67,10 @@ public class ElPresidente : MonoBehaviour {
         {
             executingActions.Remove(action);
         }
-        while (!aaq.Empty && aaq.Peek().StartTick() <= currentTime)
+        while (aaq.Count > 0 && aaq[nextActionIndex].StartTick() <= currentTime)
         {
-            IActorAction action = aaq.Pop();
+            IActorAction action = aaq[nextActionIndex];
+            nextActionIndex++;
             if (action.Init())
                 executingActions.Add(action);
         }
