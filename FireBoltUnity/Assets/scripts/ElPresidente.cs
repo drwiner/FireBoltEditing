@@ -19,8 +19,8 @@ public class ElPresidente : MonoBehaviour {
     public float keyFrameFrequency=10000; //every ? milliseconds
     private float lastTickLogged;
     private int nextActionIndex;
-    [HideInInspector]
-    public bool pause = false;
+    private float totalTime;
+    private bool pause = false;
     public Text debugText;
 
     /// <summary>
@@ -37,6 +37,10 @@ public class ElPresidente : MonoBehaviour {
         aaq = ActorActionFactory.CreateStoryActions(storyPlanPath, cinematicModelPath);
         currentTime = 0;
         nextActionIndex = 0;
+        //find total time for execution. not sure how to easily find this without searching a lot of actions
+        //totalTime = yeah 
+        //TODO move story load into el presidente
+
     }
 
     public void togglePause()
@@ -50,6 +54,17 @@ public class ElPresidente : MonoBehaviour {
     public void speedToggle()
     {
         Time.timeScale = (Time.timeScale + 1f) % 4;        
+    }
+
+    public void setTime(float f)
+    {
+        
+        //find previous keyframe from calculated time
+        debugText.text = (f * totalTime).ToString();
+        //assign above to currentTime 
+        //clear executing actions
+        //enable/disable characters & reposition at start locations
+        //set nextAction index
     }
 
     void Update()
@@ -69,7 +84,7 @@ public class ElPresidente : MonoBehaviour {
         {
             executingActions.Remove(action);
         }
-        while (aaq.Count > 0 && aaq[nextActionIndex].StartTick() <= currentTime)
+        while (nextActionIndex < aaq.Count && aaq[nextActionIndex].StartTick() <= currentTime)
         {
             IActorAction action = aaq[nextActionIndex];
             nextActionIndex++;
