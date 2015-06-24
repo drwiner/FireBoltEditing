@@ -1,13 +1,15 @@
 ﻿using UnityEngine;
 using UnityEngine.UI;
-using Impulse.v_0_1;
-using ImpulsePlan = Impulse.v_0_1.Plan;
 using System.Xml;
 using System.IO;
 using System.Collections;
 using Assets.scripts;
 using System.Collections.Generic;
 using System;
+using Impulse.v_1_336;
+using UintT = Impulse.v_1_336.Interval<Impulse.v_1_336.Constants.ValueConstant<uint>, uint>;
+using UintV = Impulse.v_1_336.Constants.ValueConstant<uint>;
+
 
 public class ElPresidente : MonoBehaviour {
 
@@ -23,6 +25,9 @@ public class ElPresidente : MonoBehaviour {
     private bool pause = false;
     public Text debugText;
 
+    private AStory<UintV, UintT, IIntervalSet<UintV, UintT>> story;
+
+
     /// <summary>
     /// FireBolt point of truth for time.  updated with but independent of time.deltaTime
     /// expressed in milliseconds
@@ -34,13 +39,25 @@ public class ElPresidente : MonoBehaviour {
         ActorActionFactory.debugText = debugText;
         executingActions = new List<IActorAction>();
         keyFrames = new List<Keyframe>();
-        aaq = ActorActionFactory.CreateStoryActions(storyPlanPath, cinematicModelPath);
+        loadStructuredImpulsePlan(storyPlanPath);
+        aaq = ActorActionFactory.CreateStoryActions(story, cinematicModelPath);
         currentTime = 0;
         nextActionIndex = 0;
         //find total time for execution. not sure how to easily find this without searching a lot of actions
         //totalTime = yeah 
-        //TODO move story load into el presidente
+    }
 
+    private void loadStructuredImpulsePlan(string storyPlanPath)
+    {
+        debugText.text = "beginning load " + storyPlanPath;
+        Debug.Log("begin story plan xml load");
+        var xml = Impulse.v_1_336.Xml.Story.LoadFromFile(storyPlanPath);
+        Debug.Log("end story plan xml load");
+        var factory = Impulse.v_1_336.StoryParsingFactories.GetUnsignedIntergerIntervalFactory();
+        Debug.Log("begin story plan parse");
+        story = factory.ParseStory(xml, false);//TODO true!
+        Debug.Log("end story plan parse");
+        debugText.text = "story load done!";
     }
 
     public void togglePause()
@@ -56,11 +73,10 @@ public class ElPresidente : MonoBehaviour {
         Time.timeScale = (Time.timeScale + 1f) % 4;        
     }
 
-    public void setTime(float f)
-    {
-        
+    public void setTime(float targetPercentComplete)
+    {        
         //find previous keyframe from calculated time
-        debugText.text = (f * totalTime).ToString();
+        debugText.text = (targetPercentComplete * totalTime).ToString();
         //assign above to currentTime 
         //clear executing actions
         //enable/disable characters & reposition at start locations
