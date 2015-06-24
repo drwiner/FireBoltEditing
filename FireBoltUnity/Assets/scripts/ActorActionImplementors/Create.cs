@@ -13,6 +13,7 @@ namespace Assets.scripts
         float startTick;
         string actorName,modelName;
         Vector3 position;
+		GameObject actor;
 
         public static bool ValidForConstruction(string actorName, string modelName)
         {
@@ -27,10 +28,18 @@ namespace Assets.scripts
             this.actorName = actorName;
             this.modelName = modelName;
             this.position = position;
+			this.actor = null;
         }
 
         public bool Init()
         {
+			if (actor != null)
+			{
+				actor.SetActive(true);
+				actor.transform.position = position;
+				actor.transform.rotation = Quaternion.identity;
+				return true;
+			}
             GameObject model = AssetDatabase.LoadAssetAtPath<GameObject>("Assets/Resources/Models/" + modelName);
             //GameObject model = Resources.Load<GameObject>("Models/" + modelName);
             if (model == null)
@@ -38,10 +47,16 @@ namespace Assets.scripts
                 Debug.LogError(string.Format("could not find model[{0}] to create",modelName));
                 return false;
             }
-            GameObject actor = GameObject.Instantiate(model, position, Quaternion.identity) as GameObject;
+            actor = GameObject.Instantiate(model, position, Quaternion.identity) as GameObject;
             actor.name = actorName;
             return true;
         }
+
+		public void Undo()
+		{
+			if (actor != null)
+			    actor.SetActive (false);
+		}
 
         public void Execute()
         {

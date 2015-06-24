@@ -22,6 +22,7 @@ public class ElPresidente : MonoBehaviour {
     private float totalTime;
     private bool pause = false;
     public Text debugText;
+	public float myTime;
 
     /// <summary>
     /// FireBolt point of truth for time.  updated with but independent of time.deltaTime
@@ -40,6 +41,16 @@ public class ElPresidente : MonoBehaviour {
         //find total time for execution. not sure how to easily find this without searching a lot of actions
         //totalTime = yeah 
         //TODO move story load into el presidente
+
+		float at = 0;
+		KeyFrame current;
+		foreach (IActorAction aa in aaq) 
+		{
+			if (aa.StartTick() > at + keyFrameFrequency)
+			{
+
+			}
+		}
 
     }
 
@@ -69,12 +80,14 @@ public class ElPresidente : MonoBehaviour {
 
     void Update()
     {
+
         currentTime += Time.deltaTime * 1000;
+		myTime = currentTime;  
         logTicks();
         List<IActorAction> removeList = new List<IActorAction>();
         foreach (IActorAction actorAction in executingActions)
         {
-            if (actorActionComplete(actorAction))
+            if (actorActionComplete(actorAction) || actorAction.StartTick() > currentTime)
             {
                 actorAction.Stop();
                 removeList.Add(actorAction);
@@ -89,7 +102,12 @@ public class ElPresidente : MonoBehaviour {
             IActorAction action = aaq[nextActionIndex];
             nextActionIndex++;
             if (action.Init())
-                executingActions.Add(action);
+			{
+				if (!actorActionComplete(action))
+                    executingActions.Add(action);
+				else
+					action.Stop();
+			}
         }
     }
 
@@ -100,6 +118,24 @@ public class ElPresidente : MonoBehaviour {
             actorAction.Execute();
         }
     }
+
+	public void goTo(float time)
+	{
+		if (time < currentTime)
+		{
+			while (nextActionIndex >= 0 && aaq[nextActionIndex].StartTick() > time)
+			{
+				aaq[nextActionIndex].Undo();
+				nextActionIndex--;
+			}
+		}
+		currentTime = time;
+	}
+
+	public void goToRel(float time)
+	{
+		goTo(currentTime + time);
+	}
 
     void logTicks()
     {

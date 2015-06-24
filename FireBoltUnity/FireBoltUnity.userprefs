@@ -1,8 +1,17 @@
 ﻿<Properties>
-  <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug" PreferredExecutionTarget="MonoDevelop.Default" />
-  <MonoDevelop.Ide.Workbench ActiveDocument="Assets\storyPlans\plan_simple.xml">
+  <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug" />
+  <MonoDevelop.Ide.Workbench ActiveDocument="Assets\scripts\ElPresidente.cs">
     <Files>
-      <File FileName="Assets\storyPlans\plan_simple.xml" Line="1" Column="1" />
+      <File FileName="Assets\scripts\KeyFrameStuff\KeyFrame.cs" Line="11" Column="57" />
+      <File FileName="Assets\storyPlans\Impulsev1_336\tester.xml" Line="1" Column="1" />
+      <File FileName="Assets\cinematicModels\DotaHierarchyModel.xml" Line="1" Column="78" />
+      <File FileName="Assets\scripts\ElPresidente.cs" Line="48" Column="4" />
+      <File FileName="Assets\scripts\ConsoleBehavior.cs" Line="25" Column="40" />
+      <File FileName="Assets\scripts\IActorAction.cs" Line="1" Column="1" />
+      <File FileName="Assets\scripts\ActorActionImplementors\Translate.cs" Line="32" Column="10" />
+      <File FileName="Assets\scripts\ActorActionImplementors\Destroy.cs" Line="1" Column="1" />
+      <File FileName="Assets\scripts\ActorActionImplementors\Rotate.cs" Line="1" Column="1" />
+      <File FileName="Assets\scripts\ActorActionImplementors\Create.cs" Line="1" Column="1" />
     </Files>
   </MonoDevelop.Ide.Workbench>
   <MonoDevelop.Ide.DebuggingService.Breakpoints>

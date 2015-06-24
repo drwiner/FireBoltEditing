@@ -18,6 +18,8 @@ namespace Assets.scripts
         float requiredVelocity;
         float stepSize;
         Quaternion target;
+		Quaternion start;
+
 
 
         public static bool ValidForConstruction(string actorName)
@@ -43,7 +45,7 @@ namespace Assets.scripts
                 Debug.LogError("actor name [" + actorName + "] not found. cannot rotate");
                 return false;
             }
-            
+			start = actor.transform.rotation;
             targetDegrees = convertSourceEngineToUnityRotation(targetDegrees);
 
             float rotateDuration = endTick - startTick;
@@ -76,6 +78,12 @@ namespace Assets.scripts
             }
             return unityDegrees;
         }
+
+		public void Undo()
+		{
+			if (actor != null)
+			    actor.transform.rotation = start;
+		}
 
         public void Stop()
         {

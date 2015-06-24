@@ -15,6 +15,7 @@ namespace Assets.scripts
         Vector3 destination;
         GameObject actor;
         Vector3 requiredVelocity;
+		Vector3 start;
 
         public static bool ValidForConstruction(string actorName)
         {
@@ -43,6 +44,7 @@ namespace Assets.scripts
             float moveDuration = endTick - startTick;
             requiredVelocity = new Vector3(direction.x/moveDuration, direction.y/moveDuration, direction.z/moveDuration);
             lastUpdateTime = ElPresidente.currentTime;
+			start = actor.transform.position;
             return true;
         }
 
@@ -64,6 +66,12 @@ namespace Assets.scripts
             }
             lastUpdateTime = ElPresidente.currentTime;
         }
+
+		public void Undo()
+		{
+			if (actor != null)
+			    actor.transform.position = start;
+		}
 
         public void Stop()
         {
