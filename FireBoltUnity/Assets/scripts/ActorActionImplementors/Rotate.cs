@@ -27,6 +27,13 @@ namespace Assets.scripts
             return true;
         }
 
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="startTick"></param>
+        /// <param name="endTick"></param>
+        /// <param name="actorName"></param>
+        /// <param name="targetDegrees">must be in unity axes</param>
         public Rotate(float startTick, float endTick, string actorName, float targetDegrees) 
         {
             this.startTick = startTick;
@@ -44,8 +51,6 @@ namespace Assets.scripts
                 return false;
             }
             
-            targetDegrees = convertSourceEngineToUnityRotation(targetDegrees);
-
             float rotateDuration = endTick - startTick;
             float totalRotationRequired = Mathf.Abs(actor.transform.rotation.eulerAngles.y - targetDegrees);            
             requiredVelocity = totalRotationRequired/rotateDuration;
@@ -61,20 +66,6 @@ namespace Assets.scripts
             actor.transform.rotation = Quaternion.RotateTowards(actor.transform.rotation, target, requiredVelocity * rotateTimeElapsed);
             lastUpdateTime = ElPresidente.currentTime;
             //Debug.DrawRay(actor.transform.position + Vector3.up, actor.transform.forward,Color.magenta);
-        }
-
-        private float convertSourceEngineToUnityRotation(float sourceDegrees)
-        {
-            float unityDegrees = -sourceDegrees + 90 % 360;
-            while(unityDegrees > 180)
-            {
-                unityDegrees -= 360;
-            }
-            while(unityDegrees < -180)
-            {
-                unityDegrees += 360;
-            }
-            return unityDegrees;
         }
 
         public void Stop()

@@ -70,13 +70,14 @@ namespace Assets.scripts
 				animation.wrapMode = WrapMode.Once;
 
             animatorOverride["idle"] = animation;
+            
             return true;
         }
 
 	    public void Execute () 
         {
 		    //let it roll
-            animator.SetTrigger(playTriggerHash);
+            //animator.SetTrigger(playTriggerHash);
 	    }
 
         public void Stop()

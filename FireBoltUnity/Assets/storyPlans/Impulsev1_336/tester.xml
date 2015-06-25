@@ -44,7 +44,7 @@
         <property name="origin" value="(0, 0)"/>
         <property name="destination" value="(-10.0, 0)"/>
         <property name="actor" value="Pudge"/>
-        <property name="time" value="2001-15000"/>
+        <property name="time" value="2001-8000"/>
       </action>
       <!--<action type="die" name="step1450">
         <property name="actor" value="Crystal Maiden"/>

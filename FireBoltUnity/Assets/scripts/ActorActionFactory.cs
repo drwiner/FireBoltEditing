@@ -131,6 +131,7 @@ namespace Assets.scripts
                 endTick = getEndTick(storyAction, ra, effectingAnimation, startTick);
                 if (Rotate.ValidForConstruction(actorName))
                 {
+                    targetDegrees = targetDegrees.convertSourceEngineToUnityRotation();
                     aaq.Add(new Rotate(startTick, endTick, actorName, targetDegrees));
                 }                
             }

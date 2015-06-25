@@ -13,11 +13,13 @@ using UintV = Impulse.v_1_336.Constants.ValueConstant<uint>;
 
 public class ElPresidente : MonoBehaviour {
 
-    ActorActionQueue aaq;
+    ActorActionQueue actorActionQueue;
+    ActorActionQueue cameraActionQueue;
     List<IActorAction> executingActions;
     List<Keyframe> keyFrames;
     public string storyPlanPath;
     public string cinematicModelPath;
+    public string cameraPlanPath;
     public float keyFrameFrequency=10000; //every ? milliseconds
     private float lastTickLogged;
     private int nextActionIndex;
@@ -40,7 +42,8 @@ public class ElPresidente : MonoBehaviour {
         executingActions = new List<IActorAction>();
         keyFrames = new List<Keyframe>();
         loadStructuredImpulsePlan(storyPlanPath);
-        aaq = ActorActionFactory.CreateStoryActions(story, cinematicModelPath);
+        actorActionQueue = ActorActionFactory.CreateStoryActions(story, cinematicModelPath);
+        cameraActionQueue = CameraActionFactory.CreateCameraActions(story, cameraPlanPath);
         currentTime = 0;
         nextActionIndex = 0;
         //find total time for execution. not sure how to easily find this without searching a lot of actions
@@ -100,9 +103,9 @@ public class ElPresidente : MonoBehaviour {
         {
             executingActions.Remove(action);
         }
-        while (nextActionIndex < aaq.Count && aaq[nextActionIndex].StartTick() <= currentTime)
+        while (nextActionIndex < actorActionQueue.Count && actorActionQueue[nextActionIndex].StartTick() <= currentTime)
         {
-            IActorAction action = aaq[nextActionIndex];
+            IActorAction action = actorActionQueue[nextActionIndex];
             nextActionIndex++;
             if (action.Init())
                 executingActions.Add(action);
