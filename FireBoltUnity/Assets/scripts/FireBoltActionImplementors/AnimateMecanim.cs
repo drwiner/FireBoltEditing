@@ -5,7 +5,7 @@ using UnityEditor;
 
 namespace Assets.scripts
 {
-    public class AnimateMecanim : IActorAction
+    public class AnimateMecanim : IFireBoltAction
     {
        
         private float startTick;
@@ -90,7 +90,7 @@ namespace Assets.scripts
             return startTick;
         }
 
-        public float? EndTick()
+        public float EndTick()
         {
             return endTick;
         }

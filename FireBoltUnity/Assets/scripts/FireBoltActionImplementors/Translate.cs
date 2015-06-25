@@ -7,7 +7,7 @@ using CM=CinematicModel;
 
 namespace Assets.scripts
 {
-    public class Translate : IActorAction
+    public class Translate : IFireBoltAction
     {
         float lastUpdateTime;
         float startTick, endTick;
@@ -40,8 +40,19 @@ namespace Assets.scripts
                 return false;
             }
             Vector3 direction = (destination - actor.transform.position);
-            float moveDuration = endTick - startTick;
-            requiredVelocity = new Vector3(direction.x/moveDuration, direction.y/moveDuration, direction.z/moveDuration);
+            float moveDuration = endTick - startTick > 0 ? endTick - startTick : 1;
+
+            if (moveDuration < ElPresidente.MILLIS_PER_FRAME)//we aren't guaranteed a single execution cycle, so move it now and make sure it doesn't move later
+            {
+                actor.transform.position = destination;
+                requiredVelocity = Vector3.zero;
+            }
+            else
+            {
+                requiredVelocity = new Vector3(direction.x / moveDuration, direction.y / moveDuration, direction.z / moveDuration);
+            }
+            
+           
             lastUpdateTime = ElPresidente.currentTime;
             return true;
         }
@@ -75,7 +86,7 @@ namespace Assets.scripts
             return startTick;
         }
 
-        public float? EndTick()
+        public float EndTick()
         {
             return endTick;
         }

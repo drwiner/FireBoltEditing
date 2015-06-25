@@ -7,7 +7,7 @@ using CM=CinematicModel;
 
 namespace Assets.scripts
 {
-    public class Rotate : IActorAction
+    public class Rotate : IFireBoltAction
     {
         float lastUpdateTime;
         float startTick, endTick;
@@ -50,12 +50,21 @@ namespace Assets.scripts
                 Debug.LogError("actor name [" + actorName + "] not found. cannot rotate");
                 return false;
             }
-            
-            float rotateDuration = endTick - startTick;
-            float totalRotationRequired = Mathf.Abs(actor.transform.rotation.eulerAngles.y - targetDegrees);            
-            requiredVelocity = totalRotationRequired/rotateDuration;
 
+            float rotateDuration = endTick - startTick > 0 ? endTick - startTick : 1;            
             target = Quaternion.Euler(0, targetDegrees, 0);
+            
+            if (rotateDuration < ElPresidente.MILLIS_PER_FRAME)//we aren't guaranteed a single execution cycle, so move it now and make sure it doesn't move later
+            {
+                actor.transform.rotation = target;
+                requiredVelocity = 0;
+            }
+            else
+            {
+                float totalRotationRequired = Mathf.Abs(actor.transform.rotation.eulerAngles.y - targetDegrees);
+                requiredVelocity = totalRotationRequired / rotateDuration;
+            }          
+
             lastUpdateTime = ElPresidente.currentTime;
             return true;
         }
@@ -78,7 +87,7 @@ namespace Assets.scripts
             return startTick;
         }
 
-        public float? EndTick()
+        public float EndTick()
         {
             return endTick;
         }

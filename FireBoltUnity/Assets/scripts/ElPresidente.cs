@@ -11,18 +11,20 @@ using UintT = Impulse.v_1_336.Interval<Impulse.v_1_336.Constants.ValueConstant<u
 using UintV = Impulse.v_1_336.Constants.ValueConstant<uint>;
 
 
-public class ElPresidente : MonoBehaviour {
 
-    ActorActionQueue actorActionQueue;
-    ActorActionQueue cameraActionQueue;
-    List<IActorAction> executingActions;
+public class ElPresidente : MonoBehaviour {
+    [HideInInspector]
+    public static readonly ushort MILLIS_PER_FRAME = 5; //probably won't see much here if actions take less than 2 full frames at 30 fps
+
+    FireBoltActionList actorActionList;
+    FireBoltActionList cameraActionList;
+    List<IFireBoltAction> executingActions;
     List<Keyframe> keyFrames;
     public string storyPlanPath;
     public string cinematicModelPath;
     public string cameraPlanPath;
     public float keyFrameFrequency=10000; //every ? milliseconds
     private float lastTickLogged;
-    private int nextActionIndex;
     private float totalTime;
     private bool pause = false;
     public Text debugText;
@@ -39,13 +41,12 @@ public class ElPresidente : MonoBehaviour {
 	// Use this for initialization
 	void Awake () {
         ActorActionFactory.debugText = debugText;
-        executingActions = new List<IActorAction>();
+        executingActions = new List<IFireBoltAction>();
         keyFrames = new List<Keyframe>();
         loadStructuredImpulsePlan(storyPlanPath);
-        actorActionQueue = ActorActionFactory.CreateStoryActions(story, cinematicModelPath);
-        cameraActionQueue = CameraActionFactory.CreateCameraActions(story, cameraPlanPath);
-        currentTime = 0;
-        nextActionIndex = 0;
+        actorActionList = ActorActionFactory.CreateStoryActions(story, cinematicModelPath);
+        cameraActionList = CameraActionFactory.CreateCameraActions(story, cameraPlanPath);
+        currentTime = 0;        
         //find total time for execution. not sure how to easily find this without searching a lot of actions
         //totalTime = yeah 
     }
@@ -90,8 +91,15 @@ public class ElPresidente : MonoBehaviour {
     {
         currentTime += Time.deltaTime * 1000;
         logTicks();
-        List<IActorAction> removeList = new List<IActorAction>();
-        foreach (IActorAction actorAction in executingActions)
+
+        updateFireBoltActions(actorActionList);
+        updateFireBoltActions(cameraActionList);
+    }
+
+    void updateFireBoltActions(FireBoltActionList actions)
+    {
+        List<IFireBoltAction> removeList = new List<IFireBoltAction>();
+        foreach (IFireBoltAction actorAction in executingActions)
         {
             if (actorActionComplete(actorAction))
             {
@@ -99,14 +107,14 @@ public class ElPresidente : MonoBehaviour {
                 removeList.Add(actorAction);
             }
         }
-        foreach (IActorAction action in removeList)
+        foreach (IFireBoltAction action in removeList)
         {
             executingActions.Remove(action);
         }
-        while (nextActionIndex < actorActionQueue.Count && actorActionQueue[nextActionIndex].StartTick() <= currentTime)
+        while (actions.NextActionIndex < actions.Count && actions[actions.NextActionIndex].StartTick() <= currentTime) //TODO should probably encapsulate some more of this stuff in the list class
         {
-            IActorAction action = actorActionQueue[nextActionIndex];
-            nextActionIndex++;
+            IFireBoltAction action = actions[actions.NextActionIndex];
+            actions.NextActionIndex++;
             if (action.Init())
                 executingActions.Add(action);
         }
@@ -114,7 +122,7 @@ public class ElPresidente : MonoBehaviour {
 
     void LateUpdate()
     {
-        foreach (IActorAction actorAction in executingActions)
+        foreach (IFireBoltAction actorAction in executingActions)
         {
             actorAction.Execute();
         }
@@ -129,8 +137,8 @@ public class ElPresidente : MonoBehaviour {
         }
     }
 
-    bool actorActionComplete(IActorAction iaa)
+    bool actorActionComplete(IFireBoltAction iaa)
     {
-        return iaa.EndTick().HasValue && iaa.EndTick().Value < currentTime || iaa.EndTick() == null;
+        return iaa.EndTick() < currentTime;
     }
 }
