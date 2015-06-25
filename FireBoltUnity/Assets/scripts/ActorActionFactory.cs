@@ -1,7 +1,6 @@
 ﻿using UnityEngine;
 using UnityEngine.UI;
 using System.Collections;
-using Impulse.v_0_1;
 using Impulse.v_1_336;
 using Impulse.v_1_336.Sentences;
 using Impulse.v_1_336.Intervals;
@@ -19,17 +18,13 @@ namespace Assets.scripts
 {
     public class ActorActionFactory
     {
-        //TODO add support for assigning full numeric extended name to duplicate actors (creeps) so we can move and animate them uniquely
-        //TODO speedify by adding caching to lookup methods...initial effort done in cinematic model
-        //TODO concatenate looping subsequent animations on the same character into a single action?  would require even longer preprocessing...
-        //TODO does rotate work with dota logs now?
-        //add binary search to the aaq to support animation concat
-        //TODO 
+        
+        
+        //TODO concatenate looping subsequent animations on the same character into a single action?  would require even longer preprocessing...        
         private static CM.CinematicModel cm;
-        private static AStory<UintV, UintT, IIntervalSet<UintV, UintT>> story;
         private static string[] orderedObjectSets;
         private static string[] orderedActionTypes;
-        private static readonly char[] uniqueActorIdentifierSeparators = { ':' };
+        private static AStory<UintV, UintT, IIntervalSet<UintV, UintT>> story;
         public static Text debugText;
 
         /// <summary>
@@ -38,16 +33,16 @@ namespace Assets.scripts
         /// <param name="storyPlanPath">path to the story plan to load</param>
         /// <param name="cinematicModelPath">path to the cinematic model to load</param>
         /// <returns></returns>
-        public static ActorActionQueue CreateStoryActions(string storyPlanPath, string cinematicModelPath)
+        public static ActorActionQueue CreateStoryActions(AStory<UintV, UintT, IIntervalSet<UintV, UintT>> story, string cinematicModelPath)
         {
             ActorActionQueue aaq = new ActorActionQueue();            
-            loadStructuredImpulsePlan(storyPlanPath);
             cm = loadCinematicModel(cinematicModelPath);
 
+            ActorActionFactory.story = story;
+            orderedObjectSets = story.ObjectSetGraph.ReverseTopologicalSort().ToArray();
+            orderedActionTypes = story.ActionTypeGraph.ReverseTopologicalSort().ToArray();
 
             buildInitialState(aaq);
-
-            //queryStory();
 
             //generate FireBolt actions for the steps
             foreach (IStoryAction<UintT> storyAction in story.Actions.Values)
@@ -64,16 +59,6 @@ namespace Assets.scripts
                 enqueueRotateActions(storyAction, domainAction, effectingAnimation, aaq);
             }            
             return aaq;
-        }
-
-
-        private static void queryStory()
-        {
-            var q = (from a in story.Actions
-                    where a.Value.Time.Start == a.Value.Time.End &&
-                          a.Value.ActionType.Name == "move"
-                    select new {Actor=a.Value.GetProperty("actor").Name, Origin=a.Value.GetProperty("origin"),
-                        Destination=a.Value.GetProperty("destination"), ActionType=a.Value.ActionType.Name, Time=a.Value.Time.Start}).ToArray();
         }
 
         private static void buildInitialState(ActorActionQueue aaq) //TODO actor model defaulting a la create actions
@@ -146,6 +131,7 @@ namespace Assets.scripts
                 endTick = getEndTick(storyAction, ra, effectingAnimation, startTick);
                 if (Rotate.ValidForConstruction(actorName))
                 {
+                    targetDegrees = targetDegrees.convertSourceEngineToUnityRotation();
                     aaq.Add(new Rotate(startTick, endTick, actorName, targetDegrees));
                 }                
             }
@@ -239,7 +225,8 @@ namespace Assets.scripts
             return effectingAnimation;
         }
 
-        private static void enqueueAnimateActions(IStoryAction<UintT> storyAction, CM.DomainAction domainAction, CM.Animation effectingAnimation, ActorActionQueue aaq)
+        private static void enqueueAnimateActions(IStoryAction<UintT> storyAction, CM.DomainAction domainAction, 
+                                                  CM.Animation effectingAnimation, ActorActionQueue aaq)
         {            
             foreach(CM.AnimateAction animateAction in domainAction.AnimateActions)
             {
@@ -382,7 +369,6 @@ namespace Assets.scripts
             return false;
         }
 
-        //TODO limit depth
         private static void enqueueCreateActions(IStoryAction<UintT> storyAction, CM.DomainAction domainAction, CM.Animation effectingAnimation, ActorActionQueue aaq )
         {
             foreach (CM.CreateAction ca in domainAction.CreateActions)
@@ -478,26 +464,6 @@ namespace Assets.scripts
                 }
             }
             return null;
-        }
-
-        private static void loadStructuredImpulsePlan(string storyPlanPath)
-        {
-            debugText.text = "beginning load " + storyPlanPath;
-            Debug.Log("begin story plan xml load");
-            var xml = Impulse.v_1_336.Xml.Story.LoadFromFile(storyPlanPath);
-            Debug.Log("end story plan xml load");
-            var factory = Impulse.v_1_336.StoryParsingFactories.GetUnsignedIntergerIntervalFactory();
-            Debug.Log("begin story plan parse");
-            story = factory.ParseStory(xml, false);//TODO true!
-
-            Debug.Log("end story plan parse");
-            Debug.Log("start object hierarchy sort");
-            orderedObjectSets = story.ObjectSetGraph.ReverseTopologicalSort().ToArray();
-            Debug.Log("end object hierarchy sort");
-            Debug.Log("begin action hierarchy sort");
-            orderedActionTypes = story.ActionTypeGraph.ReverseTopologicalSort().ToArray();
-            Debug.Log("end action hierarchy sort");
-            debugText.text = "story load done!";
         }
 
         private static CM.CinematicModel loadCinematicModel(string cinematicModelPath)

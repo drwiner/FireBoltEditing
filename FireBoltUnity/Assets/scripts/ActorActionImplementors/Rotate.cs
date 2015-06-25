@@ -29,6 +29,13 @@ namespace Assets.scripts
             return true;
         }
 
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="startTick"></param>
+        /// <param name="endTick"></param>
+        /// <param name="actorName"></param>
+        /// <param name="targetDegrees">must be in unity axes</param>
         public Rotate(float startTick, float endTick, string actorName, float targetDegrees) 
         {
             this.startTick = startTick;

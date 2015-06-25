@@ -77,6 +77,7 @@ namespace Assets.scripts
 				animation.wrapMode = WrapMode.Once;
 			oldClip = animatorOverride ["idle"];
             animatorOverride["idle"] = animation;
+            
             return true;
         }
 
@@ -89,7 +90,7 @@ namespace Assets.scripts
 	    public void Execute () 
         {
 		    //let it roll
-            animator.SetTrigger(playTriggerHash);
+            //animator.SetTrigger(playTriggerHash);
 	    }
 
         public void Stop()

@@ -19,6 +19,18 @@ namespace Assets.scripts
             return new Vector3(float.Parse(values[0]),float.Parse(values[1]),float.Parse(values[2]));
         }
 
+
+        /// <summary>
+        /// converts comma delimited numeric pair into x,z coordinates
+        /// </summary>
+        /// <param name="s">string of format x,z </param>
+        /// <returns>vector 3</returns>
+        public static Vector3 ParsePlanarCoords(this string s)
+        {
+            string[] values = s.Split(new char[] { ',' });
+            return new Vector3(float.Parse(values[0]),0f,float.Parse(values[1]));
+        }
+
         /// <summary>
         /// finds the angle of rotation to change orientation from "from" to "to"
         /// ignores Y values
@@ -51,6 +63,21 @@ namespace Assets.scripts
         public static float ToMillis(this uint tick, uint millisPerTick)
         {
             return tick * millisPerTick;
+        }
+
+
+        public static float convertSourceEngineToUnityRotation(this float sourceDegrees)
+        {
+            float unityDegrees = -sourceDegrees + 90 % 360;
+            while (unityDegrees > 180)
+            {
+                unityDegrees -= 360;
+            }
+            while (unityDegrees < -180)
+            {
+                unityDegrees += 360;
+            }
+            return unityDegrees;
         }
     }
 }

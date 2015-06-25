@@ -11,11 +11,13 @@ using System;
 
 public class ElPresidente : MonoBehaviour {
 
-    ActorActionQueue aaq;
+    ActorActionQueue actorActionQueue;
+    ActorActionQueue cameraActionQueue;
     List<IActorAction> executingActions;
     List<Keyframe> keyFrames;
     public string storyPlanPath;
     public string cinematicModelPath;
+    public string cameraPlanPath;
     public float keyFrameFrequency=10000; //every ? milliseconds
     private float lastTickLogged;
     private int nextActionIndex;
@@ -23,6 +25,7 @@ public class ElPresidente : MonoBehaviour {
     private bool pause = false;
     public Text debugText;
 	public float myTime;
+    private AStory<UintV, UintT, IIntervalSet<UintV, UintT>> story;
 
     /// <summary>
     /// FireBolt point of truth for time.  updated with but independent of time.deltaTime
@@ -35,7 +38,9 @@ public class ElPresidente : MonoBehaviour {
         ActorActionFactory.debugText = debugText;
         executingActions = new List<IActorAction>();
         keyFrames = new List<Keyframe>();
-        aaq = ActorActionFactory.CreateStoryActions(storyPlanPath, cinematicModelPath);
+        loadStructuredImpulsePlan(storyPlanPath);
+        actorActionQueue = ActorActionFactory.CreateStoryActions(story, cinematicModelPath);
+        cameraActionQueue = CameraActionFactory.CreateCameraActions(story, cameraPlanPath);
         currentTime = 0;
         nextActionIndex = 0;
         //find total time for execution. not sure how to easily find this without searching a lot of actions
@@ -54,6 +59,21 @@ public class ElPresidente : MonoBehaviour {
 
     }
 
+
+    private void loadStructuredImpulsePlan(string storyPlanPath)
+    {
+        debugText.text = "beginning load " + storyPlanPath;
+        Debug.Log("begin story plan xml load");
+        var xml = Impulse.v_1_336.Xml.Story.LoadFromFile(storyPlanPath);
+        Debug.Log("end story plan xml load");
+        var factory = Impulse.v_1_336.StoryParsingFactories.GetUnsignedIntergerIntervalFactory();
+        Debug.Log("begin story plan parse");
+        story = factory.ParseStory(xml, false);//TODO true!
+        Debug.Log("end story plan parse");
+        debugText.text = "story load done!";
+    }
+
+
     public void togglePause()
     {
         if (Time.timeScale < float.Epsilon)
@@ -67,11 +87,10 @@ public class ElPresidente : MonoBehaviour {
         Time.timeScale = (Time.timeScale + 1f) % 4;        
     }
 
-    public void setTime(float f)
-    {
-        
+    public void setTime(float targetPercentComplete)
+    {        
         //find previous keyframe from calculated time
-        debugText.text = (f * totalTime).ToString();
+        debugText.text = (targetPercentComplete * totalTime).ToString();
         //assign above to currentTime 
         //clear executing actions
         //enable/disable characters & reposition at start locations
@@ -80,7 +99,6 @@ public class ElPresidente : MonoBehaviour {
 
     void Update()
     {
-
         currentTime += Time.deltaTime * 1000;
 		myTime = currentTime;  
         logTicks();
@@ -97,9 +115,9 @@ public class ElPresidente : MonoBehaviour {
         {
             executingActions.Remove(action);
         }
-        while (nextActionIndex < aaq.Count && aaq[nextActionIndex].StartTick() <= currentTime)
+        while (nextActionIndex < actorActionQueue.Count && actorActionQueue[nextActionIndex].StartTick() <= currentTime)
         {
-            IActorAction action = aaq[nextActionIndex];
+            IActorAction action = actorActionQueue[nextActionIndex];
             nextActionIndex++;
             if (action.Init())
 			{
@@ -123,11 +141,11 @@ public class ElPresidente : MonoBehaviour {
 	{
 		if (time < currentTime)
 		{
-			if (nextActionIndex >= aaq.Count)
+			if (nextActionIndex >= actorActionQueue.Count)
 				nextActionIndex--;
-			while (nextActionIndex >= 0 && aaq[nextActionIndex].StartTick() > time)
+			while (nextActionIndex >= 0 && actorActionQueue[nextActionIndex].StartTick() > time)
 			{
-				aaq[nextActionIndex].Undo();
+				actorActionQueue[nextActionIndex].Undo();
 				nextActionIndex--;
 			}
 		}

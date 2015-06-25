@@ -1,0 +1,6 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<cameraPlan version="0.1">
+  <shotFragments>
+  <shotFragment anchor="3,3" framingTarget="0,-10" startTime="0" /><!-- needs a list of framing targets-->
+  </shotFragments>
+</cameraPlan>
