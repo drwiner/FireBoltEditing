@@ -123,6 +123,8 @@ public class ElPresidente : MonoBehaviour {
 	{
 		if (time < currentTime)
 		{
+			if (nextActionIndex >= aaq.Count)
+				nextActionIndex--;
 			while (nextActionIndex >= 0 && aaq[nextActionIndex].StartTick() > time)
 			{
 				aaq[nextActionIndex].Undo();

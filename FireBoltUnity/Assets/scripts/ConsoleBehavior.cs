@@ -43,7 +43,7 @@ public class ConsoleBehavior : MonoBehaviour {
 						castro.goTo(value);
 					}
 				}
-				if (command.StartsWith("+ "))
+				else if (command.StartsWith("+ "))
 				{
 					string[] tokens = command.Split(new char[] {' '});
 					float value = 0.0f;
@@ -51,6 +51,24 @@ public class ConsoleBehavior : MonoBehaviour {
 					{
 						castro.goToRel(value);
 					}
+				}
+				else if (command.Contains("<"))
+				{
+					int cnt = 0;
+					foreach (char c in command)
+					{
+						if (c == '<') cnt++;
+					}
+					castro.goToRel(-1000*cnt);
+				}
+				else if (command.Contains(">"))
+				{
+					int cnt = 0;
+					foreach (char c in command)
+					{
+						if (c == '>') cnt++;
+					}
+					castro.goToRel(1000*cnt);
 				}
 				for (int i = 0; i < 3; ++i)
 				{
