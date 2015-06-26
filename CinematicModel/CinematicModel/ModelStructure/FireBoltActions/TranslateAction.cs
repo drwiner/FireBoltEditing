@@ -11,6 +11,7 @@ namespace CinematicModel
     {
         [XmlAttribute(AttributeName = "destinationParamName")]
         public string DestinationParamName { get; set; }
-
+        [XmlAttribute(AttributeName = "originParamName")]
+        public string OriginParamName { get; set; }
     }
 }

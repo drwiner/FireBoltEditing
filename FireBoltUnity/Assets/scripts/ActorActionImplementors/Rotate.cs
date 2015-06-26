@@ -92,6 +92,11 @@ namespace Assets.scripts
 			    actor.transform.rotation = start;
 		}
 
+        public void Skip()
+        {
+            actor.transform.rotation = target;
+        }
+
         public void Stop()
         {
             //nothing to stop

@@ -49,5 +49,10 @@ namespace Assets.scripts
 			// joining the cool kids' club
 			throw new System.NotImplementedException();
 		}
+
+        public void Skip()
+        {
+            throw new System.NotImplementedException();
+        }
     }
 }

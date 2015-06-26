@@ -9,12 +9,11 @@ namespace Assets.scripts
 {
     public class Translate : IActorAction
     {
-        float lastUpdateTime;
         float startTick, endTick;
         string actorName;
         Vector3 destination;
+        Vector3 origin;
         GameObject actor;
-        Vector3 requiredVelocity;
 		Vector3 start;
 
         public static bool ValidForConstruction(string actorName)
@@ -24,54 +23,47 @@ namespace Assets.scripts
             return true;
         }
 
-        public Translate(float startTick, float endTick, string actorName, Vector3 destination) 
+        public Translate(float startTick, float endTick, string actorName, Vector3 origin, Vector3 destination) 
         {
             this.startTick = startTick;
             this.actorName = actorName;
             this.endTick = endTick;
+            this.origin = origin;
             this.destination = destination;
         }
 
         public bool Init()
         {
+            if (actor != null)
+                return true;
             actor = GameObject.Find(actorName);
             if(actor == null)
             {
                 Debug.LogError("actor name [" + actorName + "] not found. cannot move");
                 return false;
             }
-            Vector3 direction = (destination - actor.transform.position);
-            float moveDuration = endTick - startTick;
-            requiredVelocity = new Vector3(direction.x/moveDuration, direction.y/moveDuration, direction.z/moveDuration);
-            lastUpdateTime = ElPresidente.currentTime;
 			start = actor.transform.position;
             return true;
         }
 
         public void Execute()
         {
-            //move enough to get where we're going before endTick
-            float moveTimeElapsed = ElPresidente.currentTime - lastUpdateTime;
-            Vector3 newPosition = new Vector3();
-            try
-            {
-                newPosition = new Vector3(requiredVelocity.x * moveTimeElapsed, 
-                                              requiredVelocity.y * moveTimeElapsed, 
-                                              requiredVelocity.z * moveTimeElapsed) + actor.transform.position;
-                actor.transform.position = newPosition;
-            }
-            catch (Exception ex)
-            {
-                Debug.LogError(newPosition.ToString());
-            }
-            lastUpdateTime = ElPresidente.currentTime;
+            actor.transform.position = Vector3.Lerp(start, destination, (ElPresidente.currentTime - startTick)/(endTick-startTick));  
         }
 
 		public void Undo()
 		{
 			if (actor != null)
-			    actor.transform.position = start;
+            {
+                actor.transform.position = start;
+                start = origin;
+            }
 		}
+
+        public void Skip()
+        {
+            actor.transform.position = destination;
+        }
 
         public void Stop()
         {

@@ -54,9 +54,15 @@ namespace Assets.scripts
 
 		public void Undo()
 		{
+            Debug.Log ("Undo create");
 			if (actor != null)
 			    actor.SetActive (false);
 		}
+
+        public void Skip()
+        {
+            // nothing to skip
+        }
 
         public void Execute()
         {

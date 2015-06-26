@@ -12,6 +12,7 @@ namespace Assets.scripts
         float StartTick();
         float? EndTick();
 		void Undo();
+        void Skip();
     }
 
 }

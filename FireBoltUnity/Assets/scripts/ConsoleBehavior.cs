@@ -29,7 +29,7 @@ public class ConsoleBehavior : MonoBehaviour {
 			{
 			    command += Input.inputString;
 			}
-			log[3] = command;
+            log[3] = command;
 
 			if (command.IndexOf("\n") != -1 || command.IndexOf("\r") != -1)
 			{
@@ -52,6 +52,24 @@ public class ConsoleBehavior : MonoBehaviour {
 						castro.goToRel(value);
 					}
 				}
+                else if (command.StartsWith("- "))
+                {
+                    string[] tokens = command.Split(new char[] {' '});
+                    float value = 0.0f;
+                    if (tokens.GetLength(0) == 2 && float.TryParse(tokens[1], out value))
+                    {
+                        castro.goToRel(-value);
+                    }
+                }
+                else if (command.StartsWith("speed "))
+                {
+                    string[] tokens = command.Split(new char[] {' '});
+                    float value = 0.0f;
+                    if (tokens.GetLength(0) == 2 && float.TryParse(tokens[1], out value))
+                    {
+                        castro.scaleTime(value);
+                    }
+                }
 				else if (command.Contains("<"))
 				{
 					int cnt = 0;
@@ -75,6 +93,14 @@ public class ConsoleBehavior : MonoBehaviour {
 					log[i] = log[i+1];
 				}
 				log[3] = "";
+                if (command.Contains("where"))
+                {
+                    for (int i = 0; i < 2; ++i)
+                    {
+                        log[i] = log[i+1];
+                    }
+                    log[2] = "Current time: " + castro.getCurrentTime();
+                }
 				command = "";
 			}
 			gameObject.GetComponent<Text>().text = string.Join("\n", log);

@@ -56,6 +56,11 @@ namespace Assets.scripts
 			    actor.SetActive (true);
 		}
 
+        public void Skip()
+        {
+            // nothing to skip
+        }
+
         public void Execute()
         {
             //nothing to do

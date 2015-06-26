@@ -87,6 +87,11 @@ namespace Assets.scripts
 			    animatorOverride["idle"] = oldClip;
 		}
 
+        public void Skip()
+        {
+
+        }
+
 	    public void Execute () 
         {
 		    //let it roll

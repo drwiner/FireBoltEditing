@@ -1,13 +1,14 @@
 ﻿using UnityEngine;
 using UnityEngine.UI;
-using Impulse.v_0_1;
-using ImpulsePlan = Impulse.v_0_1.Plan;
+using Impulse.v_1_336;
 using System.Xml;
 using System.IO;
 using System.Collections;
 using Assets.scripts;
 using System.Collections.Generic;
 using System;
+using UintT = Impulse.v_1_336.Interval<Impulse.v_1_336.Constants.ValueConstant<uint>, uint>;
+using UintV = Impulse.v_1_336.Constants.ValueConstant<uint>;
 
 public class ElPresidente : MonoBehaviour {
 
@@ -49,7 +50,7 @@ public class ElPresidente : MonoBehaviour {
 
 		float at = 0;
 		KeyFrame current;
-		foreach (IActorAction aa in aaq) 
+        foreach (IActorAction aa in actorActionQueue) 
 		{
 			if (aa.StartTick() > at + keyFrameFrequency)
 			{
@@ -137,20 +138,61 @@ public class ElPresidente : MonoBehaviour {
         }
     }
 
+    public float getCurrentTime()
+    {
+        return currentTime;
+    }
+
 	public void goTo(float time)
 	{
+        if (time < 0)
+            time = 0;
+        Debug.Log ("goto " + time);
 		if (time < currentTime)
-		{
-			if (nextActionIndex >= actorActionQueue.Count)
-				nextActionIndex--;
-			while (nextActionIndex >= 0 && actorActionQueue[nextActionIndex].StartTick() > time)
-			{
-				actorActionQueue[nextActionIndex].Undo();
-				nextActionIndex--;
-			}
-		}
+        {
+            if (nextActionIndex >= actorActionQueue.Count)
+                nextActionIndex--;
+            while (nextActionIndex >= 0 && actorActionQueue[nextActionIndex].StartTick() > time)
+            {
+                actorActionQueue [nextActionIndex].Undo ();
+                nextActionIndex--;
+            }
+            nextActionIndex++;
+            lastTickLogged = time;
+        }
+        else
+        {
+            currentTime = time;
+            List<IActorAction> removeList = new List<IActorAction>();
+            foreach (IActorAction actorAction in executingActions)
+            {
+                if (actorActionComplete(actorAction))
+                {
+                    actorAction.Skip();
+                    removeList.Add(actorAction);
+                }
+            }
+            foreach (IActorAction action in removeList)
+            {
+                executingActions.Remove(action);
+            }
+            while (nextActionIndex < actorActionQueue.Count && actorActionQueue[nextActionIndex].EndTick() <= currentTime)
+            {
+                IActorAction action = actorActionQueue[nextActionIndex];
+                nextActionIndex++;
+                if (action.Init())
+                {
+                    action.Skip();
+                }
+            }
+        }
 		currentTime = time;
 	}
+
+    public void scaleTime(float scale)
+    {
+        Time.timeScale = scale;
+    }
 
 	public void goToRel(float time)
 	{
