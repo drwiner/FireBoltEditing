@@ -4,13 +4,13 @@ using System.Collections;
 namespace Assets.scripts
 {
     //concrete
-    public class AnimateLegacy : IActorAction
+    public class AnimateLegacy : IFireBoltAction
     {
 
         private string animName;
         private string actorName;
         public AnimateLegacy(float startTick, float? endTick, string actorName,
-            IActorAction nestedAction, string animName)             
+            IFireBoltAction nestedAction, string animName)             
         {
             this.animName = animName;
             this.actorName = actorName;
@@ -39,7 +39,7 @@ namespace Assets.scripts
             throw new System.NotImplementedException();
         }
 
-        public float? EndTick()
+        public float EndTick()
         {
             throw new System.NotImplementedException();
         }

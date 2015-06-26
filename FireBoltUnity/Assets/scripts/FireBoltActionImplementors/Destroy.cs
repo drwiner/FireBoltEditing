@@ -14,7 +14,7 @@ namespace Assets.scripts
     /// we check for the existence of an actor already in the scene with the same name
     /// and recycle those game objects...which is do-able...then we have limit 1 of everything
     /// </summary>
-    public class Destroy : IActorAction
+    public class Destroy : IFireBoltAction
     {
         float startTick;
         string actorName;
@@ -76,9 +76,9 @@ namespace Assets.scripts
             return startTick;
         }
 
-        public float? EndTick()
+        public float EndTick()
         {
-            return null;
+            return startTick;
         }
     }
 }

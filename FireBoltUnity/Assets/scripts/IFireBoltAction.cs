@@ -5,12 +5,12 @@ using System.Text;
 
 namespace Assets.scripts
 {
-    public interface IActorAction {        
+    public interface IFireBoltAction {        
         bool Init();
 	    void Execute();
         void Stop();
         float StartTick();
-        float? EndTick();
+        float EndTick();
 		void Undo();
         void Skip();
     }

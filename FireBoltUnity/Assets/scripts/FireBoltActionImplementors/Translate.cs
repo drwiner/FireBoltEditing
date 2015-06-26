@@ -7,8 +7,9 @@ using CM=CinematicModel;
 
 namespace Assets.scripts
 {
-    public class Translate : IActorAction
+    public class Translate : IFireBoltAction
     {
+        float lastUpdateTime;
         float startTick, endTick;
         string actorName;
         Vector3 destination;
@@ -75,7 +76,7 @@ namespace Assets.scripts
             return startTick;
         }
 
-        public float? EndTick()
+        public float EndTick()
         {
             return endTick;
         }

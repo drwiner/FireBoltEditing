@@ -8,7 +8,7 @@ using UnityEditor;
 
 namespace Assets.scripts
 {
-    public class Create : IActorAction
+    public class Create : IFireBoltAction
     {
         float startTick;
         string actorName,modelName;
@@ -79,9 +79,9 @@ namespace Assets.scripts
             return startTick;
         }
 
-        public float? EndTick()
+        public float EndTick()
         {
-            return null;
+            return startTick;
         }
     }
 }

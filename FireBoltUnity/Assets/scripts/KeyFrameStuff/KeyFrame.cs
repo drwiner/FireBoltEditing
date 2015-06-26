@@ -20,7 +20,7 @@ namespace Assets.scripts
         /// <summary>
         /// actions in the executing actions queue when keyframe was captured
         /// </summary>
-        List<IActorAction> executingActions;
+        List<IFireBoltAction> executingActions;
 
         /// <summary>
         /// time in execution when keyframe was captured
@@ -35,7 +35,7 @@ namespace Assets.scripts
         {
             this.time = currentTime;
             activeActors = new List<ActiveActor>();
-            executingActions = new List<IActorAction>();
+            executingActions = new List<IFireBoltAction>();
         }
 
 

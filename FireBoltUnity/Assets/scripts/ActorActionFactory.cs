@@ -33,9 +33,9 @@ namespace Assets.scripts
         /// <param name="storyPlanPath">path to the story plan to load</param>
         /// <param name="cinematicModelPath">path to the cinematic model to load</param>
         /// <returns></returns>
-        public static ActorActionQueue CreateStoryActions(AStory<UintV, UintT, IIntervalSet<UintV, UintT>> story, string cinematicModelPath)
+        public static FireBoltActionList CreateStoryActions(AStory<UintV, UintT, IIntervalSet<UintV, UintT>> story, string cinematicModelPath)
         {
-            ActorActionQueue aaq = new ActorActionQueue();            
+            FireBoltActionList aaq = new FireBoltActionList();            
             cm = loadCinematicModel(cinematicModelPath);
 
             ActorActionFactory.story = story;
@@ -61,7 +61,7 @@ namespace Assets.scripts
             return aaq;
         }
 
-        private static void buildInitialState(ActorActionQueue aaq) //TODO actor model defaulting a la create actions
+        private static void buildInitialState(FireBoltActionList aaq) //TODO actor model defaulting a la create actions
         {
             var interval = new UintT(new UintV(0), new UintV(1));
             var initialPositions = from sentence in story.Sentences
@@ -97,7 +97,7 @@ namespace Assets.scripts
         }
 
         private static void enqueueRotateActions(IStoryAction<UintT> storyAction, CM.DomainAction domainAction, 
-                                                 CM.Animation effectingAnimation, ActorActionQueue aaq)
+                                                 CM.Animation effectingAnimation, FireBoltActionList aaq)
         {
             foreach (CM.RotateAction ra in domainAction.RotateActions)
             {
@@ -138,7 +138,7 @@ namespace Assets.scripts
         }
 
         private static void enqueuetranslateActions(IStoryAction<UintT> storyAction, CM.DomainAction domainAction, 
-                                               CM.Animation effectingAnimation, ActorActionQueue aaq)
+                                               CM.Animation effectingAnimation, FireBoltActionList aaq)
         {
             foreach (CM.TranslateAction ta in domainAction.TranslateActions)
             {
@@ -241,7 +241,7 @@ namespace Assets.scripts
         }
 
         private static void enqueueAnimateActions(IStoryAction<UintT> storyAction, CM.DomainAction domainAction, 
-                                                  CM.Animation effectingAnimation, ActorActionQueue aaq)
+                                                  CM.Animation effectingAnimation, FireBoltActionList aaq)
         {            
             foreach(CM.AnimateAction animateAction in domainAction.AnimateActions)
             {
@@ -384,7 +384,7 @@ namespace Assets.scripts
             return false;
         }
 
-        private static void enqueueCreateActions(IStoryAction<UintT> storyAction, CM.DomainAction domainAction, CM.Animation effectingAnimation, ActorActionQueue aaq )
+        private static void enqueueCreateActions(IStoryAction<UintT> storyAction, CM.DomainAction domainAction, CM.Animation effectingAnimation, FireBoltActionList aaq )
         {
             foreach (CM.CreateAction ca in domainAction.CreateActions)
             {
@@ -444,7 +444,7 @@ namespace Assets.scripts
         }
 
         private static void enqueueDestroyActions(IStoryAction<UintT> storyAction, CM.DomainAction domainAction, 
-                                                    CM.Animation effectingAnimation, ActorActionQueue aaq)
+                                                    CM.Animation effectingAnimation, FireBoltActionList aaq)
         {
             foreach (CM.DestroyAction da in domainAction.DestroyActions)
             {

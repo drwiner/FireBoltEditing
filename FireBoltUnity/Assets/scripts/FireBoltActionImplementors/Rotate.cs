@@ -7,7 +7,7 @@ using CM=CinematicModel;
 
 namespace Assets.scripts
 {
-    public class Rotate : IActorAction
+    public class Rotate : IFireBoltAction
     {
         float lastUpdateTime;
         float startTick, endTick;
@@ -53,13 +53,21 @@ namespace Assets.scripts
                 return false;
             }
 			start = actor.transform.rotation;
-            targetDegrees = convertSourceEngineToUnityRotation(targetDegrees);
 
-            float rotateDuration = endTick - startTick;
-            float totalRotationRequired = Mathf.Abs(actor.transform.rotation.eulerAngles.y - targetDegrees);            
-            requiredVelocity = totalRotationRequired/rotateDuration;
-
+            float rotateDuration = endTick - startTick > 0 ? endTick - startTick : 1;            
             target = Quaternion.Euler(0, targetDegrees, 0);
+            
+            if (rotateDuration < ElPresidente.MILLIS_PER_FRAME)//we aren't guaranteed a single execution cycle, so move it now and make sure it doesn't move later
+            {
+                actor.transform.rotation = target;
+                requiredVelocity = 0;
+            }
+            else
+            {
+                float totalRotationRequired = Mathf.Abs(actor.transform.rotation.eulerAngles.y - targetDegrees);
+                requiredVelocity = totalRotationRequired / rotateDuration;
+            }          
+
             lastUpdateTime = ElPresidente.currentTime;
             return true;
         }
@@ -70,20 +78,6 @@ namespace Assets.scripts
             actor.transform.rotation = Quaternion.RotateTowards(actor.transform.rotation, target, requiredVelocity * rotateTimeElapsed);
             lastUpdateTime = ElPresidente.currentTime;
             //Debug.DrawRay(actor.transform.position + Vector3.up, actor.transform.forward,Color.magenta);
-        }
-
-        private float convertSourceEngineToUnityRotation(float sourceDegrees)
-        {
-            float unityDegrees = -sourceDegrees + 90 % 360;
-            while(unityDegrees > 180)
-            {
-                unityDegrees -= 360;
-            }
-            while(unityDegrees < -180)
-            {
-                unityDegrees += 360;
-            }
-            return unityDegrees;
         }
 
 		public void Undo()
@@ -107,7 +101,7 @@ namespace Assets.scripts
             return startTick;
         }
 
-        public float? EndTick()
+        public float EndTick()
         {
             return endTick;
         }

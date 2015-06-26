@@ -13,16 +13,16 @@ namespace Assets.scripts
     public class CameraActionFactory
     {
         //private static CameraPlan cameraPlan;
-        private static ActorActionQueue cameraActionQueue;
-        public static ActorActionQueue CreateCameraActions(AStory<UintV, UintT, IIntervalSet<UintV, UintT>> story, string cameraPlanPath)
+        private static FireBoltActionList cameraActionQueue;
+        public static FireBoltActionList CreateCameraActions(AStory<UintV, UintT, IIntervalSet<UintV, UintT>> story, string cameraPlanPath)
         {
-            cameraActionQueue = new ActorActionQueue();
+            cameraActionQueue = new FireBoltActionList();
             CameraPlan cameraPlan = Parser.Parse(cameraPlanPath);
             enqueueCameraActions(cameraPlan, cameraActionQueue);
             return cameraActionQueue;
         }
 
-        private static void enqueueCameraActions(CameraPlan cameraPlan, ActorActionQueue cameraActionQueue)
+        private static void enqueueCameraActions(CameraPlan cameraPlan, FireBoltActionList cameraActionQueue)
         {
             foreach (var fragment in cameraPlan.ShotFragments)
             {

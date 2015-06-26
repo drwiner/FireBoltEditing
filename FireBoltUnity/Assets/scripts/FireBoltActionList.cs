@@ -6,11 +6,11 @@ using LN.Utilities.Collections;
 
 namespace Assets.scripts
 {
-    public class ActorActionQueue : SortedSet<IActorAction>
+    public class FireBoltActionList : SortedSet<IFireBoltAction>
     {
-        private class ActorActionComparer : IComparer<IActorAction>
+        private class ActorActionComparer : IComparer<IFireBoltAction>
         {
-            public int Compare(IActorAction x, IActorAction y)
+            public int Compare(IFireBoltAction x, IFireBoltAction y)
             {
                 if (x.StartTick() > y.StartTick())
                 {
@@ -25,10 +25,15 @@ namespace Assets.scripts
                 return -1;
             }
         }
-        public ActorActionQueue()
+        public FireBoltActionList()
             : base(new ActorActionComparer())
         {
-
+            NextActionIndex = 0;
         }
+
+        /// <summary>
+        /// pointer to the next action from the queue
+        /// </summary>
+        public int NextActionIndex { get; set; }
     }
 }
