@@ -11,10 +11,7 @@ using UintT = Impulse.v_1_336.Interval<Impulse.v_1_336.Constants.ValueConstant<u
 using UintV = Impulse.v_1_336.Constants.ValueConstant<uint>;
 
 
-
 public class ElPresidente : MonoBehaviour {
-    [HideInInspector]
-    public static readonly ushort MILLIS_PER_FRAME = 5; //probably won't see much here if actions take less than 2 full frames at 30 fps
 
     FireBoltActionList actorActionList;
     FireBoltActionList cameraActionList;
@@ -28,7 +25,9 @@ public class ElPresidente : MonoBehaviour {
     private float totalTime;
     private bool pause = false;
     public Text debugText;
-
+	public float myTime;
+    public Slider whereWeAt;
+    public static readonly ushort MILLIS_PER_FRAME = 5;
     private AStory<UintV, UintT, IIntervalSet<UintV, UintT>> story;
 
 
@@ -48,7 +47,9 @@ public class ElPresidente : MonoBehaviour {
         cameraActionList = CameraActionFactory.CreateCameraActions(story, cameraPlanPath);
         currentTime = 0;        
         //find total time for execution. not sure how to easily find this without searching a lot of actions
-        //totalTime = yeah 
+        totalTime = 0;
+        if (actorActionList.Count > 0)
+            totalTime = actorActionList [actorActionList.Count - 1].EndTick() - actorActionList [0].StartTick();
     }
 
     private void loadStructuredImpulsePlan(string storyPlanPath)
@@ -79,17 +80,16 @@ public class ElPresidente : MonoBehaviour {
 
     public void setTime(float targetPercentComplete)
     {        
-        //find previous keyframe from calculated time
-        debugText.text = (targetPercentComplete * totalTime).ToString();
-        //assign above to currentTime 
-        //clear executing actions
-        //enable/disable characters & reposition at start locations
-        //set nextAction index
+        if (Mathf.Abs(targetPercentComplete * totalTime - currentTime) > MILLIS_PER_FRAME)
+            goTo (targetPercentComplete * totalTime);
     }
 
     void Update()
     {
         currentTime += Time.deltaTime * 1000;
+        if (currentTime < totalTime)
+            whereWeAt.value = currentTime / totalTime;
+		myTime = currentTime;  
         logTicks();
 
         updateFireBoltActions(actorActionList);
@@ -101,7 +101,7 @@ public class ElPresidente : MonoBehaviour {
         List<IFireBoltAction> removeList = new List<IFireBoltAction>();
         foreach (IFireBoltAction actorAction in executingActions)
         {
-            if (actorActionComplete(actorAction))
+            if (actorActionComplete(actorAction) || actorAction.StartTick() > currentTime)
             {
                 actorAction.Stop();
                 removeList.Add(actorAction);
@@ -116,7 +116,53 @@ public class ElPresidente : MonoBehaviour {
             IFireBoltAction action = actions[actions.NextActionIndex];
             actions.NextActionIndex++;
             if (action.Init())
-                executingActions.Add(action);
+			{
+				if (!actorActionComplete(action))
+                    executingActions.Add(action);
+				else
+					action.Stop();
+			}
+        }
+    }
+
+    void rewindFireBoltActions(FireBoltActionList actions)
+    {
+        if (actions.NextActionIndex >= actions.Count)
+            actions.NextActionIndex--;
+        while (actions.NextActionIndex >= 0 && actions[actions.NextActionIndex].StartTick() > currentTime)
+        {
+            actions [actions.NextActionIndex].Undo ();
+            actions.NextActionIndex--;
+        }
+        actions.NextActionIndex++;
+    }
+
+    void fastForwardFireBoltActions(FireBoltActionList actions)
+    {
+        List<IFireBoltAction> removeList = new List<IFireBoltAction>();
+        foreach (IFireBoltAction actorAction in executingActions)
+        {
+            if (actorActionComplete(actorAction))
+            {
+                actorAction.Skip();
+                removeList.Add(actorAction);
+            }
+        }
+        foreach (IFireBoltAction action in removeList)
+        {
+            executingActions.Remove(action);
+        }
+        while (actions.NextActionIndex < actions.Count && actions[actions.NextActionIndex].StartTick() <= currentTime) //TODO should probably encapsulate some more of this stuff in the list class
+        {
+            IFireBoltAction action = actions[actions.NextActionIndex];
+            actions.NextActionIndex++;
+            if (action.Init())
+            {
+                if (!actorActionComplete(action))
+                    executingActions.Add(action);
+                else
+                    action.Skip();
+            }
         }
     }
 
@@ -127,6 +173,42 @@ public class ElPresidente : MonoBehaviour {
             actorAction.Execute();
         }
     }
+
+    public float getCurrentTime()
+    {
+        return currentTime;
+    }
+
+	public void goTo(float time)
+	{
+        if (time < 0)
+            time = 0;
+        Debug.Log ("goto " + time);
+        lastTickLogged = time;
+		if (time < currentTime)
+        {
+            currentTime = time;
+            rewindFireBoltActions(actorActionList);
+            rewindFireBoltActions(cameraActionList);
+        }
+        else
+        {
+            currentTime = time;
+            fastForwardFireBoltActions(actorActionList);
+            fastForwardFireBoltActions(cameraActionList);
+        }
+		currentTime = time;
+	}
+
+    public void scaleTime(float scale)
+    {
+        Time.timeScale = scale;
+    }
+
+	public void goToRel(float time)
+	{
+		goTo(currentTime + time);
+	}
 
     void logTicks()
     {

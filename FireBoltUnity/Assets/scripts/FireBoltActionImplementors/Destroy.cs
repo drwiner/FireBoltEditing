@@ -18,6 +18,7 @@ namespace Assets.scripts
     {
         float startTick;
         string actorName;
+		GameObject actor;
 
         public static bool ValidForConstruction(string actorName)
         {
@@ -34,7 +35,12 @@ namespace Assets.scripts
 
         public bool Init()
         {
-            GameObject actor = GameObject.Find(actorName);
+			if (actor != null)
+			{
+				actor.SetActive(false);
+				return true;
+			}
+            actor = GameObject.Find(actorName);
             if (actor == null)
             {
                 Debug.LogError(string.Format("actor[{0}] not found for destroy", actorName));
@@ -42,6 +48,17 @@ namespace Assets.scripts
             }
             actor.SetActive(false);
             return true;
+        }
+
+		public void Undo()
+		{
+			if (actor != null)
+			    actor.SetActive (true);
+		}
+
+        public void Skip()
+        {
+            // nothing to skip
         }
 
         public void Execute()

@@ -15,6 +15,8 @@ namespace Assets.scripts
         private string animName;
         private Animator animator;
         private AnimationClip animation;
+		private AnimationClip oldClip;
+		AnimatorOverrideController animatorOverride;
         private int playTriggerHash,stopTriggerHash; 
 		private bool loop;
 
@@ -38,6 +40,12 @@ namespace Assets.scripts
 
         public bool Init()
         {
+			if (animatorOverride != null)
+			{
+				oldClip = animatorOverride ["idle"];
+				animatorOverride["idle"] = animation;
+				return true;
+			}
             actor = GameObject.Find(actorName);
             if (actor == null)
             {
@@ -48,12 +56,11 @@ namespace Assets.scripts
             animator = actor.GetComponent<Animator>();
             if (animator == null)
             {
-                actor.AddComponent<Animator>();
-                animator = actor.GetComponent<Animator>();
+                animator = actor.AddComponent<Animator>();
             }
             animator.applyRootMotion = false;
             //doing all this ever time we start an animation seems expensive. what else can we do?
-            AnimatorOverrideController animatorOverride = new AnimatorOverrideController();
+            animatorOverride = new AnimatorOverrideController();
             animatorOverride.runtimeAnimatorController = Resources.Load<RuntimeAnimatorController>("AnimatorControllers/Generic");
             animator.runtimeAnimatorController = animatorOverride;
             //animation = Resources.Load<AnimationClip>("Animations/" + animName);
@@ -68,16 +75,32 @@ namespace Assets.scripts
 				animation.wrapMode = WrapMode.Loop;
 			} else
 				animation.wrapMode = WrapMode.Once;
-
+			oldClip = animatorOverride ["idle"];
             animatorOverride["idle"] = animation;
-            
+            Debug.Log ("duration " + animation.averageDuration);
             return true;
+        }
+
+		public void Undo()
+		{
+			if (animatorOverride != null)
+			    animatorOverride["idle"] = oldClip;
+		}
+
+        public void Skip()
+        {
+
         }
 
 	    public void Execute () 
         {
 		    //let it roll
             //animator.SetTrigger(playTriggerHash);
+            float at = Mathf.Repeat ((ElPresidente.currentTime - startTick)/1000, animation.averageDuration);
+            Debug.Log ("anim " + at + " of " + animation.averageDuration);
+            animator.CrossFade( "animating", 0, 0, at/animation.averageDuration );
+            //Debug.Log ("animation at " + animator.playbackTime);
+
 	    }
 
         public void Stop()

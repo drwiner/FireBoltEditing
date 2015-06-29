@@ -44,11 +44,12 @@
       <params>
         <param name="actor" />
         <param name="destination" />
+        <param name="origin" />
       </params>
       <createActions/>
       <destroyActions/>
       <translateActions>
-        <translateAction  actorNameParamName="actor" destinationParamName="destination"/>
+        <translateAction  actorNameParamName="actor" destinationParamName="destination" originParamName="origin"/>
       </translateActions>
       <animateActions>
         <animateAction  name="walk" actorNameParamName="actor" />

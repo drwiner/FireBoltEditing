@@ -11,6 +11,8 @@ namespace Assets.scripts
         void Stop();
         float StartTick();
         float EndTick();
+		void Undo();
+        void Skip();
     }
 
 }

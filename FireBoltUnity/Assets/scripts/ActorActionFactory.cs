@@ -146,9 +146,24 @@ namespace Assets.scripts
                 float endTick = 0;
                 string actorName = null;
                 Vector3 destination = Vector3.zero;
+                Vector3 origin = Vector3.zero;
                 foreach (CM.DomainActionParameter domainActionParameter in domainAction.Params)
                 {
-                    if (domainActionParameter.Name == ta.DestinationParamName)
+                    if (domainActionParameter.Name == ta.OriginParamName)
+                    {
+                        IActionProperty coord;
+                        if (storyAction.TryGetProperty(domainActionParameter.Name, out coord))
+                        {
+                            
+                            origin = ((Coordinate2D)coord.Value.Value).ToVector3(cm.DomainDistancePerEngineDistance);
+                            
+                        }
+                        else
+                        {
+                            Debug.LogError("origin not set for stepId[" + storyAction.Name + "]");
+                        }
+                    }
+                    else if (domainActionParameter.Name == ta.DestinationParamName)
                     {
                         IActionProperty coord;
                         if (storyAction.TryGetProperty(domainActionParameter.Name, out coord))
@@ -174,7 +189,7 @@ namespace Assets.scripts
                 endTick = getEndTick(storyAction, ta, effectingAnimation, startTick);
                 if (Translate.ValidForConstruction(actorName))
                 {
-                    aaq.Add(new Translate(startTick, endTick, actorName, destination));
+                    aaq.Add(new Translate(startTick, endTick, actorName, origin, destination));
                 }
             }
         }
