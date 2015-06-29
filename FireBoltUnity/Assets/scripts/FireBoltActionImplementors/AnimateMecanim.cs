@@ -77,7 +77,7 @@ namespace Assets.scripts
 				animation.wrapMode = WrapMode.Once;
 			oldClip = animatorOverride ["idle"];
             animatorOverride["idle"] = animation;
-            
+            Debug.Log ("duration " + animation.averageDuration);
             return true;
         }
 
@@ -96,6 +96,11 @@ namespace Assets.scripts
         {
 		    //let it roll
             //animator.SetTrigger(playTriggerHash);
+            float at = Mathf.Repeat ((ElPresidente.currentTime - startTick)/1000, animation.averageDuration);
+            Debug.Log ("anim " + at + " of " + animation.averageDuration);
+            animator.CrossFade( "animating", 0, 0, at/animation.averageDuration );
+            //Debug.Log ("animation at " + animator.playbackTime);
+
 	    }
 
         public void Stop()

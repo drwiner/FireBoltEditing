@@ -22,11 +22,11 @@ public class ElPresidente : MonoBehaviour {
     public string cameraPlanPath;
     public float keyFrameFrequency=10000; //every ? milliseconds
     private float lastTickLogged;
-    private int nextActionIndex;
     private float totalTime;
     private bool pause = false;
     public Text debugText;
 	public float myTime;
+    public Slider whereWeAt;
     public static readonly ushort MILLIS_PER_FRAME = 5;
     private AStory<UintV, UintT, IIntervalSet<UintV, UintT>> story;
 
@@ -47,7 +47,9 @@ public class ElPresidente : MonoBehaviour {
         cameraActionList = CameraActionFactory.CreateCameraActions(story, cameraPlanPath);
         currentTime = 0;        
         //find total time for execution. not sure how to easily find this without searching a lot of actions
-        //totalTime = yeah 
+        totalTime = 0;
+        if (actorActionList.Count > 0)
+            totalTime = actorActionList [actorActionList.Count - 1].EndTick() - actorActionList [0].StartTick();
     }
 
     private void loadStructuredImpulsePlan(string storyPlanPath)
@@ -78,17 +80,15 @@ public class ElPresidente : MonoBehaviour {
 
     public void setTime(float targetPercentComplete)
     {        
-        //find previous keyframe from calculated time
-        debugText.text = (targetPercentComplete * totalTime).ToString();
-        //assign above to currentTime 
-        //clear executing actions
-        //enable/disable characters & reposition at start locations
-        //set nextAction index
+        if (Mathf.Abs(targetPercentComplete * totalTime - currentTime) > MILLIS_PER_FRAME)
+            goTo (targetPercentComplete * totalTime);
     }
 
     void Update()
     {
         currentTime += Time.deltaTime * 1000;
+        if (currentTime < totalTime)
+            whereWeAt.value = currentTime / totalTime;
 		myTime = currentTime;  
         logTicks();
 
@@ -125,6 +125,47 @@ public class ElPresidente : MonoBehaviour {
         }
     }
 
+    void rewindFireBoltActions(FireBoltActionList actions)
+    {
+        if (actions.NextActionIndex >= actions.Count)
+            actions.NextActionIndex--;
+        while (actions.NextActionIndex >= 0 && actions[actions.NextActionIndex].StartTick() > currentTime)
+        {
+            actions [actions.NextActionIndex].Undo ();
+            actions.NextActionIndex--;
+        }
+        actions.NextActionIndex++;
+    }
+
+    void fastForwardFireBoltActions(FireBoltActionList actions)
+    {
+        List<IFireBoltAction> removeList = new List<IFireBoltAction>();
+        foreach (IFireBoltAction actorAction in executingActions)
+        {
+            if (actorActionComplete(actorAction))
+            {
+                actorAction.Skip();
+                removeList.Add(actorAction);
+            }
+        }
+        foreach (IFireBoltAction action in removeList)
+        {
+            executingActions.Remove(action);
+        }
+        while (actions.NextActionIndex < actions.Count && actions[actions.NextActionIndex].StartTick() <= currentTime) //TODO should probably encapsulate some more of this stuff in the list class
+        {
+            IFireBoltAction action = actions[actions.NextActionIndex];
+            actions.NextActionIndex++;
+            if (action.Init())
+            {
+                if (!actorActionComplete(action))
+                    executingActions.Add(action);
+                else
+                    action.Skip();
+            }
+        }
+    }
+
     void LateUpdate()
     {
         foreach (IFireBoltAction actorAction in executingActions)
@@ -143,43 +184,18 @@ public class ElPresidente : MonoBehaviour {
         if (time < 0)
             time = 0;
         Debug.Log ("goto " + time);
+        lastTickLogged = time;
 		if (time < currentTime)
         {
-            if (nextActionIndex >= actorActionList.Count)
-                nextActionIndex--;
-            while (nextActionIndex >= 0 && actorActionList[nextActionIndex].StartTick() > time)
-            {
-                actorActionList [nextActionIndex].Undo ();
-                nextActionIndex--;
-            }
-            nextActionIndex++;
-            lastTickLogged = time;
+            currentTime = time;
+            rewindFireBoltActions(actorActionList);
+            rewindFireBoltActions(cameraActionList);
         }
         else
         {
             currentTime = time;
-            List<IFireBoltAction> removeList = new List<IFireBoltAction>();
-            foreach (IFireBoltAction actorAction in executingActions)
-            {
-                if (actorActionComplete(actorAction))
-                {
-                    actorAction.Skip();
-                    removeList.Add(actorAction);
-                }
-            }
-            foreach (IFireBoltAction action in removeList)
-            {
-                executingActions.Remove(action);
-            }
-            while (actorActionList.NextActionIndex < actorActionList.Count && actorActionList[nextActionIndex].EndTick() <= currentTime)
-            {
-                IFireBoltAction action = actorActionList[nextActionIndex];
-                nextActionIndex++;
-                if (action.Init())
-                {
-                    action.Skip();
-                }
-            }
+            fastForwardFireBoltActions(actorActionList);
+            fastForwardFireBoltActions(cameraActionList);
         }
 		currentTime = time;
 	}

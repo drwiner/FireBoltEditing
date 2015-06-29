@@ -44,6 +44,7 @@ namespace Assets.scripts
                 return false;
             }
 			start = actor.transform.position;
+            Debug.Log ("translate from " + start + " to " + destination);
             return true;
         }
 

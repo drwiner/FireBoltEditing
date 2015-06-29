@@ -33,6 +33,7 @@ namespace Assets.scripts
 
         public bool Init()
         {
+            Debug.Log ("init create");
 			if (actor != null)
 			{
 				actor.SetActive(true);
