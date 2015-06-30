@@ -1,20 +1,20 @@
 ﻿<Properties>
-  <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug" PreferredExecutionTarget="MonoDevelop.Default" />
-  <MonoDevelop.Ide.Workbench ActiveDocument="Assets\scripts\FireBoltActionImplementors\Rotate.cs">
+  <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug" />
+  <MonoDevelop.Ide.Workbench ActiveDocument="Assets\scripts\FireBoltActionImplementors\AnimateMecanim.cs">
     <Files>
-      <File FileName="Assets\scripts\FireBoltActionImplementors\Translate.cs" Line="46" Column="37" />
-      <File FileName="Assets\scripts\ElPresidente.cs" Line="91" Column="13" />
+      <File FileName="Assets\scripts\FireBoltActionImplementors\Create.cs" Line="1" Column="1" />
+      <File FileName="Assets\scripts\FireBoltActionImplementors\Translate.cs" Line="1" Column="1" />
+      <File FileName="Assets\scripts\ElPresidente.cs" Line="143" Column="65" />
       <File FileName="Assets\scripts\KeyFrameStuff\KeyFrame.cs" Line="1" Column="1" />
-      <File FileName="Assets\storyPlans\Impulsev1_336\tester.xml" Line="57" Column="45" />
+      <File FileName="Assets\storyPlans\Impulsev1_336\tester.xml" Line="1" Column="1" />
       <File FileName="Assets\cinematicModels\DotaHierarchyModel.xml" Line="1" Column="1" />
-      <File FileName="Assets\scripts\ConsoleBehavior.cs" Line="70" Column="41" />
-      <File FileName="Assets\scripts\ActorActionFactory.cs" Line="55" Column="25" />
-      <File FileName="Assets\scripts\CameraActionFactory.cs" Line="29" Column="152" />
+      <File FileName="Assets\scripts\ConsoleBehavior.cs" Line="1" Column="1" />
+      <File FileName="Assets\scripts\ActorActionFactory.cs" Line="1" Column="1" />
+      <File FileName="Assets\scripts\CameraActionFactory.cs" Line="1" Column="1" />
       <File FileName="Assets\scripts\FireBoltActionImplementors\Rotate.cs" Line="52" Column="28" />
-      <File FileName="Assets\scripts\FireBoltActionImplementors\Create.cs" Line="36" Column="39" />
-      <File FileName="Assets\cameraPlans\SimplestCamera.xml" Line="4" Column="30" />
-      <File FileName="Assets\scripts\Extensions.cs" Line="28" Column="9" />
-      <File FileName="Assets\scripts\FireBoltActionImplementors\AnimateMecanim.cs" Line="99" Column="81" />
+      <File FileName="Assets\cameraPlans\SimplestCamera.xml" Line="1" Column="1" />
+      <File FileName="Assets\scripts\Extensions.cs" Line="1" Column="1" />
+      <File FileName="Assets\scripts\FireBoltActionImplementors\AnimateMecanim.cs" Line="47" Column="71" />
     </Files>
   </MonoDevelop.Ide.Workbench>
   <MonoDevelop.Ide.DebuggingService.Breakpoints>

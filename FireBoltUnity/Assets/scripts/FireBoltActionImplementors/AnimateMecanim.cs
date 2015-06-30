@@ -42,8 +42,9 @@ namespace Assets.scripts
         {
 			if (animatorOverride != null)
 			{
-				oldClip = animatorOverride ["idle"];
+				//oldClip = animatorOverride ["idle"];
 				animatorOverride["idle"] = animation;
+                animator.runtimeAnimatorController = animatorOverride;
 				return true;
 			}
             actor = GameObject.Find(actorName);
@@ -89,7 +90,8 @@ namespace Assets.scripts
 
         public void Skip()
         {
-
+            animator.SetTrigger(stopTriggerHash);
+            animatorOverride["idle"] = oldClip;
         }
 
 	    public void Execute () 
@@ -97,15 +99,14 @@ namespace Assets.scripts
 		    //let it roll
             //animator.SetTrigger(playTriggerHash);
             float at = Mathf.Repeat ((ElPresidente.currentTime - startTick)/1000, animation.averageDuration);
-            Debug.Log ("anim " + at + " of " + animation.averageDuration);
             animator.CrossFade( "animating", 0, 0, at/animation.averageDuration );
-            //Debug.Log ("animation at " + animator.playbackTime);
 
 	    }
 
         public void Stop()
         {
             animator.SetTrigger(stopTriggerHash);
+            animatorOverride["idle"] = oldClip;
         }
 
         public float StartTick()
