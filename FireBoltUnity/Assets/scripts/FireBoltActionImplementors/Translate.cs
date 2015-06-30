@@ -12,11 +12,23 @@ namespace Assets.scripts
         float lastUpdateTime;
         float startTick, endTick;
         string actorName;
-        Vector3 destination;
-        Vector3 origin;
-        bool yLock;
         GameObject actor;
+        /// <summary>
+        /// actual position of the actor when the interval begins
+        /// </summary>
 		Vector3 start;
+        /// <summary>
+        /// intended position of the actor when the interval begins
+        /// </summary>
+        Vector3 origin;
+        /// <summary>
+        /// intended position of the actor when the interval ends
+        /// </summary>
+        Vector3 destination;
+        /// <summary>
+        /// do we ignore the y parameter in destination
+        /// </summary>
+        bool yLock;
 
         public static bool ValidForConstruction(string actorName)
         {
@@ -54,7 +66,10 @@ namespace Assets.scripts
 
         public void Execute()
         {
-            actor.transform.position = Vector3.Lerp(start, destination, (ElPresidente.currentTime - startTick)/(endTick-startTick));  
+            if (endTick - startTick < ElPresidente.MILLIS_PER_FRAME)           
+                actor.transform.position = destination;
+            else
+                actor.transform.position = Vector3.Lerp(start, destination, (ElPresidente.currentTime - startTick)/(endTick-startTick));  
         }
 
 		public void Undo()

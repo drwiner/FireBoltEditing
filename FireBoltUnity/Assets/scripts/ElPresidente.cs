@@ -60,7 +60,7 @@ public class ElPresidente : MonoBehaviour {
         Debug.Log("end story plan xml load");
         var factory = Impulse.v_1_336.StoryParsingFactories.GetUnsignedIntergerIntervalFactory();
         Debug.Log("begin story plan parse");
-        story = factory.ParseStory(xml, false);//TODO true!
+        story = factory.ParseStory(xml, false);//TODO true! get crackin with that validation, colin!
         Debug.Log("end story plan parse");
         debugText.text = "story load done!";
     }

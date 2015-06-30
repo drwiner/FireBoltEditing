@@ -27,7 +27,7 @@ namespace Assets.scripts
             foreach (var fragment in cameraPlan.ShotFragments)
             {
                 cameraActionQueue.Add(new Translate(fragment.StartTime, fragment.StartTime, "Main Camera", Vector3.zero, fragment.Anchor.ParsePlanarCoords(), true));
-                //cameraActionQueue.Add(new Rotate(fragment.StartTime,fragment.StartTime,"Main Camera", ))
+                cameraActionQueue.Add(new Rotate(fragment.StartTime, fragment.StartTime,"Main Camera",float.Parse(fragment.FramingTarget)));
             }
         }
     }
