@@ -22,6 +22,11 @@ namespace Assets.scripts
             return true;
         }
 
+        public override string ToString ()
+        {
+            return string.Format ("Create " + actorName);
+        }
+
         public Create(float startTick, string actorName, string modelName, Vector3 position) 
         {
             this.startTick = startTick;

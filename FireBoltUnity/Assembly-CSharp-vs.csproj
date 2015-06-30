@@ -64,6 +64,7 @@
      <Compile Include="Assets\scripts\rotationCaster.cs" />
      <None Include="Assets\storyPlans\Impulsev1_336\tester.xml" />
      <None Include="Assets\cinematicModels\DotaHierarchyModel.xml" />
+     <None Include="Assets\storyPlans\Impulsev1_336\600924233-big.xml" />
      <None Include="Assets\cameraPlans\SimplestCamera.xml" />
      <None Include="Assets\storyPlans\Impulsev1_336\600924233.xml" />
      <None Include="Assets\storyPlans\sneakyDancePlan.xml" />

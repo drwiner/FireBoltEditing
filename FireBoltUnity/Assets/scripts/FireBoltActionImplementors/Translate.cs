@@ -24,6 +24,11 @@ namespace Assets.scripts
             return true;
         }
 
+        public override string ToString ()
+        {
+            return "Translate " + actorName + " from " + origin + " to " + destination;
+        }
+
         public Translate(float startTick, float endTick, string actorName, Vector3 origin, Vector3 destination) 
         {
             this.startTick = startTick;

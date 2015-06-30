@@ -29,6 +29,12 @@ namespace Assets.scripts
             return true;
         }
 
+        public override string ToString ()
+        {
+            return "Rotate " + actorName + " from " + start + " to " + target;
+        }
+
+
         /// <summary>
         /// 
         /// </summary>

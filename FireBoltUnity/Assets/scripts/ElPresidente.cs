@@ -134,7 +134,14 @@ public class ElPresidente : MonoBehaviour {
             actions [actions.NextActionIndex].Undo ();
             actions.NextActionIndex--;
         }
+
+        while (actions.NextActionIndex >= 0 && actions[actions.NextActionIndex].EndTick() > currentTime)
+        {
+            actions [actions.NextActionIndex].Undo ();
+            actions.NextActionIndex--;
+        }
         actions.NextActionIndex++;
+        Debug.Log ("rewind to " + actions.NextActionIndex + ": " + actions[actions.NextActionIndex]);
     }
 
     void fastForwardFireBoltActions(FireBoltActionList actions)
