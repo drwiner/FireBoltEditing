@@ -39,10 +39,10 @@
 	<Reference Include="System.Core" />
 	<Reference Include="System.Xml.Linq" />
 	<Reference Include="UnityEngine">
-	  <HintPath>C:/Program Files/Unity51/Editor/Data/Managed/UnityEngine.dll</HintPath>
+	  <HintPath>C:/Program Files/Unity/Editor/Data/Managed/UnityEngine.dll</HintPath>
 	</Reference>
 	<Reference Include="UnityEditor">
-	  <HintPath>C:/Program Files/Unity51/Editor/Data/Managed/UnityEditor.dll</HintPath>
+	  <HintPath>C:/Program Files/Unity/Editor/Data/Managed/UnityEditor.dll</HintPath>
 	</Reference>
   </ItemGroup>
   <ItemGroup>
@@ -72,31 +72,31 @@
      <None Include="Assets\storyPlans\plan_simple.xml" />
      <None Include="Assets\storyPlans\plan_simple1.xml" />
  <Reference Include="UnityEngine.UI">
- <HintPath>C:/Program Files/Unity51/Editor/Data/UnityExtensions/Unity/GUISystem/UnityEngine.UI.dll</HintPath>
+ <HintPath>C:/Program Files/Unity/Editor/Data/UnityExtensions/Unity/GUISystem/UnityEngine.UI.dll</HintPath>
  </Reference>
  <Reference Include="UnityEngine.Networking">
- <HintPath>C:/Program Files/Unity51/Editor/Data/UnityExtensions/Unity/Networking/UnityEngine.Networking.dll</HintPath>
+ <HintPath>C:/Program Files/Unity/Editor/Data/UnityExtensions/Unity/Networking/UnityEngine.Networking.dll</HintPath>
  </Reference>
  <Reference Include="UnityEngine.Analytics">
- <HintPath>C:/Program Files/Unity51/Editor/Data/UnityExtensions/Unity/UnityAnalytics/UnityEngine.Analytics.dll</HintPath>
+ <HintPath>C:/Program Files/Unity/Editor/Data/UnityExtensions/Unity/UnityAnalytics/UnityEngine.Analytics.dll</HintPath>
  </Reference>
  <Reference Include="CinematicModel">
- <HintPath>D:/work/FireBolt/FireBoltUnity/Assets/plugins/CinematicModel.dll</HintPath>
+ <HintPath>C:/Users/brthorne/np/FireBolt/FireBoltUnity/Assets/plugins/CinematicModel.dll</HintPath>
  </Reference>
  <Reference Include="Impulse">
- <HintPath>D:/work/FireBolt/FireBoltUnity/Assets/plugins/Impulse.dll</HintPath>
+ <HintPath>C:/Users/brthorne/np/FireBolt/FireBoltUnity/Assets/plugins/Impulse.dll</HintPath>
  </Reference>
  <Reference Include="Impulse.XmlSerializers">
- <HintPath>D:/work/FireBolt/FireBoltUnity/Assets/plugins/Impulse.XmlSerializers.dll</HintPath>
+ <HintPath>C:/Users/brthorne/np/FireBolt/FireBoltUnity/Assets/plugins/Impulse.XmlSerializers.dll</HintPath>
  </Reference>
  <Reference Include="LN.Utilities">
- <HintPath>D:/work/FireBolt/FireBoltUnity/Assets/plugins/LN.Utilities.dll</HintPath>
+ <HintPath>C:/Users/brthorne/np/FireBolt/FireBoltUnity/Assets/plugins/LN.Utilities.dll</HintPath>
  </Reference>
  <Reference Include="Oshmirto">
- <HintPath>D:/work/FireBolt/FireBoltUnity/Assets/plugins/Oshmirto.dll</HintPath>
+ <HintPath>C:/Users/brthorne/np/FireBolt/FireBoltUnity/Assets/plugins/Oshmirto.dll</HintPath>
  </Reference>
  <Reference Include="UnityEditor.iOS.Extensions.Xcode">
- <HintPath>C:/Program Files/Unity51/Editor/Data/PlaybackEngines/iOSSupport/UnityEditor.iOS.Extensions.Xcode.dll</HintPath>
+ <HintPath>C:/Program Files/Unity/Editor/Data/PlaybackEngines/iOSSupport/UnityEditor.iOS.Extensions.Xcode.dll</HintPath>
  </Reference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

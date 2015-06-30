@@ -14,6 +14,7 @@ namespace Assets.scripts
         string actorName;
         Vector3 destination;
         Vector3 origin;
+        bool yLock;
         GameObject actor;
 		Vector3 start;
 
@@ -24,13 +25,14 @@ namespace Assets.scripts
             return true;
         }
 
-        public Translate(float startTick, float endTick, string actorName, Vector3 origin, Vector3 destination) 
+        public Translate(float startTick, float endTick, string actorName, Vector3 origin, Vector3 destination, bool yLock=false) 
         {
             this.startTick = startTick;
             this.actorName = actorName;
             this.endTick = endTick;
             this.origin = origin;
             this.destination = destination;
+            this.yLock = yLock;
         }
 
         public bool Init()
@@ -44,6 +46,8 @@ namespace Assets.scripts
                 return false;
             }
 			start = actor.transform.position;
+            if (yLock)
+                destination = new Vector3(destination.x, start.y, destination.z);
             Debug.Log ("translate from " + start + " to " + destination);
             return true;
         }

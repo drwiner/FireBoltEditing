@@ -117,10 +117,11 @@ public class ElPresidente : MonoBehaviour {
             actions.NextActionIndex++;
             if (action.Init())
 			{
-				if (!actorActionComplete(action))
-                    executingActions.Add(action);
-				else
-					action.Stop();
+                executingActions.Add(action);
+                //if (!actorActionComplete(action))
+                //    executingActions.Add(action);
+                //else
+                //    action.Stop();
 			}
         }
     }
