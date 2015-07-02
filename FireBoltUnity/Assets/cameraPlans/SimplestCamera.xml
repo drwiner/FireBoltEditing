@@ -1,15 +1,24 @@
 ﻿<?xml version="1.0" encoding="utf-8" ?>
 <cameraPlan version="0.1">
-  <shotFragments>
-    <shotFragment anchor="12.7,-13.5" startTime="0" endTime="3999">
+  <blocks>
+    <block>
+      <shotFragments>
+        <shotFragment anchor="12.7,-13.5" startTime="0" endTime="3999">
+          <framings>
+            <framing  framingSize="" framingTarget="0"/>
+          </framings>
+        </shotFragment>
+        <!--<shotFragment anchor="" startTime="4000" endTime="8000">
       <framings>
-        <framing  framingSize="Waist" framingTarget="0"/>
+        <framing  framingSize="" framingTarget="-10"/>
       </framings>
-    </shotFragment>
-    <shotFragment anchor="-5,-13" startTime="4000" endTime="10000">
-      <framings>
-        <framing  framingSize="CloseUp" framingTarget="-10"/>
-      </framings>
-    </shotFragment>   
-  </shotFragments>
+    </shotFragment>-->
+        <shotFragment anchor="-5,-13" startTime="4000" endTime="10000">
+          <framings>
+            <framing  framingSize="" framingTarget="-10"/>
+          </framings>
+        </shotFragment>
+      </shotFragments>
+    </block>
+  </blocks>
 </cameraPlan>

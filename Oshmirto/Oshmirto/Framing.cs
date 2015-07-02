@@ -16,6 +16,8 @@ namespace Oshmirto
         Long,
         ExtremeLong,
         ExtremeLongLong,//or some such
+        [XmlEnum("")]
+        Angle
     }
 
     [Serializable]

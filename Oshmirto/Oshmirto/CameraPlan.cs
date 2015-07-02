@@ -14,8 +14,8 @@ namespace Oshmirto
         [XmlAttribute]
         public string Version { get; set; }
 
-        [XmlArray("shotFragments")]
-        [XmlArrayItem("shotFragment")]
-        public List<ShotFragment> ShotFragments { get; set; }
+        [XmlArray("blocks")]
+        [XmlArrayItem("block")]
+        public List<Block> Blocks { get; set; }
     }
 }

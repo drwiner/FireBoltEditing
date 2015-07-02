@@ -24,22 +24,30 @@ namespace Assets.scripts
 
         private static void enqueueCameraActions(CameraPlan cameraPlan, FireBoltActionList cameraActionQueue)
         {
-            Vector3 previousPosition = Vector3.zero;
-            foreach (var fragment in cameraPlan.ShotFragments)
+            foreach (Block block in cameraPlan.Blocks)
             {
-                Vector3 currentPosition = fragment.Anchor.ParsePlanarCoords();
-                cameraActionQueue.Add(new Translate(fragment.StartTime, fragment.StartTime, "Main Camera", previousPosition, currentPosition, true));
-                previousPosition = currentPosition;
-                float rotation = 0f;
-                if(fragment.Framings.Count > 0 && float.TryParse(fragment.Framings[0].FramingTarget, out rotation ))
+                Vector3 previousPosition = Vector3.zero;
+                foreach (var fragment in block.ShotFragments)
                 {
-                    cameraActionQueue.Add(new Rotate(fragment.StartTime, fragment.StartTime, "Main Camera", rotation));
+                    Vector3 currentPosition;
+                    if (fragment.Anchor.TryParsePlanarCoords(out currentPosition))
+                    {
+                        cameraActionQueue.Add(new Translate(fragment.StartTime, fragment.StartTime,
+                                                            "Main Camera", previousPosition, currentPosition, true));
+                        previousPosition = currentPosition;
+                    }
+
+                    float rotation = 0f;
+                    if (fragment.Framings.Count > 0 && float.TryParse(fragment.Framings[0].FramingTarget, out rotation))
+                    {
+                        cameraActionQueue.Add(new Rotate(fragment.StartTime, fragment.StartTime, "Main Camera", rotation));
+                    }
+                    else
+                    {
+                        //TODO handle calculating actor target framing
+                    }
+
                 }
-                else
-                {
-                    //TODO handle calculating actor target framing
-                }
-                
             }
         }
     }
