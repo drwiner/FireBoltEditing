@@ -26,7 +26,7 @@ namespace Assets.scripts
         /// </summary>
         Vector3 destination;
         /// <summary>
-        /// do we ignore the y parameter in destination
+        /// ignore the y parameter in destination and override with current start.y
         /// </summary>
         bool yLock;
 
@@ -58,28 +58,30 @@ namespace Assets.scripts
                 return false;
             }
 			start = actor.transform.position;
+            
             if (yLock)
             {
                 destination = new Vector3(destination.x, start.y, destination.z);
                 origin = new Vector3(origin.x, start.y, origin.z);
             }
+
+            if (endTick - startTick < ElPresidente.MILLIS_PER_FRAME)
+                Skip();
+
             Debug.Log ("translate from " + start + " to " + destination);
             return true;
         }
 
         public void Execute()
         {
-            if (endTick - startTick < ElPresidente.MILLIS_PER_FRAME)           
-                actor.transform.position = destination;
-            else
-                actor.transform.position = Vector3.Lerp(start, destination, (ElPresidente.currentTime - startTick)/(endTick-startTick));  
+            actor.transform.position = Vector3.Lerp(start, destination, (ElPresidente.currentTime - startTick)/(endTick-startTick));  
         }
 
 		public void Undo()
 		{
 			if (actor != null)
             {
-                actor.transform.position = start; //on camera rewind position, works first time, not second
+                actor.transform.position = start;
                 start = origin;
             }
 		}

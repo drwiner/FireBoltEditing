@@ -57,12 +57,11 @@ namespace Assets.scripts
                 return false;
             }
 			start = actor.transform.rotation;
-
-            float rotateDuration = endTick - startTick > 0 ? endTick - startTick : 1;            
+        
             target = Quaternion.Euler(0, targetDegrees, 0);
-            
-            if (rotateDuration < ElPresidente.MILLIS_PER_FRAME)//we aren't guaranteed a single execution cycle, so move it now and make sure it doesn't move later
-                actor.transform.rotation = target;         
+
+            if (endTick - startTick < ElPresidente.MILLIS_PER_FRAME)//we aren't guaranteed a single execution cycle, so move it now and make sure it doesn't move later
+                Skip();
 
             return true;
         }

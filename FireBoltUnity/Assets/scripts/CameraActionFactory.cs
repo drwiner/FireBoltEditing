@@ -24,11 +24,12 @@ namespace Assets.scripts
 
         private static void enqueueCameraActions(CameraPlan cameraPlan, FireBoltActionList cameraActionQueue)
         {
+            Vector3 previousPosition = Vector3.zero;
             foreach (var fragment in cameraPlan.ShotFragments)
             {
-                Vector3 position = fragment.Anchor.ParsePlanarCoords();
-                cameraActionQueue.Add(new Translate(fragment.StartTime, fragment.StartTime, "Main Camera", position, position, true));
-
+                Vector3 currentPosition = fragment.Anchor.ParsePlanarCoords();
+                cameraActionQueue.Add(new Translate(fragment.StartTime, fragment.StartTime, "Main Camera", previousPosition, currentPosition, true));
+                previousPosition = currentPosition;
                 float rotation = 0f;
                 if(fragment.Framings.Count > 0 && float.TryParse(fragment.Framings[0].FramingTarget, out rotation ))
                 {
