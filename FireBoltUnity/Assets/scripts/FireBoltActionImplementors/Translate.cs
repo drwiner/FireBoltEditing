@@ -59,7 +59,10 @@ namespace Assets.scripts
             }
 			start = actor.transform.position;
             if (yLock)
+            {
                 destination = new Vector3(destination.x, start.y, destination.z);
+                origin = new Vector3(origin.x, start.y, origin.z);
+            }
             Debug.Log ("translate from " + start + " to " + destination);
             return true;
         }
@@ -76,7 +79,7 @@ namespace Assets.scripts
 		{
 			if (actor != null)
             {
-                actor.transform.position = start;
+                actor.transform.position = start; //on camera rewind position, works first time, not second
                 start = origin;
             }
 		}

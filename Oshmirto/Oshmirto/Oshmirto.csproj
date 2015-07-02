@@ -39,6 +39,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="CameraPlan.cs" />
+    <Compile Include="Framing.cs" />
     <Compile Include="ShotFragment.cs" />
     <Compile Include="Parser.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

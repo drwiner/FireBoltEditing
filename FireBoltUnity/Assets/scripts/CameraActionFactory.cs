@@ -26,8 +26,19 @@ namespace Assets.scripts
         {
             foreach (var fragment in cameraPlan.ShotFragments)
             {
-                cameraActionQueue.Add(new Translate(fragment.StartTime, fragment.StartTime, "Main Camera", Vector3.zero, fragment.Anchor.ParsePlanarCoords(), true));
-                cameraActionQueue.Add(new Rotate(fragment.StartTime, fragment.StartTime,"Main Camera",float.Parse(fragment.FramingTarget)));
+                Vector3 position = fragment.Anchor.ParsePlanarCoords();
+                cameraActionQueue.Add(new Translate(fragment.StartTime, fragment.StartTime, "Main Camera", position, position, true));
+
+                float rotation = 0f;
+                if(fragment.Framings.Count > 0 && float.TryParse(fragment.Framings[0].FramingTarget, out rotation ))
+                {
+                    cameraActionQueue.Add(new Rotate(fragment.StartTime, fragment.StartTime, "Main Camera", rotation));
+                }
+                else
+                {
+                    //TODO handle calculating actor target framing
+                }
+                
             }
         }
     }

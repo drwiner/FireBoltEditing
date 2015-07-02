@@ -66,11 +66,7 @@
      <None Include="Assets\cinematicModels\DotaHierarchyModel.xml" />
      <None Include="Assets\cameraPlans\SimplestCamera.xml" />
      <None Include="Assets\storyPlans\Impulsev1_336\600924233.xml" />
-     <None Include="Assets\storyPlans\sneakyDancePlan.xml" />
-     <None Include="Assets\storyPlans\rotateMaxDurationPlan.xml" />
-     <None Include="Assets\storyPlans\animationTimeOffsetPlan.xml" />
-     <None Include="Assets\storyPlans\plan_simple.xml" />
-     <None Include="Assets\storyPlans\plan_simple1.xml" />
+     <None Include="Assets\plugins\LN.Utilities.xml" />
  <Reference Include="UnityEngine.UI">
  <HintPath>C:/Program Files/Unity/Editor/Data/UnityExtensions/Unity/GUISystem/UnityEngine.UI.dll</HintPath>
  </Reference>

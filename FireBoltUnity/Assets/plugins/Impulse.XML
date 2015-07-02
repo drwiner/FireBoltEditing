@@ -193,7 +193,7 @@
             <summary>
             Abstract. Determines if this term is equal to another term
             </summary>
-            <param name="obj">The term to compare</param>
+            <param name="term">The term to compare</param>
             <returns><see langword="true"/> if the terms are equal, <see langword="false"/> otherwise</returns>
         </member>
         <member name="M:Impulse.v_0_1.Term.GetHashCode">
@@ -464,6 +464,3092 @@
             Gets or sets the text representation of this literal
             </summary>
         </member>
+        <member name="T:Impulse.v_1_336.ActionType">
+            <summary>
+            Class representing a story action type
+            </summary>
+        </member>
+        <member name="M:Impulse.v_1_336.ActionType.#ctor(System.String,System.Collections.Generic.IEnumerable{Impulse.v_1_336.ActionPropertyDefinition})">
+            <summary>
+            Create a new story action type
+            </summary>
+            <param name="name">The name of the type</param>
+            <param name="properties">The property definitions of the type</param>
+        </member>
+        <member name="P:Impulse.v_1_336.ActionType.Name">
+            <summary>
+            Get the name of the type
+            </summary>
+        </member>
+        <member name="P:Impulse.v_1_336.ActionType.Properties">
+            <summary>
+            Get the property definitions of the type
+            </summary>
+        </member>
+        <member name="T:Impulse.v_1_336.AStory`3">
+            <summary>
+            An implementation of IStory using specific types for times, intervals, and the interval set
+            </summary>
+            <typeparam name="TTime">The type to use for times</typeparam>
+            <typeparam name="TInterval">The type to use for intervals</typeparam>
+            <typeparam name="TIntervalSet">The type to use for the interval set</typeparam>
+        </member>
+        <member name="T:Impulse.v_1_336.IStory">
+            <summary>
+            Interface representing a story
+            </summary>
+        </member>
+        <member name="M:Impulse.v_1_336.IStory.Query(Impulse.v_1_336.ISentence)">
+            <summary>
+            Query the set of variable mappings that makes the given sentence true
+            </summary>
+            <param name="sentence">The sentence query</param>
+            <returns>A list of mappings that make the sentence true</returns>
+        </member>
+        <member name="M:Impulse.v_1_336.IStory.Query(Impulse.v_1_336.IFunction)">
+            <summary>
+            Query the value of a function
+            </summary>
+            <param name="function">The function</param>
+            <returns>The value of the function</returns>
+        </member>
+        <member name="M:Impulse.v_1_336.IStory.Occurs(System.String)">
+            <summary>
+            Checks if a story action occurs in the story
+            </summary>
+            <param name="storyActionName">The name to query</param>
+            <returns><see langword="true"/> if the action occurs in the story</returns>
+        </member>
+        <member name="M:Impulse.v_1_336.IStory.TryGetAction(System.String,Impulse.v_1_336.IStoryAction@)">
+            <summary>
+            Checks if a story action occurs in the story
+            </summary>
+            <param name="storyActionName">The name to query</param>
+            <param name="action">The found story action in the story</param>
+            <returns><see langword="true"/> if the action occurs in the story</returns>
+        </member>
+        <member name="M:Impulse.v_1_336.IStory.ToXmlStory">
+            <summary>
+            Turn the story into an XML representation
+            </summary>
+            <returns>An XML representation of the story</returns>
+        </member>
+        <member name="M:Impulse.v_1_336.IStory.GenerateCausalGraph">
+            <summary>
+            Create a causal graph of the actions in the story
+            </summary>
+            <returns>A directed graph of the caual links</returns>
+        </member>
+        <member name="P:Impulse.v_1_336.IStory.Name">
+            <summary>
+            The name of the story
+            </summary>
+        </member>
+        <member name="P:Impulse.v_1_336.IStory.ActionTypeGraph">
+            <summary>
+            A graph of the names of action types where a directed edge A->B means B is a subtype of A
+            </summary>
+        </member>
+        <member name="P:Impulse.v_1_336.IStory.ObjectSetGraph">
+            <summary>
+            A graph of the names of object sets where a directed edge A->B means A contains B
+            </summary>
+        </member>
+        <member name="P:Impulse.v_1_336.IStory.ActionTypes">
+            <summary>
+            A dictionary of action names to action types
+            </summary>
+        </member>
+        <member name="P:Impulse.v_1_336.IStory.Actions">
+            <summary>
+            List of story actions
+            </summary>
+        </member>
+        <member name="P:Impulse.v_1_336.IStory.ObjectSets">
+            <summary>
+            Dictionary of object set names to object sets
+            </summary>
+        </member>
+        <member name="P:Impulse.v_1_336.IStory.Sentences">
+            <summary>
+            Collection of logical sentences
+            </summary>
+        </member>
+        <member name="P:Impulse.v_1_336.IStory.IntervalSet">
+            <summary>
+            The interval set of the story
+            </summary>
+        </member>
+        <member name="M:Impulse.v_1_336.AStory`3.#ctor(System.String,LN.Utilities.Collections.DirectedGraph{System.String,LN.Utilities.Collections.Edge{System.String}},System.Collections.Generic.IEnumerable{Impulse.v_1_336.ActionType},System.Collections.Generic.IEnumerable{Impulse.v_1_336.IStoryAction{`1}},System.Collections.Generic.IDictionary{System.String,Impulse.v_1_336.IObjectSet},System.Collections.Generic.IEnumerable{Impulse.v_1_336.ISentence},`2)">
+            <summary>
+            Create a new story
+            </summary>
+            <param name="name">The story name</param>
+            <param name="actionTypeGraph">The action type graph</param>
+            <param name="actionTypes">A list of action types</param>
+            <param name="actions">A list of actions</param>
+            <param name="objectSets">Dictionary of object sets</param>
+            <param name="sentences">A list of sentences</param>
+            <param name="intervalSet">The interval set</param>
+        </member>
+        <member name="M:Impulse.v_1_336.AStory`3.Query(Impulse.v_1_336.ISentence)">
+            <summary>
+            Query the set of variable mappings that makes the given sentence true
+            </summary>
+            <param name="sentence">The sentence query</param>
+            <returns>A list of mappings that make the sentence true</returns>
+            <remarks>NOT IMPLEMENTED</remarks>
+        </member>
+        <member name="M:Impulse.v_1_336.AStory`3.Query(Impulse.v_1_336.Sentences.IPredicate)">
+            <summary>
+            NOT IMPLEMENTED. Query the set of variable mappings that makes the given predicate true
+            </summary>
+            <param name="predicate">The predicate query</param>
+            <returns>A list of mappings that make the predicate true</returns>
+        </member>
+        <member name="M:Impulse.v_1_336.AStory`3.Query(Impulse.v_1_336.IFunction)">
+            <summary>
+            Query the value of a function
+            </summary>
+            <param name="function">The function</param>
+            <returns>The value of the function</returns>
+            <remarks>IMPLEMENTED FOR ACTION PROPERTIES ONLY</remarks>
+        </member>
+        <member name="M:Impulse.v_1_336.AStory`3.GenerateCausalGraph">
+            <summary>
+            Create a causal graph of the actions in the story
+            </summary>
+            <returns>A directed graph of the caual links</returns>
+        </member>
+        <member name="M:Impulse.v_1_336.AStory`3.ToXmlStory">
+            <summary>
+            Turn the story into an XML representation
+            </summary>
+            <returns>An XML representation of the story</returns>
+        </member>
+        <member name="P:Impulse.v_1_336.AStory`3.Name">
+            <summary>
+            The name of the story
+            </summary>
+        </member>
+        <member name="P:Impulse.v_1_336.AStory`3.ActionTypeGraph">
+            <summary>
+            A graph of the names of action types where a directed edge A->B means B is a subtype of A
+            </summary>
+        </member>
+        <member name="P:Impulse.v_1_336.AStory`3.ObjectSetGraph">
+            <summary>
+            A graph of the names of object sets where a directed edge A->B means A contains B
+            </summary>
+        </member>
+        <member name="P:Impulse.v_1_336.AStory`3.ActionTypes">
+            <summary>
+            A dictionary of action names to action types
+            </summary>
+        </member>
+        <member name="P:Impulse.v_1_336.AStory`3.Actions">
+            <summary>
+            Dictionary of action names to actions
+            </summary>
+        </member>
+        <member name="P:Impulse.v_1_336.AStory`3.ObjectSets">
+            <summary>
+            Dictionary of object set names to object sets
+            </summary>
+        </member>
+        <member name="P:Impulse.v_1_336.AStory`3.Sentences">
+            <summary>
+            Collection of logical sentences
+            </summary>
+        </member>
+        <member name="P:Impulse.v_1_336.AStory`3.IntervalSet">
+            <summary>
+            The interval set of the story
+            </summary>
+        </member>
+        <member name="T:Impulse.v_1_336.ConstantParsers">
+            <summary>
+            Static class containing built in constant parsers
+            </summary>
+        </member>
+        <member name="M:Impulse.v_1_336.ConstantParsers.TryMakeParser``1(Impulse.v_1_336.IConstantParser{Impulse.v_1_336.Constants.ValueConstant{``0}}@)">
+            <summary>
+            Try to make a constant parser for a given type
+            </summary>
+            <typeparam name="T">The type to parse</typeparam>
+            <param name="constantParser">The resulting constant parser, <see langword="null"/> if creation failed</param>
+            <returns><see langword="true"/> if making the parser was successful</returns>
+        </member>
+        <member name="M:Impulse.v_1_336.ConstantParsers.HasParser(System.String)">
+            <summary>
+            Check if this class contains the specified parser
+            </summary>
+            <param name="name">The name to search for</param>
+            <returns><see langword="true"/> if this class contains a parser with the given name</returns>
+        </member>
+        <member name="M:Impulse.v_1_336.ConstantParsers.GetParser(System.String)">
+            <summary>
+            Get a constant parser with the given name
+            </summary>
+            <param name="name">The name to search for</param>
+            <returns>The specified parser</returns>
+            <exception cref="T:System.Collections.Generic.KeyNotFoundException">If the name was not found</exception>
+        </member>
+        <member name="M:Impulse.v_1_336.ConstantParsers.TryGetSet(System.String,Impulse.v_1_336.IConstantParser@)">
+            <summary>
+            Try to get a constant parser with the given name
+            </summary>
+            <param name="name">The name to search for</param>
+            <param name="parser">The found parser, if any</param>
+            <returns><see landword="true"/> if the parser was found</returns>
+        </member>
+        <member name="F:Impulse.v_1_336.ConstantParsers.All">
+            <summary>
+            An array of all the builtin parsers in this class of the form (name, parser)
+            </summary>
+        </member>
+        <member name="T:Impulse.v_1_336.BuiltinObjectSets">
+            <summary>
+            Static class encapsulating some built-in object sets
+            </summary>
+        </member>
+        <member name="M:Impulse.v_1_336.BuiltinObjectSets.HasSet(System.String)">
+            <summary>
+            Checks if a given set is included in the built-in sets
+            </summary>
+            <param name="name"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Impulse.v_1_336.BuiltinObjectSets.GetSet(System.String)">
+            <summary>
+            Gets the object set with the specified name
+            </summary>
+            <param name="name">The name of the object set to get</param>
+            <returns>An object set with the specified name</returns>
+            <exception cref="T:System.Collections.Generic.KeyNotFoundException">If no set with the specified name exists</exception>
+        </member>
+        <member name="M:Impulse.v_1_336.BuiltinObjectSets.TryGetSet(System.String,Impulse.v_1_336.IObjectSet@)">
+            <summary>
+            Gets the object set with the specified name
+            </summary>
+            <param name="name">The name of the object set to get</param>
+            <param name="set">The found set</param>
+            <returns><see langword="true"/> if the set was found</returns>
+        </member>
+        <member name="F:Impulse.v_1_336.BuiltinObjectSets.All">
+            <summary>
+            Array of all builtin sets in this class, <c>Item1</c> is the name and <c>Item2</c> is the set
+            </summary>
+            <remarks>Some sets appear more than once with aliases</remarks>
+        </member>
+        <member name="T:Impulse.v_1_336.BuiltinObjectSetAttribute">
+            <summary>
+            Attribute indicating that a static field contains a built-in object set
+            </summary>
+        </member>
+        <member name="M:Impulse.v_1_336.BuiltinObjectSetAttribute.#ctor(System.String[])">
+            <summary>
+            Create a built-in object set attribute
+            </summary>
+            <param name="aliases">The list of alias to use for this object set</param>
+        </member>
+        <member name="P:Impulse.v_1_336.BuiltinObjectSetAttribute.Aliases">
+            <summary>
+            Get the list of alias for this built-in object set
+            </summary>
+        </member>
+        <member name="T:Impulse.v_1_336.BuiltinConstantParserAttribute">
+            <summary>
+            Attribute indicating that a static field contains a built-in constant parser
+            </summary>
+        </member>
+        <member name="M:Impulse.v_1_336.BuiltinConstantParserAttribute.#ctor(System.String[])">
+            <summary>
+            Create a built-in constant parser attribute
+            </summary>
+            <param name="aliases">The list of aliases for the sets this built-in constant parser parses</param>
+        </member>
+        <member name="P:Impulse.v_1_336.BuiltinConstantParserAttribute.ObjectSetAliases">
+            <summary>
+            Get the list of aliases for the sets this built-in constant parser parses
+            </summary>
+        </member>
+        <member name="T:Impulse.v_1_336.ImpulseBuiltinsAttribute">
+            <summary>
+            Attribute indicating a class contains built-in constant parsers or object sets
+            </summary>
+        </member>
+        <member name="M:Impulse.v_1_336.ImpulseBuiltinsAttribute.#ctor">
+            <summary>
+            Create a new built-in attribute
+            </summary>
+        </member>
+        <member name="T:Impulse.v_1_336.BuiltinsHelper">
+            <summary>
+            Static class for working with built-in attributes, constant parsers, and object sets
+            </summary>
+        </member>
+        <member name="M:Impulse.v_1_336.BuiltinsHelper.LoadImpulseBuiltins``2(Impulse.v_1_336.StoryParsingFactory{``0,``1},System.Reflection.Assembly)">
+            <summary>
+            Load all impulse built-ins from a target assembly
+            </summary>
+            <typeparam name="TTime">The type of times in a parsing factory</typeparam>
+            <typeparam name="TInterval">The type of intervals in a parsing factory</typeparam>
+            <param name="factory">A story parsing factory to register the built-ins with</param>
+            <param name="assembly">The target assembly to search</param>
+        </member>
+        <member name="M:Impulse.v_1_336.BuiltinsHelper.LoadBuiltins(System.Reflection.Assembly,System.Collections.Generic.IEnumerable{LN.Utilities.Tuple{System.String,Impulse.v_1_336.IConstantParser}}@,System.Collections.Generic.IEnumerable{LN.Utilities.Tuple{System.String,Impulse.v_1_336.IObjectSet}}@)">
+            <summary>
+            Load all impulse built-ins from a target assembly
+            </summary>
+            <param name="assembly">The assembly to search</param>
+            <param name="parsers">The resulting list of parsers</param>
+            <param name="sets">The resulting list of object sets</param>
+        </member>
+        <member name="T:Impulse.v_1_336.CausalLink">
+            <summary>
+            Class representing a causal link graph edge
+            </summary>
+        </member>
+        <member name="M:Impulse.v_1_336.CausalLink.#ctor(System.String,System.String,System.UInt32,System.UInt32)">
+            <summary>
+            Create a new causal link
+            </summary>
+            <param name="fromStepID">The from step ID</param>
+            <param name="toStepID">The to step ID</param>
+            <param name="fromIndex">The index of the from step effect</param>
+            <param name="toIndex">The index of the to step precondition</param>
+        </member>
+        <member name="M:Impulse.v_1_336.CausalLink.TryParse(Impulse.v_1_336.Sentences.IPredicate,Impulse.v_1_336.CausalLink@)">
+            <summary>
+            Try to parse a caual link from a cause predicate
+            </summary>
+            <param name="predicate">The cause predicate of the form cause(fromID, toID, fromIndex, toIndex)</param>
+            <param name="causalLink">The resulting causal link, if any</param>
+            <returns><see langword="true"/> if parsing was successful</returns>
+        </member>
+        <member name="M:Impulse.v_1_336.CausalLink.TryParse(Impulse.v_1_336.Sentences.IPredicate)">
+            <summary>
+            Try to parse a caual link from a cause predicate
+            </summary>
+            <param name="predicate">The cause predicate of the form cause(fromID, toID, fromIndex, toIndex)</param>
+            <returns>The resulting causal link, if parsing was successful, <see langword="null"/> otherwise</returns>
+        </member>
+        <member name="P:Impulse.v_1_336.CausalLink.FromStepID">
+            <summary>
+            Get the from step ID
+            </summary>
+        </member>
+        <member name="P:Impulse.v_1_336.CausalLink.ToStepID">
+            <summary>
+            Get the to step ID
+            </summary>
+        </member>
+        <member name="P:Impulse.v_1_336.CausalLink.FromIndex">
+            <summary>
+            Get the index of the from step effect
+            </summary>
+        </member>
+        <member name="P:Impulse.v_1_336.CausalLink.ToIndex">
+            <summary>
+            Get the index of the to step precondition
+            </summary>
+        </member>
+        <member name="T:Impulse.v_1_336.Constants.SetConstant`1">
+            <summary>
+            Standard implementation of a constant containing a set of constants
+            </summary>
+            <typeparam name="TConstant">The constant type to contain</typeparam>
+        </member>
+        <member name="T:Impulse.v_1_336.IConstant`1">
+            <summary>
+            Class representing a constant encapsulating a specific type
+            </summary>
+            <typeparam name="T">The type to encapsulate</typeparam>
+        </member>
+        <member name="T:Impulse.v_1_336.IConstant">
+            <summary>
+            Class representing a constant
+            </summary>
+        </member>
+        <member name="T:Impulse.v_1_336.ITerm">
+            <summary>
+            A general term for use in logical sentences
+            </summary>
+        </member>
+        <member name="P:Impulse.v_1_336.ITerm.Name">
+            <summary>
+            The name of the term
+            </summary>
+        </member>
+        <member name="P:Impulse.v_1_336.IConstant.Value">
+            <summary>
+            Gets the value of this constant
+            </summary>
+        </member>
+        <member name="P:Impulse.v_1_336.IConstant`1.Value">
+            <summary>
+            Gets the value of this constant
+            </summary>
+        </member>
+        <member name="T:Impulse.v_1_336.IFiniteObjectSet`1">
+            <summary>
+            A finite object set of a specific type of constants
+            </summary>
+            <typeparam name="TConstant">The type of constants this set contains</typeparam>
+        </member>
+        <member name="T:Impulse.v_1_336.IFiniteObjectSet">
+            <summary>
+            A finite object set
+            </summary>
+        </member>
+        <member name="T:Impulse.v_1_336.IObjectSet">
+            <summary>
+            Interface for a set of objects
+            </summary>
+        </member>
+        <member name="M:Impulse.v_1_336.IObjectSet.Contains(Impulse.v_1_336.IConstant)">
+            <summary>
+            Checks if a given constant is a member of this set
+            </summary>
+            <param name="constant">The constant to check</param>
+            <returns><see langword="true"/> if the set contains the constant</returns>
+        </member>
+        <member name="M:Impulse.v_1_336.IObjectSet.IsSubsetOf(Impulse.v_1_336.IObjectSet)">
+            <summary>
+            Checks if this set is a subset of another set
+            </summary>
+            <param name="other">The set to check against</param>
+            <returns><see langword="true"/> if this set is a subset of other</returns>
+        </member>
+        <member name="P:Impulse.v_1_336.IObjectSet.Name">
+            <summary>
+            Get the name of this set
+            </summary>
+        </member>
+        <member name="P:Impulse.v_1_336.IFiniteObjectSet.Count">
+            <summary>
+            Get the number of constants in this set
+            </summary>
+        </member>
+        <member name="P:Impulse.v_1_336.IFiniteObjectSet.Items">
+            <summary>
+            An enumeration of the constants in this set
+            </summary>
+        </member>
+        <member name="T:Impulse.v_1_336.IObjectSet`1">
+            <summary>
+            An object set of a specific type of constants
+            </summary>
+            <typeparam name="TConstant">The type of constants this set contains</typeparam>
+        </member>
+        <member name="M:Impulse.v_1_336.IObjectSet`1.Contains(`0)">
+            <summary>
+            Checks if a given constant is a member of this set
+            </summary>
+            <param name="constant">The constant to check</param>
+            <returns><see langword="true"/> if the set contains the constant</returns>
+        </member>
+        <member name="M:Impulse.v_1_336.Constants.SetConstant`1.#ctor(`0[])">
+            <summary>
+            Create a new set constant
+            </summary>
+            <param name="values">A set of constants, may not be <see langword="null"/></param>
+        </member>
+        <member name="M:Impulse.v_1_336.Constants.SetConstant`1.GetHashCode">
+            <summary>
+            Get the hash code of this constant
+            </summary>
+            <returns>A hash code based on the values of this constant</returns>
+        </member>
+        <member name="M:Impulse.v_1_336.Constants.SetConstant`1.Equals(System.Object)">
+            <summary>
+            Check if this constant equals another
+            </summary>
+            <param name="obj">The object to compare to</param>
+            <returns><see langword="true"/> if obj is an IConstant&lt;TConstant[]&gt; with equal values</returns>
+        </member>
+        <member name="M:Impulse.v_1_336.Constants.SetConstant`1.Equals(Impulse.v_1_336.ITerm)">
+            <summary>
+            Check if this constant equals another
+            </summary>
+            <param name="term">The term to compare to</param>
+            <returns><see langword="true"/> if the term is an <see cref="T:Impulse.v_1_336.IConstant`1"/> with equal values</returns>
+        </member>
+        <member name="M:Impulse.v_1_336.Constants.SetConstant`1.Equals(Impulse.v_1_336.Constants.SetConstant{`0})">
+            <summary>
+            Check if this constant equals another
+            </summary>
+            <param name="other">The constant to compare to</param>
+            <returns><see langword="true"/> if the constants have equal values</returns>
+        </member>
+        <member name="M:Impulse.v_1_336.Constants.SetConstant`1.Equals(Impulse.v_1_336.IConstant{`0[]})">
+            <summary>
+            Check if this constant equals another
+            </summary>
+            <param name="other">The constant to compare to</param>
+            <returns><see langword="true"/> if both constants have equal values</returns>
+        </member>
+        <member name="M:Impulse.v_1_336.Constants.SetConstant`1.Equals(Impulse.v_1_336.IConstant)">
+            <summary>
+            Check if this constant equals another
+            </summary>
+            <param name="other">The constant to compare to</param>
+            <returns><see langword="true"/> if the constant is an <see cref="T:Impulse.v_1_336.IConstant`1"/> with equal values</returns>
+        </member>
+        <member name="M:Impulse.v_1_336.Constants.SetConstant`1.ToString">
+            <summary>
+            Generate a string representation of this constants values
+            </summary>
+            <returns>A string representation of this constants values</returns>
+        </member>
+        <member name="P:Impulse.v_1_336.Constants.SetConstant`1.Values">
+            <summary>
+            Get the set of values of this constant
+            </summary>
+        </member>
+        <member name="T:Impulse.v_1_336.Constants.ConstantDelegateParser`1">
+            <summary>
+            Standard implementation of a parser based on a single <see cref="T:TryParseConstant"/> TryParse function
+            </summary>
+            <typeparam name="TConstant">The type of constant to parse</typeparam>
+        </member>
+        <member name="T:Impulse.v_1_336.IConstantParser`1">
+            <summary>
+            Interface for a constant parser with a specific constant type
+            </summary>
+            <typeparam name="TConstant">The type of constant to be parsed</typeparam>
+        </member>
+        <member name="T:Impulse.v_1_336.IConstantParser">
+            <summary>
+            Interface for a constant parser
+            </summary>
+        </member>
+        <member name="M:Impulse.v_1_336.IConstantParser.CanParse(System.String)">
+            <summary>
+            Check if a string can be parsed successfully
+            </summary>
+            <param name="value">The string to parse</param>
+            <returns><see langword="true"/> if the string can be parsed successfully</returns>
+        </member>
+        <member name="M:Impulse.v_1_336.IConstantParser.TryParse(System.String,Impulse.v_1_336.IConstant@)">
+            <summary>
+            Try to parse a given string
+            </summary>
+            <param name="value">The string to parse</param>
+            <param name="constant">The resulting constant, if any</param>
+            <returns><see langword="true"/> if the string was parsed successfully</returns>
+        </member>
+        <member name="M:Impulse.v_1_336.IConstantParser.Parse(System.String)">
+            <summary>
+            Parse a given string
+            </summary>
+            <param name="value">The string to parse</param>
+            <returns>The resulting constant</returns>
+            <exception cref="T:System.ArgumentException">If the string cannot be parsed successfully</exception>
+        </member>
+        <member name="M:Impulse.v_1_336.IConstantParser.ToActionProperty(System.String,Impulse.v_1_336.IConstant)">
+            <summary>
+            Turn a constant into an action property
+            </summary>
+            <param name="name">The name of the property</param>
+            <param name="constant">The constant to encapsulate</param>
+            <returns>A new action property</returns>
+        </member>
+        <member name="M:Impulse.v_1_336.IConstantParser`1.TryParse(System.String,`0@)">
+            <summary>
+            Try to parse a given string
+            </summary>
+            <param name="value">The string to parse</param>
+            <param name="constant">The resulting constant, if any</param>
+            <returns><see langword="true"/> if the string was parsed successfully</returns>
+        </member>
+        <member name="M:Impulse.v_1_336.IConstantParser`1.Parse(System.String)">
+            <summary>
+            Parse a given string
+            </summary>
+            <param name="value">The string to parse</param>
+            <returns>The resulting constant</returns>
+            <exception cref="T:System.ArgumentException">If the string cannot be parsed successfully</exception>
+        </member>
+        <member name="M:Impulse.v_1_336.IConstantParser`1.ToActionProperty(System.String,`0)">
+            <summary>
+            Turn a constant into an action property
+            </summary>
+            <param name="name">The name of the property</param>
+            <param name="constant">The constant to encapsulate</param>
+            <returns>A new action property</returns>
+        </member>
+        <member name="M:Impulse.v_1_336.Constants.ConstantDelegateParser`1.#ctor(System.String,Impulse.v_1_336.Constants.TryParseConstant{`0})">
+            <summary>
+            Create a new delegate constant parser
+            </summary>
+            <param name="pattern">The pattern the input should be in for parsing, only used for describing parser failure</param>
+            <param name="parser">A function that tries to parse the constant type, must not be <see langword="null"/></param>
+        </member>
+        <member name="M:Impulse.v_1_336.Constants.ConstantDelegateParser`1.TryParse(System.String,`0@)">
+            <summary>
+            Try to parse a given string
+            </summary>
+            <param name="value">The string to parse</param>
+            <param name="constant">The resulting constant, if any</param>
+            <returns><see langword="true"/> if the string was parsed successfully</returns>
+        </member>
+        <member name="M:Impulse.v_1_336.Constants.ConstantDelegateParser`1.Parse(System.String)">
+            <summary>
+            Parse a given string
+            </summary>
+            <param name="value">The string to parse</param>
+            <returns>The resulting constant</returns>
+            <exception cref="T:System.ArgumentException">If the string cannot be parsed successfully</exception>
+        </member>
+        <member name="M:Impulse.v_1_336.Constants.ConstantDelegateParser`1.CanParse(System.String)">
+            <summary>
+            Check if a string can be parsed successfully
+            </summary>
+            <param name="value">The string to parse</param>
+            <returns><see langword="true"/> if the string can be parsed successfully</returns>
+        </member>
+        <member name="M:Impulse.v_1_336.Constants.ConstantDelegateParser`1.TryParse(System.String,Impulse.v_1_336.IConstant@)">
+            <summary>
+            Try to parse a given string
+            </summary>
+            <param name="value">The string to parse</param>
+            <param name="constant">The resulting constant, if any</param>
+            <returns><see langword="true"/> if the string was parsed successfully</returns>
+        </member>
+        <member name="M:Impulse.v_1_336.Constants.ConstantDelegateParser`1.ToActionProperty(System.String,`0)">
+            <summary>
+            Turn a constant into an action property
+            </summary>
+            <param name="name">The name of the property</param>
+            <param name="constant">The constant to encapsulate</param>
+            <returns>A new action property</returns>
+        </member>
+        <member name="P:Impulse.v_1_336.Constants.ConstantDelegateParser`1.Pattern">
+            <summary>
+            Get the pattern associated with this parser
+            </summary>
+        </member>
+        <member name="T:Impulse.v_1_336.Constants.Coordinate3D">
+            <summary>
+            Class representing an x,y,z-coordinate as a 3-tuple of doubles
+            </summary>
+        </member>
+        <member name="F:Impulse.v_1_336.Constants.Coordinate3D.Regex">
+            <summary>
+            The regular expression used for parsing coordinates, roughly (x,y,z)
+            </summary>
+        </member>
+        <member name="F:Impulse.v_1_336.Constants.Coordinate3D.NullableRegex">
+            <summary>
+            The regular expression used for parsing nullable coordinates, roughly null or (x,y,z)
+            </summary>
+        </member>
+        <member name="M:Impulse.v_1_336.Constants.Coordinate3D.#ctor(System.Double,System.Double,System.Double)">
+            <summary>
+            Create a new coordinate
+            </summary>
+            <param name="x">The X coordinate</param>
+            <param name="y">The Y coordinate</param>
+            <param name="z">The Z coordinate</param>
+        </member>
+        <member name="M:Impulse.v_1_336.Constants.Coordinate3D.TryParse(System.String,Impulse.v_1_336.Constants.Coordinate3D@)">
+            <summary>
+            Try to parse a coordinate
+            </summary>
+            <param name="input">The input representing a coordinate</param>
+            <param name="coordinate">The resulting coordinate, if successful</param>
+            <returns><see langword="true"/> if parsing was successful</returns>
+        </member>
+        <member name="M:Impulse.v_1_336.Constants.Coordinate3D.Equals(Impulse.v_1_336.Constants.Coordinate3D)">
+            <summary>
+            Check if this coordinate is equal to another
+            </summary>
+            <param name="other">The coordinate to compare to</param>
+            <returns><see langword="true"/> if the coordinates have the same X, Y, and Z coordinates</returns>
+        </member>
+        <member name="M:Impulse.v_1_336.Constants.Coordinate3D.Equals(System.Object)">
+            <summary>
+            Check if this coordinate is equal to another
+            </summary>
+            <param name="obj">The object to compare to</param>
+            <returns><see langword="true"/> if the object is a coordinate and has the same X, Y, and Z coordinates</returns>
+        </member>
+        <member name="M:Impulse.v_1_336.Constants.Coordinate3D.GetHashCode">
+            <summary>
+            Generate a hash code for this coordinate
+            </summary>
+            <returns>A hash of this coordinate</returns>
+        </member>
+        <member name="M:Impulse.v_1_336.Constants.Coordinate3D.ToString">
+            <summary>
+            Create a string parse-able representation of this coordinate
+            </summary>
+            <returns>A parse-able representation of this coordinate</returns>
+        </member>
+        <member name="P:Impulse.v_1_336.Constants.Coordinate3D.X">
+            <summary>
+            Get the X coordinate
+            </summary>
+        </member>
+        <member name="P:Impulse.v_1_336.Constants.Coordinate3D.Y">
+            <summary>
+            Get the Y coordinate
+            </summary>
+        </member>
+        <member name="P:Impulse.v_1_336.Constants.Coordinate3D.Z">
+            <summary>
+            Get the Z coordinate
+            </summary>
+        </member>
+        <member name="T:Impulse.v_1_336.Constants.ParseConstant`1">
+            <summary>
+            Parse a given string
+            </summary>
+            <typeparam name="TConstant">The type of TConstant to produce</typeparam>
+            <param name="groups">The groups from <see cref="M:System.Text.RegularExpressions.Regex.Match(System.String)"/> successfully matching</param>
+            <returns>The resulting constant</returns>
+        </member>
+        <member name="T:Impulse.v_1_336.Constants.TryParseConstant`1">
+            <summary>
+            Try to parse a given string
+            </summary>
+            /// <typeparam name="TConstant">The type of TConstant to produce</typeparam>
+            <param name="input">The string to parse</param>
+            <param name="value">The resulting constant, if any</param>
+            <returns><see langword="true"/> if the string was parsed successfully</returns>
+        </member>
+        <member name="T:Impulse.v_1_336.Constants.StringConstantParser">
+            <summary>
+            Standard implementation of a string parser
+            </summary>
+            <remarks>This is just a pass-through parser so there is only one instance</remarks>
+        </member>
+        <member name="F:Impulse.v_1_336.Constants.StringConstantParser.Instance">
+            <summary>
+            Get the only instance of a string constant parser
+            </summary>
+        </member>
+        <member name="M:Impulse.v_1_336.Constants.StringConstantParser.Parse(System.String)">
+            <summary>
+            Create a new string constant with the given string
+            </summary>
+            <param name="value">The string value of the new constant</param>
+            <returns>A new string constant</returns>
+        </member>
+        <member name="M:Impulse.v_1_336.Constants.StringConstantParser.ToActionProperty(System.String,Impulse.v_1_336.Constants.ClassConstant{System.String})">
+            <summary>
+            Turn a constant into an action property
+            </summary>
+            <param name="name">The name of the property</param>
+            <param name="constant">The constant to encapsulate</param>
+            <returns>A new action property</returns>
+        </member>
+        <member name="T:Impulse.v_1_336.Constants.ConstantRegexParser`1">
+            <summary>
+            Standard implementation of a parser based on a regular expression
+            </summary>
+            <typeparam name="TConstant">The type of constant to parse</typeparam>
+        </member>
+        <member name="M:Impulse.v_1_336.Constants.ConstantRegexParser`1.#ctor(System.Text.RegularExpressions.Regex,Impulse.v_1_336.Constants.ParseConstant{`0})">
+            <summary>
+            Create a new regular expression constant parser
+            </summary>
+            <param name="regex">The regular expression object to use for parsing, must not be <see langword="null"/></param>
+            <param name="parser">A function that takes in the groups from the regular expression and creates a new constant, must not be <see langword="null"/></param>
+        </member>
+        <member name="M:Impulse.v_1_336.Constants.ConstantRegexParser`1.TryParse(System.String,`0@)">
+            <summary>
+            Try to parse a given string
+            </summary>
+            <param name="value">The string to parse</param>
+            <param name="constant">The resulting constant, if any</param>
+            <returns><see langword="true"/> if the string was parsed successfully</returns>
+        </member>
+        <member name="M:Impulse.v_1_336.Constants.ConstantRegexParser`1.Parse(System.String)">
+            <summary>
+            Parse a given string
+            </summary>
+            <param name="value">The string to parse</param>
+            <returns>The resulting constant</returns>
+            <exception cref="T:System.ArgumentException">If the string cannot be parsed successfully</exception>
+        </member>
+        <member name="M:Impulse.v_1_336.Constants.ConstantRegexParser`1.CanParse(System.String)">
+            <summary>
+            Check if a string can be parsed successfully
+            </summary>
+            <param name="value">The string to parse</param>
+            <returns><see langword="true"/> if the string can be parsed successfully</returns>
+        </member>
+        <member name="M:Impulse.v_1_336.Constants.ConstantRegexParser`1.TryParse(System.String,Impulse.v_1_336.IConstant@)">
+            <summary>
+            Try to parse a given string
+            </summary>
+            <param name="value">The string to parse</param>
+            <param name="constant">The resulting constant, if any</param>
+            <returns><see langword="true"/> if the string was parsed successfully</returns>
+        </member>
+        <member name="M:Impulse.v_1_336.Constants.ConstantRegexParser`1.ToActionProperty(System.String,`0)">
+            <summary>
+            Turn a constant into an action property
+            </summary>
+            <param name="name">The name of the property</param>
+            <param name="constant">The constant to encapsulate</param>
+            <returns>A new action property</returns>
+        </member>
+        <member name="P:Impulse.v_1_336.Constants.ConstantRegexParser`1.Regex">
+            <summary>
+            Get the regular expression object used by this parser
+            </summary>
+        </member>
+        <member name="T:Impulse.v_1_336.Constants.NullableConstant`1">
+            <summary>
+            Standard implementation of a nullable value type constant
+            </summary>
+            <typeparam name="T">The value type</typeparam>
+        </member>
+        <member name="M:Impulse.v_1_336.Constants.NullableConstant`1.#ctor(System.Nullable{`0})">
+            <summary>
+            Create a new nullable value type constant
+            </summary>
+            <param name="value">The value of this constant</param>
+        </member>
+        <member name="M:Impulse.v_1_336.Constants.NullableConstant`1.GetHashCode">
+            <summary>
+            Get the hash code of this constant
+            </summary>
+            <returns>A hash code based on the value of this constant</returns>
+        </member>
+        <member name="M:Impulse.v_1_336.Constants.NullableConstant`1.Equals(System.Object)">
+            <summary>
+            Check if this constant equals another
+            </summary>
+            <param name="obj">The object to compare to</param>
+            <returns><see langword="true"/> if obj is an <see cref="T:Impulse.v_1_336.IConstant`1"/> with equal value</returns>
+        </member>
+        <member name="M:Impulse.v_1_336.Constants.NullableConstant`1.Equals(Impulse.v_1_336.Constants.NullableConstant{`0})">
+            <summary>
+            Check if this constant equals another
+            </summary>
+            <param name="other">The constant to compare to</param>
+            <returns><see langword="true"/> if the constants have equal value</returns>
+        </member>
+        <member name="M:Impulse.v_1_336.Constants.NullableConstant`1.Equals(Impulse.v_1_336.ITerm)">
+            <summary>
+            Check if this constant equals another
+            </summary>
+            <param name="term">The term to compare to</param>
+            <returns><see langword="true"/> if the term is an <see cref="T:Impulse.v_1_336.IConstant`1"/> with equal value</returns>
+        </member>
+        <member name="M:Impulse.v_1_336.Constants.NullableConstant`1.Equals(Impulse.v_1_336.IConstant{`0})">
+            <summary>
+            Check if this constant equals another
+            </summary>
+            <param name="other">The constant to compare to</param>
+            <returns><see langword="true"/> if both constants have equal value</returns>
+        </member>
+        <member name="M:Impulse.v_1_336.Constants.NullableConstant`1.Equals(Impulse.v_1_336.IConstant)">
+            <summary>
+            Check if this constant equals another
+            </summary>
+            <param name="other">The constant to compare to</param>
+            <returns><see langword="true"/> if the constant is an <see cref="T:Impulse.v_1_336.IConstant`1"/> with equal value</returns>
+        </member>
+        <member name="M:Impulse.v_1_336.Constants.NullableConstant`1.ToString">
+            <summary>
+            Generate a string representation of this constants value
+            </summary>
+            <returns>A string representation of this constants value</returns>
+        </member>
+        <member name="P:Impulse.v_1_336.Constants.NullableConstant`1.Value">
+            <summary>
+            Get the nullable value of this constant
+            </summary>
+        </member>
+        <member name="T:Impulse.v_1_336.Constants.ValueConstant`1">
+            <summary>
+            Standard implementation of a value type constant
+            </summary>
+            <typeparam name="T">The value type to encapsulate</typeparam>
+        </member>
+        <member name="M:Impulse.v_1_336.Constants.ValueConstant`1.#ctor(`0)">
+            <summary>
+            Create a new constant with the specified value
+            </summary>
+            <param name="value">The value of this constant</param>
+        </member>
+        <member name="M:Impulse.v_1_336.Constants.ValueConstant`1.GetHashCode">
+            <summary>
+            Get the hash code of this constant
+            </summary>
+            <returns>A hash code based on the value of this constant</returns>
+        </member>
+        <member name="M:Impulse.v_1_336.Constants.ValueConstant`1.Equals(System.Object)">
+            <summary>
+            Check if this constant equals another
+            </summary>
+            <param name="obj">The object to compare to</param>
+            <returns><see langword="true"/> if obj is an <see cref="T:Impulse.v_1_336.IConstant`1"/> with equal value</returns>
+        </member>
+        <member name="M:Impulse.v_1_336.Constants.ValueConstant`1.Equals(Impulse.v_1_336.Constants.ValueConstant{`0})">
+            <summary>
+            Check if this constant equals another
+            </summary>
+            <param name="other">The constant to compare to</param>
+            <returns><see langword="true"/> if the constants have equal value</returns>
+        </member>
+        <member name="M:Impulse.v_1_336.Constants.ValueConstant`1.Equals(Impulse.v_1_336.ITerm)">
+            <summary>
+            Check if this constant equals another
+            </summary>
+            <param name="term">The term to compare to</param>
+            <returns><see langword="true"/> if the term is an <see cref="T:Impulse.v_1_336.IConstant`1"/> with equal value</returns>
+        </member>
+        <member name="M:Impulse.v_1_336.Constants.ValueConstant`1.Equals(Impulse.v_1_336.IConstant{`0})">
+            <summary>
+            Check if this constant equals another
+            </summary>
+            <param name="other">The constant to compare to</param>
+            <returns><see langword="true"/> if both constants have equal value</returns>
+        </member>
+        <member name="M:Impulse.v_1_336.Constants.ValueConstant`1.Equals(Impulse.v_1_336.IConstant)">
+            <summary>
+            Check if this constant equals another
+            </summary>
+            <param name="other">The constant to compare to</param>
+            <returns><see langword="true"/> if the constant is an <see cref="T:Impulse.v_1_336.IConstant`1"/> with equal value</returns>
+        </member>
+        <member name="M:Impulse.v_1_336.Constants.ValueConstant`1.ToString">
+            <summary>
+            Generate a string representation of this constants value
+            </summary>
+            <returns><code>this.Value.ToString()</code></returns>
+        </member>
+        <member name="P:Impulse.v_1_336.Constants.ValueConstant`1.Value">
+            <summary>
+            Get the value of this constant
+            </summary>
+        </member>
+        <member name="T:Impulse.v_1_336.Constants.ClassConstant`1">
+            <summary>
+            Standard implementation of a reference type constant
+            </summary>
+            <typeparam name="T">The reference type to encapsulate</typeparam>
+        </member>
+        <member name="M:Impulse.v_1_336.Constants.ClassConstant`1.#ctor(`0)">
+            <summary>
+            Create a new constant with the specified value
+            </summary>
+            <param name="value">The value of this constant</param>
+        </member>
+        <member name="M:Impulse.v_1_336.Constants.ClassConstant`1.GetHashCode">
+            <summary>
+            Get the hash code of this constant
+            </summary>
+            <returns>A hash code based on the value of this constant</returns>
+        </member>
+        <member name="M:Impulse.v_1_336.Constants.ClassConstant`1.Equals(System.Object)">
+            <summary>
+            Check if this constant equals another
+            </summary>
+            <param name="obj">The object to compare to</param>
+            <returns><see langword="true"/> if obj is an <see cref="T:Impulse.v_1_336.IConstant`1"/> with equal value</returns>
+        </member>
+        <member name="M:Impulse.v_1_336.Constants.ClassConstant`1.Equals(Impulse.v_1_336.ITerm)">
+            <summary>
+            Check if this constant equals another
+            </summary>
+            <param name="term">The term to compare to</param>
+            <returns><see langword="true"/> if the term is an <see cref="T:Impulse.v_1_336.IConstant`1"/> with equal value</returns>
+        </member>
+        <member name="M:Impulse.v_1_336.Constants.ClassConstant`1.Equals(Impulse.v_1_336.Constants.ClassConstant{`0})">
+            <summary>
+            Check if this constant equals another
+            </summary>
+            <param name="other">The constant to compare to</param>
+            <returns><see langword="true"/> if the constants have equal value</returns>
+        </member>
+        <member name="M:Impulse.v_1_336.Constants.ClassConstant`1.Equals(Impulse.v_1_336.IConstant{`0})">
+            <summary>
+            Check if this constant equals another
+            </summary>
+            <param name="other">The constant to compare to</param>
+            <returns><see langword="true"/> if both constants have equal value</returns>
+        </member>
+        <member name="M:Impulse.v_1_336.Constants.ClassConstant`1.Equals(Impulse.v_1_336.IConstant)">
+            <summary>
+            Check if this constant equals another
+            </summary>
+            <param name="other">The constant to compare to</param>
+            <returns><see langword="true"/> if the constant is an <see cref="T:Impulse.v_1_336.IConstant`1"/> with equal value</returns>
+        </member>
+        <member name="M:Impulse.v_1_336.Constants.ClassConstant`1.ToString">
+            <summary>
+            Generate a string representation of this constants value
+            </summary>
+            <returns><code>this.Value.ToString()</code></returns>
+        </member>
+        <member name="P:Impulse.v_1_336.Constants.ClassConstant`1.Value">
+            <summary>
+            Get the value of this constant
+            </summary>
+        </member>
+        <member name="T:Impulse.v_1_336.Constants.Coordinate2D">
+            <summary>
+            Class representing an x,y-coordinate as a pair of doubles
+            </summary>
+        </member>
+        <member name="F:Impulse.v_1_336.Constants.Coordinate2D.Regex">
+            <summary>
+            The regular expression used for parsing coordinates
+            </summary>
+        </member>
+        <member name="F:Impulse.v_1_336.Constants.Coordinate2D.NullableRegex">
+            <summary>
+            The regular expression used for parsing nullable coordinates
+            </summary>
+        </member>
+        <member name="M:Impulse.v_1_336.Constants.Coordinate2D.#ctor(System.Double,System.Double)">
+            <summary>
+            Create a new coordinate
+            </summary>
+            <param name="x">The X coordinate</param>
+            <param name="y">The Y coordinate</param>
+        </member>
+        <member name="M:Impulse.v_1_336.Constants.Coordinate2D.TryParse(System.String,Impulse.v_1_336.Constants.Coordinate2D@)">
+            <summary>
+            Try to parse a coordinate
+            </summary>
+            <param name="input">The input representing a coordinate</param>
+            <param name="coordinate">The resulting coordinate, if successful</param>
+            <returns><see langword="true"/> if parsing was successful</returns>
+        </member>
+        <member name="M:Impulse.v_1_336.Constants.Coordinate2D.Equals(Impulse.v_1_336.Constants.Coordinate2D)">
+            <summary>
+            Check if this coordinate is equal to another
+            </summary>
+            <param name="other">The coordinate to compare to</param>
+            <returns><see langword="true"/> if the coordinates have the same X and Y coordinates</returns>
+        </member>
+        <member name="M:Impulse.v_1_336.Constants.Coordinate2D.Equals(System.Object)">
+            <summary>
+            Check if this coordinate is equal to another
+            </summary>
+            <param name="obj">The object to compare to</param>
+            <returns><see langword="true"/> if the object is a coordinate and has the same X and Y coordinates</returns>
+        </member>
+        <member name="M:Impulse.v_1_336.Constants.Coordinate2D.GetHashCode">
+            <summary>
+            Generate a hash code for this coordinate
+            </summary>
+            <returns>A hash of this coordinate</returns>
+        </member>
+        <member name="M:Impulse.v_1_336.Constants.Coordinate2D.ToString">
+            <summary>
+            Create a string parse-able representation of this coordinate
+            </summary>
+            <returns>A parse-able representation of this coordinate</returns>
+        </member>
+        <member name="P:Impulse.v_1_336.Constants.Coordinate2D.X">
+            <summary>
+            Get the X coordinate
+            </summary>
+        </member>
+        <member name="P:Impulse.v_1_336.Constants.Coordinate2D.Y">
+            <summary>
+            Get the Y coordinate
+            </summary>
+        </member>
+        <member name="T:Impulse.v_1_336.ConstantParserExtensions">
+            <summary>
+            Extension methods for constant parsers
+            </summary>
+        </member>
+        <member name="M:Impulse.v_1_336.ConstantParserExtensions.ToActionProperty(Impulse.v_1_336.IConstantParser,System.String,System.String)">
+            <summary>
+            Create an action property
+            </summary>
+            <param name="parser">The parser to use</param>
+            <param name="name">The name of the property</param>
+            <param name="value">The value to parse</param>
+            <returns>A new action property</returns>
+        </member>
+        <member name="M:Impulse.v_1_336.ConstantParserExtensions.ToActionProperty``1(Impulse.v_1_336.IConstantParser{``0},System.String,System.String)">
+            <summary>
+            Create an action property
+            </summary>
+            <typeparam name="TConstant">The type of constant to parse</typeparam>
+            <param name="parser">The parser to use</param>
+            <param name="name">The name of the property</param>
+            <param name="value">The value to parse</param>
+            <returns>A new action property</returns>
+        </member>
+        <member name="T:Impulse.v_1_336.IIntervalSet">
+            <summary>
+            Interface describing a set of intervals
+            </summary>
+        </member>
+        <member name="M:Impulse.v_1_336.IIntervalSet.IsTime(Impulse.v_1_336.IConstant)">
+            <summary>
+            Check if a constant is a valid time constant
+            </summary>
+            <param name="constant">The constant to check</param>
+            <returns><see langword="true"/> if the constant is a valid time</returns>
+        </member>
+        <member name="M:Impulse.v_1_336.IIntervalSet.Compare(Impulse.v_1_336.IConstant,Impulse.v_1_336.IConstant)">
+            <summary>
+            Compares two times
+            </summary>
+            <param name="left">The left-hand side</param>
+            <param name="right">The right-hand side</param>
+            <returns>-1 of <c>left &lt; right</c>, 0 if <c>left == right</c>, and 1 if <c>left &gt; right</c></returns>
+        </member>
+        <member name="T:Impulse.v_1_336.IIntervalSet`2">
+            <summary>
+            Interface describing a set of intervals with specific types
+            </summary>
+            <typeparam name="TTime">The type of times</typeparam>
+            <typeparam name="TInterval">The type of intervals</typeparam>
+        </member>
+        <member name="M:Impulse.v_1_336.IIntervalSet`2.IsTime(`0)">
+            <summary>
+            Check if a constant is a valid time constant
+            </summary>
+            <param name="constant">The constant to check</param>
+            <returns><see langword="true"/> if the constant is a valid time</returns>
+        </member>
+        <member name="M:Impulse.v_1_336.IIntervalSet`2.Compare(`0,`0)">
+            <summary>
+            Compares two times
+            </summary>
+            <param name="left">The left-hand side</param>
+            <param name="right">The right-hand side</param>
+            <returns>-1 of <c>left &lt; right</c>, 0 if <c>left == right</c>, and 1 if <c>left &gt; right</c></returns>
+        </member>
+        <member name="T:Impulse.v_1_336.IntervalSetExtensions">
+            <summary>
+            Extension methods for IntervalSets that define all the temporal relations
+            </summary>
+        </member>
+        <member name="M:Impulse.v_1_336.IntervalSetExtensions.TemporalRelation``2(Impulse.v_1_336.IIntervalSet{``0,``1},``1,``1,Impulse.v_1_336.Xml.RelationType)">
+            <summary>
+            Check if any of the given temporal relation holds between two intervals
+            </summary>
+            <typeparam name="TTime">The type of times</typeparam>
+            <typeparam name="TInterval">The type of intervals</typeparam>
+            <param name="set">The set of intervals</param>
+            <param name="left">The left-hand side</param>
+            <param name="right">The right-hand side</param>
+            <param name="type">A flags enumeration of relations to check via a logical OR</param>
+            <returns><see langword="true"/> if any of the relations in the flags holds</returns>
+        </member>
+        <member name="M:Impulse.v_1_336.IntervalSetExtensions.EqualTo``2(Impulse.v_1_336.IIntervalSet{``0,``1},``0,``0)">
+            <summary>
+            Check if two times are equal
+            </summary>
+            <typeparam name="TTime">The type of times</typeparam>
+            <typeparam name="TInterval">The type of intervals</typeparam>
+            <param name="set">The set of intervals</param>
+            <param name="left">The left-hand side</param>
+            <param name="right">The right-hand side</param>
+            <returns><see langword="true"/> if <c>left == right</c></returns>
+        </member>
+        <member name="M:Impulse.v_1_336.IntervalSetExtensions.GreaterThan``2(Impulse.v_1_336.IIntervalSet{``0,``1},``0,``0)">
+            <summary>
+            Check if one time is greater than another
+            </summary>
+            <typeparam name="TTime">The type of times</typeparam>
+            <typeparam name="TInterval">The type of intervals</typeparam>
+            <param name="set">The set of intervals</param>
+            <param name="left">The left-hand side</param>
+            <param name="right">The right-hand side</param>
+            <returns><see langword="true"/> if <c>left &gt; right</c></returns>
+        </member>
+        <member name="M:Impulse.v_1_336.IntervalSetExtensions.LessThan``2(Impulse.v_1_336.IIntervalSet{``0,``1},``0,``0)">
+            <summary>
+            Check if one time is less than another
+            </summary>
+            <typeparam name="TTime">The type of times</typeparam>
+            <typeparam name="TInterval">The type of intervals</typeparam>
+            <param name="set">The set of intervals</param>
+            <param name="left">The left-hand side</param>
+            <param name="right">The right-hand side</param>
+            <returns><see langword="true"/> if <c>left &lt; right</c></returns>
+        </member>
+        <member name="M:Impulse.v_1_336.IntervalSetExtensions.GreaterThanOrEqualTo``2(Impulse.v_1_336.IIntervalSet{``0,``1},``0,``0)">
+            <summary>
+            Check if one time is greater than or equal to another
+            </summary>
+            <typeparam name="TTime">The type of times</typeparam>
+            <typeparam name="TInterval">The type of intervals</typeparam>
+            <param name="set">The set of intervals</param>
+            <param name="left">The left-hand side</param>
+            <param name="right">The right-hand side</param>
+            <returns><see langword="true"/> if <c>left >= right</c></returns>
+        </member>
+        <member name="M:Impulse.v_1_336.IntervalSetExtensions.LessThanOrEqualTo``2(Impulse.v_1_336.IIntervalSet{``0,``1},``0,``0)">
+            <summary>
+            Check if one time is less than or equal to another
+            </summary>
+            <typeparam name="TTime">The type of times</typeparam>
+            <typeparam name="TInterval">The type of intervals</typeparam>
+            <param name="set">The set of intervals</param>
+            <param name="left">The left-hand side</param>
+            <param name="right">The right-hand side</param>
+            <returns><see langword="true"/> if <c>left &lt;= right</c></returns>
+        </member>
+        <member name="M:Impulse.v_1_336.IntervalSetExtensions.After``2(Impulse.v_1_336.IIntervalSet{``0,``1},``1,``1)">
+            <summary>
+            Check if one interval is after another
+            </summary>
+            <typeparam name="TTime">The type of times</typeparam>
+            <typeparam name="TInterval">The type of intervals</typeparam>
+            <param name="set">The set of intervals</param>
+            <param name="left">The left-hand side</param>
+            <param name="right">The right-hand side</param>
+            <returns><see langword="true"/> if <c>right.End &lt; left.Start</c></returns>
+        </member>
+        <member name="M:Impulse.v_1_336.IntervalSetExtensions.Before``2(Impulse.v_1_336.IIntervalSet{``0,``1},``1,``1)">
+            <summary>
+            Check if one interval is before another
+            </summary>
+            <typeparam name="TTime">The type of times</typeparam>
+            <typeparam name="TInterval">The type of intervals</typeparam>
+            <param name="set">The set of intervals</param>
+            <param name="left">The left-hand side</param>
+            <param name="right">The right-hand side</param>
+            <returns><see langword="true"/> if <c>right.End &lt; left.Start</c></returns>
+        </member>
+        <member name="M:Impulse.v_1_336.IntervalSetExtensions.Contains``2(Impulse.v_1_336.IIntervalSet{``0,``1},``1,``1)">
+            <summary>
+            Check if one interval is contains another
+            </summary>
+            <typeparam name="TTime">The type of times</typeparam>
+            <typeparam name="TInterval">The type of intervals</typeparam>
+            <param name="set">The set of intervals</param>
+            <param name="left">The left-hand side</param>
+            <param name="right">The right-hand side</param>
+            <returns><see langword="true"/> if <c>left.Start &lt; right.Start &amp;&amp;left.End &gt; right.End</c></returns>
+        </member>
+        <member name="M:Impulse.v_1_336.IntervalSetExtensions.During``2(Impulse.v_1_336.IIntervalSet{``0,``1},``1,``1)">
+            <summary>
+            Check if one interval is during another
+            </summary>
+            <typeparam name="TTime">The type of times</typeparam>
+            <typeparam name="TInterval">The type of intervals</typeparam>
+            <param name="set">The set of intervals</param>
+            <param name="left">The left-hand side</param>
+            <param name="right">The right-hand side</param>
+            <returns><see langword="true"/> if <c>left.Start &gt; right.Start &amp;&amp;left.End &lt; right.End</c></returns>
+        </member>
+        <member name="M:Impulse.v_1_336.IntervalSetExtensions.EqualTo``2(Impulse.v_1_336.IIntervalSet{``0,``1},``1,``1)">
+            <summary>
+            Check if one interval is equal to another
+            </summary>
+            <typeparam name="TTime">The type of times</typeparam>
+            <typeparam name="TInterval">The type of intervals</typeparam>
+            <param name="set">The set of intervals</param>
+            <param name="left">The left-hand side</param>
+            <param name="right">The right-hand side</param>
+            <returns><see langword="true"/> if <c>left.Start == right.Start &amp;&amp;left.End == right.End</c></returns>
+        </member>
+        <member name="M:Impulse.v_1_336.IntervalSetExtensions.Finishes``2(Impulse.v_1_336.IIntervalSet{``0,``1},``1,``1)">
+            <summary>
+            Check if one interval finishes another
+            </summary>
+            <typeparam name="TTime">The type of times</typeparam>
+            <typeparam name="TInterval">The type of intervals</typeparam>
+            <param name="set">The set of intervals</param>
+            <param name="left">The left-hand side</param>
+            <param name="right">The right-hand side</param>
+            <returns><see langword="true"/> if <c>left.Start &gt; right.Start &amp;&amp;left.End == right.End</c></returns>
+        </member>
+        <member name="M:Impulse.v_1_336.IntervalSetExtensions.IsFinishedBy``2(Impulse.v_1_336.IIntervalSet{``0,``1},``1,``1)">
+            <summary>
+            Check if one interval is finished by another
+            </summary>
+            <typeparam name="TTime">The type of times</typeparam>
+            <typeparam name="TInterval">The type of intervals</typeparam>
+            <param name="set">The set of intervals</param>
+            <param name="left">The left-hand side</param>
+            <param name="right">The right-hand side</param>
+            <returns><see langword="true"/> if <c>left.Start &lt; right.Start &amp;&amp;left.End == right.End</c></returns>
+        </member>
+        <member name="M:Impulse.v_1_336.IntervalSetExtensions.IsMetBy``2(Impulse.v_1_336.IIntervalSet{``0,``1},``1,``1)">
+            <summary>
+            Check if one interval is met by another
+            </summary>
+            <typeparam name="TTime">The type of times</typeparam>
+            <typeparam name="TInterval">The type of intervals</typeparam>
+            <param name="set">The set of intervals</param>
+            <param name="left">The left-hand side</param>
+            <param name="right">The right-hand side</param>
+            <returns><see langword="true"/> if <c>left.Start == right.End</c></returns>
+        </member>
+        <member name="M:Impulse.v_1_336.IntervalSetExtensions.IsOverlappedBy``2(Impulse.v_1_336.IIntervalSet{``0,``1},``1,``1)">
+            <summary>
+            Check if one interval is overlapped by another
+            </summary>
+            <typeparam name="TTime">The type of times</typeparam>
+            <typeparam name="TInterval">The type of intervals</typeparam>
+            <param name="set">The set of intervals</param>
+            <param name="left">The left-hand side</param>
+            <param name="right">The right-hand side</param>
+            <returns><see langword="true"/> if <c>right.Start &lt; left.Start &amp;&amp;left.Start &lt; right.End &amp;&amp;right.End &lt; left.End</c></returns>
+        </member>
+        <member name="M:Impulse.v_1_336.IntervalSetExtensions.IsStartedBy``2(Impulse.v_1_336.IIntervalSet{``0,``1},``1,``1)">
+            <summary>
+            Check if one interval is started by another
+            </summary>
+            <typeparam name="TTime">The type of times</typeparam>
+            <typeparam name="TInterval">The type of intervals</typeparam>
+            <param name="set">The set of intervals</param>
+            <param name="left">The left-hand side</param>
+            <param name="right">The right-hand side</param>
+            <returns><see langword="true"/> if <c>left.Start == right.Start &amp;&amp;left.End &gt; right.End</c></returns>
+        </member>
+        <member name="M:Impulse.v_1_336.IntervalSetExtensions.Meets``2(Impulse.v_1_336.IIntervalSet{``0,``1},``1,``1)">
+            <summary>
+            Check if one interval is met by another
+            </summary>
+            <typeparam name="TTime">The type of times</typeparam>
+            <typeparam name="TInterval">The type of intervals</typeparam>
+            <param name="set">The set of intervals</param>
+            <param name="left">The left-hand side</param>
+            <param name="right">The right-hand side</param>
+            <returns><see langword="true"/> if <c>left.End == right.Start</c></returns>
+        </member>
+        <member name="M:Impulse.v_1_336.IntervalSetExtensions.Overlaps``2(Impulse.v_1_336.IIntervalSet{``0,``1},``1,``1)">
+            <summary>
+            Check if one interval is overlaps another
+            </summary>
+            <typeparam name="TTime">The type of times</typeparam>
+            <typeparam name="TInterval">The type of intervals</typeparam>
+            <param name="set">The set of intervals</param>
+            <param name="left">The left-hand side</param>
+            <param name="right">The right-hand side</param>
+            <returns><see langword="true"/> if <c>left.Start &lt; right.Start &amp;&amp;right.Start &lt; left.End &amp;&amp;left.End &lt; right.End</c></returns>
+        </member>
+        <member name="M:Impulse.v_1_336.IntervalSetExtensions.Precedes``2(Impulse.v_1_336.IIntervalSet{``0,``1},``1,``1)">
+            <summary>
+            Check if one interval precedes another
+            </summary>
+            <typeparam name="TTime">The type of times</typeparam>
+            <typeparam name="TInterval">The type of intervals</typeparam>
+            <param name="set">The set of intervals</param>
+            <param name="left">The left-hand side</param>
+            <param name="right">The right-hand side</param>
+            <returns><see langword="true"/> if <c>left.End &lt;= right.Start</c></returns>
+        </member>
+        <member name="M:Impulse.v_1_336.IntervalSetExtensions.Starts``2(Impulse.v_1_336.IIntervalSet{``0,``1},``1,``1)">
+            <summary>
+            Check if one interval starts another
+            </summary>
+            <typeparam name="TTime">The type of times</typeparam>
+            <typeparam name="TInterval">The type of intervals</typeparam>
+            <param name="set">The set of intervals</param>
+            <param name="left">The left-hand side</param>
+            <param name="right">The right-hand side</param>
+            <returns><see langword="true"/> if <c>left.Start == right.Start &amp;&amp;left.End &lt; right.End</c></returns>
+        </member>
+        <member name="M:Impulse.v_1_336.IntervalSetExtensions.Subinterval``2(Impulse.v_1_336.IIntervalSet{``0,``1},``1,``1)">
+            <summary>
+            Check if one interval is a subinterval of another
+            </summary>
+            <typeparam name="TTime">The type of times</typeparam>
+            <typeparam name="TInterval">The type of intervals</typeparam>
+            <param name="set">The set of intervals</param>
+            <param name="left">The left-hand side</param>
+            <param name="right">The right-hand side</param>
+            <returns><see langword="true"/> if <c>right.Start &lt;= left.Start &amp;&amp;left.End &lt;= right.End</c></returns>
+        </member>
+        <member name="M:Impulse.v_1_336.IntervalSetExtensions.IncludesOrMeetsStartOf``2(Impulse.v_1_336.IIntervalSet{``0,``1},``1,``1)">
+            <summary>
+            Check if one interval includes or meets the start of another
+            </summary>
+            <typeparam name="TTime">The type of times</typeparam>
+            <typeparam name="TInterval">The type of intervals</typeparam>
+            <param name="set">The set of intervals</param>
+            <param name="left">The left-hand side</param>
+            <param name="right">The right-hand side</param>
+            <returns><see langword="true"/> if <c>left.Start &lt;= right.Start &amp;&amp;right.Start &lt;= left.End</c></returns>
+        </member>
+        <member name="M:Impulse.v_1_336.IntervalSetExtensions.Intersect``2(Impulse.v_1_336.IIntervalSet{``0,``1},``1,``1)">
+            <summary>
+            Check if two intervals intersect one another
+            </summary>
+            <typeparam name="TTime">The type of times</typeparam>
+            <typeparam name="TInterval">The type of intervals</typeparam>
+            <param name="set">The set of intervals</param>
+            <param name="left">The left-hand side</param>
+            <param name="right">The right-hand side</param>
+            <returns><see langword="true"/> if left and right share a nonempty subinterval</returns>
+        </member>
+        <member name="T:Impulse.v_1_336.Interval`2">
+            <summary>
+            Standard implementation of an interval with a specific type for times
+            </summary>
+            <typeparam name="TTime">The type of times</typeparam>
+            <typeparam name="T">The type times wrap</typeparam>
+        </member>
+        <member name="T:Impulse.v_1_336.IInterval`1">
+            <summary>
+            Class representing an interval between two constants of a specific type
+            </summary>
+            <typeparam name="TConstant">The type of endpoints</typeparam>
+        </member>
+        <member name="T:Impulse.v_1_336.IInterval">
+            <summary>
+            Class representing an interval between two constants
+            </summary>
+        </member>
+        <member name="P:Impulse.v_1_336.IInterval.Start">
+            <summary>
+            Get the start of this interval
+            </summary>
+        </member>
+        <member name="P:Impulse.v_1_336.IInterval.End">
+            <summary>
+            Get the end of this interval
+            </summary>
+        </member>
+        <member name="P:Impulse.v_1_336.IInterval`1.Start">
+            <summary>
+            Get the start of this interval
+            </summary>
+        </member>
+        <member name="P:Impulse.v_1_336.IInterval`1.End">
+            <summary>
+            Get the end of this interval
+            </summary>
+        </member>
+        <member name="M:Impulse.v_1_336.Interval`2.#ctor(`0,`0)">
+            <summary>
+            Create a new interval
+            </summary>
+            <param name="start">The start of the interval</param>
+            <param name="end">The end of the interval</param>
+        </member>
+        <member name="M:Impulse.v_1_336.Interval`2.Equals(System.Object)">
+            <summary>
+            Check if this interval equals another
+            </summary>
+            <param name="obj">The obj to compare to</param>
+            <returns><see langword="true"/> if obj is an interval with equal start and end times</returns>
+        </member>
+        <member name="M:Impulse.v_1_336.Interval`2.GetHashCode">
+            <summary>
+            Get the hash code for this interval
+            </summary>
+            <returns>A hash based on the start and end times</returns>
+        </member>
+        <member name="M:Impulse.v_1_336.Interval`2.ToString">
+            <summary>
+            Gets a parseable string representation of this interval
+            </summary>
+            <returns>A parseable string representation of this interval</returns>
+        </member>
+        <member name="M:Impulse.v_1_336.Interval`2.Equals(Impulse.v_1_336.ITerm)">
+            <summary>
+            Check if this interval equals another
+            </summary>
+            <param name="term">The term to compare to</param>
+            <returns><see langword="true"/> if term is an interval with equal start and end times</returns>
+        </member>
+        <member name="M:Impulse.v_1_336.Interval`2.Equals(Impulse.v_1_336.IInterval)">
+            <summary>
+            Check if this interval equals another
+            </summary>
+            <param name="other">The interval to compare to</param>
+            <returns><see langword="true"/> if the intervals have equal start and end times</returns>
+        </member>
+        <member name="M:Impulse.v_1_336.Interval`2.Equals(Impulse.v_1_336.IInterval{Impulse.v_1_336.IConstant{`1}})">
+            <summary>
+            Check if this interval equals another
+            </summary>
+            <param name="other">The interval to compare to</param>
+            <returns><see langword="true"/> if the intervals have equal start and end times</returns>
+        </member>
+        <member name="M:Impulse.v_1_336.Interval`2.Equals(Impulse.v_1_336.Interval{`0,`1})">
+            <summary>
+            Check if this interval equals another
+            </summary>
+            <param name="other">The interval to compare to</param>
+            <returns><see langword="true"/> if the intervals have equal start and end times</returns>
+        </member>
+        <member name="M:Impulse.v_1_336.Interval`2.Equals(Impulse.v_1_336.IInterval{`0})">
+            <summary>
+            Check if this interval equals another
+            </summary>
+            <param name="other">The interval to compare to</param>
+            <returns><see langword="true"/> if the intervals have equal start and end times</returns>
+        </member>
+        <member name="M:Impulse.v_1_336.Interval`2.MakeParser(Impulse.v_1_336.IConstantParser{`0},System.String)">
+            <summary>
+            Create a new interval parser with given separator and time parser
+            </summary>
+            <param name="timeParser">The parser for times</param>
+            <param name="separator">The separator for times</param>
+            <returns>A new interval parser</returns>
+        </member>
+        <member name="P:Impulse.v_1_336.Interval`2.Start">
+            <summary>
+            The start of this interval
+            </summary>
+        </member>
+        <member name="P:Impulse.v_1_336.Interval`2.End">
+            <summary>
+            The end of this interval
+            </summary>
+        </member>
+        <member name="T:Impulse.v_1_336.Intervals.IntervalSets">
+            <summary>
+            Static class for helping in the construction of interval sets
+            </summary>
+        </member>
+        <member name="M:Impulse.v_1_336.Intervals.IntervalSets.MakeIntervalSet``2(System.String)">
+            <summary>
+            Make a default interval set with a given name and types
+            </summary>
+            <typeparam name="TTime">The type to use for times</typeparam>
+            <typeparam name="TInterval">The type to use for intervals</typeparam>
+            <param name="name">The name of the set</param>
+            <returns>An interval set where all TTime are times and TTime.CompareTo is used for comparisons</returns>
+        </member>
+        <member name="M:Impulse.v_1_336.Intervals.IntervalSets.MakeIntervalSet``3(System.String)">
+            <summary>
+            Make a default interval set with a given name and types
+            </summary>
+            <typeparam name="T">The type that TTime contains</typeparam>
+            <typeparam name="TTime">The type to use for times</typeparam>
+            <typeparam name="TInterval">The type to use for intervals</typeparam>
+            <param name="name">The name of the set</param>
+            <returns>An interval set where all TTime are times and T.CompareTo is used for comparisons</returns>
+        </member>
+        <member name="F:Impulse.v_1_336.Intervals.IntervalSets.UnsignedIntegerIntervals">
+            <summary>
+            Set of unsigned integer intervals
+            </summary>
+        </member>
+        <member name="T:Impulse.v_1_336.Intervals.IntervalSet`2">
+            <summary>
+            Standard interval set implementation
+            </summary>
+            <typeparam name="TTime"></typeparam>
+            <typeparam name="TInterval"></typeparam>
+        </member>
+        <member name="M:Impulse.v_1_336.Intervals.IntervalSet`2.#ctor(System.String,System.Func{`0,System.Boolean},System.Func{`0,`0,System.Int32})">
+            <summary>
+            Construct a new interval set
+            </summary>
+            <param name="name">The name of the set</param>
+            <param name="isTime">A function to check if a time is valid</param>
+            <param name="compare">A function to compare times</param>
+        </member>
+        <member name="M:Impulse.v_1_336.Intervals.IntervalSet`2.IsTime(`0)">
+            <summary>
+            Check if the given constant is a valid time
+            </summary>
+            <param name="constant">The constant time to check</param>
+            <returns><see langword="true"/> if the constant is a valid time</returns>
+        </member>
+        <member name="M:Impulse.v_1_336.Intervals.IntervalSet`2.Compare(`0,`0)">
+            <summary>
+            Compares two times
+            </summary>
+            <param name="left">The left-hand side</param>
+            <param name="right">The right-hand side</param>
+            <returns>-1 of <c>left &lt; right</c>, 0 if <c>left == right</c>, and 1 if <c>left > right</c></returns>
+        </member>
+        <member name="M:Impulse.v_1_336.Intervals.IntervalSet`2.Equals(Impulse.v_1_336.IObjectSet)">
+            <summary>
+            Check if this interval set is equal to another
+            </summary>
+            <param name="other">The object set to compare to</param>
+            <returns><see langword="true"/> if other is an interval set with the same types, membership constraints, and time comparison</returns>
+        </member>
+        <member name="M:Impulse.v_1_336.Intervals.IntervalSet`2.Equals(System.Object)">
+            <summary>
+            Check if this interval set is equal to another
+            </summary>
+            <param name="obj">The object to compare to</param>
+            <returns><see langword="true"/> if obj is an interval set with the same types, membership constraints, and time comparison</returns>
+        </member>
+        <member name="M:Impulse.v_1_336.Intervals.IntervalSet`2.Equals(Impulse.v_1_336.Intervals.IntervalSet{`0,`1})">
+            <summary>
+            Check if this interval set is equal to another
+            </summary>
+            <param name="other">The object set to compare to</param>
+            <returns><see langword="true"/> if other has the same types, membership constraints, and time comparison</returns>
+        </member>
+        <member name="M:Impulse.v_1_336.Intervals.IntervalSet`2.GetHashCode">
+            <summary>
+            Get the hash code for this interval set
+            </summary>
+            <returns>A hash code for this interval set</returns>
+        </member>
+        <member name="M:Impulse.v_1_336.Intervals.IntervalSet`2.Contains(`1)">
+            <summary>
+            Check if an interval is a member of this set
+            </summary>
+            <param name="constant">The interval to check</param>
+            <returns><see langword="true"/> if the intervals start compares to its end as &lt; 0</returns>
+        </member>
+        <member name="M:Impulse.v_1_336.Intervals.IntervalSet`2.ToString">
+            <summary>
+            Get a string representation of this interval set
+            </summary>
+            <returns>A string representation of this interval set</returns>
+        </member>
+        <member name="P:Impulse.v_1_336.Intervals.IntervalSet`2.Name">
+            <summary>
+            The name of this interval set
+            </summary>
+        </member>
+        <member name="T:Impulse.v_1_336.ObjectSets.ActionSet">
+            <summary>
+            Class representing the set of actions in a story action type
+            </summary>
+        </member>
+        <member name="M:Impulse.v_1_336.ObjectSets.ActionSet.#ctor(System.String,LN.Utilities.Collections.IReadOnlyDirectedGraph{System.String,LN.Utilities.Collections.Edge{System.String}},System.Func{System.String,Impulse.v_1_336.IStoryAction})">
+            <summary>
+            Create a new action set
+            </summary>
+            <param name="name">The story action type name this set represents</param>
+            <param name="actionTypeGraph">The story action type graph</param>
+            <param name="getAction">A function that given a story action ID, returns the corresponding story action (if any)</param>
+        </member>
+        <member name="M:Impulse.v_1_336.ObjectSets.ActionSet.Contains(Impulse.v_1_336.Constants.ClassConstant{System.String})">
+            <summary>
+            Check if this action type contains a given action
+            </summary>
+            <param name="constant">The action to check</param>
+            <returns><see langword="true"/> if the action is an instance of this type</returns>
+        </member>
+        <member name="M:Impulse.v_1_336.ObjectSets.ActionSet.Contains(Impulse.v_1_336.IConstant)">
+            <summary>
+            Check if this action type contains a given action
+            </summary>
+            <param name="constant">The action to check</param>
+            <returns><see langword="true"/> if the constant is a string constant representing an action and is an instance of this action type</returns>
+        </member>
+        <member name="M:Impulse.v_1_336.ObjectSets.ActionSet.IsSubsetOf(Impulse.v_1_336.IObjectSet)">
+            <summary>
+            Check if this set is a subset of another
+            </summary>
+            <param name="other">The set to check against</param>
+            <returns><see langword="true"/> if other is an action type containing this type, or is the set of all objects</returns>
+        </member>
+        <member name="P:Impulse.v_1_336.ObjectSets.ActionSet.Name">
+            <summary>
+            Get the name of this action set
+            </summary>
+        </member>
+        <member name="T:Impulse.v_1_336.ObjectSets.FiniteObjectSet`1">
+            <summary>
+            Standard implementation of a finite object set
+            </summary>
+            <typeparam name="TConstant">The type of constants to contain</typeparam>
+        </member>
+        <member name="M:Impulse.v_1_336.ObjectSets.FiniteObjectSet`1.#ctor(System.String)">
+            <summary>
+            Create a new finite object set with the given name
+            </summary>
+            <param name="name">The name of this set</param>
+        </member>
+        <member name="M:Impulse.v_1_336.ObjectSets.FiniteObjectSet`1.#ctor(System.String,System.Collections.Generic.IEnumerable{`0})">
+            <summary>
+            Create a new finite object set with given name and items
+            </summary>
+            <param name="name">The name of this set</param>
+            <param name="items">THe initial set of items in this set</param>
+        </member>
+        <member name="M:Impulse.v_1_336.ObjectSets.FiniteObjectSet`1.Add(`0)">
+            <summary>
+            Add a constant to this set
+            </summary>
+            <param name="item">The constant to add</param>
+            <returns><see langword="true"/> if constant was not already in this set</returns>
+        </member>
+        <member name="M:Impulse.v_1_336.ObjectSets.FiniteObjectSet`1.Clear">
+            <summary>
+            Clear all items from this set
+            </summary>
+        </member>
+        <member name="M:Impulse.v_1_336.ObjectSets.FiniteObjectSet`1.Contains(`0)">
+            <summary>
+            Checks if a given constant is a member of this set
+            </summary>
+            <param name="item">The constant to check</param>
+            <returns><see langword="true"/> if the set contains the constant</returns>
+        </member>
+        <member name="M:Impulse.v_1_336.ObjectSets.FiniteObjectSet`1.CopyTo(`0[],System.Int32)">
+            <summary>
+            Copy all the items in this set to an array
+            </summary>
+            <param name="array">The destination array</param>
+            <param name="arrayIndex">The destination array starting index</param>
+        </member>
+        <member name="M:Impulse.v_1_336.ObjectSets.FiniteObjectSet`1.Remove(`0)">
+            <summary>
+            Remove a constant from this set
+            </summary>
+            <param name="item">The constant to remove</param>
+            <returns><see langword="true"/> if this set contained the constant</returns>
+        </member>
+        <member name="M:Impulse.v_1_336.ObjectSets.FiniteObjectSet`1.GetEnumerator">
+            <summary>
+            Get an enumerator for this set
+            </summary>
+            <returns>An enumerator for this set</returns>
+        </member>
+        <member name="M:Impulse.v_1_336.ObjectSets.FiniteObjectSet`1.Contains(Impulse.v_1_336.IConstant)">
+            <summary>
+            Checks if a given constant is a member of this set
+            </summary>
+            <param name="constant">The constant to check</param>
+            <returns><see langword="true"/> if the set contains the constant</returns>
+        </member>
+        <member name="M:Impulse.v_1_336.ObjectSets.FiniteObjectSet`1.IsSubsetOf(Impulse.v_1_336.IObjectSet)">
+            <summary>
+            Checks if this set is a subset of another set
+            </summary>
+            <param name="other">The set to check against</param>
+            <returns><see langword="true"/> if all items in this set are items of other</returns>
+        </member>
+        <member name="P:Impulse.v_1_336.ObjectSets.FiniteObjectSet`1.Name">
+            <summary>
+            Get the name of this set
+            </summary>
+        </member>
+        <member name="P:Impulse.v_1_336.ObjectSets.FiniteObjectSet`1.Count">
+            <summary>
+            Get the number of constants in this set
+            </summary>
+        </member>
+        <member name="T:Impulse.v_1_336.ObjectSets.PowerSet">
+            <summary>
+            Class representing a power set of another object set
+            </summary>
+        </member>
+        <member name="M:Impulse.v_1_336.ObjectSets.PowerSet.#ctor(System.String,Impulse.v_1_336.IObjectSet)">
+            <summary>
+            Create a new power set based on another set
+            </summary>
+            <param name="baseName">Name of the base set</param>
+            <param name="baseSet">The base object set</param>
+        </member>
+        <member name="M:Impulse.v_1_336.ObjectSets.PowerSet.Contains(Impulse.v_1_336.IConstant{System.Collections.Generic.IEnumerable{Impulse.v_1_336.IConstant}})">
+            <summary>
+            Checks if a given constant is a member of this set
+            </summary>
+            <param name="constant">The constant to check</param>
+            <returns><see langword="true"/> if the set contains the constant</returns>
+        </member>
+        <member name="M:Impulse.v_1_336.ObjectSets.PowerSet.Contains(Impulse.v_1_336.Constants.SetConstant{Impulse.v_1_336.IConstant})">
+            <summary>
+            Checks if a given constant is a member of this set
+            </summary>
+            <param name="constant">The constant to check</param>
+            <returns><see langword="true"/> if the set contains the constant</returns>
+        </member>
+        <member name="M:Impulse.v_1_336.ObjectSets.PowerSet.Contains(Impulse.v_1_336.IConstant)">
+            <summary>
+            Checks if a given constant is a member of this set
+            </summary>
+            <param name="constant">The constant to check</param>
+            <returns><see langword="true"/> if the set contains the constant</returns>
+        </member>
+        <member name="M:Impulse.v_1_336.ObjectSets.PowerSet.IsSubsetOf(Impulse.v_1_336.IObjectSet)">
+            <summary>
+            Checks if this set is a subset of another set
+            </summary>
+            <param name="other">The set to check against</param>
+            <returns><see langword="false"/></returns>
+        </member>
+        <member name="M:Impulse.v_1_336.ObjectSets.PowerSet.MakeParser(Impulse.v_1_336.IConstantParser)">
+            <summary>
+            Create a parser for members of the power set based on a parser for the base set items
+            </summary>
+            <param name="baseParser">The parser for the base set</param>
+            <returns>A new parser for this power set</returns>
+        </member>
+        <member name="P:Impulse.v_1_336.ObjectSets.PowerSet.Name">
+            <summary>
+            Get the name of this set
+            </summary>
+            <remarks>Takes the form P(&lt;base-set-name&gt;)</remarks>
+        </member>
+        <member name="P:Impulse.v_1_336.ObjectSets.PowerSet.BaseSet">
+            <summary>
+            Get the base object set
+            </summary>
+        </member>
+        <member name="T:Impulse.v_1_336.Reflection.ActionTypeGenerator">
+            <summary>
+            Static class for generating C# action types from a story for use in parsing
+            </summary>
+        </member>
+        <member name="M:Impulse.v_1_336.Reflection.ActionTypeGenerator.GenerateActionTypeClasses``1(Impulse.v_1_336.Xml.Story,System.String,System.IO.DirectoryInfo)">
+            <summary>
+            Create C# action type code for the types in the specified story
+            </summary>
+            <typeparam name="TInterval">The type to use as an interval type</typeparam>
+            <param name="storyXml">The story XML</param>
+            <param name="domainName">The name of the domain</param>
+            <param name="info">The directory to write the output files to</param>
+        </member>
+        <member name="T:Impulse.v_1_336.Sentences.IModality">
+            <summary>
+            Interface representing a modality
+            </summary>
+        </member>
+        <member name="T:Impulse.v_1_336.ISentence">
+            <summary>
+            Interface representing a logical sentence
+            </summary>
+        </member>
+        <member name="M:Impulse.v_1_336.ISentence.ToXmlSentence">
+            <summary>
+            Turn this sentence into an XML serializable version
+            </summary>
+            <returns>An XML sentence</returns>
+        </member>
+        <member name="P:Impulse.v_1_336.ISentence.ID">
+            <summary>
+            Get the ID of this sentence
+            </summary>
+        </member>
+        <member name="P:Impulse.v_1_336.Sentences.IModality.Actor">
+            <summary>
+            Get the actor of this modality
+            </summary>
+        </member>
+        <member name="P:Impulse.v_1_336.Sentences.IModality.Time">
+            <summary>
+            Get the time of this modality
+            </summary>
+        </member>
+        <member name="P:Impulse.v_1_336.Sentences.IModality.Sentence">
+            <summary>
+            Get the sentence of this modality
+            </summary>
+        </member>
+        <member name="P:Impulse.v_1_336.Sentences.IModality.Type">
+            <summary>
+            Get the type of this modality
+            </summary>
+        </member>
+        <member name="T:Impulse.v_1_336.Sentences.ModalityType">
+            <summary>
+            Types of modality
+            </summary>
+        </member>
+        <member name="F:Impulse.v_1_336.Sentences.ModalityType.B">
+            <summary>
+            Belief
+            </summary>
+        </member>
+        <member name="F:Impulse.v_1_336.Sentences.ModalityType.D">
+            <summary>
+            Desire
+            </summary>
+        </member>
+        <member name="F:Impulse.v_1_336.Sentences.ModalityType.I">
+            <summary>
+            Intention
+            </summary>
+        </member>
+        <member name="F:Impulse.v_1_336.Sentences.ModalityType.CBA">
+            <summary>
+            Can Bring About
+            </summary>
+        </member>
+        <member name="T:Impulse.v_1_336.Sentences.Modality">
+            <summary>
+            Standard implementation of a modality
+            </summary>
+        </member>
+        <member name="M:Impulse.v_1_336.Sentences.Modality.#ctor(System.String,Impulse.v_1_336.ITerm,Impulse.v_1_336.ITerm,Impulse.v_1_336.ISentence,Impulse.v_1_336.Sentences.ModalityType)">
+            <summary>
+            Create a new modality
+            </summary>
+            <param name="id">The ID of this sentence</param>
+            <param name="actor">The actor of this modality</param>
+            <param name="time">The time of this modality</param>
+            <param name="sentence">The sentence of this modality</param>
+            <param name="type">The type of this modality</param>
+        </member>
+        <member name="M:Impulse.v_1_336.Sentences.Modality.ToXmlSentence">
+            <summary>
+            Turn this sentence into an XML serializable version
+            </summary>
+            <returns>An XML sentence</returns>
+        </member>
+        <member name="P:Impulse.v_1_336.Sentences.Modality.ID">
+            <summary>
+            Get the ID of this sentence
+            </summary>
+        </member>
+        <member name="P:Impulse.v_1_336.Sentences.Modality.Type">
+            <summary>
+            Get the type of this modality
+            </summary>
+        </member>
+        <member name="P:Impulse.v_1_336.Sentences.Modality.Actor">
+            <summary>
+            Get the actor of this modality
+            </summary>
+        </member>
+        <member name="P:Impulse.v_1_336.Sentences.Modality.Time">
+            <summary>
+            Get the time of this modality
+            </summary>
+        </member>
+        <member name="P:Impulse.v_1_336.Sentences.Modality.Sentence">
+            <summary>
+            Get the sentence of this modality
+            </summary>
+        </member>
+        <member name="T:Impulse.v_1_336.Sentences.IQuantifier">
+            <summary>
+            Logical quantification
+            </summary>
+        </member>
+        <member name="P:Impulse.v_1_336.Sentences.IQuantifier.Variable">
+            <summary>
+            Get the variable of this quantification
+            </summary>
+        </member>
+        <member name="P:Impulse.v_1_336.Sentences.IQuantifier.Set">
+            <summary>
+            Get the object set being quantified over
+            </summary>
+        </member>
+        <member name="P:Impulse.v_1_336.Sentences.IQuantifier.Sentence">
+            <summary>
+            Get the sentence of this quantification
+            </summary>
+        </member>
+        <member name="T:Impulse.v_1_336.Sentences.QuantifierType">
+            <summary>
+            Types of logical quantification
+            </summary>
+        </member>
+        <member name="F:Impulse.v_1_336.Sentences.QuantifierType.Exists">
+            <summary>
+            There exists at least one variable
+            </summary>
+        </member>
+        <member name="F:Impulse.v_1_336.Sentences.QuantifierType.Forall">
+            <summary>
+            For every variable
+            </summary>
+        </member>
+        <member name="T:Impulse.v_1_336.Sentences.Quantifier">
+            <summary>
+            A standard implementation of a logical quantification
+            </summary>
+        </member>
+        <member name="M:Impulse.v_1_336.Sentences.Quantifier.#ctor(System.String,Impulse.v_1_336.Variable,Impulse.v_1_336.ISentence,Impulse.v_1_336.Sentences.QuantifierType)">
+            <summary>
+            Create a new quantification
+            </summary>
+            <param name="id">The ID of this sentence</param>
+            <param name="variable">The variable of this quantification</param>
+            <param name="sentence">The sentence of this quantification</param>
+            <param name="type">The type of quantification</param>
+        </member>
+        <member name="M:Impulse.v_1_336.Sentences.Quantifier.ToXmlSentence">
+            <summary>
+            Turn this sentence into an XML serializable version
+            </summary>
+            <returns>An XML sentence</returns>
+        </member>
+        <member name="P:Impulse.v_1_336.Sentences.Quantifier.ID">
+            <summary>
+            Get the ID of this sentence
+            </summary>
+        </member>
+        <member name="P:Impulse.v_1_336.Sentences.Quantifier.Type">
+            <summary>
+            Get the quantifier type of this sentence
+            </summary>
+        </member>
+        <member name="P:Impulse.v_1_336.Sentences.Quantifier.Variable">
+            <summary>
+            Get the variable of this quantification
+            </summary>
+        </member>
+        <member name="P:Impulse.v_1_336.Sentences.Quantifier.Set">
+            <summary>
+            Get the object set being quantified over
+            </summary>
+        </member>
+        <member name="P:Impulse.v_1_336.Sentences.Quantifier.Sentence">
+            <summary>
+            Get the sentence of this quantification
+            </summary>
+        </member>
+        <member name="T:Impulse.v_1_336.Sentences.ElementOf">
+            <summary>
+            Struct representing an element of relation
+            </summary>
+        </member>
+        <member name="T:Impulse.v_1_336.Sentences.IBinaryRelation">
+            <summary>
+            Interface representing a binary relation
+            </summary>
+        </member>
+        <member name="P:Impulse.v_1_336.Sentences.IBinaryRelation.Left">
+            <summary>
+            Get the lefthand side term of this relation
+            </summary>
+        </member>
+        <member name="P:Impulse.v_1_336.Sentences.IBinaryRelation.Right">
+            <summary>
+            Get the righthand side term of this relation
+            </summary>
+        </member>
+        <member name="M:Impulse.v_1_336.Sentences.ElementOf.#ctor(System.String,Impulse.v_1_336.ITerm,Impulse.v_1_336.ITerm)">
+            <summary>
+            Create a new element-of relation
+            </summary>
+            <param name="id">The ID of this sentence</param>
+            <param name="left">The lefthand side of this relation</param>
+            <param name="right">The righthand side of this relation</param>
+        </member>
+        <member name="M:Impulse.v_1_336.Sentences.ElementOf.ToXmlSentence">
+            <summary>
+            Turn this sentence into an XML serializable version
+            </summary>
+            <returns>An XML sentence</returns>
+        </member>
+        <member name="P:Impulse.v_1_336.Sentences.ElementOf.ID">
+            <summary>
+            Get the ID of this sentence
+            </summary>
+        </member>
+        <member name="P:Impulse.v_1_336.Sentences.ElementOf.Left">
+            <summary>
+            Get the lefthand side term of this relation
+            </summary>
+        </member>
+        <member name="P:Impulse.v_1_336.Sentences.ElementOf.Right">
+            <summary>
+            Get the righthand side term of this relation
+            </summary>
+        </member>
+        <member name="T:Impulse.v_1_336.Sentences.TemporalBinaryRelation">
+            <summary>
+            A logical temporal binary relation
+            </summary>
+        </member>
+        <member name="M:Impulse.v_1_336.Sentences.TemporalBinaryRelation.#ctor(System.String,Impulse.v_1_336.ITerm,Impulse.v_1_336.ITerm,Impulse.v_1_336.Xml.RelationType)">
+            <summary>
+            Create a new temporal binary relation sentence
+            </summary>
+            <param name="id">The ID of this sentence</param>
+            <param name="left">The lefthand side of this relation</param>
+            <param name="right">The righthand side of this relation</param>
+            <param name="type">The temporal relation type</param>
+        </member>
+        <member name="M:Impulse.v_1_336.Sentences.TemporalBinaryRelation.ToXmlSentence">
+            <summary>
+            Turn this sentence into an XML serializable version
+            </summary>
+            <returns>An XML sentence</returns>
+        </member>
+        <member name="P:Impulse.v_1_336.Sentences.TemporalBinaryRelation.ID">
+            <summary>
+            Get the ID of this sentence
+            </summary>
+        </member>
+        <member name="P:Impulse.v_1_336.Sentences.TemporalBinaryRelation.Left">
+            <summary>
+            Get the lefthand side term of this relation
+            </summary>
+        </member>
+        <member name="P:Impulse.v_1_336.Sentences.TemporalBinaryRelation.Right">
+            <summary>
+            Get the righthand side term of this relation
+            </summary>
+        </member>
+        <member name="P:Impulse.v_1_336.Sentences.TemporalBinaryRelation.Type">
+            <summary>
+            Get the temporal relation type of this relation
+            </summary>
+        </member>
+        <member name="T:Impulse.v_1_336.Sentences.IUnaryRelation">
+            <summary>
+            Interface representing unary relations
+            </summary>
+        </member>
+        <member name="P:Impulse.v_1_336.Sentences.IUnaryRelation.Type">
+            <summary>
+            The type of this unary relation
+            </summary>
+        </member>
+        <member name="P:Impulse.v_1_336.Sentences.IUnaryRelation.Sentence">
+            <summary>
+            The sentence of this unary relation
+            </summary>
+        </member>
+        <member name="T:Impulse.v_1_336.Sentences.UnaryRelationType">
+            <summary>
+            Types of unary relations
+            </summary>
+        </member>
+        <member name="F:Impulse.v_1_336.Sentences.UnaryRelationType.Not">
+            <summary>
+            Never true
+            </summary>
+        </member>
+        <member name="F:Impulse.v_1_336.Sentences.UnaryRelationType.WeakNot">
+            <summary>
+            Not always true
+            </summary>
+        </member>
+        <member name="T:Impulse.v_1_336.Sentences.UnaryRelation">
+            <summary>
+            A standard implementation of a unary relation
+            </summary>
+        </member>
+        <member name="M:Impulse.v_1_336.Sentences.UnaryRelation.#ctor(System.String,Impulse.v_1_336.ISentence,Impulse.v_1_336.Sentences.UnaryRelationType)">
+            <summary>
+            Create a new unary relation
+            </summary>
+            <param name="id">The ID of this sentence</param>
+            <param name="sentence">The sentence of this unary relation</param>
+            <param name="type">THe type of this unary relation</param>
+        </member>
+        <member name="M:Impulse.v_1_336.Sentences.UnaryRelation.ToXmlSentence">
+            <summary>
+            Turn this sentence into an XML serializable version
+            </summary>
+            <returns>An XML sentence</returns>
+        </member>
+        <member name="P:Impulse.v_1_336.Sentences.UnaryRelation.ID">
+            <summary>
+            Get the ID of this sentence
+            </summary>
+        </member>
+        <member name="P:Impulse.v_1_336.Sentences.UnaryRelation.Sentence">
+            <summary>
+            The sentence of this unary relation
+            </summary>
+        </member>
+        <member name="P:Impulse.v_1_336.Sentences.UnaryRelation.Type">
+            <summary>
+            The type of this unary relation
+            </summary>
+        </member>
+        <member name="T:Impulse.v_1_336.Sentences.IConnective">
+            <summary>
+            Interface representing a logical connective
+            </summary>
+        </member>
+        <member name="P:Impulse.v_1_336.Sentences.IConnective.Left">
+            <summary>
+            Get the lefthand side of this connective
+            </summary>
+        </member>
+        <member name="P:Impulse.v_1_336.Sentences.IConnective.Right">
+            <summary>
+            Get the righthand side of this connective
+            </summary>
+        </member>
+        <member name="P:Impulse.v_1_336.Sentences.IConnective.Type">
+            <summary>
+            Get the type of this connective
+            </summary>
+        </member>
+        <member name="T:Impulse.v_1_336.Sentences.ConnectiveType">
+            <summary>
+            Types of logical connective
+            </summary>
+        </member>
+        <member name="F:Impulse.v_1_336.Sentences.ConnectiveType.And">
+            <summary>
+            True if both sides are true
+            </summary>
+        </member>
+        <member name="F:Impulse.v_1_336.Sentences.ConnectiveType.Or">
+            <summary>
+            True if at least one side is true
+            </summary>
+        </member>
+        <member name="F:Impulse.v_1_336.Sentences.ConnectiveType.Implies">
+            <summary>
+            Lefthand side implies righthand side
+            </summary>
+        </member>
+        <member name="T:Impulse.v_1_336.Sentences.Connective">
+            <summary>
+            Standard implementation of a binary connective
+            </summary>
+        </member>
+        <member name="M:Impulse.v_1_336.Sentences.Connective.#ctor(System.String,Impulse.v_1_336.ISentence,Impulse.v_1_336.ISentence,Impulse.v_1_336.Sentences.ConnectiveType)">
+            <summary>
+            Create a new logical connective
+            </summary>
+            <param name="id">The ID of this sentence</param>
+            <param name="left">The lefthand side of this connective</param>
+            <param name="right">The righthand side of this connective</param>
+            <param name="type">The type of this connective</param>
+        </member>
+        <member name="M:Impulse.v_1_336.Sentences.Connective.ToXmlSentence">
+            <summary>
+            Turn this sentence into an XML serializable version
+            </summary>
+            <returns>An XML sentence</returns>
+        </member>
+        <member name="P:Impulse.v_1_336.Sentences.Connective.ID">
+            <summary>
+            Get the ID of this sentence
+            </summary>
+        </member>
+        <member name="P:Impulse.v_1_336.Sentences.Connective.Left">
+            <summary>
+            Get the lefthand side of this connective
+            </summary>
+        </member>
+        <member name="P:Impulse.v_1_336.Sentences.Connective.Right">
+            <summary>
+            Get the righthand side of this connective
+            </summary>
+        </member>
+        <member name="P:Impulse.v_1_336.Sentences.Connective.Type">
+            <summary>
+            Get the type of this connective
+            </summary>
+        </member>
+        <member name="T:Impulse.v_1_336.Sentences.IPredicate">
+            <summary>
+            Interface representing a predicate
+            </summary>
+        </member>
+        <member name="P:Impulse.v_1_336.Sentences.IPredicate.Name">
+            <summary>
+            Get the name of this predicate
+            </summary>
+        </member>
+        <member name="P:Impulse.v_1_336.Sentences.IPredicate.Terms">
+            <summary>
+            Get the terms of this predicate
+            </summary>
+        </member>
+        <member name="P:Impulse.v_1_336.Sentences.IPredicate.Temporal">
+            <summary>
+            Get whether this is a temporal predicate
+            </summary>
+        </member>
+        <member name="P:Impulse.v_1_336.Sentences.IPredicate.Time">
+            <summary>
+            Get the time of this predicate, if any
+            </summary>
+        </member>
+        <member name="T:Impulse.v_1_336.Sentences.Predicate">
+            <summary>
+            Standard implementation of a predicate
+            </summary>
+        </member>
+        <member name="M:Impulse.v_1_336.Sentences.Predicate.#ctor(System.String,System.String,System.Boolean,Impulse.v_1_336.ITerm[])">
+            <summary>
+            Create a new predicate
+            </summary>
+            <param name="id">The ID of this sentence</param>
+            <param name="name">The name of this predicate</param>
+            <param name="temporal">Whether this is a temporal predicate</param>
+            <param name="terms">The terms of this predicate</param>
+        </member>
+        <member name="M:Impulse.v_1_336.Sentences.Predicate.Equals(Impulse.v_1_336.ITerm)">
+            <summary>
+            Check if this predicate is equal to another
+            </summary>
+            <param name="term">The term to compare to</param>
+            <returns><see langword="true"/> if term is a predicate with same name and terms</returns>
+        </member>
+        <member name="M:Impulse.v_1_336.Sentences.Predicate.Equals(Impulse.v_1_336.Sentences.IPredicate)">
+            <summary>
+            Check if this predicate is equal to another
+            </summary>
+            <param name="pred">The pred to compare to</param>
+            <returns><see langword="true"/> if if both predicates have the same name and terms</returns>
+        </member>
+        <member name="M:Impulse.v_1_336.Sentences.Predicate.Equals(System.Object)">
+            <summary>
+            Check if this predicate is equal to another
+            </summary>
+            <param name="obj">The object to compare to</param>
+            <returns><see langword="true"/> if obj is a predicate with same name and terms</returns>
+        </member>
+        <member name="M:Impulse.v_1_336.Sentences.Predicate.GetHashCode">
+            <summary>
+            Computes a hash code based on this predicates string representation
+            </summary>
+            <returns>A hash code based on this predicates string representation</returns>
+        </member>
+        <member name="M:Impulse.v_1_336.Sentences.Predicate.ToString">
+            <summary>
+            Turns this predicate into a string representation
+            </summary>
+            <returns>A string representation of this predicate</returns>
+        </member>
+        <member name="M:Impulse.v_1_336.Sentences.Predicate.ToXmlSentence">
+            <summary>
+            Turn this sentence into an XML serializable version
+            </summary>
+            <returns>An XML sentence</returns>
+        </member>
+        <member name="P:Impulse.v_1_336.Sentences.Predicate.ID">
+            <summary>
+            Get the ID of this sentence
+            </summary>
+        </member>
+        <member name="P:Impulse.v_1_336.Sentences.Predicate.Name">
+            <summary>
+            Get the name of this predicate
+            </summary>
+        </member>
+        <member name="P:Impulse.v_1_336.Sentences.Predicate.Temporal">
+            <summary>
+            Get whether this is a temporal predicate
+            </summary>
+        </member>
+        <member name="P:Impulse.v_1_336.Sentences.Predicate.Terms">
+            <summary>
+            Get the terms of this predicate
+            </summary>
+        </member>
+        <member name="P:Impulse.v_1_336.Sentences.Predicate.Time">
+            <summary>
+            Get the time of this predicate, if any
+            </summary>
+        </member>
+        <member name="T:Impulse.v_1_336.StoryParsingFactories">
+            <summary>
+            Collection of standard story parsing factories and related utility functions
+            </summary>
+        </member>
+        <member name="M:Impulse.v_1_336.StoryParsingFactories.GetUnsignedIntergerIntervalFactory">
+            <summary>
+            Create an unsigned integer interval factory
+            </summary>
+            <returns>An unsigned integer interval factory</returns>
+        </member>
+        <member name="M:Impulse.v_1_336.StoryParsingFactories.ParseStory(Impulse.v_1_336.StoryParsingFactory{Impulse.v_1_336.Constants.ValueConstant{System.UInt32},Impulse.v_1_336.Interval{Impulse.v_1_336.Constants.ValueConstant{System.UInt32},System.UInt32}},Impulse.v_1_336.Xml.Story,System.Boolean)">
+            <summary>
+            Parse a story using an unsigned integer interval factory
+            </summary>
+            <param name="factory">The factory to use</param>
+            <param name="storyXml">The story XML to parse</param>
+            <param name="validate">Whether to validate the incoming XML</param>
+            <returns>A story object containing the parsed result</returns>
+        </member>
+        <member name="T:Impulse.v_1_336.StoryParsingFactory`2">
+            <summary>
+            A class for parsing XML stories into a more structured object
+            </summary>
+            <typeparam name="TTime">The type to use as Time, must inherit <see cref="T:Impulse.v_1_336.IConstant"/></typeparam>
+            <typeparam name="TInterval">The type to use as intervals, must inherit <see cref="T:Impulse.v_1_336.IInterval`1"/></typeparam>
+        </member>
+        <member name="M:Impulse.v_1_336.StoryParsingFactory`2.#ctor(Impulse.v_1_336.IConstantParser{`1})">
+            <summary>
+            Create a new story parsing factory with the specified interval parser
+            </summary>
+            <param name="intervalParser">The parser for intervals</param>
+        </member>
+        <member name="M:Impulse.v_1_336.StoryParsingFactory`2.RegisterObjectSet(System.String,Impulse.v_1_336.IObjectSet,System.Boolean)">
+            <summary>
+            Register a custom object set for use in parsing
+            </summary>
+            <param name="setName">The alias of the object set</param>
+            <param name="set">The object set</param>
+            <param name="replace"><see langword="true"/> to replace an existing object set</param>
+        </member>
+        <member name="M:Impulse.v_1_336.StoryParsingFactory`2.RegisterStoryAction(System.String,Impulse.v_1_336.CreateStoryAction{`1},System.Boolean)">
+            <summary>
+            Register a custom constructor for a given story action type
+            </summary>
+            <param name="actionType">The name of the story action type</param>
+            <param name="createStoryAction">The constructor</param>
+            <param name="replace"><see langword="true"/> to replace an existing constructor</param>
+        </member>
+        <member name="M:Impulse.v_1_336.StoryParsingFactory`2.RegisterConstantParser(System.String,Impulse.v_1_336.IConstantParser,System.Boolean)">
+            <summary>
+            Register a custom constant parser for an object set
+            </summary>
+            <param name="objectSet">The object set name to parse</param>
+            <param name="parser">The parser</param>
+            <param name="replace"><see langword="true"/> to replace an existing constant parser</param>
+        </member>
+        <member name="M:Impulse.v_1_336.StoryParsingFactory`2.ParseStory``1(Impulse.v_1_336.Xml.Story,``0,System.Boolean)">
+            <summary>
+            Parse an XML story
+            </summary>
+            <typeparam name="TIntervalSet">The type of the set of intervals</typeparam>
+            <param name="storyXml">The story XML</param>
+            <param name="intervals">The set of intervals</param>
+            <param name="validate">Whether to validate the XML</param>
+            <returns>A story object</returns>
+        </member>
+        <member name="T:Impulse.v_1_336.ObjectSet`1">
+            <summary>
+            Standard implementation of an object set where membership is determined by type alone
+            </summary>
+            <typeparam name="TConstant">The type the set contains</typeparam>
+        </member>
+        <member name="M:Impulse.v_1_336.ObjectSet`1.#ctor(System.String)">
+            <summary>
+            Create a new set with the given name
+            </summary>
+            <param name="name">The name of the set</param>
+        </member>
+        <member name="M:Impulse.v_1_336.ObjectSet`1.Contains(`0)">
+            <summary>
+            Always returns true
+            </summary>
+            <param name="constant">The constant to check membership on</param>
+            <returns><see langword="true"/></returns>
+        </member>
+        <member name="M:Impulse.v_1_336.ObjectSet`1.Contains(Impulse.v_1_336.IConstant)">
+            <summary>
+            Checks if a given constant is in the set
+            </summary>
+            <param name="constant">The constant to check</param>
+            <returns><see langword="true"/> if the constant is <c>TConstant</c></returns>
+        </member>
+        <member name="M:Impulse.v_1_336.ObjectSet`1.IsSubsetOf(Impulse.v_1_336.IObjectSet)">
+            <summary>
+            Checks if this set is a subset of another set
+            </summary>
+            <param name="other">The other set</param>
+            <returns><see langword="true"/> if and only if the type of other is this type</returns>
+        </member>
+        <member name="P:Impulse.v_1_336.ObjectSet`1.Name">
+            <summary>
+            The name of this set
+            </summary>
+        </member>
+        <member name="T:Impulse.v_1_336.ObjectSetExtensions">
+            <summary>
+            Extension methods for object sets
+            </summary>
+        </member>
+        <member name="M:Impulse.v_1_336.ObjectSetExtensions.IsSupersetOf(Impulse.v_1_336.IObjectSet,Impulse.v_1_336.IObjectSet)">
+            <summary>
+            Check if one object set is a superset of another
+            </summary>
+            <param name="set">The left-hand side</param>
+            <param name="other">The right-hand side</param>
+            <returns><c>other.IsSubsetOf(set)</c></returns>
+        </member>
+        <member name="M:Impulse.v_1_336.ObjectSetExtensions.IsSupersetOf``1(Impulse.v_1_336.IObjectSet{``0},Impulse.v_1_336.IFiniteObjectSet{``0})">
+            <summary>
+            Checks if a set is a superset of a finite set
+            </summary>
+            <typeparam name="TConstant">The type of constants in both sets</typeparam>
+            <param name="subset">The finite set</param>
+            <param name="set">The other set</param>
+            <returns><see langrod="true"/> if all the constants in the subset are also elements of set</returns>
+        </member>
+        <member name="M:Impulse.v_1_336.ObjectSetExtensions.IsSubsetOf``1(Impulse.v_1_336.IFiniteObjectSet{``0},Impulse.v_1_336.IObjectSet{``0})">
+            <summary>
+            Checks if a finite set is a subset of another set
+            </summary>
+            <typeparam name="TConstant">The type of constants in both sets</typeparam>
+            <param name="subset">The finite set</param>
+            <param name="set">The other set</param>
+            <returns><see langrod="true"/> if all the constants in the subset are also elements of set</returns>
+        </member>
+        <member name="M:Impulse.v_1_336.ObjectSetExtensions.Equals``1(Impulse.v_1_336.IFiniteObjectSet{``0},Impulse.v_1_336.IFiniteObjectSet{``0})">
+            <summary>
+            Check if two finite sets are equal
+            </summary>
+            <typeparam name="TConstant">The type of constants in sets</typeparam>
+            <param name="setA">The first set</param>
+            <param name="setB">The second set</param>
+            <returns><see langword="true"/> if both sets contain precisely the same elements</returns>
+        </member>
+        <member name="M:Impulse.v_1_336.ObjectSetExtensions.Equals(Impulse.v_1_336.IObjectSet,Impulse.v_1_336.IObjectSet)">
+            <summary>
+            Check if two sets are equal
+            </summary>
+            <param name="setA">The first set</param>
+            <param name="setB">The second set</param>
+            <returns><see langword="true"/> if both sets are subsets of each other</returns>
+        </member>
+        <member name="T:Impulse.v_1_336.TermExtensions">
+            <summary>
+            Extension methods for terms
+            </summary>
+        </member>
+        <member name="M:Impulse.v_1_336.TermExtensions.ToXmlVariable(Impulse.v_1_336.Variable)">
+            <summary>
+            Turn a variable into its XML object equivalent
+            </summary>
+            <param name="variable">The variable to convert</param>
+            <returns>An XML representation of the variable</returns>
+        </member>
+        <member name="M:Impulse.v_1_336.TermExtensions.ToXmlFunction(Impulse.v_1_336.IFunction)">
+            <summary>
+            Turn a function into its XML object equivalent
+            </summary>
+            <param name="function">The function to convert</param>
+            <returns>An XML representation of the function</returns>
+        </member>
+        <member name="M:Impulse.v_1_336.TermExtensions.ToXmlConstant(Impulse.v_1_336.IConstant)">
+            <summary>
+            Turn a constant into its XML object equivalent
+            </summary>
+            <param name="constant">The constant to convert</param>
+            <returns>An XML representation of the constant</returns>
+        </member>
+        <member name="M:Impulse.v_1_336.TermExtensions.ToXmlTerm(Impulse.v_1_336.ITerm)">
+            <summary>
+            Turn a term into its XML object equivalent
+            </summary>
+            <param name="term">The term to convert</param>
+            <returns>An XML representation of the term</returns>
+        </member>
+        <member name="T:Impulse.v_1_336.TryParse`1">
+            <summary>
+            Delegate type describing the standard C# TryParse pattern
+            </summary>
+            <typeparam name="T">The type to parse</typeparam>
+            <param name="input">The input string</param>
+            <param name="value">The resulting object</param>
+            <returns><see langword="true"/> is parsing was successful</returns>
+        </member>
+        <member name="T:Impulse.v_1_336.TypeExtensions">
+            <summary>
+            Extension methods for <see cref="T:System.Type"/>
+            </summary>
+        </member>
+        <member name="M:Impulse.v_1_336.TypeExtensions.GetCSharpName(System.Type)">
+            <summary>
+            Get the name of the type in C# syntax
+            </summary>
+            <param name="type">The type to get the name of</param>
+            <returns>The C# syntax name of the type</returns>
+        </member>
+        <member name="M:Impulse.v_1_336.TypeExtensions.TryGetMethod``1(System.Type,System.String,``0@)">
+            <summary>
+            Try to get a method of a type
+            </summary>
+            <typeparam name="TDelegate">The delegate type to match</typeparam>
+            <param name="ttype">The type to search</param>
+            <param name="name">The name of the method</param>
+            <param name="delegate">The resulting delegate, <see langword="null"/> if not found</param>
+            <returns><see langword="true"/> if the method was found</returns>
+        </member>
+        <member name="M:Impulse.v_1_336.TypeExtensions.TryGetMethod``2(System.String,``1@)">
+            <summary>
+            Try to get a method of a type
+            </summary>
+            <typeparam name="TType">The type to search</typeparam>
+            <typeparam name="TDelegate">The delegate type to match</typeparam>
+            <param name="name">The name of the method</param>
+            <param name="delegate">The resulting delegate, <see langword="null"/> if not found</param>
+            <returns><see langword="true"/> if the method was found</returns>
+        </member>
+        <member name="M:Impulse.v_1_336.TypeExtensions.GetMethod``2(System.String)">
+            <summary>
+            Try to get a method of a type
+            </summary>
+            <typeparam name="TDelegate">The delegate type to match</typeparam>
+            <typeparam name="TType">The type to search</typeparam>
+            <param name="name">The name of the method</param>
+            <returns>The resulting delegate</returns>
+            <exception cref="T:System.NotImplementedException">If the specified function is not found</exception>
+        </member>
+        <member name="M:Impulse.v_1_336.TypeExtensions.GetMethod``1(System.Type,System.String)">
+            <summary>
+            Try to get a method of a type
+            </summary>
+            <param name="type">The type to search</param>
+            <typeparam name="TDelegate">The delegate type to match</typeparam>
+            <param name="name">The name of the method</param>
+            <returns>The resulting delegate</returns>
+            <exception cref="T:System.NotImplementedException">If the specified function is not found</exception>
+        </member>
+        <member name="M:Impulse.v_1_336.TypeExtensions.TryGetParser``1(Impulse.v_1_336.TryParse{``0}@)">
+            <summary>
+            Tries to get a TryParse function for the given type
+            </summary>
+            <typeparam name="T">The type to search</typeparam>
+            <param name="parser">The resulting delegate if found, else <see langword="null"/></param>
+            <returns><see langword="true"/> if a TryParse method was found</returns>
+        </member>
+        <member name="M:Impulse.v_1_336.TypeExtensions.TryParse``1(System.String,``0@)">
+            <summary>
+            Try parse a string into an object
+            </summary>
+            <typeparam name="T">The type to create</typeparam>
+            <param name="input">The string representation of the type</param>
+            <param name="value">The resulting object</param>
+            <returns><see langword="true"/> if a parsing was successful</returns>
+        </member>
+        <member name="M:Impulse.v_1_336.TypeExtensions.GetInterfaceFromGeneric(System.Type,System.Type,System.Type@)">
+            <summary>
+            Get the closed type definition from an open type definition and a type
+            </summary>
+            <param name="type">The type to check</param>
+            <param name="genericTypeDefinition">The open type</param>
+            <param name="closedTypeDefinition">The resulting closed type</param>
+            <returns><see langword="true"/> if the type implements the open type</returns>
+        </member>
+        <member name="T:Impulse.v_1_336.Variable">
+            <summary>
+            Represents a variable in a logical sentence
+            </summary>
+        </member>
+        <member name="M:Impulse.v_1_336.Variable.#ctor(System.String,Impulse.v_1_336.IObjectSet)">
+            <summary>
+            Create a new variable with the specified name and range
+            </summary>
+            <param name="name">The name of this variable</param>
+            <param name="set">The range of this variable</param>
+        </member>
+        <member name="M:Impulse.v_1_336.Variable.Equals(System.Object)">
+            <summary>
+            Check is this variable is equal to another object
+            </summary>
+            <param name="obj">the object to compare to</param>
+            <returns><see langword="true"/> if <c>obj</c> is a variable with <c>obj.name</c> equal to <c>this.name</c></returns>
+        </member>
+        <member name="M:Impulse.v_1_336.Variable.GetHashCode">
+            <summary>
+            Gets the hash code for the variable
+            </summary>
+            <returns>The hash of the name of the variable</returns>
+        </member>
+        <member name="M:Impulse.v_1_336.Variable.Equals(Impulse.v_1_336.Variable)">
+            <summary>
+            Check is this variable is equal to another variable
+            </summary>
+            <param name="other">The variable to compare to</param>
+            <returns><see langword="true"/> if <c>other.name</c> equals <c>this.name</c></returns>
+        </member>
+        <member name="M:Impulse.v_1_336.Variable.Equals(Impulse.v_1_336.ITerm)">
+            <summary>
+            Check is this variable is equal to another term
+            </summary>
+            <param name="term">The term to compare to</param>
+            <returns><see langword="true"/> if <c>term</c> is a variable with <c>term.name</c> equal to <c>this.name</c></returns>
+        </member>
+        <member name="M:Impulse.v_1_336.Variable.ToString">
+            <summary>
+            The name of the variable
+            </summary>
+            <returns>The name of the variable</returns>
+        </member>
+        <member name="P:Impulse.v_1_336.Variable.Name">
+            <summary>
+            The name of the variable
+            </summary>
+        </member>
+        <member name="P:Impulse.v_1_336.Variable.Set">
+            <summary>
+            The set the variable belongs to
+            </summary>
+        </member>
+        <member name="T:Impulse.v_1_336.IFunction">
+            <summary>
+            Interface for a function
+            </summary>
+        </member>
+        <member name="P:Impulse.v_1_336.IFunction.Terms">
+            <summary>
+            Gets the ordered terms of this function
+            </summary>
+        </member>
+        <member name="P:Impulse.v_1_336.IFunction.Temporal">
+            <summary>
+            Gets whether this function is temporal
+            </summary>
+        </member>
+        <member name="P:Impulse.v_1_336.IFunction.Time">
+            <summary>
+            Gets the interval of this function, if any
+            </summary>
+        </member>
+        <member name="T:Impulse.v_1_336.Function">
+            <summary>
+            A standard implementation of a function
+            </summary>
+        </member>
+        <member name="M:Impulse.v_1_336.Function.#ctor(System.String,System.Boolean,Impulse.v_1_336.ITerm[])">
+            <summary>
+            
+            </summary>
+            <param name="name"></param>
+            <param name="temporal"></param>
+            <param name="terms"></param>
+        </member>
+        <member name="M:Impulse.v_1_336.Function.Equals(Impulse.v_1_336.IFunction)">
+            <summary>
+            Determines whether this function is equal to another
+            </summary>
+            <param name="other">The function to compare to</param>
+            <returns><see langword="true"/> if both functions names and terms are equal</returns>
+        </member>
+        <member name="M:Impulse.v_1_336.Function.Equals(Impulse.v_1_336.ITerm)">
+            <summary>
+            Determines whether this function is equal to another
+            </summary>
+            <param name="term">The term to compare to</param>
+            <returns><see langword="true"/> if both functions names and terms are equal</returns>
+        </member>
+        <member name="M:Impulse.v_1_336.Function.Equals(System.Object)">
+            <summary>
+            Determines whether this function is equal to another
+            </summary>
+            <param name="obj">The object to compare to</param>
+            <returns><see langword="true"/> if both functions names and terms are equal</returns>
+        </member>
+        <member name="M:Impulse.v_1_336.Function.GetHashCode">
+            <summary>
+            Gets the hash code of this function
+            </summary>
+            <returns>The hash code of this.ToString()</returns>
+        </member>
+        <member name="M:Impulse.v_1_336.Function.ToString">
+            <summary>
+            Turn this function into a string representation
+            </summary>
+            <returns>A string representation of this function</returns>
+        </member>
+        <member name="P:Impulse.v_1_336.Function.Name">
+            <summary>
+            The name of this function
+            </summary>
+        </member>
+        <member name="P:Impulse.v_1_336.Function.Terms">
+            <summary>
+            Gets the ordered terms of this function
+            </summary>
+        </member>
+        <member name="P:Impulse.v_1_336.Function.Temporal">
+            <summary>
+            Gets whether this function is termporal (its last argument is an interval)
+            </summary>
+        </member>
+        <member name="P:Impulse.v_1_336.Function.Time">
+            <summary>
+            Gets the last argument of this function as an interval
+            </summary>
+        </member>
+        <member name="T:Impulse.v_1_336.ActionPropertyDefinition">
+            <summary>
+            Class representing a story action property definition
+            </summary>
+        </member>
+        <member name="M:Impulse.v_1_336.ActionPropertyDefinition.#ctor(System.String,Impulse.v_1_336.IObjectSet)">
+            <summary>
+            Create a new story action property definition
+            </summary>
+            <param name="name">The name of the property</param>
+            <param name="range">The object set range of the property</param>
+        </member>
+        <member name="P:Impulse.v_1_336.ActionPropertyDefinition.Name">
+            <summary>
+            Get the name of the property
+            </summary>
+        </member>
+        <member name="P:Impulse.v_1_336.ActionPropertyDefinition.Range">
+            <summary>
+            Get the object set range of the property
+            </summary>
+        </member>
+        <member name="T:Impulse.v_1_336.IActionProperty">
+            <summary>
+            Interface representing an action property
+            </summary>
+        </member>
+        <member name="P:Impulse.v_1_336.IActionProperty.Name">
+            <summary>
+            Gets the name of this property
+            </summary>
+        </member>
+        <member name="P:Impulse.v_1_336.IActionProperty.Value">
+            <summary>
+            Gets the value of this property
+            </summary>
+        </member>
+        <member name="T:Impulse.v_1_336.IActionProperty`1">
+            <summary>
+            Interface representing an action property with specific constant type
+            </summary>
+            <typeparam name="TConstant">The type of constant</typeparam>
+        </member>
+        <member name="P:Impulse.v_1_336.IActionProperty`1.Value">
+            <summary>
+            Gets the value of this property
+            </summary>
+        </member>
+        <member name="T:Impulse.v_1_336.ActionProperty`1">
+            <summary>
+            Standard implementation of an action property
+            </summary>
+            <typeparam name="TConstant"></typeparam>
+        </member>
+        <member name="M:Impulse.v_1_336.ActionProperty`1.#ctor(System.String,`0)">
+            <summary>
+            Create a new action property
+            </summary>
+            <param name="name">The name of the property</param>
+            <param name="value">The value of the property</param>
+        </member>
+        <member name="P:Impulse.v_1_336.ActionProperty`1.Name">
+            <summary>
+            Gets the name of this property
+            </summary>
+        </member>
+        <member name="P:Impulse.v_1_336.ActionProperty`1.Value">
+            <summary>
+            Gets the value of this property
+            </summary>
+        </member>
+        <member name="T:Impulse.v_1_336.IStoryAction">
+            <summary>
+            Interface describing a general story action
+            </summary>
+        </member>
+        <member name="M:Impulse.v_1_336.IStoryAction.GetProperty(System.String)">
+            <summary>
+            Get a named property
+            </summary>
+            <param name="name">The name of the property</param>
+            <returns>The given property</returns>
+            <exception cref="T:System.Collections.Generic.KeyNotFoundException">If the action does not contain the named property</exception>
+        </member>
+        <member name="M:Impulse.v_1_336.IStoryAction.TryGetProperty(System.String,Impulse.v_1_336.IActionProperty@)">
+            <summary>
+            Try to get a named property
+            </summary>
+            <param name="name">The name of the property</param>
+            <param name="property">The given property</param>
+            <returns><see langword="true"/> if the given property was found</returns>
+        </member>
+        <member name="M:Impulse.v_1_336.IStoryAction.ToXmlAction">
+            <summary>
+            Convert the story action into an XML representation
+            </summary>
+            <returns>An XML representation of the action</returns>
+        </member>
+        <member name="P:Impulse.v_1_336.IStoryAction.Name">
+            <summary>
+            Get the name of the action
+            </summary>
+        </member>
+        <member name="P:Impulse.v_1_336.IStoryAction.Time">
+            <summary>
+            Get the interval of the action
+            </summary>
+        </member>
+        <member name="P:Impulse.v_1_336.IStoryAction.ActionType">
+            <summary>
+            Get the story action type of the action
+            </summary>
+        </member>
+        <member name="P:Impulse.v_1_336.IStoryAction.Properties">
+            <summary>
+            Get the properties of the action
+            </summary>
+        </member>
+        <member name="P:Impulse.v_1_336.IStoryAction.Item(System.String)">
+            <summary>
+            Get a named property value
+            </summary>
+            <param name="name">The name of the property</param>
+            <returns>The value of the given property</returns>
+            <exception cref="T:System.Collections.Generic.KeyNotFoundException">If the action does not contain the named property</exception>
+        </member>
+        <member name="T:Impulse.v_1_336.IStoryAction`1">
+            <summary>
+            Interface describing a story action using a specific interval type
+            </summary>
+            <typeparam name="TInterval"></typeparam>
+        </member>
+        <member name="P:Impulse.v_1_336.IStoryAction`1.Time">
+            <summary>
+            Get the interval of the action
+            </summary>
+        </member>
+        <member name="T:Impulse.v_1_336.CreateStoryAction`1">
+            <summary>
+            General form of a story action constructor for parsing
+            </summary>
+            <typeparam name="TInterval">The type of interval</typeparam>
+            <param name="name">The name</param>
+            <param name="time">The interval</param>
+            <param name="actionType">The story action type</param>
+            <param name="actionProperties">The properties</param>
+            <param name="validate">Whether to validate of the properties match the type</param>
+            <returns>A new story action</returns>
+        </member>
+        <member name="T:Impulse.v_1_336.StoryAction`1">
+            <summary>
+            Concrete implementation of a story action
+            </summary>
+            <typeparam name="TInterval">The interval type</typeparam>
+        </member>
+        <member name="M:Impulse.v_1_336.StoryAction`1.GetProperty(System.String)">
+            <summary>
+            Get a named property
+            </summary>
+            <param name="name">The name of the property</param>
+            <returns>The given property</returns>
+            <exception cref="T:System.Collections.Generic.KeyNotFoundException">If the action does not contain the named property</exception>
+        </member>
+        <member name="M:Impulse.v_1_336.StoryAction`1.TryGetProperty(System.String,Impulse.v_1_336.IActionProperty@)">
+            <summary>
+            Try to get a named property
+            </summary>
+            <param name="name">The name of the property</param>
+            <param name="property">The given property</param>
+            <returns><see langword="true"/> if the given property was found</returns>
+        </member>
+        <member name="M:Impulse.v_1_336.StoryAction`1.#ctor(System.String,`0,Impulse.v_1_336.ActionType,System.Collections.Generic.IEnumerable{Impulse.v_1_336.IActionProperty},System.Boolean)">
+            <summary>
+            Create a story action
+            </summary>
+            <param name="name">The name</param>
+            <param name="time">The interval</param>
+            <param name="actionType">The story action type</param>
+            <param name="actionProperties">The properties</param>
+            <param name="validate">Whether to validate of the properties match the type</param>
+            <returns>A new story action</returns>
+        </member>
+        <member name="M:Impulse.v_1_336.StoryAction`1.ToXmlAction">
+            <summary>
+            Convert the story action into an XML representation
+            </summary>
+            <returns>An XML representation of the action</returns>
+        </member>
+        <member name="P:Impulse.v_1_336.StoryAction`1.Name">
+            <summary>
+            Get the name of the action
+            </summary>
+        </member>
+        <member name="P:Impulse.v_1_336.StoryAction`1.Time">
+            <summary>
+            Get the interval of the action
+            </summary>
+        </member>
+        <member name="P:Impulse.v_1_336.StoryAction`1.ActionType">
+            <summary>
+            Get the story action type
+            </summary>
+        </member>
+        <member name="P:Impulse.v_1_336.StoryAction`1.Properties">
+            <summary>
+            Get the properties of the action
+            </summary>
+        </member>
+        <member name="P:Impulse.v_1_336.StoryAction`1.Item(System.String)">
+            <summary>
+            Get a named property value
+            </summary>
+            <param name="name">The name of the property</param>
+            <returns>The value of the given property</returns>
+            <exception cref="T:System.Collections.Generic.KeyNotFoundException">If the action does not contain the named property</exception>
+        </member>
+        <member name="T:Impulse.v_1_336.AStoryAction`1">
+            <summary>
+            Abstract implementation of a story action
+            </summary>
+            <typeparam name="TInterval"></typeparam>
+        </member>
+        <member name="F:Impulse.v_1_336.AStoryAction`1.name">
+            <summary>
+            The name of this action
+            </summary>
+        </member>
+        <member name="F:Impulse.v_1_336.AStoryAction`1.time">
+            <summary>
+            The interval of this action
+            </summary>
+        </member>
+        <member name="F:Impulse.v_1_336.AStoryAction`1.actionType">
+            <summary>
+            The action type of this action
+            </summary>
+        </member>
+        <member name="F:Impulse.v_1_336.AStoryAction`1.actionProperties">
+            <summary>
+            The properties of this action
+            </summary>
+        </member>
+        <member name="M:Impulse.v_1_336.AStoryAction`1.GetProperty(System.String)">
+            <summary>
+            Get a named property
+            </summary>
+            <param name="name">The name of the property</param>
+            <returns>The given property</returns>
+            <exception cref="T:System.Collections.Generic.KeyNotFoundException">If the action does not contain the named property</exception>
+        </member>
+        <member name="M:Impulse.v_1_336.AStoryAction`1.TryGetProperty(System.String,Impulse.v_1_336.IActionProperty@)">
+            <summary>
+            Try to get a named property
+            </summary>
+            <param name="name">The name of the property</param>
+            <param name="property">The given property</param>
+            <returns><see langword="true"/> if the given property was found</returns>
+        </member>
+        <member name="M:Impulse.v_1_336.AStoryAction`1.#ctor(System.String,`0,Impulse.v_1_336.ActionType,System.Collections.Generic.IEnumerable{Impulse.v_1_336.IActionProperty},System.Boolean)">
+            <summary>
+            Create a story action
+            </summary>
+            <param name="name">The name</param>
+            <param name="time">The interval</param>
+            <param name="actionType">The story action type</param>
+            <param name="actionProperties">The properties</param>
+            <param name="validate">Whether to validate of the properties match the type</param>
+            <returns>A new story action</returns>
+        </member>
+        <member name="M:Impulse.v_1_336.AStoryAction`1.ToXmlAction">
+            <summary>
+            Convert the story action into an XML representation
+            </summary>
+            <returns>An XML representation of the action</returns>
+        </member>
+        <member name="P:Impulse.v_1_336.AStoryAction`1.Name">
+            <summary>
+            Get the name of this action
+            </summary>
+        </member>
+        <member name="P:Impulse.v_1_336.AStoryAction`1.Time">
+            <summary>
+            Get the interval of this action
+            </summary>
+        </member>
+        <member name="P:Impulse.v_1_336.AStoryAction`1.ActionType">
+            <summary>
+            Get the story action type
+            </summary>
+        </member>
+        <member name="P:Impulse.v_1_336.AStoryAction`1.Properties">
+            <summary>
+            Get the properties of this action
+            </summary>
+        </member>
+        <member name="P:Impulse.v_1_336.AStoryAction`1.Item(System.String)">
+            <summary>
+            Get a named property value
+            </summary>
+            <param name="name">The name of the property</param>
+            <returns>The value of the given property</returns>
+            <exception cref="T:System.Collections.Generic.KeyNotFoundException">If the action does not contain the named property</exception>
+        </member>
+        <member name="T:Impulse.v_1_336.Xml.ISupportsSerialization">
+            <summary>
+            Interface denoting a class that should have serialization extensions
+            </summary>
+        </member>
         <member name="M:Impulse.v_1_336.Xml.ObjectSet.#ctor">
             <summary>
             For XML Serializer use only.
@@ -480,6 +3566,11 @@
             </summary>
         </member>
         <member name="M:Impulse.v_1_336.Xml.ActionSetRoot.#ctor">
+            <summary>
+            For XML Serializer use only.
+            </summary>
+        </member>
+        <member name="M:Impulse.v_1_336.Xml.Variable.#ctor">
             <summary>
             For XML Serializer use only.
             </summary>
@@ -623,6 +3714,73 @@
             <summary>
             For XML Serializer use only.
             </summary>
+        </member>
+        <member name="T:Impulse.v_1_336.Xml.XmlSerializationExtensions">
+            <summary>
+            Extension methods for XML serialization
+            </summary>
+        </member>
+        <member name="M:Impulse.v_1_336.Xml.XmlSerializationExtensions.SerializeToXml(Impulse.v_1_336.Xml.RelationType)">
+            <summary>
+            Serialize a relation type to XML
+            </summary>
+            <param name="type">The relation to serialize</param>
+            <returns>An XML representation of the relation</returns>
+        </member>
+        <member name="M:Impulse.v_1_336.Xml.XmlSerializationExtensions.SerializeToXml(Impulse.v_1_336.Xml.ISupportsSerialization)">
+            <summary>
+            Serialize an object to XML
+            </summary>
+            <param name="obj">The object to serialize</param>
+            <returns>A string XML representation of the object</returns>
+        </member>
+        <member name="M:Impulse.v_1_336.Xml.XmlSerializationExtensions.DeserializeXml``1(System.String)">
+            <summary>
+            Deserialize an object from XML
+            </summary>
+            <typeparam name="T">The type of object to deserialize</typeparam>
+            <param name="xml">The string XML</param>
+            <returns>A new object from the XML</returns>
+        </member>
+        <member name="M:Impulse.v_1_336.Xml.XmlSerializationExtensions.DeserializeXml``1(System.IO.Stream)">
+            <summary>
+            Deserialize an object from XML
+            </summary>
+            <typeparam name="T">The type of object to deserialize</typeparam>
+            <param name="stream">A stream containing the XML object</param>
+            <returns>A new object from the XML</returns>
+        </member>
+        <member name="M:Impulse.v_1_336.Xml.XmlSerializationExtensions.DeserializeXml(System.Type,System.String)">
+            <summary>
+            Deserialize an object from XML
+            </summary>
+            <param name="type">The type of object to deserialize</param>
+            <param name="xml">The string XML</param>
+            <returns>A new object from the XML</returns>
+        </member>
+        <member name="M:Impulse.v_1_336.Xml.XmlSerializationExtensions.DeserializeXml(System.Type,System.IO.Stream)">
+            <summary>
+            Deserialize an object from XML
+            </summary>
+            <param name="type">The type of object to deserialize</param>
+            <param name="stream">A stream containing the XML object</param>
+            <returns>A new object from the XML</returns>
+        </member>
+        <member name="M:Impulse.v_1_336.Xml.XmlSerializationExtensions.DeserializeXml(System.Type,System.IO.TextReader)">
+            <summary>
+            Deserialize an object from XML
+            </summary>
+            <param name="type">The type of object to deserialize</param>
+            <param name="reader">A text reader containing the XML object</param>
+            <returns>A new object from the XML</returns>
+        </member>
+        <member name="M:Impulse.v_1_336.Xml.XmlSerializationExtensions.GetXmlSerializer(System.Type)">
+            <summary>
+            Get the XML serializer for a specific type
+            </summary>
+            <param name="type">The type to get a serializer for</param>
+            <returns>An XML serializer for the type</returns>
+            <remarks>This is primarily a MONO workaround</remarks>
         </member>
     </members>
 </doc>
