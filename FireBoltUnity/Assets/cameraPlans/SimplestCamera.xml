@@ -3,21 +3,24 @@
   <blocks>
     <block>
       <shotFragments>
-        <shotFragment anchor="12.7,-13.5" startTime="0" endTime="3999">
+        <!--<shotFragment anchor="12.7,-13.5" startTime="0" endTime="3999">
           <framings>
             <framing  framingSize="" framingTarget="0"/>
           </framings>
+        </shotFragment>-->
+        <shotFragment anchor="" startTime="4000" endTime="8000">
+          <framings>
+            <framing  framingSize="" framingTarget="0"/>
+          </framings>
+          <movements>
+            <movement type="Dolly" directive="With" subject="Pudge"/>
+          </movements>
         </shotFragment>
-        <!--<shotFragment anchor="" startTime="4000" endTime="8000">
-      <framings>
-        <framing  framingSize="" framingTarget="-10"/>
-      </framings>
-    </shotFragment>-->
-        <shotFragment anchor="-5,-13" startTime="4000" endTime="10000">
+        <!--<shotFragment anchor="-5,-13" startTime="8000" endTime="10000">
           <framings>
             <framing  framingSize="" framingTarget="-10"/>
           </framings>
-        </shotFragment>
+        </shotFragment>-->
       </shotFragments>
     </block>
   </blocks>

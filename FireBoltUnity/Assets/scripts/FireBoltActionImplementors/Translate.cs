@@ -12,7 +12,7 @@ namespace Assets.scripts
         float lastUpdateTime;
         float startTick, endTick;
         string actorName;
-        GameObject actor;
+        protected GameObject actor;
         /// <summary>
         /// actual position of the actor when the interval begins
         /// </summary>
@@ -20,7 +20,7 @@ namespace Assets.scripts
         /// <summary>
         /// intended position of the actor when the interval begins
         /// </summary>
-        Vector3 origin;
+        protected Vector3 origin;
         /// <summary>
         /// intended position of the actor when the interval ends
         /// </summary>
@@ -47,7 +47,7 @@ namespace Assets.scripts
             this.yLock = yLock;
         }
 
-        public bool Init()
+        public virtual bool Init()
         {
             if (actor != null)
                 return true;
@@ -72,12 +72,12 @@ namespace Assets.scripts
             return true;
         }
 
-        public void Execute()
+        public virtual void Execute()
         {
             actor.transform.position = Vector3.Lerp(start, destination, (ElPresidente.currentTime - startTick)/(endTick-startTick));  
         }
 
-		public void Undo()
+		public virtual void Undo()
 		{
 			if (actor != null)
             {
@@ -86,12 +86,12 @@ namespace Assets.scripts
             }
 		}
 
-        public void Skip()
+        public virtual void Skip()
         {
             actor.transform.position = destination;
         }
 
-        public void Stop()
+        public virtual void Stop()
         {
             //nothing to stop
         }

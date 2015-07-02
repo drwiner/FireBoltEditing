@@ -24,9 +24,10 @@ namespace Assets.scripts
 
         private static void enqueueCameraActions(CameraPlan cameraPlan, FireBoltActionList cameraActionQueue)
         {
+            Vector3 previousPosition = Vector3.zero;
             foreach (Block block in cameraPlan.Blocks)
             {
-                Vector3 previousPosition = Vector3.zero;
+
                 foreach (var fragment in block.ShotFragments)
                 {
                     Vector3 currentPosition;
@@ -36,6 +37,24 @@ namespace Assets.scripts
                                                             "Main Camera", previousPosition, currentPosition, true));
                         previousPosition = currentPosition;
                     }
+                    else
+                    {
+                        //TODO handle camera position calculation
+                    }
+                    foreach (var movement in fragment.CameraMovements)
+                    {
+                        switch (movement.Type)
+                        {
+                            case CameraMovementType.Dolly :
+                                if(movement.Directive == CameraMovementDirective.With)
+                                {
+                                    cameraActionQueue.Add(new TranslateRelative(movement.Subject, fragment.StartTime, fragment.EndTime, "Main Camera"));
+                                }
+                                
+                                break;
+                        }
+                    }
+
 
                     float rotation = 0f;
                     if (fragment.Framings.Count > 0 && float.TryParse(fragment.Framings[0].FramingTarget, out rotation))
@@ -44,7 +63,7 @@ namespace Assets.scripts
                     }
                     else
                     {
-                        //TODO handle calculating actor target framing
+                        //TODO handle calculating actor target facing
                     }
 
                 }

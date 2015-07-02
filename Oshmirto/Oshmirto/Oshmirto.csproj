@@ -39,6 +39,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Block.cs" />
+    <Compile Include="CameraMovement.cs" />
     <Compile Include="CameraPlan.cs" />
     <Compile Include="Framing.cs" />
     <Compile Include="ShotFragment.cs" />

@@ -22,6 +22,8 @@ namespace Oshmirto
         [XmlAttribute("endTime")]
         public float EndTime { get; set; }
 
-
+        [XmlArray("movements")]
+        [XmlArrayItem("movement")]
+        public List<CameraMovement> CameraMovements { get; set; }
     }
 }
