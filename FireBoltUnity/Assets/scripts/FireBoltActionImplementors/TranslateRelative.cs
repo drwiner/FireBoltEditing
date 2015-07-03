@@ -13,8 +13,8 @@ namespace Assets.scripts
         private Vector3 trackedPositionInit;
         private Vector3 trackedPositionLast;
 
-        public TranslateRelative(string trackedActorName, float startTick, float endTick, string actorName) :
-            base(startTick, endTick, actorName, Vector3.zero, Vector3.zero, true)
+        public TranslateRelative(string trackedActorName, float startTick, float endTick, string actorName, bool xLock, bool yLock, bool zLock) :
+            base(startTick, endTick, actorName, Vector3.zero, Vector3.zero, xLock, yLock, zLock)
         {
             this.trackedActorName = trackedActorName;
         }

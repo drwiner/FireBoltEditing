@@ -24,33 +24,53 @@ namespace Assets.scripts
 
         private static void enqueueCameraActions(CameraPlan cameraPlan, FireBoltActionList cameraActionQueue)
         {
-            Vector3 previousPosition = Vector3.zero;
+            Vector3 previousPosition = GameObject.Find("Main Camera").transform.position;
             foreach (Block block in cameraPlan.Blocks)
             {
-
                 foreach (var fragment in block.ShotFragments)
                 {
                     Vector3 currentPosition;
                     if (fragment.Anchor.TryParsePlanarCoords(out currentPosition))
                     {
                         cameraActionQueue.Add(new Translate(fragment.StartTime, fragment.StartTime,
-                                                            "Main Camera", previousPosition, currentPosition, true));
+                                                            "Main Camera", previousPosition, currentPosition, false, true, false));
                         previousPosition = currentPosition;
                     }
                     else
                     {
                         //TODO handle camera position calculation
                     }
+
                     foreach (var movement in fragment.CameraMovements)
                     {
                         switch (movement.Type)
                         {
                             case CameraMovementType.Dolly :
-                                if(movement.Directive == CameraMovementDirective.With)
+                                switch (movement.Directive)
                                 {
-                                    cameraActionQueue.Add(new TranslateRelative(movement.Subject, fragment.StartTime, fragment.EndTime, "Main Camera"));
+                                    case(CameraMovementDirective.With):
+                                        cameraActionQueue.Add(new TranslateRelative(movement.Subject, fragment.StartTime, fragment.EndTime, "Main Camera", false, true, false));
+                                        break;
+                                    case(CameraMovementDirective.To):
+                                        Vector3 destination;
+                                        if (movement.Subject.TryParsePlanarCoords(out destination))
+                                        {
+                                            cameraActionQueue.Add(new Translate(fragment.StartTime, fragment.EndTime, "Main Camera",
+                                                                                currentPosition, destination, false, true, false));
+                                        }
+                                        break;
+                                }                               
+                                break;
+                            case CameraMovementType.Crane :
+                                switch (movement.Directive)
+                                {
+                                    case CameraMovementDirective.With:
+                                        break;
+                                    case CameraMovementDirective.To:
+                                        cameraActionQueue.Add(new Translate(fragment.StartTime,fragment.EndTime,"Main Camera",
+                                                                            currentPosition, new Vector3(0,float.Parse(movement.Subject),0),true,false,true));
+                                        break;
                                 }
-                                
                                 break;
                         }
                     }
