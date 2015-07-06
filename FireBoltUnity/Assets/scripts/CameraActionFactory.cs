@@ -29,12 +29,17 @@ namespace Assets.scripts
             {
                 foreach (var fragment in block.ShotFragments)
                 {
-                    Vector3 currentPosition;
-                    if (fragment.Anchor.TryParsePlanarCoords(out currentPosition))
+                    Vector3 futurePosition;
+                    if (fragment.Anchor.TryParsePlanarCoords(out futurePosition))
                     {
+                        bool xLock = false;
+                        bool yLock = true;
+                        bool zLock = false;
                         cameraActionQueue.Add(new Translate(fragment.StartTime, fragment.StartTime,
-                                                            "Main Camera", previousPosition, currentPosition, false, true, false));
-                        previousPosition = currentPosition;
+                                                            "Main Camera", previousPosition, futurePosition, xLock, yLock, zLock));
+                        previousPosition = new Vector3(xLock ? previousPosition.x : futurePosition.x,
+                                                       yLock ? previousPosition.y : futurePosition.y,
+                                                       zLock ? previousPosition.z : futurePosition.z);
                     }
                     else
                     {
@@ -56,7 +61,7 @@ namespace Assets.scripts
                                         if (movement.Subject.TryParsePlanarCoords(out destination))
                                         {
                                             cameraActionQueue.Add(new Translate(fragment.StartTime, fragment.EndTime, "Main Camera",
-                                                                                currentPosition, destination, false, true, false));
+                                                                                previousPosition, destination, false, true, false));
                                         }
                                         break;
                                 }                               
@@ -68,7 +73,7 @@ namespace Assets.scripts
                                         break;
                                     case CameraMovementDirective.To:
                                         cameraActionQueue.Add(new Translate(fragment.StartTime,fragment.EndTime,"Main Camera",
-                                                                            currentPosition, new Vector3(0,float.Parse(movement.Subject),0),true,false,true));
+                                                                            previousPosition, new Vector3(0,float.Parse(movement.Subject),0),true,false,true));
                                         break;
                                 }
                                 break;
