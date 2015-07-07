@@ -14,6 +14,7 @@ namespace Assets.scripts
     {
         //private static CameraPlan cameraPlan;
         private static FireBoltActionList cameraActionQueue;
+        private static readonly string cameraName = "Main Camera";
         public static FireBoltActionList CreateCameraActions(AStory<UintV, UintT, IIntervalSet<UintV, UintT>> story, string cameraPlanPath)
         {
             cameraActionQueue = new FireBoltActionList();
@@ -24,7 +25,7 @@ namespace Assets.scripts
 
         private static void enqueueCameraActions(CameraPlan cameraPlan, FireBoltActionList cameraActionQueue)
         {
-            Vector3 previousPosition = GameObject.Find("Main Camera").transform.position;
+            Vector3 previousPosition = GameObject.Find(cameraName).transform.position;
             foreach (Block block in cameraPlan.Blocks)
             {
                 foreach (var fragment in block.ShotFragments)
@@ -36,7 +37,7 @@ namespace Assets.scripts
                         bool yLock = true;
                         bool zLock = false;
                         cameraActionQueue.Add(new Translate(fragment.StartTime, fragment.StartTime,
-                                                            "Main Camera", previousPosition, futurePosition, xLock, yLock, zLock));
+                                                            cameraName, previousPosition, futurePosition, xLock, yLock, zLock));
                         previousPosition = new Vector3(xLock ? previousPosition.x : futurePosition.x,
                                                        yLock ? previousPosition.y : futurePosition.y,
                                                        zLock ? previousPosition.z : futurePosition.z);
@@ -54,13 +55,13 @@ namespace Assets.scripts
                                 switch (movement.Directive)
                                 {
                                     case(CameraMovementDirective.With):
-                                        cameraActionQueue.Add(new TranslateRelative(movement.Subject, fragment.StartTime, fragment.EndTime, "Main Camera", false, true, false));
+                                        cameraActionQueue.Add(new TranslateRelative(movement.Subject, fragment.StartTime, fragment.EndTime, cameraName, false, true, false));
                                         break;
                                     case(CameraMovementDirective.To):
                                         Vector3 destination;
                                         if (movement.Subject.TryParsePlanarCoords(out destination))
                                         {
-                                            cameraActionQueue.Add(new Translate(fragment.StartTime, fragment.EndTime, "Main Camera",
+                                            cameraActionQueue.Add(new Translate(fragment.StartTime, fragment.EndTime, cameraName,
                                                                                 previousPosition, destination, false, true, false));
                                         }
                                         break;
@@ -72,8 +73,18 @@ namespace Assets.scripts
                                     case CameraMovementDirective.With:
                                         break;
                                     case CameraMovementDirective.To:
-                                        cameraActionQueue.Add(new Translate(fragment.StartTime,fragment.EndTime,"Main Camera",
+                                        cameraActionQueue.Add(new Translate(fragment.StartTime,fragment.EndTime,cameraName,
                                                                             previousPosition, new Vector3(0,float.Parse(movement.Subject),0),true,false,true));
+                                        break;
+                                }
+                                break;
+                            case CameraMovementType.Pan :
+                                switch (movement.Directive)
+                                {
+                                    case CameraMovementDirective.With:
+                                        break;
+                                    case CameraMovementDirective.To:
+                                        cameraActionQueue.Add(new Rotate(fragment.StartTime, fragment.EndTime, cameraName, float.Parse(movement.Subject)));
                                         break;
                                 }
                                 break;
@@ -84,7 +95,7 @@ namespace Assets.scripts
                     float rotation = 0f;
                     if (fragment.Framings.Count > 0 && float.TryParse(fragment.Framings[0].FramingTarget, out rotation))
                     {
-                        cameraActionQueue.Add(new Rotate(fragment.StartTime, fragment.StartTime, "Main Camera", rotation));
+                        cameraActionQueue.Add(new Rotate(fragment.StartTime, fragment.StartTime, cameraName, rotation));
                     }
                     else
                     {

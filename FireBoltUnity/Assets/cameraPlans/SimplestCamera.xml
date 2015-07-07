@@ -35,8 +35,8 @@
           </framings>
           <movements>
             <movement type="Dolly" directive="With" subject="Pudge"/>
-            <movement type="Crane" directive="To" subject="5"/>
-            
+            <!--<movement type="Crane" directive="To" subject="5"/>-->
+            <movement type="Pan" directive="To" subject="-25"/>
           </movements>
         </shotFragment>
         <!--<shotFragment anchor="-5,-13" startTime="8000" endTime="10000">
