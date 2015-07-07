@@ -1,5 +1,5 @@
-<!---<cinematicModel millisPerTick="1" domainDistancePerEngineDistance="1">-->
-<cinematicModel millisPerTick="33" domainDistancePerEngineDistance="80">
+<cinematicModel millisPerTick="1" domainDistancePerEngineDistance="1">
+<!---<cinematicModel millisPerTick="33" domainDistancePerEngineDistance="80">-->
   <smartModelSettings maxActorSearchDepth="2" maxAnimationSearchDepth="2" />
   <!-- animation search depth should generally be at least as deep as actor search depth-->
   <domainActions>
