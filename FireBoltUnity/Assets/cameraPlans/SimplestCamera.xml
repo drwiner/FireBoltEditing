@@ -1,8 +1,50 @@
 ﻿<?xml version="1.0" encoding="utf-8" ?>
 <cameraPlan version="0.1">
-  <shotFragments>
-  <shotFragment anchor="0,-13" framingTarget="10" startTime="0" /><!-- needs a list of framing targets-->
-  <shotFragment anchor="-5,-13" framingTarget="-10" startTime="4000" />
-    
-  </shotFragments>
+  <blocks>
+    <block>
+      <shotFragments>
+        <!--<shotFragment anchor="12.7,-13.5" startTime="0" endTime="3999">
+          <framings>
+            <framing  framingSize="" framingTarget="0"/>
+          </framings>
+        </shotFragment>-->
+        <!--<shotFragment anchor="" startTime="4000" endTime="8000">
+          <framings>
+            <framing  framingSize="" framingTarget="0"/>
+          </framings>
+          <movements>
+            <movement type="Dolly" directive="With" subject="Pudge"/>
+          </movements>
+        </shotFragment>-->
+        <shotFragment anchor="0,0" startTime="0" endTime="1">
+          <framings>
+            <framing  framingSize="" framingTarget="0"/>
+          </framings>
+        </shotFragment>
+        <shotFragment anchor="" startTime="1" endTime="3999">
+          <framings>
+            <framing  framingSize="" framingTarget="0"/>
+          </framings>
+          <movements>
+            <movement type="Dolly" directive="To" subject="0,-10"/>
+          </movements>
+        </shotFragment>
+        <shotFragment anchor="" startTime="4000" endTime="8000">
+          <framings>
+            <framing  framingSize="" framingTarget="0"/>
+          </framings>
+          <movements>
+            <movement type="Dolly" directive="With" subject="Pudge"/>
+            <movement type="Crane" directive="To" subject="5"/>
+            
+          </movements>
+        </shotFragment>
+        <!--<shotFragment anchor="-5,-13" startTime="8000" endTime="10000">
+          <framings>
+            <framing  framingSize="" framingTarget="-10"/>
+          </framings>
+        </shotFragment>-->
+      </shotFragments>
+    </block>
+  </blocks>
 </cameraPlan>

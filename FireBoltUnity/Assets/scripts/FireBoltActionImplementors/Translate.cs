@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using CM=CinematicModel;
+using LN.Utilities.Collections;
 
 namespace Assets.scripts
 {
@@ -12,7 +13,7 @@ namespace Assets.scripts
         float lastUpdateTime;
         float startTick, endTick;
         string actorName;
-        GameObject actor;
+        protected GameObject actor;
         /// <summary>
         /// actual position of the actor when the interval begins
         /// </summary>
@@ -20,15 +21,15 @@ namespace Assets.scripts
         /// <summary>
         /// intended position of the actor when the interval begins
         /// </summary>
-        Vector3 origin;
+        protected Vector3 origin;
         /// <summary>
         /// intended position of the actor when the interval ends
         /// </summary>
         Vector3 destination;
         /// <summary>
-        /// do we ignore the y parameter in destination
+        /// ignore the given parameter when lerping to destination 
         /// </summary>
-        bool yLock;
+        bool xLock, yLock, zLock;
 
         public static bool ValidForConstruction(string actorName)
         {
@@ -37,22 +38,19 @@ namespace Assets.scripts
             return true;
         }
 
-        public override string ToString ()
-        {
-            return "Translate " + actorName + " from " + origin + " to " + destination;
-        }
-
-        public Translate(float startTick, float endTick, string actorName, Vector3 origin, Vector3 destination) 
+        public Translate(float startTick, float endTick, string actorName, Vector3 origin, Vector3 destination, bool xLock=false, bool yLock=false, bool zLock=false) 
         {
             this.startTick = startTick;
             this.actorName = actorName;
             this.endTick = endTick;
             this.origin = origin;
             this.destination = destination;
+            this.xLock = xLock;
             this.yLock = yLock;
+            this.zLock = zLock;
         }
 
-        public bool Init()
+        public virtual bool Init()
         {
             if (actor != null)
                 return true;
@@ -63,21 +61,28 @@ namespace Assets.scripts
                 return false;
             }
 			start = actor.transform.position;
-            if (yLock)
-                destination = new Vector3(destination.x, start.y, destination.z);
+
+            if (endTick - startTick < ElPresidente.MILLIS_PER_FRAME)
+                Skip();
+
             Debug.Log ("translate from " + start + " to " + destination);
             return true;
         }
 
-        public void Execute()
+        public virtual void Execute()
         {
-            if (endTick - startTick < ElPresidente.MILLIS_PER_FRAME)           
-                actor.transform.position = destination;
-            else
-                actor.transform.position = Vector3.Lerp(start, destination, (ElPresidente.currentTime - startTick)/(endTick-startTick));  
+            float lerpPercent = (ElPresidente.currentTime - startTick)/(endTick-startTick);
+            Vector3 lerpd = actor.transform.position;
+            if(!xLock)
+                lerpd.x = Mathf.Lerp(start.x,destination.x, lerpPercent);
+            if(!yLock)
+                lerpd.y = Mathf.Lerp(start.y,destination.y, lerpPercent);
+            if(!zLock)
+                lerpd.z = Mathf.Lerp(start.z, destination.z, lerpPercent);
+            actor.transform.position = lerpd;
         }
 
-		public void Undo()
+		public virtual void Undo()
 		{
 			if (actor != null)
             {
@@ -86,12 +91,19 @@ namespace Assets.scripts
             }
 		}
 
-        public void Skip()
+        public virtual void Skip()
         {
-            actor.transform.position = destination;
+            Vector3 newPosition = start;
+            if (!xLock)
+                newPosition.x = destination.x;
+            if (!yLock)
+                newPosition.y = destination.y;
+            if (!zLock)
+                newPosition.z = destination.z;
+            actor.transform.position = newPosition;
         }
 
-        public void Stop()
+        public virtual void Stop()
         {
             //nothing to stop
         }

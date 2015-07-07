@@ -24,10 +24,74 @@ namespace Assets.scripts
 
         private static void enqueueCameraActions(CameraPlan cameraPlan, FireBoltActionList cameraActionQueue)
         {
-            foreach (var fragment in cameraPlan.ShotFragments)
+            Vector3 previousPosition = GameObject.Find("Main Camera").transform.position;
+            foreach (Block block in cameraPlan.Blocks)
             {
-                cameraActionQueue.Add(new Translate(fragment.StartTime, fragment.StartTime, "Main Camera", Vector3.zero, fragment.Anchor.ParsePlanarCoords()));
-                //cameraActionQueue.Add(new Rotate(fragment.StartTime,fragment.StartTime,"Main Camera", ))
+                foreach (var fragment in block.ShotFragments)
+                {
+                    Vector3 futurePosition;
+                    if (fragment.Anchor.TryParsePlanarCoords(out futurePosition))
+                    {
+                        bool xLock = false;
+                        bool yLock = true;
+                        bool zLock = false;
+                        cameraActionQueue.Add(new Translate(fragment.StartTime, fragment.StartTime,
+                                                            "Main Camera", previousPosition, futurePosition, xLock, yLock, zLock));
+                        previousPosition = new Vector3(xLock ? previousPosition.x : futurePosition.x,
+                                                       yLock ? previousPosition.y : futurePosition.y,
+                                                       zLock ? previousPosition.z : futurePosition.z);
+                    }
+                    else
+                    {
+                        //TODO handle camera position calculation
+                    }
+
+                    foreach (var movement in fragment.CameraMovements)
+                    {
+                        switch (movement.Type)
+                        {
+                            case CameraMovementType.Dolly :
+                                switch (movement.Directive)
+                                {
+                                    case(CameraMovementDirective.With):
+                                        cameraActionQueue.Add(new TranslateRelative(movement.Subject, fragment.StartTime, fragment.EndTime, "Main Camera", false, true, false));
+                                        break;
+                                    case(CameraMovementDirective.To):
+                                        Vector3 destination;
+                                        if (movement.Subject.TryParsePlanarCoords(out destination))
+                                        {
+                                            cameraActionQueue.Add(new Translate(fragment.StartTime, fragment.EndTime, "Main Camera",
+                                                                                previousPosition, destination, false, true, false));
+                                        }
+                                        break;
+                                }                               
+                                break;
+                            case CameraMovementType.Crane :
+                                switch (movement.Directive)
+                                {
+                                    case CameraMovementDirective.With:
+                                        break;
+                                    case CameraMovementDirective.To:
+                                        cameraActionQueue.Add(new Translate(fragment.StartTime,fragment.EndTime,"Main Camera",
+                                                                            previousPosition, new Vector3(0,float.Parse(movement.Subject),0),true,false,true));
+                                        break;
+                                }
+                                break;
+                        }
+                    }
+
+
+                    float rotation = 0f;
+                    if (fragment.Framings.Count > 0 && float.TryParse(fragment.Framings[0].FramingTarget, out rotation))
+                    {
+                        cameraActionQueue.Add(new Rotate(fragment.StartTime, fragment.StartTime, "Main Camera", rotation));
+                    }
+                    else
+                    {
+                        //TODO handle calculating actor target facing
+                    }
+
+                }
             }
         }
     }

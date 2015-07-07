@@ -9,7 +9,6 @@ namespace Assets.scripts
 {
     public class Rotate : IFireBoltAction
     {
-        float lastUpdateTime;
         float startTick, endTick;
         string actorName;
         Vector3 destination;
@@ -64,22 +63,12 @@ namespace Assets.scripts
                 return false;
             }
 			start = actor.transform.rotation;
-
-            float rotateDuration = endTick - startTick > 0 ? endTick - startTick : 1;            
+        
             target = Quaternion.Euler(0, targetDegrees, 0);
-            
-            if (rotateDuration < ElPresidente.MILLIS_PER_FRAME)//we aren't guaranteed a single execution cycle, so move it now and make sure it doesn't move later
-            {
-                actor.transform.rotation = target;
-                requiredVelocity = 0;
-            }
-            else
-            {
-                float totalRotationRequired = Mathf.Abs(actor.transform.rotation.eulerAngles.y - targetDegrees);
-                requiredVelocity = totalRotationRequired / rotateDuration;
-            }          
 
-            lastUpdateTime = ElPresidente.currentTime;
+            if (endTick - startTick < ElPresidente.MILLIS_PER_FRAME)//we aren't guaranteed a single execution cycle, so move it now and make sure it doesn't move later
+                Skip();
+
             return true;
         }
 

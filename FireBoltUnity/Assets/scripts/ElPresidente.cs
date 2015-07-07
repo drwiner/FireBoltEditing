@@ -20,10 +20,8 @@ public class ElPresidente : MonoBehaviour {
     public string storyPlanPath;
     public string cinematicModelPath;
     public string cameraPlanPath;
-    public float keyFrameFrequency=10000; //every ? milliseconds
     private float lastTickLogged;
     private float totalTime;
-    private bool pause = false;
     public Text debugText;
 	public float myTime;
     public Slider whereWeAt;
@@ -87,6 +85,7 @@ public class ElPresidente : MonoBehaviour {
     void Update()
     {
         currentTime += Time.deltaTime * 1000;
+        debugText.text = currentTime.ToString();
         if (currentTime < totalTime)
             whereWeAt.value = currentTime / totalTime;
 		myTime = currentTime;  
@@ -118,10 +117,6 @@ public class ElPresidente : MonoBehaviour {
             if (action.Init())
 			{
                 executingActions.Add(action);
-                //if (!actorActionComplete(action))
-                //    executingActions.Add(action);
-                //else
-                //    action.Stop();
 			}
         }
     }

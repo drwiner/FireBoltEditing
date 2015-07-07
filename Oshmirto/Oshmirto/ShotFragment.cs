@@ -12,10 +12,18 @@ namespace Oshmirto
         [XmlAttribute("anchor")]
         public string Anchor { get; set; }
 
-        [XmlAttribute("framingTarget")]
-        public string FramingTarget { get; set; }
+        [XmlArray("framings")]
+        [XmlArrayItem("framing")]
+        public List<Framing> Framings { get; set; } //TODO parse enum
 
         [XmlAttribute("startTime")]
         public float StartTime { get; set; }
+
+        [XmlAttribute("endTime")]
+        public float EndTime { get; set; }
+
+        [XmlArray("movements")]
+        [XmlArrayItem("movement")]
+        public List<CameraMovement> CameraMovements { get; set; }
     }
 }
