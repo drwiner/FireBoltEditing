@@ -12,8 +12,6 @@ namespace Assets.scripts
         float lastUpdateTime;
         float startTick, endTick;
         string actorName;
-        Vector3 destination;
-        Vector3 origin;
         GameObject actor;
         /// <summary>
         /// actual position of the actor when the interval begins
