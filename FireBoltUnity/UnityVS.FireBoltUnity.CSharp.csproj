@@ -106,6 +106,7 @@
     <Compile Include="Assets\scripts\FireBoltActionImplementors\Destroy.cs" />
     <Compile Include="Assets\scripts\FireBoltActionImplementors\Rotate.cs" />
     <Compile Include="Assets\scripts\FireBoltActionImplementors\Translate.cs" />
+    <Compile Include="Assets\scripts\FireBoltActionImplementors\RotateRelative.cs" />
     <Compile Include="Assets\scripts\FireBoltActionImplementors\TranslateRelative.cs" />
     <Compile Include="Assets\scripts\FireBoltActionList.cs" />
     <Compile Include="Assets\scripts\IFireBoltAction.cs" />

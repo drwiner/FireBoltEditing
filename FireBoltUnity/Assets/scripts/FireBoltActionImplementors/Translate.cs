@@ -75,9 +75,9 @@ namespace Assets.scripts
         {
             float lerpPercent = (ElPresidente.currentTime - startTick)/(endTick-startTick);
             Vector3 lerpd;
-            lerpd.x = destination.X.HasValue ? Mathf.Lerp(start.x,destination.X.Value, lerpPercent) : start.x;
-            lerpd.y = destination.Y.HasValue ? Mathf.Lerp(start.y, destination.Y.Value, lerpPercent) : start.y;
-            lerpd.z = destination.Z.HasValue ? Mathf.Lerp(start.z, destination.Z.Value, lerpPercent) : start.z;
+            lerpd.x = destination.X.HasValue ? Mathf.Lerp(start.x,destination.X.Value, lerpPercent) : actor.transform.position.x;
+            lerpd.y = destination.Y.HasValue ? Mathf.Lerp(start.y, destination.Y.Value, lerpPercent) : actor.transform.position.y;
+            lerpd.z = destination.Z.HasValue ? Mathf.Lerp(start.z, destination.Z.Value, lerpPercent) : actor.transform.position.z;
             actor.transform.position = lerpd;
         }
 

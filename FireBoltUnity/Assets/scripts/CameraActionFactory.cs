@@ -77,6 +77,8 @@ namespace Assets.scripts
                                 switch (movement.Directive)
                                 {
                                     case CameraMovementDirective.With:
+                                        cameraActionQueue.Add(new RotateRelative(movement.Subject, fragment.StartTime, fragment.EndTime, cameraName,
+                                                                                 true, false, true));
                                         break;
                                     case CameraMovementDirective.To:
                                         cameraActionQueue.Add(new Rotate(fragment.StartTime, fragment.EndTime, cameraName, float.Parse(movement.Subject)));

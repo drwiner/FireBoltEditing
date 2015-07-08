@@ -13,11 +13,9 @@ namespace Assets.scripts
         string actorName;
         Vector3 destination;
         float targetDegrees;
-        GameObject actor;
-        float requiredVelocity;
-        float stepSize;
+        protected GameObject actor;
         Quaternion target;
-		Quaternion start;
+		protected Quaternion start;
 
 
 
@@ -49,7 +47,7 @@ namespace Assets.scripts
             this.targetDegrees = targetDegrees;
         }
 
-        public bool Init()
+        public virtual bool Init()
         {
             if (actor != null)
             {
@@ -72,13 +70,13 @@ namespace Assets.scripts
             return true;
         }
 
-        public void Execute()
+        public virtual void Execute()
         {
             actor.transform.rotation = Quaternion.Lerp (start, target, (ElPresidente.currentTime - startTick) / (endTick - startTick));
             //Debug.DrawRay(actor.transform.position + Vector3.up, actor.transform.forward,Color.magenta);
         }
 
-		public void Undo()
+		public virtual void Undo()
 		{
 			if (actor != null)
             {
@@ -86,7 +84,7 @@ namespace Assets.scripts
             }
 		}
 
-        public void Skip()
+        public virtual void Skip()
         {
             actor.transform.rotation = target;
         }
