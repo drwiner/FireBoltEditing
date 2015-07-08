@@ -7,14 +7,16 @@
     <SchemaVersion>2.0</SchemaVersion>
     <ProjectGuid>{C10AD983-AF61-27A7-6ECD-94BFF46B1DA4}</ProjectGuid>
     <OutputType>Library</OutputType>
-    <RootNamespace></RootNamespace>
+    <RootNamespace>
+    </RootNamespace>
     <AssemblyName>Assembly-CSharp</AssemblyName>
     <FileAlignment>512</FileAlignment>
     <ProjectTypeGuids>{E097FAD1-6243-4DAD-9C02-E9B9EFC3FFC1};{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</ProjectTypeGuids>
     <TargetFrameworkIdentifier>.NETFramework</TargetFrameworkIdentifier>
     <TargetFrameworkVersion>v3.5</TargetFrameworkVersion>
     <TargetFrameworkProfile>Unity Subset v3.5</TargetFrameworkProfile>
-    <CompilerResponseFile></CompilerResponseFile>
+    <CompilerResponseFile>
+    </CompilerResponseFile>
     <UnityProjectType>Game:1</UnityProjectType>
     <UnityBuildTarget>StandaloneWindows:5</UnityBuildTarget>
     <UnityVersion>5.1.1f1</UnityVersion>
@@ -58,12 +60,6 @@
     <Reference Include="UnityEngine.Analytics">
       <HintPath>Library\UnityAssemblies\UnityEngine.Analytics.dll</HintPath>
     </Reference>
-    <Reference Include="UnityEngine.Networking">
-      <HintPath>Library\UnityAssemblies\UnityEngine.Networking.dll</HintPath>
-    </Reference>
-    <Reference Include="UnityEngine.UI">
-      <HintPath>Library\UnityAssemblies\UnityEngine.UI.dll</HintPath>
-    </Reference>
     <Reference Include="UnityEditor.iOS.Extensions.Xcode">
       <HintPath>Library\UnityAssemblies\UnityEditor.iOS.Extensions.Xcode.dll</HintPath>
     </Reference>
@@ -81,6 +77,21 @@
     </Reference>
     <Reference Include="Oshmirto">
       <HintPath>Assets\plugins\Oshmirto.dll</HintPath>
+    </Reference>
+    <Reference Include="CinematicModel">
+      <HintPath>Assets\Resources\plugins\CinematicModel.dll</HintPath>
+    </Reference>
+    <Reference Include="Impulse">
+      <HintPath>Assets\Resources\plugins\Impulse.dll</HintPath>
+    </Reference>
+    <Reference Include="Impulse.XmlSerializers">
+      <HintPath>Assets\Resources\plugins\Impulse.XmlSerializers.dll</HintPath>
+    </Reference>
+    <Reference Include="LN.Utilities">
+      <HintPath>Assets\Resources\plugins\LN.Utilities.dll</HintPath>
+    </Reference>
+    <Reference Include="Oshmirto">
+      <HintPath>Assets\Resources\plugins\Oshmirto.dll</HintPath>
     </Reference>
   </ItemGroup>
   <ItemGroup>
@@ -103,10 +114,14 @@
     <Compile Include="Assets\scripts\rotationCaster.cs" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="Assets\cameraPlans\SimplestCamera.xml" />
+    <None Include="Assets\cameraPlans\SimplestCamera.xml">
+      <SubType>Designer</SubType>
+    </None>
     <None Include="Assets\cinematicModels\DotaHierarchyModel.xml" />
     <None Include="Assets\plugins\Impulse.XML" />
-    <None Include="Assets\plugins\LN.Utilities.xml" />
+    <None Include="Assets\plugins\LN.Utilities.XML" />
+    <None Include="Assets\Resources\plugins\Impulse.XML" />
+    <None Include="Assets\Resources\plugins\LN.Utilities.XML" />
     <None Include="Assets\storyPlans\Impulsev1_336\600924233.xml" />
     <None Include="Assets\storyPlans\Impulsev1_336\tester.xml" />
   </ItemGroup>

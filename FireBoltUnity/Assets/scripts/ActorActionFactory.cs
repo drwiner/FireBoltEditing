@@ -1,6 +1,7 @@
 ﻿using UnityEngine;
 using UnityEngine.UI;
 using System.Collections;
+using LN.Utilities;
 using Impulse.v_1_336;
 using Impulse.v_1_336.Sentences;
 using Impulse.v_1_336.Intervals;
@@ -145,7 +146,7 @@ namespace Assets.scripts
                 float startTick = 0;
                 float endTick = 0;
                 string actorName = null;
-                Vector3 destination = Vector3.zero;
+                Vector3Nullable destination = new Vector3Nullable(null, null, null);
                 Vector3 origin = Vector3.zero;
                 foreach (CM.DomainActionParameter domainActionParameter in domainAction.Params)
                 {
@@ -155,8 +156,7 @@ namespace Assets.scripts
                         if (storyAction.TryGetProperty(domainActionParameter.Name, out coord))
                         {
                             
-                            origin = ((Coordinate2D)coord.Value.Value).ToVector3(cm.DomainDistancePerEngineDistance);
-                            
+                            origin = ((Coordinate2D)coord.Value.Value).ToVector3(cm.DomainDistancePerEngineDistance);                            
                         }
                         else
                         {
@@ -168,9 +168,7 @@ namespace Assets.scripts
                         IActionProperty coord;
                         if (storyAction.TryGetProperty(domainActionParameter.Name, out coord))
                         {
-
-                            destination = ((Coordinate2D)coord.Value.Value).ToVector3(cm.DomainDistancePerEngineDistance);
-                           
+                            destination = ((Coordinate2D)coord.Value.Value).ToVector3Nullable(cm.DomainDistancePerEngineDistance);                         
                         }
                         else
                         {

@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using UnityEngine;
+using LN.Utilities;
 using Impulse.v_1_336;
 using UintT = Impulse.v_1_336.Interval<Impulse.v_1_336.Constants.ValueConstant<uint>, uint>;
 using UintV = Impulse.v_1_336.Constants.ValueConstant<uint>;
@@ -25,7 +26,7 @@ namespace Assets.scripts
 
         private static void enqueueCameraActions(CameraPlan cameraPlan, FireBoltActionList cameraActionQueue)
         {
-            Vector3 previousPosition = GameObject.Find(cameraName).transform.position;
+            //Vector3 previousPosition = GameObject.Find(cameraName).transform.position;
             foreach (Block block in cameraPlan.Blocks)
             {
                 foreach (var fragment in block.ShotFragments)
@@ -33,14 +34,8 @@ namespace Assets.scripts
                     Vector3 futurePosition;
                     if (fragment.Anchor.TryParsePlanarCoords(out futurePosition))
                     {
-                        bool xLock = false;
-                        bool yLock = true;
-                        bool zLock = false;
                         cameraActionQueue.Add(new Translate(fragment.StartTime, fragment.StartTime,
-                                                            cameraName, previousPosition, futurePosition, xLock, yLock, zLock));
-                        previousPosition = new Vector3(xLock ? previousPosition.x : futurePosition.x,
-                                                       yLock ? previousPosition.y : futurePosition.y,
-                                                       zLock ? previousPosition.z : futurePosition.z);
+                                                            cameraName, Vector3.zero, new Vector3Nullable(futurePosition.x,null,futurePosition.z), true));
                     }
                     else
                     {
@@ -62,7 +57,7 @@ namespace Assets.scripts
                                         if (movement.Subject.TryParsePlanarCoords(out destination))
                                         {
                                             cameraActionQueue.Add(new Translate(fragment.StartTime, fragment.EndTime, cameraName,
-                                                                                previousPosition, destination, false, true, false));
+                                                                                Vector3.zero, new Vector3Nullable(destination.x,null,destination.z),true));
                                         }
                                         break;
                                 }                               
@@ -74,7 +69,7 @@ namespace Assets.scripts
                                         break;
                                     case CameraMovementDirective.To:
                                         cameraActionQueue.Add(new Translate(fragment.StartTime,fragment.EndTime,cameraName,
-                                                                            previousPosition, new Vector3(0,float.Parse(movement.Subject),0),true,false,true));
+                                                                            Vector3.zero, new Vector3Nullable(null,float.Parse(movement.Subject),null),true));
                                         break;
                                 }
                                 break;

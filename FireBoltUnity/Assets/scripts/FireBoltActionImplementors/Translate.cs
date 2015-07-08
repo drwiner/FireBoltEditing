@@ -5,6 +5,7 @@ using System.Linq;
 using System.Text;
 using CM=CinematicModel;
 using LN.Utilities.Collections;
+using LN.Utilities;
 
 namespace Assets.scripts
 {
@@ -25,11 +26,11 @@ namespace Assets.scripts
         /// <summary>
         /// intended position of the actor when the interval ends
         /// </summary>
-        Vector3 destination;
+        Vector3Nullable destination;
         /// <summary>
-        /// ignore the given parameter when lerping to destination 
+        /// ignore origin and reset from start
         /// </summary>
-        bool xLock, yLock, zLock;
+        bool unknownOrigin;
 
         public static bool ValidForConstruction(string actorName)
         {
@@ -38,16 +39,14 @@ namespace Assets.scripts
             return true;
         }
 
-        public Translate(float startTick, float endTick, string actorName, Vector3 origin, Vector3 destination, bool xLock=false, bool yLock=false, bool zLock=false) 
+        public Translate(float startTick, float endTick, string actorName,  Vector3 origin, Vector3Nullable destination, bool unknownOrigin=false) 
         {
             this.startTick = startTick;
             this.actorName = actorName;
             this.endTick = endTick;
             this.origin = origin;
             this.destination = destination;
-            this.xLock = xLock;
-            this.yLock = yLock;
-            this.zLock = zLock;
+            this.unknownOrigin = unknownOrigin;
         }
 
         public virtual bool Init()
@@ -62,6 +61,9 @@ namespace Assets.scripts
             }
 			start = actor.transform.position;
 
+            if (unknownOrigin)
+                origin = start;
+
             if (endTick - startTick < ElPresidente.MILLIS_PER_FRAME)
                 Skip();
 
@@ -72,13 +74,10 @@ namespace Assets.scripts
         public virtual void Execute()
         {
             float lerpPercent = (ElPresidente.currentTime - startTick)/(endTick-startTick);
-            Vector3 lerpd = actor.transform.position;
-            if(!xLock)
-                lerpd.x = Mathf.Lerp(start.x,destination.x, lerpPercent);
-            if(!yLock)
-                lerpd.y = Mathf.Lerp(start.y,destination.y, lerpPercent);
-            if(!zLock)
-                lerpd.z = Mathf.Lerp(start.z, destination.z, lerpPercent);
+            Vector3 lerpd;
+            lerpd.x = destination.X.HasValue ? Mathf.Lerp(start.x,destination.X.Value, lerpPercent) : start.x;
+            lerpd.y = destination.Y.HasValue ? Mathf.Lerp(start.y, destination.Y.Value, lerpPercent) : start.y;
+            lerpd.z = destination.Z.HasValue ? Mathf.Lerp(start.z, destination.Z.Value, lerpPercent) : start.z;
             actor.transform.position = lerpd;
         }
 
@@ -93,13 +92,10 @@ namespace Assets.scripts
 
         public virtual void Skip()
         {
-            Vector3 newPosition = start;
-            if (!xLock)
-                newPosition.x = destination.x;
-            if (!yLock)
-                newPosition.y = destination.y;
-            if (!zLock)
-                newPosition.z = destination.z;
+            Vector3 newPosition;
+            newPosition.x = destination.X.HasValue ? destination.X.Value : start.x;
+            newPosition.y = destination.Y.HasValue ? destination.Y.Value : start.y;
+            newPosition.z = destination.Z.HasValue ? destination.Z.Value : start.z;
             actor.transform.position = newPosition;
         }
 

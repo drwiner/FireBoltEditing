@@ -67,7 +67,6 @@
      <None Include="Assets\cinematicModels\DotaHierarchyModel.xml" />
      <None Include="Assets\cameraPlans\SimplestCamera.xml" />
      <None Include="Assets\storyPlans\Impulsev1_336\600924233.xml" />
-     <None Include="Assets\plugins\LN.Utilities.xml" />
  <Reference Include="UnityEngine.UI">
  <HintPath>C:/Program Files/Unity/Editor/Data/UnityExtensions/Unity/GUISystem/UnityEngine.UI.dll</HintPath>
  </Reference>
@@ -91,6 +90,21 @@
  </Reference>
  <Reference Include="Oshmirto">
  <HintPath>C:/Users/brthorne/np/FireBolt/FireBoltUnity/Assets/plugins/Oshmirto.dll</HintPath>
+ </Reference>
+ <Reference Include="CinematicModel">
+ <HintPath>C:/Users/brthorne/np/FireBolt/FireBoltUnity/Assets/Resources/plugins/CinematicModel.dll</HintPath>
+ </Reference>
+ <Reference Include="Impulse">
+ <HintPath>C:/Users/brthorne/np/FireBolt/FireBoltUnity/Assets/Resources/plugins/Impulse.dll</HintPath>
+ </Reference>
+ <Reference Include="Impulse.XmlSerializers">
+ <HintPath>C:/Users/brthorne/np/FireBolt/FireBoltUnity/Assets/Resources/plugins/Impulse.XmlSerializers.dll</HintPath>
+ </Reference>
+ <Reference Include="LN.Utilities">
+ <HintPath>C:/Users/brthorne/np/FireBolt/FireBoltUnity/Assets/Resources/plugins/LN.Utilities.dll</HintPath>
+ </Reference>
+ <Reference Include="Oshmirto">
+ <HintPath>C:/Users/brthorne/np/FireBolt/FireBoltUnity/Assets/Resources/plugins/Oshmirto.dll</HintPath>
  </Reference>
  <Reference Include="UnityEditor.iOS.Extensions.Xcode">
  <HintPath>C:/Program Files/Unity/Editor/Data/PlaybackEngines/iOSSupport/UnityEditor.iOS.Extensions.Xcode.dll</HintPath>
