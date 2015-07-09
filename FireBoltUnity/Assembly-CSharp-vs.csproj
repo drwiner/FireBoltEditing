@@ -68,6 +68,9 @@
      <Compile Include="Assets\scripts\FireBoltActionImplementors\AnimateMecanim.cs" />
      <Compile Include="Assets\scripts\FireBoltActionImplementors\Create.cs" />
      <Compile Include="Assets\scripts\FireBoltActionImplementors\Destroy.cs" />
+     <Compile Include="Assets\scripts\FireBoltActionImplementors\FStop.cs" />
+     <Compile Include="Assets\scripts\FireBoltActionImplementors\Focus.cs" />
+     <Compile Include="Assets\scripts\FireBoltActionImplementors\LensChange.cs" />
      <Compile Include="Assets\scripts\FireBoltActionImplementors\Rotate.cs" />
      <Compile Include="Assets\scripts\FireBoltActionImplementors\Translate.cs" />
      <Compile Include="Assets\scripts\FireBoltActionImplementors\TranslateRelative.cs" />

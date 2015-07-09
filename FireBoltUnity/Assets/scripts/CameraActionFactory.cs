@@ -46,6 +46,7 @@ namespace Assets.scripts
                         //TODO handle camera position calculation
                     }
 
+
                     foreach (var movement in fragment.CameraMovements)
                     {
                         switch (movement.Type)
@@ -91,8 +92,73 @@ namespace Assets.scripts
                         //TODO handle calculating actor target facing
                     }
 
+
+
+                    // Lens change
+                       int lens = lensMMtoIndex(fragment.lensNum);
+                        if (lens < 0)
+                            Debug.Log("Lens does not exist");
+                        else
+                            cameraActionQueue.Add(new LensChange(fragment.StartTime, fragment.StartTime, "Main Camera", lens));
+                      
+                    // FStop change
+                        int fstop = fStopToIndex(fragment.fstopType);
+                        if (lens < 0)
+                            Debug.Log("Lens does not exist");
+                        else
+                            cameraActionQueue.Add(new FStop(fragment.StartTime, fragment.EndTime, "Main Camera", fstop));
+
+
+                    // Focus Change
+                         cameraActionQueue.Add(new Focus(fragment.StartTime, fragment.EndTime, "Main Camera", fragment.focusPosition));   
+                       
+                        
                 }
             }
         }
+
+        private static int lensMMtoIndex(int lensNum)
+        {
+            if (lensNum == 12) return 0;
+            if (lensNum == 14) return 1;
+            if (lensNum == 16) return 2;
+            if (lensNum == 18) return 3;
+            if (lensNum == 21) return 4;
+            if (lensNum == 25) return 5;
+            if (lensNum == 27) return 6;
+            if (lensNum == 32) return 7;
+            if (lensNum == 35) return 8;
+            if (lensNum == 40) return 9;
+            if (lensNum == 50) return 10;
+            if (lensNum == 65) return 11;
+            if (lensNum == 75) return 12;
+            if (lensNum == 100) return 13;
+            if (lensNum == 135) return 14;
+            if (lensNum == 150) return 15;
+            if (lensNum == 180) return 16;
+            else
+            {
+                return -1;
+            }
+        }
+
+        private static int fStopToIndex(float fstop)
+        {
+            if (fstop == 1.4) return 0;
+            if (fstop == 2) return 1;
+            if (fstop == 2.8) return 2;
+            if (fstop == 4) return 3;
+            if (fstop == 5.6) return 4;
+            if (fstop == 8) return 5;
+            if (fstop == 11) return 6;
+            if (fstop == 16) return 7;
+            if (fstop == 22) return 8;
+     
+            else
+            {
+                return -1;
+            }
+        }
+
     }
 }
