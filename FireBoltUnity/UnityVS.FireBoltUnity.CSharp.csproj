@@ -110,6 +110,7 @@
     <Compile Include="Assets\scripts\FireBoltActionImplementors\Focus.cs" />
     <Compile Include="Assets\scripts\FireBoltActionImplementors\LensChange.cs" />
     <Compile Include="Assets\scripts\FireBoltActionImplementors\Rotate.cs" />
+    <Compile Include="Assets\scripts\FireBoltActionImplementors\Shake.cs" />
     <Compile Include="Assets\scripts\FireBoltActionImplementors\Translate.cs" />
     <Compile Include="Assets\scripts\FireBoltActionImplementors\TranslateRelative.cs" />
     <Compile Include="Assets\scripts\FireBoltActionList.cs" />

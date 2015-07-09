@@ -112,7 +112,8 @@ namespace Assets.scripts
                     // Focus Change
                          cameraActionQueue.Add(new Focus(fragment.StartTime, fragment.EndTime, "Main Camera", fragment.focusPosition));   
                        
-                        
+                    // Shake it off
+                         cameraActionQueue.Add(new Shake(fragment.StartTime, fragment.EndTime, "Main Camera", fragment.shakeValue));   
                 }
             }
         }
