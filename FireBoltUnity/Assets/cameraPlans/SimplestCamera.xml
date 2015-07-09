@@ -3,20 +3,12 @@
   <blocks>
     <block>
       <shotFragments>
-        <!--<shotFragment anchor="12.7,-13.5" startTime="0" endTime="3999">
+        <shotFragment anchor="" startTime="0" endTime="1">
           <framings>
-            <framing  framingSize="" framingTarget="0"/>
+            <framing  framingSize="Full" framingTarget="Pudge"/>
           </framings>
-        </shotFragment>-->
-        <!--<shotFragment anchor="" startTime="4000" endTime="8000">
-          <framings>
-            <framing  framingSize="" framingTarget="0"/>
-          </framings>
-          <movements>
-            <movement type="Dolly" directive="With" subject="Pudge"/>
-          </movements>
-        </shotFragment>-->
-        <shotFragment anchor="0,0" startTime="0" endTime="1">
+        </shotFragment>
+        <!--<shotFragment anchor="0,0" startTime="0" endTime="1">
           <framings>
             <framing  framingSize="" framingTarget="0"/>
           </framings>
@@ -34,12 +26,12 @@
             <framing  framingSize="" framingTarget="0"/>
           </framings>
           <movements>
-            <!--<movement type="Dolly" directive="With" subject="Pudge"/>-->
-            <!--<movement type="Crane" directive="To" subject="5"/>-->
-            <!--<movement type="Pan" directive="To" subject="-25"/>-->
+            <movement type="Dolly" directive="With" subject="Pudge"/>
+            <movement type="Crane" directive="To" subject="5"/>
+            <movement type="Pan" directive="To" subject="-25"/>
             <movement type="Pan" directive="With" subject="Pudge"/>
           </movements>
-        </shotFragment>
+        </shotFragment>-->
         <!--<shotFragment anchor="-5,-13" startTime="8000" endTime="10000">
           <framings>
             <framing  framingSize="" framingTarget="-10"/>

@@ -26,7 +26,6 @@ namespace Assets.scripts
 
         private static void enqueueCameraActions(CameraPlan cameraPlan, FireBoltActionList cameraActionQueue)
         {
-            //Vector3 previousPosition = GameObject.Find(cameraName).transform.position;
             foreach (Block block in cameraPlan.Blocks)
             {
                 foreach (var fragment in block.ShotFragments)
@@ -39,7 +38,9 @@ namespace Assets.scripts
                     }
                     else
                     {
-                        //TODO handle camera position calculation
+                        //calculate framing
+                        //find camera position
+                        //rotate camera
                     }
 
                     foreach (var movement in fragment.CameraMovements)

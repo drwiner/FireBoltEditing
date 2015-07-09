@@ -6,27 +6,52 @@ using LN.Utilities.Collections;
 
 namespace Assets.scripts
 {
+    public class ActionTypeComparer : IComparer<IFireBoltAction>
+    {
+        public int Compare(IFireBoltAction x, IFireBoltAction y)
+        {
+            if (x.Equals(y)) return 0;
+            if (x is Destroy) return 1;
+            if (y is Destroy) return -1;
+            if (x is Create) return -1;
+            if (y is Create) return 1;
+
+            if (x is Translate && y is Rotate) return -1;
+            if (x is Rotate && y is Translate) return 1;
+            return -1;
+            //i THINK we should be ok ignoring other sorting orders 
+            //so long as rotate and translate occur correctly relative to one another
+        }
+    }
+
+    public class StartTickComparer : IComparer<IFireBoltAction>
+    {
+        public int Compare(IFireBoltAction x, IFireBoltAction y)
+        {
+            if (x.StartTick() > y.StartTick())
+            {
+                return 1;
+            }
+            else if (x.StartTick() == y.StartTick())
+            {
+                if (x is Create) return -1;
+
+                else if (y is Create) return 1;
+            }
+            return -1;
+        }
+    }
+
     public class FireBoltActionList : SortedSet<IFireBoltAction>
     {
-        private class ActorActionComparer : IComparer<IFireBoltAction>
+        public FireBoltActionList() :
+            base(new StartTickComparer())
         {
-            public int Compare(IFireBoltAction x, IFireBoltAction y)
-            {
-                if (x.StartTick() > y.StartTick())
-                {
-                    return 1;
-                }
-                else if (x.StartTick() == y.StartTick())
-                {
-                    if (x is Create) return -1;
-
-                    else if (y is Create) return 1;                        
-                }
-                return -1;
-            }
+            NextActionIndex = 0;
         }
-        public FireBoltActionList()
-            : base(new ActorActionComparer())
+
+        public FireBoltActionList(IComparer<IFireBoltAction> comparer) :
+            base(comparer)
         {
             NextActionIndex = 0;
         }

@@ -52,7 +52,7 @@ namespace Assets.scripts
 
         public override void Execute()
         {
-            //TODO check interactions in multiple axes with slerping
+            //TODO check interactions in multiple axes with slerping.  does not work for axes other than y
 
             Vector3 trackedPositionCurrent = trackedActor.transform.position;
 
