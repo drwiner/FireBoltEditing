@@ -3,9 +3,9 @@
   <blocks>
     <block>
       <shotFragments>
-        <shotFragment anchor="" startTime="0" endTime="1">
+        <shotFragment anchor="" startTime="5000" endTime="5001">
           <framings>
-            <framing  framingSize="Full" framingTarget="Pudge"/>
+            <framing  framingType="Full" framingTarget="Pudge"/>
           </framings>
         </shotFragment>
         <!--<shotFragment anchor="0,0" startTime="0" endTime="1">

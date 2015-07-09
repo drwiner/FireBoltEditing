@@ -35,12 +35,19 @@ namespace Assets.scripts
                     {
                         cameraActionQueue.Add(new Translate(fragment.StartTime, fragment.StartTime,
                                                             cameraName, Vector3.zero, new Vector3Nullable(futurePosition.x,null,futurePosition.z), true));
+
                     }
-                    else
+                    else if(fragment.Framings[0] != null &&
+                            fragment.Framings[0].FramingType != FramingType.None && 
+                            fragment.Framings[0].FramingType != FramingType.Angle)
                     {
-                        //calculate framing
-                        //find camera position
-                        //rotate camera
+                        //TODO extend to support multiple framings when caclulating
+                        //defer calculations to execution time....
+                        Translate t = new Translate(fragment.StartTime, fragment.StartTime, cameraName, Vector3.zero, new Vector3Nullable(0,0,0), true);//translate stub to fill in at frame init
+                        RotateRelative r = new RotateRelative(fragment.Framings[0].FramingTarget, fragment.StartTime, fragment.StartTime, cameraName, true, false, true); //rotate stub to fill in at frame init
+                        cameraActionQueue.Add(new Frame(fragment.StartTime, fragment.StartTime, cameraName, fragment.Framings, t, r));
+                        cameraActionQueue.Add(r);
+                        cameraActionQueue.Add(t);
                     }
 
                     foreach (var movement in fragment.CameraMovements)

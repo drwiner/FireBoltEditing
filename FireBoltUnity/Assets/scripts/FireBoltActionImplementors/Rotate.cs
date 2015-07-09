@@ -47,6 +47,11 @@ namespace Assets.scripts
             this.targetDegrees = targetDegrees;
         }
 
+        public void SetTargetDegrees(float targetDegrees)
+        {
+            this.targetDegrees = targetDegrees;
+        }
+
         public virtual bool Init()
         {
             if (actor != null)

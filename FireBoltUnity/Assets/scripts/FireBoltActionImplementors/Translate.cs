@@ -49,6 +49,11 @@ namespace Assets.scripts
             this.unknownOrigin = unknownOrigin;
         }
 
+        public void SetDestination(Vector3Nullable destination)
+        {
+            this.destination = destination;
+        }
+
         public virtual bool Init()
         {
             if (actor != null)

@@ -6,25 +6,26 @@ using System.Xml.Serialization;
 
 namespace Oshmirto
 {
-    [XmlType("framingSize")]
-    public enum FramingSize
+    [XmlType("framingType")]
+    public enum FramingType
     {
+        [XmlEnum("")]
+        None,
         ExtremeCloseUp,
         CloseUp,
         Waist,
         Full,
         Long,
         ExtremeLong,
-        ExtremeLongLong,//or some such
-        [XmlEnum("")]
+        ExtremeLongLong,//or some such        
         Angle
     }
 
     [Serializable]
     public class Framing
     {
-        [XmlAttribute("framingSize")]
-        public FramingSize FramingSize { get; set; }
+        [XmlAttribute("framingType")]
+        public FramingType FramingType { get; set; }
 
         [XmlAttribute("framingTarget")]
         public string FramingTarget { get; set; }
