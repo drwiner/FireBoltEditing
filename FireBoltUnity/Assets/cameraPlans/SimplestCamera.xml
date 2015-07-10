@@ -36,7 +36,31 @@
           <framings>
             <framing  framingSize="" framingTarget="-10"/>
           </framings>
+<shotFragement/>
         </shotFragment>-->
+<shotFragment anchor="0,0" startTime="0" endTime="1" focus ="Pudge" f-stop ="1.4" lens ="25" Shake ="0">
+          <framings>
+            <framing  framingSize="" framingTarget="0"/>
+          </framings>
+        </shotFragment>
+<shotFragment anchor="" startTime="1" endTime="8000" focus ="Pudge" f-stop ="4" lens ="25" Shake ="5">
+          <framings>
+            <framing  framingSize="" framingTarget="0"/>
+          </framings>
+          <movements>
+            <movement type="Dolly" directive="To" subject="0,-10"/>
+          </movements>
+        </shotFragment>
+<shotFragment anchor="" startTime="8001" endTime="10000" focus ="Pudge" f-stop ="8" lens ="12" Shake ="0">
+          <framings>
+            <framing  framingSize="" framingTarget="0"/>
+          </framings>
+          <movements>
+            <movement type="Dolly" directive="With" subject="Pudge"/>
+            <movement type="Crane" directive="To" subject="5"/>
+            
+          </movements>
+        </shotFragment>
       </shotFragments>
     </block>
   </blocks>
