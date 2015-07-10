@@ -77,12 +77,12 @@ namespace Assets.scripts
                                     case CameraMovementDirective.With:
                                         break;
                                     case CameraMovementDirective.To:
-                                        cameraActionQueue.Add(new Translate(fragment.StartTime,fragment.EndTime,cameraName,
-                                                                            Vector3.zero, new Vector3Nullable(null,float.Parse(movement.Subject),null),true));
+                                        cameraActionQueue.Add(new Translate(fragment.StartTime, fragment.EndTime, cameraName,
+                                                                            Vector3.zero, new Vector3Nullable(null, float.Parse(movement.Subject), null), true));
                                         break;
                                 }
                                 break;
-                            case CameraMovementType.Pan :
+                            case CameraMovementType.Pan:
                                 switch (movement.Directive)
                                 {
                                     case CameraMovementDirective.With:
@@ -111,25 +111,25 @@ namespace Assets.scripts
 
 
                     // Lens change
-                       int lens = lensMMtoIndex(fragment.lensNum);
-                        if (lens < 0)
-                            Debug.Log("Lens does not exist");
-                        else
-                            cameraActionQueue.Add(new LensChange(fragment.StartTime, fragment.StartTime, "Main Camera", lens));
-                      
+                    int lens = lensMMtoIndex(fragment.Lens);
+                    if (lens < 0)
+                        Debug.Log("Lens does not exist");
+                    else
+                        cameraActionQueue.Add(new LensChange(fragment.StartTime, fragment.StartTime, "Main Camera", lens));
+
                     // FStop change
-                        int fstop = fStopToIndex(fragment.fstopType);
-                        if (lens < 0)
-                            Debug.Log("Lens does not exist");
-                        else
-                            cameraActionQueue.Add(new FStop(fragment.StartTime, fragment.EndTime, "Main Camera", fstop));
+                    int fstop = fStopToIndex(fragment.FStop);
+                    if (lens < 0)
+                        Debug.Log("Lens does not exist");
+                    else
+                        cameraActionQueue.Add(new FStop(fragment.StartTime, fragment.EndTime, "Main Camera", fstop));
 
 
                     // Focus Change
-                         cameraActionQueue.Add(new Focus(fragment.StartTime, fragment.EndTime, "Main Camera", fragment.focusPosition));   
-                       
+                    cameraActionQueue.Add(new Focus(fragment.StartTime, fragment.EndTime, "Main Camera", fragment.FocusPosition));
+
                     // Shake it off
-                         cameraActionQueue.Add(new Shake(fragment.StartTime, fragment.EndTime, "Main Camera", fragment.shakeValue));   
+                    cameraActionQueue.Add(new Shake(fragment.StartTime, fragment.EndTime, "Main Camera", fragment.Shake));
                 }
             }
         }

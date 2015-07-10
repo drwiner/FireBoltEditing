@@ -27,15 +27,15 @@ namespace Oshmirto
         public List<CameraMovement> CameraMovements { get; set; }
 
         [XmlAttribute("lens")]
-        public int lensNum { get; set; }
+        public int Lens { get; set; }
 
         [XmlAttribute("f-stop")]
-        public float fstopType { get; set; }
+        public float FStop { get; set; }
 
         [XmlAttribute("focus")]
-        public string focusPosition{ get; set; }
+        public string FocusPosition{ get; set; }
 
         [XmlAttribute("Shake")]
-        public float shakeValue { get; set; }
+        public float Shake { get; set; }
     }
 }
