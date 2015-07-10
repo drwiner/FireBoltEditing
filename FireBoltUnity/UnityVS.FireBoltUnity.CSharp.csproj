@@ -78,6 +78,25 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="UnityVS.FireBoltUnity.CSharp.Plugins.csproj">
+      <Project>{4B2E42F9-5F47-7278-6CA9-C9C4CD48E1B0}</Project>
+      <Name>UnityVS.FireBoltUnity.CSharp.Plugins</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Assets\Cinema Suite\Cinema Pro Cams\Camera Behaviours\Perlin.cs" />
+    <Compile Include="Assets\Cinema Suite\Cinema Pro Cams\Camera Behaviours\ShakeCam.cs" />
+    <Compile Include="Assets\Cinema Suite\Cinema Pro Cams\Image Effects (Pro Only)_CS\Cinema Suite\CSDOFScatter.cs" />
+    <Compile Include="Assets\Cinema Suite\Cinema Pro Cams\Image Effects (Pro Only)_CS\Cinema Suite\CSPostEffectsBase.cs" />
+    <Compile Include="Assets\Cinema Suite\Cinema Pro Cams\Scripts\CameraBody.cs" />
+    <Compile Include="Assets\Cinema Suite\Cinema Pro Cams\Scripts\CameraBodyGUI.cs" />
+    <Compile Include="Assets\Cinema Suite\Cinema Pro Cams\Scripts\CameraMan.cs" />
+    <Compile Include="Assets\Cinema Suite\Cinema Pro Cams\Scripts\CameraMount.cs" />
+    <Compile Include="Assets\Cinema Suite\Cinema Pro Cams\Scripts\ProCamsLensDataTable.cs" />
+    <Compile Include="Assets\Cinema Suite\Cinema Pro Cams\Scripts\ProCamsUtility.cs" />
+    <Compile Include="Assets\Cinema Suite\Cinema Pro Cams\Scripts\Stereo3D.cs" />
+    <Compile Include="Assets\Cinema Suite\Cinema Pro Cams\Scripts\Stereo3DGUI.cs" />
+    <Compile Include="Assets\Cinema Suite\Cinema Pro Cams\Scripts\Stereo3DRenderer.cs" />
     <Compile Include="Assets\scripts\ActorActionFactory.cs" />
     <Compile Include="Assets\scripts\CameraActionFactory.cs" />
     <Compile Include="Assets\scripts\ConsoleBehavior.cs" />
@@ -87,9 +106,13 @@
     <Compile Include="Assets\scripts\FireBoltActionImplementors\AnimateMecanim.cs" />
     <Compile Include="Assets\scripts\FireBoltActionImplementors\Create.cs" />
     <Compile Include="Assets\scripts\FireBoltActionImplementors\Destroy.cs" />
+    <Compile Include="Assets\scripts\FireBoltActionImplementors\FStop.cs" />
+    <Compile Include="Assets\scripts\FireBoltActionImplementors\Focus.cs" />
     <Compile Include="Assets\scripts\FireBoltActionImplementors\Frame.cs" />
+    <Compile Include="Assets\scripts\FireBoltActionImplementors\LensChange.cs" />
     <Compile Include="Assets\scripts\FireBoltActionImplementors\Rotate.cs" />
     <Compile Include="Assets\scripts\FireBoltActionImplementors\RotateRelative.cs" />
+    <Compile Include="Assets\scripts\FireBoltActionImplementors\Shake.cs" />
     <Compile Include="Assets\scripts\FireBoltActionImplementors\Translate.cs" />
     <Compile Include="Assets\scripts\FireBoltActionImplementors\TranslateRelative.cs" />
     <Compile Include="Assets\scripts\FireBoltActionList.cs" />
@@ -99,9 +122,92 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="Assets\cameraPlans\SimplestCamera.xml" />
+    <None Include="Assets\Cinema Suite\Cinema Pro Cams\Image Effects (Pro Only)_CS\_Sources\Shaders\_DepthOfField\DepthOfFieldDX11.shader" />
+    <None Include="Assets\Cinema Suite\Cinema Pro Cams\Image Effects (Pro Only)_CS\_Sources\Shaders\_DepthOfField\DepthOfFieldScatter.shader" />
+    <None Include="Assets\Cinema Suite\Cinema Pro Cams\Lens Data\Resources\CinemaSuite_LensData.txt" />
+    <None Include="Assets\Cinema Suite\Cinema Pro Cams\Shader\Stereo3D.shader" />
+    <None Include="Assets\Cinema Suite\Cinema Pro Cams\tmp\Resources\ProjectFilmFormat.txt" />
     <None Include="Assets\cinematicModels\DotaHierarchyModel.xml" />
     <None Include="Assets\plugins\Impulse.XML" />
     <None Include="Assets\plugins\LN.Utilities.xml" />
+    <None Include="Assets\Standard Assets\Cameras\CameraGuidelines.txt" />
+    <None Include="Assets\Standard Assets\CrossPlatformInput\CrossPlatformInputGuidelines.txt" />
+    <None Include="Assets\Standard Assets\Effects\GlassRefraction\Shaders\GlassStainedBumpDistort.shader" />
+    <None Include="Assets\Standard Assets\Effects\ImageEffects\Shaders\_Antialiasing\DLAA.shader" />
+    <None Include="Assets\Standard Assets\Effects\ImageEffects\Shaders\_Antialiasing\FXAA2.shader" />
+    <None Include="Assets\Standard Assets\Effects\ImageEffects\Shaders\_Antialiasing\FXAA3Console.shader" />
+    <None Include="Assets\Standard Assets\Effects\ImageEffects\Shaders\_Antialiasing\FXAAPreset2.shader" />
+    <None Include="Assets\Standard Assets\Effects\ImageEffects\Shaders\_Antialiasing\FXAAPreset3.shader" />
+    <None Include="Assets\Standard Assets\Effects\ImageEffects\Shaders\_Antialiasing\NFAA.shader" />
+    <None Include="Assets\Standard Assets\Effects\ImageEffects\Shaders\_Antialiasing\SSAA.shader" />
+    <None Include="Assets\Standard Assets\Effects\ImageEffects\Shaders\_BloomAndFlares\Blend.shader" />
+    <None Include="Assets\Standard Assets\Effects\ImageEffects\Shaders\_BloomAndFlares\BlendForBloom.shader" />
+    <None Include="Assets\Standard Assets\Effects\ImageEffects\Shaders\_BloomAndFlares\BlendOneOne.shader" />
+    <None Include="Assets\Standard Assets\Effects\ImageEffects\Shaders\_BloomAndFlares\BlurAndFlares.shader" />
+    <None Include="Assets\Standard Assets\Effects\ImageEffects\Shaders\_BloomAndFlares\BrightPassFilter.shader" />
+    <None Include="Assets\Standard Assets\Effects\ImageEffects\Shaders\_BloomAndFlares\BrightPassFilter2.shader" />
+    <None Include="Assets\Standard Assets\Effects\ImageEffects\Shaders\_BloomAndFlares\LensFlareCreate.shader" />
+    <None Include="Assets\Standard Assets\Effects\ImageEffects\Shaders\_BloomAndFlares\MobileBloom.shader" />
+    <None Include="Assets\Standard Assets\Effects\ImageEffects\Shaders\_BloomAndFlares\MobileBlur.shader" />
+    <None Include="Assets\Standard Assets\Effects\ImageEffects\Shaders\_BloomAndFlares\MultiPassHollywoodFlares.shader" />
+    <None Include="Assets\Standard Assets\Effects\ImageEffects\Shaders\_BloomAndFlares\SeparableBlurPlus.shader" />
+    <None Include="Assets\Standard Assets\Effects\ImageEffects\Shaders\_BloomAndFlares\VignetteShader.shader" />
+    <None Include="Assets\Standard Assets\Effects\ImageEffects\Shaders\_DepthOfField\Bokeh34.shader" />
+    <None Include="Assets\Standard Assets\Effects\ImageEffects\Shaders\_DepthOfField\DepthOfField34.shader" />
+    <None Include="Assets\Standard Assets\Effects\ImageEffects\Shaders\_DepthOfField\DepthOfFieldDX11.shader" />
+    <None Include="Assets\Standard Assets\Effects\ImageEffects\Shaders\_DepthOfField\DepthOfFieldScatter.shader" />
+    <None Include="Assets\Standard Assets\Effects\ImageEffects\Shaders\_DepthOfField\SeparableBlur.shader" />
+    <None Include="Assets\Standard Assets\Effects\ImageEffects\Shaders\_DepthOfField\SeparableWeightedBlurDof34.shader" />
+    <None Include="Assets\Standard Assets\Effects\ImageEffects\Shaders\_DepthOfField\TiltShiftHdrLensBlur.shader" />
+    <None Include="Assets\Standard Assets\Effects\ImageEffects\Shaders\BlendModesOverlay.shader" />
+    <None Include="Assets\Standard Assets\Effects\ImageEffects\Shaders\BlurEffectConeTaps.shader" />
+    <None Include="Assets\Standard Assets\Effects\ImageEffects\Shaders\CameraMotionBlur.shader" />
+    <None Include="Assets\Standard Assets\Effects\ImageEffects\Shaders\CameraMotionBlurDX11.shader" />
+    <None Include="Assets\Standard Assets\Effects\ImageEffects\Shaders\ChromaticAberrationShader.shader" />
+    <None Include="Assets\Standard Assets\Effects\ImageEffects\Shaders\ColorCorrection3DLut.shader" />
+    <None Include="Assets\Standard Assets\Effects\ImageEffects\Shaders\ColorCorrectionCurves.shader" />
+    <None Include="Assets\Standard Assets\Effects\ImageEffects\Shaders\ColorCorrectionCurvesSimple.shader" />
+    <None Include="Assets\Standard Assets\Effects\ImageEffects\Shaders\ColorCorrectionEffect.shader" />
+    <None Include="Assets\Standard Assets\Effects\ImageEffects\Shaders\ColorCorrectionSelective.shader" />
+    <None Include="Assets\Standard Assets\Effects\ImageEffects\Shaders\Contrast Stretch\Adaptation.shader" />
+    <None Include="Assets\Standard Assets\Effects\ImageEffects\Shaders\Contrast Stretch\Apply.shader" />
+    <None Include="Assets\Standard Assets\Effects\ImageEffects\Shaders\Contrast Stretch\Luminance.shader" />
+    <None Include="Assets\Standard Assets\Effects\ImageEffects\Shaders\Contrast Stretch\MinMaxReduction.shader" />
+    <None Include="Assets\Standard Assets\Effects\ImageEffects\Shaders\ContrastComposite.shader" />
+    <None Include="Assets\Standard Assets\Effects\ImageEffects\Shaders\ConvertDepth.shader" />
+    <None Include="Assets\Standard Assets\Effects\ImageEffects\Shaders\CreaseApply.shader" />
+    <None Include="Assets\Standard Assets\Effects\ImageEffects\Shaders\EdgeDetectNormals.shader" />
+    <None Include="Assets\Standard Assets\Effects\ImageEffects\Shaders\FisheyeShader.shader" />
+    <None Include="Assets\Standard Assets\Effects\ImageEffects\Shaders\frag_ao.cginc" />
+    <None Include="Assets\Standard Assets\Effects\ImageEffects\Shaders\GlobalFog.shader" />
+    <None Include="Assets\Standard Assets\Effects\ImageEffects\Shaders\GrayscaleEffect.shader" />
+    <None Include="Assets\Standard Assets\Effects\ImageEffects\Shaders\MotionBlur.shader" />
+    <None Include="Assets\Standard Assets\Effects\ImageEffects\Shaders\MotionBlurClear.shader" />
+    <None Include="Assets\Standard Assets\Effects\ImageEffects\Shaders\NoiseAndGrain.shader" />
+    <None Include="Assets\Standard Assets\Effects\ImageEffects\Shaders\NoiseAndGrainDX11.shader" />
+    <None Include="Assets\Standard Assets\Effects\ImageEffects\Shaders\NoiseEffectShaderRGB.shader" />
+    <None Include="Assets\Standard Assets\Effects\ImageEffects\Shaders\NoiseEffectShaderYUV.shader" />
+    <None Include="Assets\Standard Assets\Effects\ImageEffects\Shaders\PrepareSunShaftsBlur.shader" />
+    <None Include="Assets\Standard Assets\Effects\ImageEffects\Shaders\RadialBlur.shader" />
+    <None Include="Assets\Standard Assets\Effects\ImageEffects\Shaders\ScreenSpaceAmbientObscurance.shader" />
+    <None Include="Assets\Standard Assets\Effects\ImageEffects\Shaders\SepiaToneEffect.shader" />
+    <None Include="Assets\Standard Assets\Effects\ImageEffects\Shaders\ShowAlphaChannel.shader" />
+    <None Include="Assets\Standard Assets\Effects\ImageEffects\Shaders\SimpleClear.shader" />
+    <None Include="Assets\Standard Assets\Effects\ImageEffects\Shaders\SSAOShader.shader" />
+    <None Include="Assets\Standard Assets\Effects\ImageEffects\Shaders\SunShaftsComposite.shader" />
+    <None Include="Assets\Standard Assets\Effects\ImageEffects\Shaders\Tonemapper.shader" />
+    <None Include="Assets\Standard Assets\Effects\ImageEffects\Shaders\TwirlEffect.shader" />
+    <None Include="Assets\Standard Assets\Effects\ImageEffects\Shaders\VignettingShader.shader" />
+    <None Include="Assets\Standard Assets\Effects\ImageEffects\Shaders\VortexEffect.shader" />
+    <None Include="Assets\Standard Assets\Effects\Projectors\Guidelines.txt" />
+    <None Include="Assets\Standard Assets\Effects\Projectors\Shaders\ProjectorLight.shader" />
+    <None Include="Assets\Standard Assets\Effects\Projectors\Shaders\ProjectorMultiply.shader" />
+    <None Include="Assets\Standard Assets\Effects\TessellationShaders\Shaders\BumpedSpecularDisplacement.shader" />
+    <None Include="Assets\Standard Assets\Effects\TessellationShaders\Shaders\BumpedSpecularSmooth.shader" />
+    <None Include="Assets\Standard Assets\Effects\ToonShading\Shaders\ToonBasic.shader" />
+    <None Include="Assets\Standard Assets\Effects\ToonShading\Shaders\ToonBasicOutline.shader" />
+    <None Include="Assets\Standard Assets\Effects\ToonShading\Shaders\ToonLit.shader" />
+    <None Include="Assets\Standard Assets\Effects\ToonShading\Shaders\ToonLitOutline.shader" />
     <None Include="Assets\storyPlans\Impulsev1_336\600924233.xml" />
     <None Include="Assets\storyPlans\Impulsev1_336\tester.xml" />
   </ItemGroup>

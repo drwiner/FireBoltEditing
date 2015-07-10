@@ -108,28 +108,26 @@ namespace Assets.scripts
                         //TODO handle calculating actor target facing
                     }
 
+                    // Lens change
+                    int lens = lensMMtoIndex(fragment.Lens);
+                    if (lens < 0)
+                        Debug.Log("Lens does not exist");
+                    else
+                        cameraActionQueue.Add(new LensChange(fragment.StartTime, fragment.StartTime, "Main Camera", lens));
+
+                    // FStop change
+                    int fstop = fStopToIndex(fragment.FStop);
+                    if (lens < 0)
+                        Debug.Log("Lens does not exist");
+                    else
+                        cameraActionQueue.Add(new FStop(fragment.StartTime, fragment.EndTime, "Main Camera", fstop));
 
 
-                    //// Lens change
-                    //int lens = lensMMtoIndex(fragment.Lens);
-                    //if (lens < 0)
-                    //    Debug.Log("Lens does not exist");
-                    //else
-                    //    cameraActionQueue.Add(new LensChange(fragment.StartTime, fragment.StartTime, "Main Camera", lens));
+                    // Focus Change
+                    cameraActionQueue.Add(new Focus(fragment.StartTime, fragment.EndTime, "Main Camera", fragment.FocusPosition));
 
-                    //// FStop change
-                    //int fstop = fStopToIndex(fragment.FStop);
-                    //if (lens < 0)
-                    //    Debug.Log("Lens does not exist");
-                    //else
-                    //    cameraActionQueue.Add(new FStop(fragment.StartTime, fragment.EndTime, "Main Camera", fstop));
-
-
-                    //// Focus Change
-                    //cameraActionQueue.Add(new Focus(fragment.StartTime, fragment.EndTime, "Main Camera", fragment.FocusPosition));
-
-                    //// Shake it off
-                    //cameraActionQueue.Add(new Shake(fragment.StartTime, fragment.EndTime, "Main Camera", fragment.Shake));
+                    // Shake it off
+                    cameraActionQueue.Add(new Shake(fragment.StartTime, fragment.EndTime, "Main Camera", fragment.Shake));
                 }
             }
         }
