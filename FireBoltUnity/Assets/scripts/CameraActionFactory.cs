@@ -34,7 +34,7 @@ namespace Assets.scripts
                     if (fragment.Anchor.TryParsePlanarCoords(out futurePosition))
                     {
                         cameraActionQueue.Add(new Translate(fragment.StartTime, fragment.StartTime,
-                                                            cameraName, Vector3.zero, new Vector3Nullable(futurePosition.x,null,futurePosition.z), true));
+                                                            cameraName, Vector3.zero, new Vector3Nullable(futurePosition.x,null,futurePosition.z), true, true));
 
                     }
                     else if(fragment.Framings[0] != null &&
@@ -110,26 +110,26 @@ namespace Assets.scripts
 
 
 
-                    // Lens change
-                    int lens = lensMMtoIndex(fragment.Lens);
-                    if (lens < 0)
-                        Debug.Log("Lens does not exist");
-                    else
-                        cameraActionQueue.Add(new LensChange(fragment.StartTime, fragment.StartTime, "Main Camera", lens));
+                    //// Lens change
+                    //int lens = lensMMtoIndex(fragment.Lens);
+                    //if (lens < 0)
+                    //    Debug.Log("Lens does not exist");
+                    //else
+                    //    cameraActionQueue.Add(new LensChange(fragment.StartTime, fragment.StartTime, "Main Camera", lens));
 
-                    // FStop change
-                    int fstop = fStopToIndex(fragment.FStop);
-                    if (lens < 0)
-                        Debug.Log("Lens does not exist");
-                    else
-                        cameraActionQueue.Add(new FStop(fragment.StartTime, fragment.EndTime, "Main Camera", fstop));
+                    //// FStop change
+                    //int fstop = fStopToIndex(fragment.FStop);
+                    //if (lens < 0)
+                    //    Debug.Log("Lens does not exist");
+                    //else
+                    //    cameraActionQueue.Add(new FStop(fragment.StartTime, fragment.EndTime, "Main Camera", fstop));
 
 
-                    // Focus Change
-                    cameraActionQueue.Add(new Focus(fragment.StartTime, fragment.EndTime, "Main Camera", fragment.FocusPosition));
+                    //// Focus Change
+                    //cameraActionQueue.Add(new Focus(fragment.StartTime, fragment.EndTime, "Main Camera", fragment.FocusPosition));
 
-                    // Shake it off
-                    cameraActionQueue.Add(new Shake(fragment.StartTime, fragment.EndTime, "Main Camera", fragment.Shake));
+                    //// Shake it off
+                    //cameraActionQueue.Add(new Shake(fragment.StartTime, fragment.EndTime, "Main Camera", fragment.Shake));
                 }
             }
         }

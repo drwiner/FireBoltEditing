@@ -32,6 +32,8 @@ namespace Assets.scripts
         /// </summary>
         bool unknownOrigin;
 
+        bool controlsTime;
+
         public static bool ValidForConstruction(string actorName)
         {
             if (string.IsNullOrEmpty(actorName))
@@ -39,7 +41,7 @@ namespace Assets.scripts
             return true;
         }
 
-        public Translate(float startTick, float endTick, string actorName,  Vector3 origin, Vector3Nullable destination, bool unknownOrigin=false) 
+        public Translate(float startTick, float endTick, string actorName,  Vector3 origin, Vector3Nullable destination, bool unknownOrigin=false, bool controlsTime=false) 
         {
             this.startTick = startTick;
             this.actorName = actorName;
@@ -47,6 +49,7 @@ namespace Assets.scripts
             this.origin = origin;
             this.destination = destination;
             this.unknownOrigin = unknownOrigin;
+            this.controlsTime = controlsTime;
         }
 
         public void SetDestination(Vector3Nullable destination)
@@ -65,6 +68,11 @@ namespace Assets.scripts
                 return false;
             }
 			start = actor.transform.position;
+
+            if (controlsTime &&// i don't like this much
+               Mathf.Abs(startTick - ElPresidente.currentTime) > ElPresidente.MILLIS_PER_FRAME)
+                ElPresidente.Instance.goTo(startTick);
+
 
             if (unknownOrigin)
                 origin = start;

@@ -28,6 +28,8 @@ public class ElPresidente : MonoBehaviour {
     public static readonly ushort MILLIS_PER_FRAME = 5;
     private AStory<UintV, UintT, IIntervalSet<UintV, UintT>> story;
 
+    public static ElPresidente Instance;
+
 
     /// <summary>
     /// FireBolt point of truth for time.  updated with but independent of time.deltaTime
@@ -48,6 +50,8 @@ public class ElPresidente : MonoBehaviour {
         totalTime = 0;
         if (actorActionList.Count > 0)
             totalTime = actorActionList [actorActionList.Count - 1].EndTick() - actorActionList [0].StartTick();
+
+        Instance = this;
     }
 
     private void loadStructuredImpulsePlan(string storyPlanPath)

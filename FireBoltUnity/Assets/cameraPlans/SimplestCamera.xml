@@ -38,7 +38,7 @@
           </framings>
 <shotFragement/>
         </shotFragment>-->
-<shotFragment anchor="0,0" startTime="0" endTime="1" focus ="Pudge" f-stop ="1.4" lens ="25" shake ="0">
+<!--<shotFragment anchor="0,0" startTime="0" endTime="1" focus ="Pudge" f-stop ="1.4" lens ="25" shake ="0">
           <framings>
             <framing  framingSize="" framingTarget="0"/>
           </framings>
@@ -60,6 +60,11 @@
             <movement type="Crane" directive="To" subject="5"/>
             
           </movements>
+        </shotFragment>-->
+        <shotFragment anchor="-3,-3" startTime="0" endTime="1" >
+          <framings>
+            <framing  framingSize="" framingTarget="0"/>
+          </framings>
         </shotFragment>
       </shotFragments>
     </block>
