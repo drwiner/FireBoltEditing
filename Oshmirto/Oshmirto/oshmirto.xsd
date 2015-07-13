@@ -1,0 +1,127 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<xs:schema elementFormDefault="qualified" xmlns:xs="http://www.w3.org/2001/XMLSchema" 
+           xmlns="http://liquidnarrative.csc.ncsu.edu/oshmirto/v0.1" 
+           xmlns:tns="http://liquidnarrative.csc.ncsu.edu/oshmirto/v0.1" 
+           targetNamespace="http://liquidnarrative.csc.ncsu.edu/oshmirto/v0.1" >
+  <xs:simpleType name="lens">
+    <xs:restriction base="xs:int" >
+      <xs:enumeration value="12" />
+      <xs:enumeration value="14" />
+      <xs:enumeration value="16" />
+      <xs:enumeration value="18" />
+      <xs:enumeration value="21" />
+      <xs:enumeration value="25" />
+      <xs:enumeration value="27" />
+      <xs:enumeration value="32" />
+      <xs:enumeration value="35" />
+      <xs:enumeration value="40" />
+      <xs:enumeration value="50" />
+      <xs:enumeration value="65" />
+      <xs:enumeration value="75" />
+      <xs:enumeration value="100" />
+      <xs:enumeration value="135" />
+      <xs:enumeration value="150" />
+      <xs:enumeration value="180" />
+    </xs:restriction>
+  </xs:simpleType>
+  <xs:simpleType name="f-stop">
+    <xs:restriction base="xs:float" >
+      <xs:enumeration value="1.4" />
+      <xs:enumeration value="2" />
+      <xs:enumeration value="2.8" />
+      <xs:enumeration value="4" />
+      <xs:enumeration value="5.6" />
+      <xs:enumeration value="8" />
+      <xs:enumeration value="11" />
+      <xs:enumeration value="16" />
+      <xs:enumeration value="22" />
+    </xs:restriction>
+  </xs:simpleType>
+  <xs:simpleType name="CameraMovementType">
+    <xs:restriction base="xs:string">
+      <xs:enumeration value="Dolly" />
+      <xs:enumeration value="Crane" />
+      <xs:enumeration value="Pan" />
+      <xs:enumeration value="Tilt" />
+      <xs:enumeration value="Focus" />
+    </xs:restriction>
+  </xs:simpleType>
+  <xs:simpleType name="framingType">
+    <xs:restriction base="xs:string">
+      <xs:enumeration value="" />
+      <xs:enumeration value="ExtremeCloseUp" />
+      <xs:enumeration value="CloseUp" />
+      <xs:enumeration value="Waist" />
+      <xs:enumeration value="Full" />
+      <xs:enumeration value="Long" />
+      <xs:enumeration value="ExtremeLong" />
+      <xs:enumeration value="ExtremeLongLong" />
+      <xs:enumeration value="Angle" />
+    </xs:restriction>
+  </xs:simpleType>
+  
+  <xs:complexType name="Block">
+    <xs:sequence>
+      <xs:element minOccurs="1" maxOccurs="1" name="shotFragments" type="ArrayOfShotFragment" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:complexType name="ArrayOfShotFragment">
+    <xs:sequence>
+      <xs:element minOccurs="1" maxOccurs="unbounded" name="shotFragment" nillable="false" type="ShotFragment" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:complexType name="ShotFragment">
+    <xs:all>
+      <xs:element minOccurs="1" maxOccurs="1" name="framings" type="ArrayOfFraming" />
+      <xs:element minOccurs="1" maxOccurs="1" name="movements" type="ArrayOfCameraMovement" />
+    </xs:all>
+    <xs:attribute name="anchor" type="xs:string" />
+    <xs:attribute name="startTime" type="xs:float" use="required" />
+    <xs:attribute name="endTime" type="xs:float" use="required" />
+    <xs:attribute name="lens" type="lens" use="optional" default="35"/>
+    <xs:attribute name="f-stop" type="f-stop" use="optional" default="22" />
+    <xs:attribute name="focus" type="xs:string" />
+    <xs:attribute name="shake" type="xs:float" use="optional" default="0"/>
+  </xs:complexType>
+  <xs:complexType name="ArrayOfFraming">
+    <xs:sequence>
+      <xs:element minOccurs="0" maxOccurs="unbounded" name="framing" nillable="false" type="Framing" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:complexType name="Framing">
+    <xs:attribute name="framingType" type="framingType" use="required" />
+    <xs:attribute name="framingTarget" type="xs:string" use="required"/>
+  </xs:complexType>
+
+  <xs:complexType name="ArrayOfCameraMovement">
+    <xs:sequence>
+      <xs:element minOccurs="0" maxOccurs="unbounded" name="movement" nillable="false" type="CameraMovement" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:complexType name="CameraMovement">
+    <xs:attribute name="type" type="CameraMovementType" use="required" />
+    <xs:attribute name="directive" type="CameraMovementDirective" use="required" />
+    <xs:attribute name="subject" type="xs:string" use="required"/>
+  </xs:complexType>
+  
+  <xs:simpleType name="CameraMovementDirective">
+    <xs:restriction base="xs:string">
+      <xs:enumeration value="With" />
+      <xs:enumeration value="To" />
+    </xs:restriction>
+  </xs:simpleType>
+  
+  <xs:complexType name="CameraPlan">
+    <xs:sequence>
+      <xs:element minOccurs="1" maxOccurs="1" name="blocks" type="ArrayOfBlock" />
+    </xs:sequence>
+    <xs:attribute name="Version" type="xs:string" />
+  </xs:complexType>
+  <xs:complexType name="ArrayOfBlock">
+    <xs:sequence>
+      <xs:element minOccurs="0" maxOccurs="unbounded" name="block" nillable="false" type="Block" />
+    </xs:sequence>
+  </xs:complexType>
+  
+  <xs:element name="cameraPlan" nillable="false" type="CameraPlan" />
+</xs:schema>

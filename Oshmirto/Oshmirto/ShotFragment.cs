@@ -35,7 +35,7 @@ namespace Oshmirto
         [XmlAttribute("focus")]
         public string FocusPosition{ get; set; }
 
-        [XmlAttribute("Shake")]
+        [XmlAttribute("shake")]
         public float Shake { get; set; }
     }
 }
