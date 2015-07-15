@@ -10,15 +10,17 @@ namespace Assets.scripts
 {
     public class Focus : IFireBoltAction
     {
-        float lastUpdateTime;
-        float startTick, endTick;
-        int lensIndex;
 
-        string actorName;
+        private static readonly string FOCUS_LOCATOR_NAME = "focuser";
+        float startTick, endTick;
+
+        string cameraName;
         string targetName;
         Transform focusLocation;
-        CameraBody actor;
+        CameraBody camera;
         GameObject target;
+        bool tracking;
+
 
         public static bool ValidForConstruction(string actorName)
         {
@@ -27,53 +29,64 @@ namespace Assets.scripts
             return true;
         }
 
-        public Focus(float startTick, float endTick, string actorName, string targetName) 
+        public Focus(float startTick, float endTick, string cameraName, string targetName, bool tracking=false) 
         {
             this.startTick = startTick;
             this.endTick = endTick;
-            this.actorName = actorName;
+            this.cameraName = cameraName;
             this.targetName = targetName;
         }
 
         public virtual bool Init()
         {
-            actor = GameObject.Find(actorName).GetComponent<CameraBody>() as CameraBody;
-            if (actor == null)
+            //get camera
+            camera = GameObject.Find(cameraName).GetComponent<CameraBody>() as CameraBody;
+            if (camera == null)
             {
-                Debug.LogError("actor name [" + actorName + "] not found. cannot change focus");
+                Debug.LogError("actor name [" + cameraName + "] not found. cannot change focus");
                 return false;
             }
 
+            findFocusLocator();
+
+            //try to parse target as a coordinate
+            Vector3 focusPosition;
+            if (targetName.TryParseVector3(out focusPosition))
+            {
+                focusLocation.position = focusPosition;
+                return true;
+            }
+
+            //try to find the target as an actor
             target = GameObject.Find(targetName);
-            if (actor == null)
+            if (target == null)
             {
                 Debug.LogError("actor name [" + targetName + "] not found. cannot change focus");
                 return false;
             }
 
-            focusLocation = target.transform;
-
-            if (endTick - startTick < ElPresidente.MILLIS_PER_FRAME)//we aren't guaranteed a single execution cycle, so move it now and make sure it doesn't move later
-                Skip();
-
+            focusLocation.position = target.transform.position;
             return true;
         }
 
         public virtual void Execute()
         {
-            actor.FocusTransform = focusLocation;
+            if (tracking)
+            {
+                //update our unlocked transform object with our target's position
+                focusLocation.position = target.transform.position;
+            }
+            //camera.FocusTransform = focusLocation;            
         }
 
 		public virtual void Undo()
 		{
-			if (actor != null)
-            {
-               
-            }
+
 		}
 
         public virtual void Skip()
         {
+            //need to find end position of target if we are tracking, though if we skip, it doesn't matter b/c focus will be overwritten...hmmm
         }
 
         public virtual void Stop()
@@ -89,6 +102,18 @@ namespace Assets.scripts
         public float EndTick()
         {
             return endTick;
+        }
+
+        private Transform findFocusLocator()
+        {
+            var g = GameObject.Find(FOCUS_LOCATOR_NAME);
+            if (g == null)
+            {
+                g = new GameObject(FOCUS_LOCATOR_NAME);
+                g.name = FOCUS_LOCATOR_NAME;                              
+            }
+            focusLocation = g.transform;   
+            return focusLocation;
         }
     }
 }

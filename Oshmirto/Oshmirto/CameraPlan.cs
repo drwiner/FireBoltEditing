@@ -7,8 +7,7 @@ using System.Xml.Serialization;
 
 namespace Oshmirto
 {
-    [Serializable]
-    [XmlRoot("cameraPlan")]
+    [Serializable, XmlRoot(Namespace="http://liquidnarrative.csc.ncsu.edu/oshmirto/v0.1", ElementName="cameraPlan")]
     public class CameraPlan
     {
         [XmlAttribute]

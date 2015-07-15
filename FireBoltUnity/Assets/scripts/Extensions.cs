@@ -4,20 +4,30 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using LN.Utilities;
+using System.Text.RegularExpressions;
 
 namespace Assets.scripts
 {
     public static class Extensions
     {
+        private static readonly string doublePattern = @"[-+]?([0-9]+,)*[0-9]+(\.[0-9]*)?(E[-+][0-9]+)?";
+        private static readonly Regex regex = new Regex(string.Format(@"^\s*(\(\s*(?<x>({0}))\s*,\s*(?<y>{0})\s*,\s*(?<z>{0})\s*\))\s*$", doublePattern), RegexOptions.ExplicitCapture);
+
         /// <summary>
         /// converts comma delimited string into a vector 3
         /// </summary>
         /// <param name="s">this better have x,y,z in it</param>
         /// <returns>shiny vector3</returns>
-        public static Vector3 ParseVector3(this string s)
+        public static bool TryParseVector3(this string s, out Vector3 v)
         {
-            string [] values = s.Split(new char[]{','});
-            return new Vector3(float.Parse(values[0]),float.Parse(values[1]),float.Parse(values[2]));
+            v = Vector3.zero;
+            var match = regex.Match(s);
+            if (match.Success)
+            {
+                v = new Vector3(float.Parse(match.Groups["x"].Value), float.Parse(match.Groups["y"].Value), float.Parse(match.Groups["z"].Value));
+                return true;
+            }
+            return false;            
         }
 
 

@@ -16,7 +16,6 @@ public class ElPresidente : MonoBehaviour {
     FireBoltActionList actorActionList;
     FireBoltActionList cameraActionList;
     FireBoltActionList executingActions;
-    List<Keyframe> keyFrames;
     public string storyPlanPath;
     public string cinematicModelPath;
     public string cameraPlanPath;
@@ -41,7 +40,6 @@ public class ElPresidente : MonoBehaviour {
 	void Awake () {
         ActorActionFactory.debugText = debugText;
         executingActions = new FireBoltActionList(new ActionTypeComparer());
-        keyFrames = new List<Keyframe>();
         loadStructuredImpulsePlan(storyPlanPath);
         actorActionList = ActorActionFactory.CreateStoryActions(story, cinematicModelPath);
         cameraActionList = CameraActionFactory.CreateCameraActions(story, cameraPlanPath);

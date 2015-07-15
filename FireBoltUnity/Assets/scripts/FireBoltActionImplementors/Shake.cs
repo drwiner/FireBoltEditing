@@ -17,7 +17,7 @@ namespace Assets.scripts
         string actorName;
 
 
-        ShakeCam actor;
+        ShakeCam shakeCam;
 
 
         public static bool ValidForConstruction(string actorName)
@@ -37,33 +37,33 @@ namespace Assets.scripts
 
         public virtual bool Init()
         {
-            actor = GameObject.Find(actorName).GetComponent<ShakeCam>() as ShakeCam;
+            GameObject actor = GameObject.Find(actorName);
             if (actor == null)
             {
-                Debug.LogError("actor name [" + actorName + "] not found. cannot change focus");
+                Debug.LogError("actor name [" + actorName + "] not found. cannot shake");
                 return false;
             }
 
-            if (endTick - startTick < ElPresidente.MILLIS_PER_FRAME)//we aren't guaranteed a single execution cycle, so move it now and make sure it doesn't move later
-                Skip();
+            shakeCam = actor.GetComponent<ShakeCam>() as ShakeCam;
+            if (shakeCam == null)
+            {
+                Debug.LogError(string.Format("camera name [{0}] does not have ShakeCam component",actorName));
+                return false;
+            }
 
             return true;
         }
 
         public virtual void Execute()
         {
-            actor.positionShakeSpeed = shakeValue;
-            actor.rotationShakeSpeed = shakeValue;
-            
+            shakeCam.positionShakeSpeed = shakeValue;
+            shakeCam.rotationShakeSpeed = shakeValue;            
         }
 
 		public virtual void Undo()
 		{
-			if (actor != null)
-            {
-               
-            }
-		}
+            //intentionally blank
+        }
 
         public virtual void Skip()
         {

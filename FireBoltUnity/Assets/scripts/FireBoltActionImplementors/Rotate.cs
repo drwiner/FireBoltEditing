@@ -77,6 +77,8 @@ namespace Assets.scripts
 
         public virtual void Execute()
         {
+            if (endTick - startTick < 1)
+                return;
             actor.transform.rotation = Quaternion.Lerp (start, target, (ElPresidente.currentTime - startTick) / (endTick - startTick));
             //Debug.DrawRay(actor.transform.position + Vector3.up, actor.transform.forward,Color.magenta);
         }

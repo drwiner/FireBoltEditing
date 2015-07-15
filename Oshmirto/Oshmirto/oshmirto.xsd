@@ -4,28 +4,28 @@
            xmlns:tns="http://liquidnarrative.csc.ncsu.edu/oshmirto/v0.1" 
            targetNamespace="http://liquidnarrative.csc.ncsu.edu/oshmirto/v0.1" >
   <xs:simpleType name="lens">
-    <xs:restriction base="xs:int" >
-      <xs:enumeration value="12" />
-      <xs:enumeration value="14" />
-      <xs:enumeration value="16" />
-      <xs:enumeration value="18" />
-      <xs:enumeration value="21" />
-      <xs:enumeration value="25" />
-      <xs:enumeration value="27" />
-      <xs:enumeration value="32" />
-      <xs:enumeration value="35" />
-      <xs:enumeration value="40" />
-      <xs:enumeration value="50" />
-      <xs:enumeration value="65" />
-      <xs:enumeration value="75" />
-      <xs:enumeration value="100" />
-      <xs:enumeration value="135" />
-      <xs:enumeration value="150" />
-      <xs:enumeration value="180" />
+    <xs:restriction base="xs:string" >
+      <xs:enumeration value="12mm" />
+      <xs:enumeration value="14mm" />
+      <xs:enumeration value="16mm" />
+      <xs:enumeration value="18mm" />
+      <xs:enumeration value="21mm" />
+      <xs:enumeration value="25mm" />
+      <xs:enumeration value="27mm" />
+      <xs:enumeration value="32mm" />
+      <xs:enumeration value="35mm" />
+      <xs:enumeration value="40mm" />
+      <xs:enumeration value="50mm" />
+      <xs:enumeration value="65mm" />
+      <xs:enumeration value="75mm" />
+      <xs:enumeration value="100mm" />
+      <xs:enumeration value="135mm" />
+      <xs:enumeration value="150mm" />
+      <xs:enumeration value="180mm" />
     </xs:restriction>
   </xs:simpleType>
   <xs:simpleType name="f-stop">
-    <xs:restriction base="xs:float" >
+    <xs:restriction base="xs:string" >
       <xs:enumeration value="1.4" />
       <xs:enumeration value="2" />
       <xs:enumeration value="2.8" />
@@ -78,7 +78,7 @@
     <xs:attribute name="anchor" type="xs:string" />
     <xs:attribute name="startTime" type="xs:float" use="required" />
     <xs:attribute name="endTime" type="xs:float" use="required" />
-    <xs:attribute name="lens" type="lens" use="optional" default="35"/>
+    <xs:attribute name="lens" type="lens" use="optional" default="35mm"/>
     <xs:attribute name="f-stop" type="f-stop" use="optional" default="22" />
     <xs:attribute name="focus" type="xs:string" />
     <xs:attribute name="shake" type="xs:float" use="optional" default="0"/>

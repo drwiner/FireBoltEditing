@@ -24,7 +24,7 @@ namespace Assets.scripts
         //TODO concatenate looping subsequent animations on the same character into a single action?  would require even longer preprocessing...        
         private static CM.CinematicModel cm;
         private static string[] orderedObjectSets;
-        private static string[] orderedActionTypes;
+        //private static string[] orderedActionTypes;
         private static AStory<UintV, UintT, IIntervalSet<UintV, UintT>> story;
         public static Text debugText;
 
@@ -41,7 +41,7 @@ namespace Assets.scripts
 
             ActorActionFactory.story = story;
             orderedObjectSets = story.ObjectSetGraph.ReverseTopologicalSort().ToArray();
-            orderedActionTypes = story.ActionTypeGraph.ReverseTopologicalSort().ToArray();
+            //orderedActionTypes = story.ActionTypeGraph.ReverseTopologicalSort().ToArray();
 
             buildInitialState(aaq);
 

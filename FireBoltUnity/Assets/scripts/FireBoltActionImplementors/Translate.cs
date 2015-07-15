@@ -69,9 +69,10 @@ namespace Assets.scripts
             }
 			start = actor.transform.position;
 
-            if (controlsTime &&// i don't like this much
-               Mathf.Abs(startTick - ElPresidente.currentTime) > ElPresidente.MILLIS_PER_FRAME)
-                ElPresidente.Instance.goTo(startTick);
+            //time sync :\
+            //if (controlsTime &&// i don't like this much
+            //   Mathf.Abs(startTick - ElPresidente.currentTime) > ElPresidente.MILLIS_PER_FRAME)
+            //    ElPresidente.Instance.goTo(startTick);
 
 
             if (unknownOrigin)
@@ -86,6 +87,8 @@ namespace Assets.scripts
 
         public virtual void Execute()
         {
+            if (endTick - startTick < 1)
+                return;
             float lerpPercent = (ElPresidente.currentTime - startTick)/(endTick-startTick);
             Vector3 lerpd;
             lerpd.x = destination.X.HasValue ? Mathf.Lerp(start.x,destination.X.Value, lerpPercent) : actor.transform.position.x;

@@ -1,14 +1,14 @@
 ﻿<?xml version="1.0" encoding="utf-8" ?>
-<cameraPlan version="0.1" xmlns="http://liquidnarrative.csc.ncsu.edu/oshmirto/v0.1">
+<cameraPlan xmlns="http://liquidnarrative.csc.ncsu.edu/oshmirto/v0.1">
   <blocks>
     <block>
       <shotFragments>
-        <shotFragment anchor="" startTime="5000" endTime="5001">
+        <!--<shotFragment anchor="" startTime="5000" endTime="5001">
           <framings>
             <framing  framingType="Full" framingTarget="Pudge"/>
           </framings>
           <movements/>
-        </shotFragment>
+        </shotFragment>-->
         <!--<shotFragment anchor="0,0" startTime="0" endTime="1">
           <framings>
             <framing  framingSize="" framingTarget="0"/>
@@ -39,13 +39,11 @@
           </framings>
 <shotFragement/>
         </shotFragment>-->
-        <shotFragment anchor="0,0" startTime="0" endTime="1" focus ="Pudge" f-stop ="1.4" lens ="25" shake ="0">
-          <framings>
-            <framing  framingType="" framingTarget="0"/>
-          </framings>
+        <shotFragment anchor="-5,-5" startTime="0" endTime="1" focus ="(0,0,0)" f-stop ="1.4" lens ="25mm" shake ="0">
+          <framings/>            
           <movements/>
         </shotFragment>
-        <shotFragment anchor="" startTime="1" endTime="8000" focus ="Pudge" f-stop ="4" lens ="25" shake ="5">
+        <!--<shotFragment anchor="" startTime="1" endTime="8000" focus ="Pudge" f-stop ="4" lens ="25mm" shake ="0">
           <framings>
             <framing  framingType="" framingTarget="0"/>
           </framings>
@@ -53,22 +51,19 @@
             <movement type="Dolly" directive="To" subject="0,-10"/>
           </movements>
         </shotFragment>
-        <shotFragment anchor="" startTime="8001" endTime="10000" focus ="Pudge" f-stop ="8" lens ="12" shake ="0">
+        <shotFragment anchor="" startTime="8001" endTime="10000" focus ="Pudge" f-stop ="8" lens ="12mm" shake ="0">
           <framings>
             <framing  framingType="" framingTarget="0"/>
           </framings>
           <movements>
             <movement type="Dolly" directive="With" subject="Pudge"/>
             <movement type="Crane" directive="To" subject="5"/>
-
           </movements>
-        </shotFragment>
-        <shotFragment anchor="-3,-3" startTime="0" endTime="1" >
-          <framings>
-            <framing  framingType="" framingTarget="0"/>
-          </framings>
+        </shotFragment>-->
+        <!--<shotFragment anchor="0,0" startTime="0" endTime="1" focus ="Pudge" f-stop ="1.4" lens ="25mm" shake ="0">
+          <framings/>            
           <movements/>
-        </shotFragment>
+        </shotFragment>-->
       </shotFragments>
     </block>
   </blocks>

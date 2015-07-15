@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Linq;
 using System.Text;
 using System.Xml.Serialization;
@@ -9,12 +10,19 @@ namespace Oshmirto
     [Serializable]
     public class ShotFragment
     {
+
+        public ShotFragment()
+        {
+            Lens = "35mm";
+            FStop = "22";
+        }
+
         [XmlAttribute("anchor")]
         public string Anchor { get; set; }
 
         [XmlArray("framings")]
         [XmlArrayItem("framing")]
-        public List<Framing> Framings { get; set; } //TODO parse enum
+        public List<Framing> Framings { get; set; } 
 
         [XmlAttribute("startTime")]
         public float StartTime { get; set; }
@@ -27,10 +35,12 @@ namespace Oshmirto
         public List<CameraMovement> CameraMovements { get; set; }
 
         [XmlAttribute("lens")]
-        public int Lens { get; set; }
+        [DefaultValue("35mm")]
+        public string Lens { get; set; }
 
         [XmlAttribute("f-stop")]
-        public float FStop { get; set; }
+        [DefaultValue("22")]
+        public string FStop { get; set; }
 
         [XmlAttribute("focus")]
         public string FocusPosition{ get; set; }

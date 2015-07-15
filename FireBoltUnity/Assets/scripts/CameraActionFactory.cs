@@ -15,7 +15,20 @@ namespace Assets.scripts
     {
         //private static CameraPlan cameraPlan;
         private static FireBoltActionList cameraActionQueue;
-        private static readonly string cameraName = "Main Camera";
+        private static readonly string cameraName = "Pro Cam";
+        private static readonly string cameraRig = "Rig";
+        private static Dictionary<string, ushort> lenses = new Dictionary<string, ushort>() 
+        { 
+            {"12mm",0}, {"14mm",1}, {"16mm",2}, {"18mm",3}, {"21mm",4}, {"25mm",5}, {"27mm",6}, 
+            {"32mm",7}, {"35mm",8}, {"40mm",9}, {"50mm",10}, {"65mm",11}, {"75mm",12}, {"100mm",13},
+            {"135mm",14}, {"150mm",15}, {"180mm",16}
+        };
+
+        private static Dictionary<string, ushort> fStops = new Dictionary<string, ushort>()
+        {
+            {"1.4",0}, {"2",1}, {"2.8",2}, {"4",3}, {"5.6",4}, {"8",5}, {"11",6}, {"16",7}, {"22",8}
+        };
+
         public static FireBoltActionList CreateCameraActions(AStory<UintV, UintT, IIntervalSet<UintV, UintT>> story, string cameraPlanPath)
         {
             cameraActionQueue = new FireBoltActionList();
@@ -34,21 +47,22 @@ namespace Assets.scripts
                     if (fragment.Anchor.TryParsePlanarCoords(out futurePosition))
                     {
                         cameraActionQueue.Add(new Translate(fragment.StartTime, fragment.StartTime,
-                                                            cameraName, Vector3.zero, new Vector3Nullable(futurePosition.x,null,futurePosition.z), true, true));
+                                                            cameraRig, Vector3.zero, new Vector3Nullable(futurePosition.x,null,futurePosition.z), true, true));
 
                     }
-                    else if(fragment.Framings[0] != null &&
-                            fragment.Framings[0].FramingType != FramingType.None && 
-                            fragment.Framings[0].FramingType != FramingType.Angle)
-                    {
-                        //TODO extend to support multiple framings when caclulating
-                        //defer calculations to execution time....
-                        Translate t = new Translate(fragment.StartTime, fragment.StartTime, cameraName, Vector3.zero, new Vector3Nullable(0,0,0), true);//translate stub to fill in at frame init
-                        RotateRelative r = new RotateRelative(fragment.Framings[0].FramingTarget, fragment.StartTime, fragment.StartTime, cameraName, true, false, true); //rotate stub to fill in at frame init
-                        cameraActionQueue.Add(new Frame(fragment.StartTime, fragment.StartTime, cameraName, fragment.Framings, t, r));
-                        cameraActionQueue.Add(r);
-                        cameraActionQueue.Add(t);
-                    }
+                    //the world is not ready for framings
+                    //else if(fragment.Framings[0] != null &&
+                    //        fragment.Framings[0].FramingType != FramingType.None && 
+                    //        fragment.Framings[0].FramingType != FramingType.Angle)
+                    //{
+                    //    //TODO extend to support multiple framings when caclulating
+                    //    //defer calculations to execution time....
+                    //    Translate t = new Translate(fragment.StartTime, fragment.StartTime, cameraName, Vector3.zero, new Vector3Nullable(0,0,0), true);//translate stub to fill in at frame init
+                    //    RotateRelative r = new RotateRelative(fragment.Framings[0].FramingTarget, fragment.StartTime, fragment.StartTime, cameraName, true, false, true); //rotate stub to fill in at frame init
+                    //    cameraActionQueue.Add(new Frame(fragment.StartTime, fragment.StartTime, cameraName, fragment.Framings, t, r));
+                    //    cameraActionQueue.Add(r);
+                    //    cameraActionQueue.Add(t);
+                    //}
 
 
                     foreach (var movement in fragment.CameraMovements)
@@ -94,14 +108,27 @@ namespace Assets.scripts
                                         break;
                                 }
                                 break;
+                            case CameraMovementType.Tilt:
+                                switch(movement.Directive)
+                                {
+                                    case CameraMovementDirective.With: // will this co-execute with pan-with?
+                                        cameraActionQueue.Add(new RotateRelative(movement.Subject, fragment.StartTime, fragment.EndTime, cameraName,
+                                                                                 false, true, false));
+                                        break;
+                                    case CameraMovementDirective.To:
+                                        break;
+                                }
+                                break;
                         }
                     }
 
 
-                    float rotation = 0f;
-                    if (fragment.Framings.Count > 0 && float.TryParse(fragment.Framings[0].FramingTarget, out rotation))
+                    
+                    if (fragment.Framings.Count > 0 && fragment.Framings[0].FramingType == FramingType.Angle)
                     {
-                        cameraActionQueue.Add(new Rotate(fragment.StartTime, fragment.StartTime, cameraName, rotation));
+                        float rotation = 0f;
+                        if(float.TryParse(fragment.Framings[0].FramingTarget, out rotation))
+                            cameraActionQueue.Add(new Rotate(fragment.StartTime, fragment.StartTime, cameraName, rotation));
                     }
                     else
                     {
@@ -109,71 +136,40 @@ namespace Assets.scripts
                     }
 
                     // Lens change
-                    int lens = lensMMtoIndex(fragment.Lens);
-                    if (lens < 0)
-                        Debug.Log("Lens does not exist");
+                    ushort lensNumber;
+                    if (lenses.TryGetValue(fragment.Lens, out lensNumber))
+                    {
+                        cameraActionQueue.Add(new LensChange(fragment.StartTime, fragment.StartTime, cameraName, lensNumber));
+                    }
                     else
-                        cameraActionQueue.Add(new LensChange(fragment.StartTime, fragment.StartTime, "Main Camera", lens));
+                    {
+                        Debug.LogError(string.Format("lens [{0}] for cameraPlan interval [{1}-{2}] is invalid",fragment.Lens,fragment.StartTime,fragment.EndTime));
+                    }
+                        
 
                     // FStop change
-                    int fstop = fStopToIndex(fragment.FStop);
-                    if (lens < 0)
-                        Debug.Log("Lens does not exist");
+                    ushort fStopNumber;
+                    if (fStops.TryGetValue(fragment.FStop, out fStopNumber))
+                    {
+                        cameraActionQueue.Add(new FStop(fragment.StartTime, fragment.EndTime, cameraName, fStopNumber));
+                    }
                     else
-                        cameraActionQueue.Add(new FStop(fragment.StartTime, fragment.EndTime, "Main Camera", fstop));
-
+                    {
+                        Debug.LogError(string.Format("f-stop [{0}] for cameraPlan interval [{1}-{2}] is invalid", fragment.FStop, fragment.StartTime, fragment.EndTime));
+                    }                      
 
                     // Focus Change
-                    cameraActionQueue.Add(new Focus(fragment.StartTime, fragment.EndTime, "Main Camera", fragment.FocusPosition));
+                    cameraActionQueue.Add(new Focus(fragment.StartTime, fragment.EndTime, cameraName, fragment.FocusPosition));
 
                     // Shake it off
-                    cameraActionQueue.Add(new Shake(fragment.StartTime, fragment.EndTime, "Main Camera", fragment.Shake));
+                    if(fragment.Shake > 0)
+                        cameraActionQueue.Add(new Shake(fragment.StartTime, fragment.EndTime, cameraName, fragment.Shake));
                 }
             }
         }
 
-        private static int lensMMtoIndex(int lensNum)
-        {
-            if (lensNum == 12) return 0;
-            if (lensNum == 14) return 1;
-            if (lensNum == 16) return 2;
-            if (lensNum == 18) return 3;
-            if (lensNum == 21) return 4;
-            if (lensNum == 25) return 5;
-            if (lensNum == 27) return 6;
-            if (lensNum == 32) return 7;
-            if (lensNum == 35) return 8;
-            if (lensNum == 40) return 9;
-            if (lensNum == 50) return 10;
-            if (lensNum == 65) return 11;
-            if (lensNum == 75) return 12;
-            if (lensNum == 100) return 13;
-            if (lensNum == 135) return 14;
-            if (lensNum == 150) return 15;
-            if (lensNum == 180) return 16;
-            else
-            {
-                return -1;
-            }
-        }
 
-        private static int fStopToIndex(float fstop)
-        {
-            if (fstop == 1.4) return 0;
-            if (fstop == 2) return 1;
-            if (fstop == 2.8) return 2;
-            if (fstop == 4) return 3;
-            if (fstop == 5.6) return 4;
-            if (fstop == 8) return 5;
-            if (fstop == 11) return 6;
-            if (fstop == 16) return 7;
-            if (fstop == 22) return 8;
-     
-            else
-            {
-                return -1;
-            }
-        }
+
 
     }
 }
