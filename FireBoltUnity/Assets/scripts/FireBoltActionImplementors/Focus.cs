@@ -47,13 +47,14 @@ namespace Assets.scripts
                 return false;
             }
 
-            findFocusLocator();
+            focusLocation = findFocusLocator();
 
             //try to parse target as a coordinate
             Vector3 focusPosition;
             if (targetName.TryParseVector3(out focusPosition))
             {
                 focusLocation.position = focusPosition;
+                Debug.Log("focus @" + focusPosition);
                 return true;
             }
 
@@ -66,6 +67,7 @@ namespace Assets.scripts
             }
 
             focusLocation.position = target.transform.position;
+            Debug.Log(string.Format("focus target[{0}] @{1} tracking[{2}]",targetName, focusLocation.position, tracking));
             return true;
         }
 
@@ -112,8 +114,7 @@ namespace Assets.scripts
                 g = new GameObject(FOCUS_LOCATOR_NAME);
                 g.name = FOCUS_LOCATOR_NAME;                              
             }
-            focusLocation = g.transform;   
-            return focusLocation;
+            return g.transform;               
         }
     }
 }

@@ -13,18 +13,17 @@ namespace Assets.scripts
 {
     public class CameraActionFactory
     {
-        //private static CameraPlan cameraPlan;
         private static FireBoltActionList cameraActionQueue;
         private static readonly string cameraName = "Pro Cam";
         private static readonly string cameraRig = "Rig";
-        private static Dictionary<string, ushort> lenses = new Dictionary<string, ushort>() 
+        public static Dictionary<string, ushort> lenses = new Dictionary<string, ushort>() 
         { 
             {"12mm",0}, {"14mm",1}, {"16mm",2}, {"18mm",3}, {"21mm",4}, {"25mm",5}, {"27mm",6}, 
             {"32mm",7}, {"35mm",8}, {"40mm",9}, {"50mm",10}, {"65mm",11}, {"75mm",12}, {"100mm",13},
             {"135mm",14}, {"150mm",15}, {"180mm",16}
         };
 
-        private static Dictionary<string, ushort> fStops = new Dictionary<string, ushort>()
+        public static Dictionary<string, ushort> fStops = new Dictionary<string, ushort>()
         {
             {"1.4",0}, {"2",1}, {"2.8",2}, {"4",3}, {"5.6",4}, {"8",5}, {"11",6}, {"16",7}, {"22",8}
         };
@@ -139,7 +138,7 @@ namespace Assets.scripts
                     ushort lensNumber;
                     if (lenses.TryGetValue(fragment.Lens, out lensNumber))
                     {
-                        cameraActionQueue.Add(new LensChange(fragment.StartTime, fragment.StartTime, cameraName, lensNumber));
+                        cameraActionQueue.Add(new LensChange(fragment.StartTime, fragment.EndTime, cameraName, lensNumber));
                     }
                     else
                     {

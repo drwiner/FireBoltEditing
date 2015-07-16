@@ -118,27 +118,29 @@ public class ElPresidente : MonoBehaviour {
             actions.NextActionIndex++;
             if (action.Init())
 			{
-                executingActions.Add(action);
+                if (actorActionComplete(action))
+                    action.Skip();                
+                else
+                    executingActions.Add(action);                     
 			}
         }
     }
 
     void rewindFireBoltActions(FireBoltActionList actions)
     {
-        if (actions.NextActionIndex >= actions.Count)
-            actions.NextActionIndex--;
-        while (actions.NextActionIndex >= 0 && actions[actions.NextActionIndex].StartTick() > currentTime)
+        int currentIndex = actions.NextActionIndex;
+        actions.NextActionIndex = 0;
+        while (actions.NextActionIndex < actions.Count &&
+               actions[actions.NextActionIndex].EndTick() < currentTime)
         {
-            actions [actions.NextActionIndex].Undo ();
-            actions.NextActionIndex--;
+            actions.NextActionIndex++;
         }
 
-        while (actions.NextActionIndex >= 0 && actions[actions.NextActionIndex].EndTick() > currentTime)
+        while (currentIndex >= actions.NextActionIndex)
         {
-            actions [actions.NextActionIndex].Undo ();
-            actions.NextActionIndex--;
+            actions[currentIndex].Undo();
+            currentIndex--;
         }
-        actions.NextActionIndex++;
         Debug.Log ("rewind to " + actions.NextActionIndex + ": " + actions[actions.NextActionIndex]);
     }
 

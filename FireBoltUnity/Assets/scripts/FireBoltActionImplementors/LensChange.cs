@@ -14,9 +14,9 @@ namespace Assets.scripts
         float startTick, endTick;
         int lensIndex;
 
-        string actorName;
+        string cameraName;
         Vector3 destination;
-        CameraBody actor;
+        CameraBody camera;
 
         public static bool ValidForConstruction(string actorName)
         {
@@ -25,40 +25,35 @@ namespace Assets.scripts
             return true;
         }
 
-        public LensChange(float startTick, float endTick, string actorName, int lensIndex) 
+        public LensChange(float startTick, float endTick, string cameraName, int lensIndex) 
         {
             this.startTick = startTick;
             this.endTick = endTick;
             this.lensIndex = lensIndex;
-            this.actorName = actorName;
+            this.cameraName = cameraName; 
         }
 
         public virtual bool Init()
         {
-            actor = GameObject.Find(actorName).GetComponent<CameraBody>() as CameraBody;
-            if (actor == null)
+            camera = GameObject.Find(cameraName).GetComponent<CameraBody>() as CameraBody;
+            if (camera == null)
             {
-                Debug.LogError("actor name [" + actorName + "] not found. cannot rotate");
+                Debug.LogError(string.Format("camera [{0}] not found. cannot update lensIndex to [{1}]",cameraName,lensIndex));
                 return false;
             }
-
-            if (endTick - startTick < ElPresidente.MILLIS_PER_FRAME)//we aren't guaranteed a single execution cycle, so move it now and make sure it doesn't move later
-                Skip();
-
+            Debug.Log(string.Format("setting camera [{0}] to lensIndex[{1}]",cameraName,lensIndex));
+            camera.IndexOfLens = lensIndex;
             return true;
+            //we are not hitting this init again when scrubbing back
         }
 
         public virtual void Execute()
         {
-            actor.IndexOfLens = lensIndex;
+            camera.IndexOfLens = lensIndex;
         }
 
 		public virtual void Undo()
 		{
-			if (actor != null)
-            {
-               
-            }
 		}
 
         public virtual void Skip()
