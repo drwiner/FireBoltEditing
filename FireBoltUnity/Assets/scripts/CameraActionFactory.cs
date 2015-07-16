@@ -118,6 +118,14 @@ namespace Assets.scripts
                                         break;
                                 }
                                 break;
+                            case CameraMovementType.Focus:
+                                switch (movement.Directive)
+                                {
+                                    case CameraMovementDirective.With:
+
+                                        break;
+                                }
+                                break;
                         }
                     }
 

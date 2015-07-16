@@ -42,7 +42,7 @@ namespace Assets.scripts
                 return false;
             }
             Debug.Log(string.Format("setting camera [{0}] to lensIndex[{1}]",cameraName,lensIndex));
-            camera.IndexOfLens = lensIndex;
+            Skip();
             return true;
             //we are not hitting this init again when scrubbing back
         }
@@ -58,6 +58,7 @@ namespace Assets.scripts
 
         public virtual void Skip()
         {
+            camera.IndexOfLens = lensIndex;
         }
 
         public virtual void Stop()

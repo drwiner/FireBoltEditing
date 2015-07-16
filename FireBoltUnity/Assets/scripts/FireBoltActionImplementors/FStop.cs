@@ -14,7 +14,7 @@ namespace Assets.scripts
         float startTick, endTick;
         int fstop;
 
-        string actorName;
+        string cameraName;
         Vector3 destination;
         CameraBody actor;
 
@@ -25,20 +25,20 @@ namespace Assets.scripts
             return true;
         }
 
-        public FStop(float startTick, float endTick, string actorName, int fstop) 
+        public FStop(float startTick, float endTick, string cameraName, int fstop) 
         {
             this.startTick = startTick;
             this.endTick = endTick;
             this.fstop = fstop;
-            this.actorName = actorName;
+            this.cameraName = cameraName;
         }
 
         public virtual bool Init()
         {
-            actor = GameObject.Find(actorName).GetComponent<CameraBody>() as CameraBody;
+            actor = GameObject.Find(cameraName).GetComponent<CameraBody>() as CameraBody;
             if (actor == null)
             {
-                Debug.LogError("actor name [" + actorName + "] not found. cannot rotate");
+                Debug.LogError("actor name [" + cameraName + "] not found. cannot rotate");
                 return false;
             }
 
@@ -56,14 +56,11 @@ namespace Assets.scripts
 
 		public virtual void Undo()
 		{
-			if (actor != null)
-            {
-               
-            }
 		}
 
         public virtual void Skip()
         {
+            actor.IndexOfFStop = fstop;
         }
 
         public virtual void Stop()
