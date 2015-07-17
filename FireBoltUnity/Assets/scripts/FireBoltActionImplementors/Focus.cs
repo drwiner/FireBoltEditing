@@ -35,6 +35,7 @@ namespace Assets.scripts
             this.endTick = endTick;
             this.cameraName = cameraName;
             this.targetName = targetName;
+            this.tracking = tracking;
         }
 
         public virtual bool Init()
@@ -48,6 +49,7 @@ namespace Assets.scripts
             }
 
             focusLocation = findFocusLocator();
+            camera.FocusTransform = focusLocation;
 
             //try to parse target as a coordinate
             Vector3 focusPosition;
@@ -67,7 +69,7 @@ namespace Assets.scripts
             }
 
             focusLocation.position = target.transform.position;
-            Debug.Log(string.Format("focus target[{0}] @{1} tracking[{2}]",targetName, focusLocation.position, tracking));
+            Debug.Log(string.Format("focus target[{0}] @{1} tracking[{2}]", targetName, focusLocation.position, tracking));
             return true;
         }
 
@@ -77,8 +79,7 @@ namespace Assets.scripts
             {
                 //update our unlocked transform object with our target's position
                 focusLocation.position = target.transform.position;
-            }
-            //camera.FocusTransform = focusLocation;            
+            }        
         }
 
 		public virtual void Undo()
@@ -111,8 +112,7 @@ namespace Assets.scripts
             var g = GameObject.Find(FOCUS_LOCATOR_NAME);
             if (g == null)
             {
-                g = new GameObject(FOCUS_LOCATOR_NAME);
-                g.name = FOCUS_LOCATOR_NAME;                              
+                g = new GameObject(FOCUS_LOCATOR_NAME);                          
             }
             return g.transform;               
         }
