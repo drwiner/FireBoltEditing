@@ -1,0 +1,163 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<xs:schema elementFormDefault="qualified" xmlns:xs="http://www.w3.org/2001/XMLSchema">
+
+  <xs:complexType name="SmartModelSettings">
+    <xs:attribute name="maxAnimationSearchDepth" type="xs:unsignedInt" use="required" />
+    <xs:attribute name="maxActorSearchDepth" type="xs:unsignedInt" use="required" />
+  </xs:complexType>
+
+  <xs:complexType name="Animation">
+    <xs:sequence>
+      <xs:element minOccurs="0" maxOccurs="1" name="animationIndices" type="ArrayOfAnimationIndex" />
+    </xs:sequence>
+    <xs:attribute name="name" type="xs:string" />
+    <xs:attribute name="fileName" type="xs:string" />
+    <xs:attribute name="duration" type="xs:int" use="required" />
+  </xs:complexType>
+  <xs:complexType name="ArrayOfAnimationIndex">
+    <xs:sequence>
+      <xs:element minOccurs="0" maxOccurs="unbounded" name="animationIndex" nillable="true" type="AnimationIndex" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:complexType name="AnimationIndex">
+    <xs:attribute name="name" type="xs:string" />
+    <xs:attribute name="timeOffset" type="xs:int" use="required" />
+  </xs:complexType>
+  <xs:complexType name="AnimationMapping">
+    <xs:attribute name="animateActionName" type="xs:string" />
+    <xs:attribute name="animationName" type="xs:string" />
+    <xs:attribute name="loopAnimation" type="xs:boolean" use="required" />
+  </xs:complexType>
+  <xs:complexType name="FireBoltAction">
+    <xs:attribute name="actorNameParamName" type="xs:string" />
+    <xs:attribute name="maxDuration" type="xs:string" />
+    <xs:attribute name="effectorOffsetIndexName" type="xs:string" />
+  </xs:complexType>
+  <xs:complexType name="CreatedObject">
+    <xs:attribute name="actorId" type="xs:int" use="required" />
+    <xs:attribute name="animationTimeOffset" type="xs:int" use="required" />
+    <xs:attribute name="fadeInTime" type="xs:int" use="required" />
+    <xs:attribute name="relativeLocation" type="xs:int" use="required" />
+  </xs:complexType>
+  <xs:complexType name="DomainAction">
+    <xs:all>
+      <xs:element minOccurs="0" maxOccurs="1" name="params" type="ArrayOfDomainActionParameter" />
+      <xs:element minOccurs="0" maxOccurs="1" name="createActions" type="ArrayOfCreateAction" />
+      <xs:element minOccurs="0" maxOccurs="1" name="destroyActions" type="ArrayOfDestroyAction" />
+      <xs:element minOccurs="0" maxOccurs="1" name="translateActions" type="ArrayOfTranslateAction" />
+      <xs:element minOccurs="0" maxOccurs="1" name="rotateActions" type="ArrayOfRotateAction" />
+      <xs:element minOccurs="0" maxOccurs="1" name="animateActions" type="ArrayOfAnimateAction" />
+    </xs:all>
+    <xs:attribute name="name" type="xs:string" />
+  </xs:complexType>
+  <xs:complexType name="ArrayOfDomainActionParameter">
+    <xs:sequence>
+      <xs:element minOccurs="0" maxOccurs="unbounded" name="param" nillable="true" type="DomainActionParameter" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:complexType name="DomainActionParameter">
+    <xs:attribute name="name" type="xs:string" />
+  </xs:complexType>
+  <xs:complexType name="ArrayOfCreateAction">
+    <xs:sequence>
+      <xs:element minOccurs="0" maxOccurs="unbounded" name="createAction" nillable="true" type="CreateAction" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:complexType name="CreateAction">
+    <xs:complexContent mixed="false">
+      <xs:extension base="FireBoltAction">
+        <xs:attribute name="originParamName" type="xs:string" />
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+  <xs:complexType name="ArrayOfDestroyAction">
+    <xs:sequence>
+      <xs:element minOccurs="0" maxOccurs="unbounded" name="destroyAction" nillable="true" type="DestroyAction" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:complexType name="DestroyAction">
+    <xs:complexContent mixed="false">
+      <xs:extension base="FireBoltAction" />
+    </xs:complexContent>
+  </xs:complexType>
+  <xs:complexType name="ArrayOfTranslateAction">
+    <xs:sequence>
+      <xs:element minOccurs="0" maxOccurs="unbounded" name="translateAction" nillable="true" type="TranslateAction" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:complexType name="TranslateAction">
+    <xs:complexContent mixed="false">
+      <xs:extension base="FireBoltAction">
+        <xs:attribute name="destinationParamName" type="xs:string" />
+        <xs:attribute name="originParamName" type="xs:string" />
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+  <xs:complexType name="ArrayOfRotateAction">
+    <xs:sequence>
+      <xs:element minOccurs="0" maxOccurs="unbounded" name="rotateAction" nillable="true" type="RotateAction" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:complexType name="RotateAction">
+    <xs:complexContent mixed="false">
+      <xs:extension base="FireBoltAction">
+        <xs:attribute name="destinationParamName" type="xs:string" />
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+  <xs:complexType name="ArrayOfAnimateAction">
+    <xs:sequence>
+      <xs:element minOccurs="0" maxOccurs="unbounded" name="animateAction" nillable="true" type="AnimateAction" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:complexType name="AnimateAction">
+    <xs:complexContent mixed="false">
+      <xs:extension base="FireBoltAction">
+        <xs:attribute name="name" type="xs:string" />
+        <xs:attribute name="effector" type="xs:boolean" use="required" />
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+  <xs:complexType name="Actor">
+    <xs:sequence>
+      <xs:element minOccurs="0" maxOccurs="1" name="animationMappings" type="ArrayOfAnimationMapping" />
+    </xs:sequence>
+    <xs:attribute name="name" type="xs:string" />
+    <xs:attribute name="id" type="xs:int" use="required" />
+    <xs:attribute name="model" type="xs:string" />
+  </xs:complexType>
+  <xs:complexType name="ArrayOfAnimationMapping">
+    <xs:sequence>
+      <xs:element minOccurs="0" maxOccurs="unbounded" name="animationMapping" nillable="true" type="AnimationMapping" />
+    </xs:sequence>
+  </xs:complexType>
+
+  <xs:complexType name="CinematicModel">
+    <xs:sequence>
+      <xs:element minOccurs="0" maxOccurs="1" name="smartModelSettings" type="SmartModelSettings" />
+      <xs:element minOccurs="0" maxOccurs="1" name="domainActions" type="ArrayOfDomainAction" />
+      <xs:element minOccurs="0" maxOccurs="1" name="actors" type="ArrayOfActor" />
+      <xs:element minOccurs="0" maxOccurs="1" name="animations" type="ArrayOfAnimation" />
+    </xs:sequence>
+    <xs:attribute name="millisPerTick" type="xs:unsignedInt" use="required" />
+    <xs:attribute name="domainDistancePerEngineDistance" type="xs:float" use="required" />
+  </xs:complexType>
+
+  <xs:complexType name="ArrayOfDomainAction">
+    <xs:sequence>
+      <xs:element minOccurs="0" maxOccurs="unbounded" name="domainAction" nillable="true" type="DomainAction" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:complexType name="ArrayOfActor">
+    <xs:sequence>
+      <xs:element minOccurs="0" maxOccurs="unbounded" name="actor" nillable="true" type="Actor" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:complexType name="ArrayOfAnimation">
+    <xs:sequence>
+      <xs:element minOccurs="0" maxOccurs="unbounded" name="animation" nillable="true" type="Animation" />
+    </xs:sequence>
+  </xs:complexType>
+
+  <xs:element name="cinematicModel" nillable="true" type="CinematicModel" />
+</xs:schema>
