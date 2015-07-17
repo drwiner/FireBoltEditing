@@ -246,6 +246,7 @@
     <None Include="Assets\Standard Assets\Effects\ToonShading\Shaders\ToonBasicOutline.shader" />
     <None Include="Assets\Standard Assets\Effects\ToonShading\Shaders\ToonLit.shader" />
     <None Include="Assets\Standard Assets\Effects\ToonShading\Shaders\ToonLitOutline.shader" />
+    <None Include="Assets\storyPlans\Impulsev1_336\3DActionTester.xml" />
     <None Include="Assets\storyPlans\Impulsev1_336\600924233.xml" />
     <None Include="Assets\storyPlans\Impulsev1_336\tester.xml" />
   </ItemGroup>

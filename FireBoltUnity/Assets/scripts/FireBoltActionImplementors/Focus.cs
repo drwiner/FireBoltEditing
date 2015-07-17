@@ -19,7 +19,7 @@ namespace Assets.scripts
         Transform focusLocation;
         CameraBody camera;
         GameObject target;
-        bool tracking;
+        bool tracking, executed = false;
 
 
         public static bool ValidForConstruction(string actorName)
@@ -48,14 +48,11 @@ namespace Assets.scripts
                 return false;
             }
 
-            focusLocation = findFocusLocator();
-            camera.FocusTransform = focusLocation;
-
             //try to parse target as a coordinate
             Vector3 focusPosition;
             if (targetName.TryParseVector3(out focusPosition))
             {
-                focusLocation.position = focusPosition;
+                //camera.FocusDistance = Vector3.Distance(camera.NodalCamera.transform.position, focusPosition);
                 Debug.Log("focus @" + focusPosition);
                 return true;
             }
@@ -68,29 +65,36 @@ namespace Assets.scripts
                 return false;
             }
 
-            focusLocation.position = target.transform.position;
-            Debug.Log(string.Format("focus target[{0}] @{1} tracking[{2}]", targetName, focusLocation.position, tracking));
+            //camera.FocusDistance = Vector3.Distance(camera.NodalCamera.transform.position, target.transform.position);
+            Debug.Log(string.Format("focus target[{0}] @{1} tracking[{2}]", targetName, target.transform.position, tracking));
             return true;
         }
 
         public virtual void Execute()
         {
-            if (tracking)
+            if (tracking || !executed)
             {
-                //update our unlocked transform object with our target's position
-                focusLocation.position = target.transform.position;
-                camera.FocusTransform = focusLocation; //not sure why we lose track of the focus locator in the camera, but we'll just put it back
+                Vector3 focusPosition;
+                if (target != null)
+                {
+                    camera.FocusDistance = Vector3.Distance(camera.NodalCamera.transform.position, target.transform.position);
+                }
+                else if(targetName.TryParseVector3(out focusPosition))
+                {
+                    camera.FocusDistance = Vector3.Distance(camera.NodalCamera.transform.position, focusPosition);                    
+                }                
+                executed = true;
             }        
         }
 
 		public virtual void Undo()
 		{
-
+            executed = false;
 		}
 
         public virtual void Skip()
         {
-            //need to find end position of target if we are tracking, though if we skip, it doesn't matter b/c focus will be overwritten...hmmm
+
         }
 
         public virtual void Stop()
@@ -106,16 +110,6 @@ namespace Assets.scripts
         public float EndTick()
         {
             return endTick;
-        }
-
-        private Transform findFocusLocator()
-        {
-            var g = GameObject.Find(FOCUS_LOCATOR_NAME);
-            if (g == null)
-            {
-                g = new GameObject(FOCUS_LOCATOR_NAME);                          
-            }
-            return g.transform;               
         }
     }
 }

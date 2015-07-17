@@ -211,5 +211,8 @@
     <None Include="Assets\storyPlans\Impulsev1_336\600924233.xml" />
     <None Include="Assets\storyPlans\Impulsev1_336\tester.xml" />
   </ItemGroup>
+  <ItemGroup>
+    <None Include="Assets\storyPlans\Impulsev1_336\3DActionTester.xml" />
+  </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath)\SyntaxTree\UnityVS\2013\UnityVS.CSharp.targets" />
 </Project>

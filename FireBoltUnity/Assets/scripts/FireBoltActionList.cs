@@ -20,9 +20,10 @@ namespace Assets.scripts
 
             if (x is Translate && y is Rotate) return -1;
             if (x is Rotate && y is Translate) return 1;
+            if ((x is Translate || x is Rotate) && y is Focus) return -1;
+            if (x is Focus && (y is Translate || y is Rotate)) return 1;
             return -1;
-            //i THINK we should be ok ignoring other sorting orders 
-            //so long as rotate and translate occur correctly relative to one another
+
         }
     }
 
