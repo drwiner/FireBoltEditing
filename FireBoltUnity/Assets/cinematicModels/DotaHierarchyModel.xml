@@ -31,6 +31,14 @@
         <animateAction name="buy-item1" actorNameParamName="actor"/>
       </animateActions>
     </domainAction>
+    <domainAction name="idle" >
+      <params>
+        <param name="actor" />
+      </params>
+      <animateActions>
+        <animateAction name="idle" actorNameParamName="actor"/>
+      </animateActions>
+    </domainAction>
     <domainAction name="spawn-hero" >
       <params>
         <param name="actor" />
@@ -104,6 +112,7 @@
         <animationMapping animateActionName="sneak" animationName="sneak" loopAnimation="true" />
         <animationMapping animateActionName="walk" animationName="walk" loopAnimation="true" />
         <animationMapping animateActionName="buy-item1" animationName="verticalSwipe" loopAnimation="true" />
+        <animationMapping animateActionName="idle" animationName="idle" loopAnimation="true" />
       </animationMappings>
     </actor>
 

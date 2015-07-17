@@ -128,7 +128,7 @@ public class ElPresidente : MonoBehaviour {
 
     void rewindFireBoltActions(FireBoltActionList actions)
     {
-        int currentIndex = actions.NextActionIndex;
+        int currentIndex = actions.NextActionIndex-1;//next action was pointed to...next action!
         actions.NextActionIndex = 0;
         while (actions.NextActionIndex < actions.Count &&
                actions[actions.NextActionIndex].EndTick() < currentTime)

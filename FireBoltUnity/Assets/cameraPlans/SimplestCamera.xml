@@ -39,11 +39,11 @@
           </framings>
 <shotFragement/>
         </shotFragment>-->
-        <shotFragment anchor="-5,-5" startTime="0" endTime="1" focus ="(0,0,0)" f-stop ="2.8" lens ="25mm" shake ="0">
+        <shotFragment anchor="0,-5" startTime="0" endTime="3999" focus ="(0,0,0)" f-stop ="2.8" lens ="25mm" shake ="0">
           <framings/>            
           <movements/>
         </shotFragment>
-        <shotFragment anchor="-8,-8" startTime="4000" endTime="10000" focus ="Pudge" f-stop ="2.8" lens ="12mm" shake ="0">
+        <shotFragment anchor="0,-5" startTime="4000" endTime="10000" focus ="(0,0,0)" f-stop ="2.8" lens ="12mm" shake ="0">
           <framings/>
           <movements/>
         </shotFragment>
