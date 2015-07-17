@@ -122,7 +122,7 @@ namespace Assets.scripts
                                 switch (movement.Directive)
                                 {
                                     case CameraMovementDirective.With:
-
+                                        cameraActionQueue.Add(new Focus(fragment.StartTime, fragment.EndTime, cameraName, movement.Subject, true));
                                         break;
                                 }
                                 break;
@@ -166,7 +166,8 @@ namespace Assets.scripts
                     }                      
 
                     // Focus Change
-                    cameraActionQueue.Add(new Focus(fragment.StartTime, fragment.EndTime, cameraName, fragment.FocusPosition));
+                    if(fragment.FocusPosition !=null)
+                        cameraActionQueue.Add(new Focus(fragment.StartTime, fragment.EndTime, cameraName, fragment.FocusPosition));
 
                     // Shake it off
                     cameraActionQueue.Add(new Shake(fragment.StartTime, fragment.EndTime, cameraName, fragment.Shake));

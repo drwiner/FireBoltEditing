@@ -59,7 +59,18 @@
       <xs:enumeration value="Angle" />
     </xs:restriction>
   </xs:simpleType>
-  
+
+  <xs:complexType name="CameraPlan">
+    <xs:sequence>
+      <xs:element minOccurs="1" maxOccurs="1" name="blocks" type="ArrayOfBlock" />
+    </xs:sequence>
+    <xs:attribute name="Version" type="xs:string" />
+  </xs:complexType>
+  <xs:complexType name="ArrayOfBlock">
+    <xs:sequence>
+      <xs:element minOccurs="0" maxOccurs="unbounded" name="block" nillable="false" type="Block" />
+    </xs:sequence>
+  </xs:complexType>
   <xs:complexType name="Block">
     <xs:sequence>
       <xs:element minOccurs="1" maxOccurs="1" name="shotFragments" type="ArrayOfShotFragment" />
@@ -103,25 +114,12 @@
     <xs:attribute name="directive" type="CameraMovementDirective" use="required" />
     <xs:attribute name="subject" type="xs:string" use="required"/>
   </xs:complexType>
-  
   <xs:simpleType name="CameraMovementDirective">
     <xs:restriction base="xs:string">
       <xs:enumeration value="With" />
       <xs:enumeration value="To" />
     </xs:restriction>
   </xs:simpleType>
-  
-  <xs:complexType name="CameraPlan">
-    <xs:sequence>
-      <xs:element minOccurs="1" maxOccurs="1" name="blocks" type="ArrayOfBlock" />
-    </xs:sequence>
-    <xs:attribute name="Version" type="xs:string" />
-  </xs:complexType>
-  <xs:complexType name="ArrayOfBlock">
-    <xs:sequence>
-      <xs:element minOccurs="0" maxOccurs="unbounded" name="block" nillable="false" type="Block" />
-    </xs:sequence>
-  </xs:complexType>
   
   <xs:element name="cameraPlan" nillable="false" type="CameraPlan" />
 </xs:schema>

@@ -79,6 +79,7 @@ namespace Assets.scripts
             {
                 //update our unlocked transform object with our target's position
                 focusLocation.position = target.transform.position;
+                camera.FocusTransform = focusLocation; //not sure why we lose track of the focus locator in the camera, but we'll just put it back
             }        
         }
 
