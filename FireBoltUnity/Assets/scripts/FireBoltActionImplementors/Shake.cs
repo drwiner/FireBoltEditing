@@ -8,13 +8,14 @@ using LN.Utilities.Collections;
 
 namespace Assets.scripts
 {
+    //TODO parameterize fully for better control
     public class Shake : IFireBoltAction
     {
         float lastUpdateTime;
         float startTick, endTick;
         float shakeValue;
 
-        string actorName;
+        string cameraName;
 
 
         ShakeCam shakeCam;
@@ -27,37 +28,37 @@ namespace Assets.scripts
             return true;
         }
 
-        public Shake(float startTick, float endTick, string actorName, float shakeValue) 
+        public Shake(float startTick, float endTick, string cameraName, float shakeValue) 
         {
             this.startTick = startTick;
             this.endTick = endTick;
-            this.actorName = actorName;
+            this.cameraName = cameraName;
             this.shakeValue = shakeValue;
         }
 
         public virtual bool Init()
         {
-            GameObject actor = GameObject.Find(actorName);
+            GameObject actor = GameObject.Find(cameraName);
             if (actor == null)
             {
-                Debug.LogError("actor name [" + actorName + "] not found. cannot shake");
+                Debug.LogError("actor name [" + cameraName + "] not found. cannot shake");
                 return false;
             }
 
             shakeCam = actor.GetComponent<ShakeCam>() as ShakeCam;
             if (shakeCam == null)
             {
-                Debug.LogError(string.Format("camera name [{0}] does not have ShakeCam component",actorName));
+                Debug.LogError(string.Format("camera name [{0}] does not have ShakeCam component",cameraName));
                 return false;
             }
 
+            Skip();
             return true;
         }
 
         public virtual void Execute()
         {
-            shakeCam.positionShakeSpeed = shakeValue;
-            shakeCam.rotationShakeSpeed = shakeValue;            
+                       
         }
 
 		public virtual void Undo()
@@ -67,6 +68,8 @@ namespace Assets.scripts
 
         public virtual void Skip()
         {
+            shakeCam.positionShakeSpeed = shakeValue;
+            shakeCam.rotationShakeSpeed = shakeValue; 
         }
 
         public virtual void Stop()

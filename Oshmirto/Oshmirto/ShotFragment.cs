@@ -15,6 +15,7 @@ namespace Oshmirto
         {
             Lens = "35mm";
             FStop = "22";
+            Shake = 0f;
         }
 
         [XmlAttribute("anchor")]
@@ -46,6 +47,7 @@ namespace Oshmirto
         public string FocusPosition{ get; set; }
 
         [XmlAttribute("shake")]
+        [DefaultValue(0f)]
         public float Shake { get; set; }
     }
 }

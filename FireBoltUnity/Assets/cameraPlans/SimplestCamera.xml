@@ -39,15 +39,15 @@
           </framings>
 <shotFragement/>
         </shotFragment>-->
-        <shotFragment anchor="0,-5" startTime="2" endTime="1500" focus ="Pudge" f-stop ="1.4" lens ="25mm" shake ="0">
+        <shotFragment anchor="0,-5" startTime="2" endTime="3999" focus ="Pudge" f-stop ="1.4" lens ="25mm" shake ="10">
           <framings/>            
           <movements/>
         </shotFragment>
-        <shotFragment anchor="0,-5" startTime="1501" endTime="3000" focus ="Pudge" f-stop ="22" lens ="25mm" shake ="0">
+        <shotFragment anchor="0,-5" startTime="4000" endTime="7000" focus ="Pudge" f-stop ="1.4" lens ="25mm" >
           <framings/>
           <movements/>
         </shotFragment>
-        <shotFragment anchor="0,-5" startTime="3001" endTime="4500" focus ="Pudge" f-stop ="1.4" lens ="25mm" shake ="0">
+        <!--<shotFragment anchor="0,-5" startTime="3001" endTime="4500" focus ="Pudge" f-stop ="1.4" lens ="25mm" shake ="5">
           <framings/>
           <movements/>
         </shotFragment>
@@ -62,7 +62,7 @@
         <shotFragment anchor="0,-5" startTime="7501" endTime="9000" focus ="Pudge" f-stop ="1.4" lens ="25mm" shake ="0">
           <framings/>
           <movements/>
-        </shotFragment>
+        </shotFragment>-->
         <!--<shotFragment anchor="0,-5" startTime="4000" endTime="10000" focus ="(0,0,0)" f-stop ="1.4" lens ="25mm" shake ="0">
           <framings/>
           <movements/>

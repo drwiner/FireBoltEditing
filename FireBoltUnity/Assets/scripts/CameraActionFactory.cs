@@ -169,8 +169,7 @@ namespace Assets.scripts
                     cameraActionQueue.Add(new Focus(fragment.StartTime, fragment.EndTime, cameraName, fragment.FocusPosition));
 
                     // Shake it off
-                    if(fragment.Shake > 0)
-                        cameraActionQueue.Add(new Shake(fragment.StartTime, fragment.EndTime, cameraName, fragment.Shake));
+                    cameraActionQueue.Add(new Shake(fragment.StartTime, fragment.EndTime, cameraName, fragment.Shake));
                 }
             }
         }
