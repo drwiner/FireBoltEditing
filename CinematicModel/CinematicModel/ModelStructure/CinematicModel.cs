@@ -7,16 +7,14 @@ using LN.Utilities;
 
 namespace CinematicModel
 {
-    [XmlRoot(ElementName="cinematicModel")]
+    [Serializable, XmlRoot(ElementName = "cinematicModel", Namespace = "http://liquidnarrative.csc.ncsu.edu/cinematicModel/v0.1")]
     public class CinematicModel
     {
-        //private Dictionary<Tuple<string, string>, AnimationMapping> animationMappings;
         private Dictionary<string, Actor> actors;
         private Dictionary<string, Animation> animations;
 
         public CinematicModel()
         {
-            //animationMappings = new Dictionary<Tuple<string, string>, AnimationMapping>();
             actors = new Dictionary<string, Actor>();
             animations = new Dictionary<string, Animation>();
         }

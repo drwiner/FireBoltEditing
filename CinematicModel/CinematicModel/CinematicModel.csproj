@@ -45,7 +45,6 @@
     <Compile Include="ModelStructure\AnimationIndex.cs" />
     <Compile Include="ModelStructure\AnimationMapping.cs" />
     <Compile Include="ModelStructure\FireBoltAction.cs" />
-    <Compile Include="ModelStructure\CreatedObject.cs" />
     <Compile Include="ModelStructure\DomainAction.cs" />
     <Compile Include="ModelStructure\DomainActionParameter.cs" />
     <Compile Include="ModelStructure\Actor.cs" />
@@ -58,6 +57,11 @@
     <Compile Include="ModelStructure\SmartModelSettings.cs" />
     <Compile Include="Parser.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="CinematicModel.xsd">
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

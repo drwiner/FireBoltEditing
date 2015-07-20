@@ -13,10 +13,7 @@ namespace CinematicModel
 
         [XmlAttribute(AttributeName = "fileName")]
         public string FileName { get; set; }
-
-        [XmlAttribute("duration")]
-        public int Duration { get; set; }
-
+                
         [XmlArray("animationIndices")]
         [XmlArrayItem("animationIndex")]
         public List<AnimationIndex> AnimationIndices { get; set; }

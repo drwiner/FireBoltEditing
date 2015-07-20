@@ -1,4 +1,4 @@
-<cinematicModel millisPerTick="1" domainDistancePerEngineDistance="1">
+<cinematicModel xmlns="http://liquidnarrative.csc.ncsu.edu/cinematicModel/v0.1" millisPerTick="1" domainDistancePerEngineDistance="1">
 <!---<cinematicModel millisPerTick="33" domainDistancePerEngineDistance="80">-->
   <smartModelSettings maxActorSearchDepth="2" maxAnimationSearchDepth="2" />
   <!-- animation search depth should generally be at least as deep as actor search depth-->
@@ -7,17 +7,24 @@
       <params>
         <param name="actor" />
         <param name="position" />
-      </params>
+      </params>      
       <createActions>
         <createAction actorNameParamName="actor" originParamName="position" />
       </createActions>
+      <destroyActions/>
+      <rotateActions/>
+      <translateActions/>
+      <animateActions/>
     </domainAction>
     <domainAction name="die" >
       <params>
         <param name="actor" />
       </params>
+      <createActions/>
+      <rotateActions/>
+      <translateActions/>
       <destroyActions>
-        <destroyAction actorNameParamName="actor" effector="false" effectorOffsetIndexName="onTheGround"/>
+        <destroyAction actorNameParamName="actor" effectorOffsetIndexName="onTheGround"/>
       </destroyActions>
       <animateActions>
         <animateAction name="die" actorNameParamName="actor" effector="true"/>
@@ -30,6 +37,10 @@
       <animateActions>
         <animateAction name="buy-item1" actorNameParamName="actor"/>
       </animateActions>
+      <createActions/>
+      <destroyActions/>
+      <rotateActions/>
+      <translateActions/>
     </domainAction>
     <domainAction name="idle" >
       <params>
@@ -38,6 +49,10 @@
       <animateActions>
         <animateAction name="idle" actorNameParamName="actor"/>
       </animateActions>
+      <createActions/>
+      <destroyActions/>
+      <rotateActions/>
+      <translateActions/>
     </domainAction>
     <domainAction name="spawn-hero" >
       <params>
@@ -47,6 +62,10 @@
       <createActions>
         <createAction actorNameParamName="actor" originParamName="location" />
       </createActions>
+      <destroyActions/>
+      <rotateActions/>
+      <translateActions/>
+      <animateActions/>
     </domainAction>
     <domainAction name="move" >
       <params>
@@ -60,8 +79,9 @@
         <translateAction  actorNameParamName="actor" destinationParamName="destination" originParamName="origin"/>
       </translateActions>
       <animateActions>
-        <animateAction  name="walk" actorNameParamName="actor" />
+        <animateAction  name="walk" actorNameParamName="actor" effector="false"/>
       </animateActions>
+      <rotateActions/>
     </domainAction>
     <domainAction name="rotate">
       <params>
@@ -75,30 +95,7 @@
         <rotateAction actorNameParamName="actor" destinationParamName="end-angle" maxDuration="400"/>
       </rotateActions>
       <animateActions/>
-    </domainAction>
-    <domainAction name="notSoSneaky">
-      <params>
-        <param name="actor" />
-        <param name="observer" />
-        <param name="destination" />
-        <param name="spawnLocation" />
-      </params>
-      <createActions>
-        <createAction actorNameParamName="observer" originParamName="spawnLocation" effectorOffsetIndexName="sneakAWhile"/>
-      </createActions>
-      <destroyActions/>
-      <translateActions>
-        <translateAction  actorNameParamName="actor" destinationParamName="destination"/>
-      </translateActions>
-      <rotateActions>
-        <rotateAction  actorNameParamName="actor" destinationParamName="destination" maxDuration="700"/>
-        <rotateAction  actorNameParamName="observer" destinationParamName="destination" maxDuration="800" effectorOffsetIndexName="sneakAWhile"/>
-      </rotateActions>
-      <animateActions>
-        <animateAction name="sneak" actorNameParamName="actor" effector="true"/>
-        <animateAction name="observe" actorNameParamName="observer" effector="false" effectorOffsetIndexName="sneakAWhile"/>
-      </animateActions>
-    </domainAction>
+    </domainAction>   
   </domainActions>
   <actors>
     <actor name="secretAgentMan" model="m005.fbx" >
@@ -136,23 +133,30 @@
     </actor>
 
     <actor name="Wisp" model="m005.fbx" >
+      <animationMappings/>
     </actor>
 
     <actor name="Dazzle" model="m005.fbx" >
+      <animationMappings/>
     </actor>
 
     <actor name="Legion Commander" model="m005.fbx" >
+      <animationMappings/>
     </actor>
 
     <actor name="Mirana" model="m005.fbx" >
+      <animationMappings/>
     </actor>
 
     <actor name="Ancient Apparition" model="m005.fbx" >
+      <animationMappings/>
     </actor>
 
     <actor name="Morphling" model="m005.fbx" >
+      <animationMappings/>
     </actor>
     <actor name="Ember Spirit" model="m005.fbx" >
+      <animationMappings/>
     </actor>
 
     <!--<actor name="GoodGuysRanged" model="Heroes/crystal_maiden/crystal_maiden_model.fbx" >
@@ -163,7 +167,7 @@
     </actor>-->
 
     <actor name="Couriers" model="m005.fbx">
-
+      <animationMappings/>
     </actor>
     <actor name="Creeps" model="m005.fbx" >
       <animationMappings>
@@ -204,6 +208,7 @@
     </actor>
 
     <actor name="radiant_observer_ward" model="Non-heroes/ward/ward_model.fbx" >
+      <animationMappings/>
     </actor>
 
     <actor name="Steve Holt" model="Heroes/crystal_maiden/crystal_maiden_model.fbx">
@@ -212,22 +217,31 @@
       </animationMappings>
     </actor>
   </actors>
+  
   <animations>
     <animation fileName="crystal_maiden_die.fbx" name="cm_die">
+      <animationIndices/>
     </animation>
     <animation fileName="mirana_walk.fbx" name="mirana_walk">
+      <animationIndices/>
     </animation>
     <animation fileName="crystal_maiden_walk.fbx" name="cm_walk">
+      <animationIndices/>
     </animation>
     <animation fileName="skywrath_mage_walk.fbx" name="swm_walk">
+      <animationIndices/>
     </animation>
     <animation fileName="creep_good_melee_walk.fbx" name="good_melee_walk">
+      <animationIndices/>
     </animation>
     <animation fileName="creep_bad_melee_walk.fbx" name="bad_melee_walk">
+      <animationIndices/>
     </animation>
     <animation fileName="creep_bad_ranged_walk.fbx" name="bad_ranged_walk">
+      <animationIndices/>
     </animation>
     <animation fileName="creep_good_ranged_walk.fbx" name="good_ranged_walk">
+      <animationIndices/>
     </animation>
     <animation fileName="Pudge_attack1.fbx" name="verticalSwipe">
       <animationIndices>
@@ -246,9 +260,14 @@
         <animationIndex name="onTheGround" timeOffset ="3125"/>
       </animationIndices>
     </animation>
-    <animation fileName="Pudge_walk.fbx" name="walk"/>
-    <animation fileName="Pudge_walk.fbx" name="pudge_walk"/>
+    <animation fileName="Pudge_walk.fbx" name="walk">
+      <animationIndices/>
+    </animation>
+    <animation fileName="Pudge_walk.fbx" name="pudge_walk">
+      <animationIndices/>
+    </animation>
     <animation fileName="humanoid_idle.fbx" name="idle">
+      <animationIndices/>
     </animation>
   </animations>
 </cinematicModel>

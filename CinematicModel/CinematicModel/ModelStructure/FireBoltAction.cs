@@ -9,7 +9,7 @@ namespace CinematicModel
     
     public class FireBoltAction  
     {
-        [XmlAttribute(AttributeName = "actorNameParamName")]
+        [XmlAttribute("actorNameParamName")]
         public string ActorNameParamName { get; set; }
 
         [XmlIgnore]

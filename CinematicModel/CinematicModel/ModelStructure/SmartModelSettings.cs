@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Linq;
 using System.Text;
 using System.Xml.Serialization;
@@ -12,6 +13,12 @@ namespace CinematicModel
     /// </summary>
     public class SmartModelSettings
     {
+        public SmartModelSettings()
+        {
+            AnimationMaxSearchDepth = 10;
+            ActorMaxSearchDepth = 10;
+        }
+
         /// <summary>
         /// how many steps the model will attempt to step up in the xImpulse object hierarchy when 
         /// confronted with an action for which the executing actor has no animation mapping.  
@@ -19,6 +26,7 @@ namespace CinematicModel
         /// Set to 0 to prevent searching.
         /// </summary>
         [XmlAttribute("maxAnimationSearchDepth")]
+        [DefaultValue(10)]
         public uint AnimationMaxSearchDepth { get; set; }
 
         /// <summary>
@@ -28,6 +36,7 @@ namespace CinematicModel
         /// Set to 0 to prevent searching.
         /// </summary>
         [XmlAttribute("maxActorSearchDepth")]
+        [DefaultValue(10)]
         public uint ActorMaxSearchDepth { get; set; }
     }
 }
