@@ -167,5 +167,25 @@
     <xs:attribute name="loopAnimation" type="xs:boolean" use="required" />
   </xs:complexType>
 
-  <xs:element name="cinematicModel" nillable="true" type="CinematicModel" />
+  <xs:element name="cinematicModel" type="CinematicModel" >
+    <xs:key name="animationNameKey">
+      <xs:selector xpath="./tns:animations/tns:animation"/>
+      <xs:field xpath="@name"/>
+    </xs:key>
+
+    <xs:keyref name="animationNameRef" refer="animationNameKey">
+      <xs:selector xpath="./tns:actors/tns:actor/tns:animationMappings/tns:animationMapping"/>
+      <xs:field xpath="@animationName"/>
+    </xs:keyref>
+
+    <xs:key name="animateActionKey">
+      <xs:selector xpath="./tns:domainActions/tns:domainAction/tns:animateActions/tns:animateAction"/>
+      <xs:field xpath="@name"/>
+    </xs:key>
+
+    <xs:keyref name="animateActionRef" refer="animateActionKey">
+      <xs:selector xpath="./tns:actors/tns:actor/tns:animationMappings/tns:animationMapping"/>
+      <xs:field xpath="@animateActionName"/>
+    </xs:keyref>
+  </xs:element>
 </xs:schema>
