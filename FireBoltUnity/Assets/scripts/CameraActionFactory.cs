@@ -99,7 +99,7 @@ namespace Assets.scripts
                                 switch (movement.Directive)
                                 {
                                     case CameraMovementDirective.With:
-                                        cameraActionQueue.Add(new RotateRelative(movement.Subject, fragment.StartTime, fragment.EndTime, cameraName,
+                                        cameraActionQueue.Add(new RotateRelative(movement.Subject, fragment.StartTime, fragment.EndTime, cameraRig,
                                                                                  true, false, true));
                                         break;
                                     case CameraMovementDirective.To:
@@ -111,10 +111,11 @@ namespace Assets.scripts
                                 switch(movement.Directive)
                                 {
                                     case CameraMovementDirective.With: // will this co-execute with pan-with?
-                                        cameraActionQueue.Add(new RotateRelative(movement.Subject, fragment.StartTime, fragment.EndTime, cameraName,
-                                                                                 false, true, false));
+                                        cameraActionQueue.Add(new RotateRelative(movement.Subject, fragment.StartTime, fragment.EndTime, cameraRig,
+                                                                                 false, true, true));
                                         break;
                                     case CameraMovementDirective.To:
+                                        //cameraActionQueue.Add(new Rotate(fragment.StartTime, fragment.EndTime, ))
                                         break;
                                 }
                                 break;
