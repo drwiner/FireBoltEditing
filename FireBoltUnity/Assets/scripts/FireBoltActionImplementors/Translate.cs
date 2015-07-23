@@ -81,7 +81,7 @@ namespace Assets.scripts
             if (endTick - startTick < ElPresidente.MILLIS_PER_FRAME)
                 Skip();
 
-            Debug.Log ("translate from " + start + " to " + destination);
+            Debug.Log(string.Format("translate {0} from {1} to {2}",actorName,origin,destination));
             return true;
         }
 

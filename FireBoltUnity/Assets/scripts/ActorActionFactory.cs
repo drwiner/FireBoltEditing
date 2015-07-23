@@ -120,7 +120,9 @@ namespace Assets.scripts
                         IActionProperty targetOrientation;
                         if (storyAction.TryGetProperty(domainActionParameter.Name, out targetOrientation))
                         {
-                            targetDegrees = (float)(double)targetOrientation.Value.Value;                           
+                            targetDegrees = (float)targetOrientation.Value.Value;      
+                            if(targetOrientation.Range.Name == "x+degrees")
+                                targetDegrees = targetDegrees.convertSourceEngineToUnityRotation();                                           
                         }
                         else
                         {
@@ -131,8 +133,7 @@ namespace Assets.scripts
                 startTick = getStartTick(storyAction, ra, effectingAnimation);
                 endTick = getEndTick(storyAction, ra, effectingAnimation, startTick);
                 if (Rotate.ValidForConstruction(actorName))
-                {
-                    targetDegrees = targetDegrees.convertSourceEngineToUnityRotation();
+                {                    
                     aaq.Add(new Rotate(startTick, endTick, actorName, targetDegrees));
                 }                
             }

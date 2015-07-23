@@ -109,6 +109,9 @@
     <Reference Include="Impulse.XmlSerializers">
       <HintPath>Assets\plugins\Impulse.XmlSerializers.dll</HintPath>
     </Reference>
+    <Reference Include="LN.Planning">
+      <HintPath>Assets\plugins\LN.Planning.dll</HintPath>
+    </Reference>
     <Reference Include="LN.Utilities">
       <HintPath>Assets\plugins\LN.Utilities.dll</HintPath>
     </Reference>
@@ -167,6 +170,7 @@
     <None Include="Assets\Cinema Suite\Cinema Pro Cams\tmp\Resources\ProjectFilmFormat.txt" />
     <None Include="Assets\cinematicModels\DotaHierarchyModel.xml" />
     <None Include="Assets\plugins\Impulse.XML" />
+    <None Include="Assets\plugins\LN.Planning.xml" />
     <None Include="Assets\plugins\LN.Utilities.xml" />
     <None Include="Assets\Standard Assets\Cameras\CameraGuidelines.txt" />
     <None Include="Assets\Standard Assets\CrossPlatformInput\CrossPlatformInputGuidelines.txt" />
@@ -248,6 +252,7 @@
     <None Include="Assets\Standard Assets\Effects\ToonShading\Shaders\ToonLitOutline.shader" />
     <None Include="Assets\storyPlans\Impulsev1_336\3DActionTester.xml" />
     <None Include="Assets\storyPlans\Impulsev1_336\600924233.xml" />
+    <None Include="Assets\storyPlans\Impulsev1_336\600924233-big.xml" />
     <None Include="Assets\storyPlans\Impulsev1_336\tester.xml" />
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath)\SyntaxTree\UnityVS\2013\UnityVS.CSharp.targets" />

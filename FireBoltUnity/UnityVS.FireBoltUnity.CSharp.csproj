@@ -7,16 +7,14 @@
     <SchemaVersion>2.0</SchemaVersion>
     <ProjectGuid>{C10AD983-AF61-27A7-6ECD-94BFF46B1DA4}</ProjectGuid>
     <OutputType>Library</OutputType>
-    <RootNamespace>
-    </RootNamespace>
+    <RootNamespace></RootNamespace>
     <AssemblyName>Assembly-CSharp</AssemblyName>
     <FileAlignment>512</FileAlignment>
     <ProjectTypeGuids>{E097FAD1-6243-4DAD-9C02-E9B9EFC3FFC1};{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</ProjectTypeGuids>
     <TargetFrameworkIdentifier>.NETFramework</TargetFrameworkIdentifier>
     <TargetFrameworkVersion>v3.5</TargetFrameworkVersion>
     <TargetFrameworkProfile>Unity Subset v3.5</TargetFrameworkProfile>
-    <CompilerResponseFile>
-    </CompilerResponseFile>
+    <CompilerResponseFile></CompilerResponseFile>
     <UnityProjectType>Game:1</UnityProjectType>
     <UnityBuildTarget>StandaloneWindows:5</UnityBuildTarget>
     <UnityVersion>5.1.1f1</UnityVersion>
@@ -71,6 +69,9 @@
     </Reference>
     <Reference Include="Impulse.XmlSerializers">
       <HintPath>Assets\plugins\Impulse.XmlSerializers.dll</HintPath>
+    </Reference>
+    <Reference Include="LN.Planning">
+      <HintPath>Assets\plugins\LN.Planning.dll</HintPath>
     </Reference>
     <Reference Include="LN.Utilities">
       <HintPath>Assets\plugins\LN.Utilities.dll</HintPath>
@@ -129,6 +130,7 @@
     <None Include="Assets\Cinema Suite\Cinema Pro Cams\tmp\Resources\ProjectFilmFormat.txt" />
     <None Include="Assets\cinematicModels\DotaHierarchyModel.xml" />
     <None Include="Assets\plugins\Impulse.XML" />
+    <None Include="Assets\plugins\LN.Planning.xml" />
     <None Include="Assets\plugins\LN.Utilities.xml" />
     <None Include="Assets\Standard Assets\Cameras\CameraGuidelines.txt" />
     <None Include="Assets\Standard Assets\CrossPlatformInput\CrossPlatformInputGuidelines.txt" />
@@ -208,11 +210,10 @@
     <None Include="Assets\Standard Assets\Effects\ToonShading\Shaders\ToonBasicOutline.shader" />
     <None Include="Assets\Standard Assets\Effects\ToonShading\Shaders\ToonLit.shader" />
     <None Include="Assets\Standard Assets\Effects\ToonShading\Shaders\ToonLitOutline.shader" />
-    <None Include="Assets\storyPlans\Impulsev1_336\600924233.xml" />
-    <None Include="Assets\storyPlans\Impulsev1_336\tester.xml" />
-  </ItemGroup>
-  <ItemGroup>
     <None Include="Assets\storyPlans\Impulsev1_336\3DActionTester.xml" />
+    <None Include="Assets\storyPlans\Impulsev1_336\600924233.xml" />
+    <None Include="Assets\storyPlans\Impulsev1_336\600924233-big.xml" />
+    <None Include="Assets\storyPlans\Impulsev1_336\tester.xml" />
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath)\SyntaxTree\UnityVS\2013\UnityVS.CSharp.targets" />
 </Project>
