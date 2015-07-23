@@ -39,16 +39,18 @@
           </framings>
 <shotFragement/>
         </shotFragment>-->
-        <shotFragment anchor="0,-5" startTime="2" endTime="3999" focus="NegZ" f-stop ="1.4" lens ="25mm" shake ="0">
+        <shotFragment anchor="0,-5" startTime="2" endTime="10000" focus="NegZ" f-stop ="22" lens ="25mm" shake ="0">
           <framings/>
           <movements>
             <movement type="Focus" directive="With" subject="Pudge"/>
+            <movement type="Tilt" directive="With" subject="Pudge" />
+            <movement type="Pan" directive="With" subject="Pudge"/>
           </movements>
         </shotFragment>
-        <shotFragment anchor="0,-5" startTime="4000" endTime="7000" focus ="PosZ" f-stop ="1.4" lens ="25mm" >
+        <!--<shotFragment anchor="0,-5" startTime="4000" endTime="7000" focus ="PosZ" lens ="25mm" >
           <framings/>
           <movements/>
-        </shotFragment>
+        </shotFragment>-->
         <!--<shotFragment anchor="0,-5" startTime="3001" endTime="4500" focus ="Pudge" f-stop ="1.4" lens ="25mm" shake ="5">
           <framings/>
           <movements/>

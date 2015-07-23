@@ -56,13 +56,13 @@
         <property name="actor" value="Pudge"/>
         <property name="time" value="5-8000"/>
       </action>
-<!--      <action type="rotate" name="step7532">
-        <property name="start-angle" value="90"/>
+    <action type="rotate" name="step7532">
+        <property name="start-angle" value="0"/>
         <property name="end-angle" value="180"/>
         <property name="actor" value="Pudge"/>
-        <property name="time" value="1001-1500"/>
+        <property name="time" value="1001-4500"/>
       </action>
-      <action type="move" name="step7533">
+<!--      <action type="move" name="step7533">
         <property name="origin" value="(0, 0)"/>
         <property name="destination" value="(-10.0, 0)"/>
         <property name="actor" value="Pudge"/>
@@ -291,12 +291,12 @@
     <action-property name="message" action="chat-all" range="string"/>
     <action-property name="targets" action="has-targets" range="P(A)"/>
     <action-property name="destination" action="move" range="coordinate2d"/>
-    <action-property name="start-angle" action="rotate" range="double"/>
+    <action-property name="start-angle" action="rotate" range="y-degrees"/>
     <action-property name="actor" action="Actions" range="A"/>
     <action-property name="source" action="has-source" range="A"/>
     <action-property name="location" action="has-location" range="coordinate2d"/>
     <action-property name="type" action="spawn-rune" range="string"/>
-    <action-property name="end-angle" action="rotate" range="double"/>
+    <action-property name="end-angle" action="rotate" range="y-degrees"/>
     <action-property name="ability" action="has-ability" range="string"/>
     <action-property name="courier" action="buy-item-courier" range="string"/>
     <action-property name="secondary-targets" action="starfall" range="P(A)"/>
