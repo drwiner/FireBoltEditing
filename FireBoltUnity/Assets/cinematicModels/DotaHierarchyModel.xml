@@ -79,7 +79,7 @@
         <translateAction  actorNameParamName="actor" destinationParamName="destination" originParamName="origin"/>
       </translateActions>
       <animateActions>
-        <animateAction  name="walk" actorNameParamName="actor" effector="false"/>
+        <!--<animateAction  name="walk" actorNameParamName="actor" effector="false"/>-->
       </animateActions>
       <rotateActions/>
     </domainAction>
@@ -104,7 +104,7 @@
         <animationMapping animateActionName="walk" animationName="cm_walk" loopAnimation="true" />
       </animationMappings>
     </actor>
-    <actor name="Pudge" model="Heroes/pudge/pudge_model.fbx" >
+    <actor name="Pudge" model="pudge_model.fbx" >
       <animationMappings>
         <animationMapping animateActionName="sneak" animationName="sneak" loopAnimation="true" />
         <animationMapping animateActionName="walk" animationName="walk" loopAnimation="true" />

@@ -1,7 +1,7 @@
 ﻿using UnityEngine;
 using System.Collections;
 using CM = CinematicModel;
-using UnityEditor;
+//using UnityEditor;
 
 namespace Assets.scripts
 {
@@ -42,7 +42,6 @@ namespace Assets.scripts
         {
 			if (animatorOverride != null)
 			{
-				//oldClip = animatorOverride ["idle"];
 				animatorOverride["idle"] = animation;
                 animator.runtimeAnimatorController = animatorOverride;
 				return true;
@@ -60,14 +59,14 @@ namespace Assets.scripts
                 animator = actor.AddComponent<Animator>();
             }
             animator.applyRootMotion = false;
-            //doing all this ever time we start an animation seems expensive. what else can we do?
+            //doing all this every time we start an animation seems expensive. what else can we do?
             animatorOverride = new AnimatorOverrideController();
             animatorOverride.runtimeAnimatorController = Resources.Load<RuntimeAnimatorController>("AnimatorControllers/Generic");
             animator.runtimeAnimatorController = animatorOverride;
-            //animation = Resources.Load<AnimationClip>("Animations/" + animName);
-            //AnimationClip oldAnim = Resources.Load<AnimationClip>("Animations/humanoid_idle.fbx");
-            animation = AssetDatabase.LoadAssetAtPath<AnimationClip>("Assets/Resources/Animations/" + animName);
-            AnimationClip oldAnim = AssetDatabase.LoadAssetAtPath<AnimationClip>("Assets/Resources/Animations/humanoid_idle.fbx");
+
+            //animation = AssetDatabase.LoadAssetAtPath<AnimationClip>("Assets/Resources/Animations/" + animName);
+            AnimationClip oldAnim =null;//= AssetDatabase.LoadAssetAtPath<AnimationClip>("Assets/Resources/Animations/humanoid_idle.fbx");
+            
             if (!animation || !oldAnim)
             {
                 Debug.LogError("Missing animation asset");

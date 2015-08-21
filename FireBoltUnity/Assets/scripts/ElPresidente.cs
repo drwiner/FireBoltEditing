@@ -29,6 +29,9 @@ public class ElPresidente : MonoBehaviour {
 
     public static ElPresidente Instance;
 
+    private AssetBundle assetBundle = null;
+    private static readonly string ASSET_BUNDLE_DEFAULT = "AssetBundles/default";
+
 
     /// <summary>
     /// FireBolt point of truth for time.  updated with but independent of time.deltaTime
@@ -50,7 +53,18 @@ public class ElPresidente : MonoBehaviour {
             totalTime = actorActionList [actorActionList.Count - 1].EndTick() - actorActionList [0].StartTick();
 
         Instance = this;
+        SetActiveAssetBundle(ASSET_BUNDLE_DEFAULT); 
     }
+//
+    //
+    //
+    //
+    //create a default asset bundle that has pudge 
+    //build firebolt
+    //remove animation from walk in the cinematic model
+    //deploy asset bundle & build
+    //pray
+    //run
 
     private void loadStructuredImpulsePlan(string storyPlanPath)
     {
@@ -63,6 +77,27 @@ public class ElPresidente : MonoBehaviour {
         story = factory.ParseStory(xml, false);//TODO true! get crackin with that validation, colin!
         Debug.Log("end story plan parse");
         debugText.text = "story load done!";
+    }
+
+    /// <summary>
+    /// provide an asset bundle path on local disk for el presidente to load from
+    /// </summary>
+    /// <param name="bundlePath">may be absolute or relative to execution directory</param>
+    public void SetActiveAssetBundle(string bundlePath)
+    {
+        assetBundle = AssetBundle.CreateFromFile(bundlePath);
+    }
+
+
+    public AssetBundle GetActiveAssetBundle()
+    {
+        if (assetBundle == null)
+        {
+            Debug.Log("attempting to load from asset bundle before it is set. " +
+                      "use ElPresidente.SetActiveAssetBundle() to load an asset bundle");
+            return null;
+        }
+        return assetBundle;
     }
 
     public void togglePause()

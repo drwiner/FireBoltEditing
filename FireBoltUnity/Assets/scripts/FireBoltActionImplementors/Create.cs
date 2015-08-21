@@ -4,7 +4,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using CM=CinematicModel;
-using UnityEditor;
+//using UnityEditor;
 
 namespace Assets.scripts
 {
@@ -38,19 +38,31 @@ namespace Assets.scripts
 
         public bool Init()
         {
-            Debug.Log ("init create");
-			if (actor != null)
-			{
-				actor.SetActive(true);
-				actor.transform.position = position;
-				actor.transform.rotation = Quaternion.identity;
-				return true;
-			}
-            GameObject model = AssetDatabase.LoadAssetAtPath<GameObject>("Assets/Resources/Models/" + modelName);
+            Debug.Log("init create");
+            if (actor != null)
+            {
+                actor.SetActive(true);
+                actor.transform.position = position;
+                actor.transform.rotation = Quaternion.identity;
+                return true;
+            }
+            GameObject model = null;
+            if (ElPresidente.Instance.GetActiveAssetBundle().Contains(modelName))
+            {
+                model = ElPresidente.Instance.GetActiveAssetBundle().LoadAsset<GameObject>(modelName);
+            }
+            //GameObject model = AssetDatabase.LoadAssetAtPath<GameObject>("Assets/Resources/Models/" + modelName);
             //GameObject model = Resources.Load<GameObject>("Models/" + modelName);
+            //if (model == null)
+            //{
+            //    Debug.LogError(string.Format("could not find model[{0}] to create",modelName));
+            //    return false;
+            //}
+
             if (model == null)
             {
-                Debug.LogError(string.Format("could not find model[{0}] to create",modelName));
+                Debug.LogError(string.Format("could not load asset[{0}] from assetbundle[{1}]", 
+                                             modelName, ElPresidente.Instance.GetActiveAssetBundle().name));
                 return false;
             }
             actor = GameObject.Instantiate(model, position, Quaternion.identity) as GameObject;
