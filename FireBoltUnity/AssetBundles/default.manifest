@@ -1,9 +1,9 @@
 ManifestFileVersion: 0
-CRC: 1557533831
+CRC: 1439580156
 Hashes:
   AssetFileHash:
     serializedVersion: 2
-    Hash: df551ee3b05410832b22cec5467be1d5
+    Hash: ef68c73df0a4c8c669be66b3a52633d8
   TypeTreeHash:
     serializedVersion: 2
     Hash: 183ec7b014cfcd21a862522b71f253f6
@@ -31,4 +31,5 @@ ClassTypes:
   Script: {instanceID: 0}
 Assets:
 - Assets/Resources/Models/Heroes/pudge/pudge_model.fbx
+- Assets/Resources/Animations/pudge_walk.fbx
 Dependencies: []

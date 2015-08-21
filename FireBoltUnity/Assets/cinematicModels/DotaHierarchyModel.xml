@@ -79,7 +79,7 @@
         <translateAction  actorNameParamName="actor" destinationParamName="destination" originParamName="origin"/>
       </translateActions>
       <animateActions>
-        <!--<animateAction  name="walk" actorNameParamName="actor" effector="false"/>-->
+        <animateAction  name="walk" actorNameParamName="actor" effector="false"/>
       </animateActions>
       <rotateActions/>
     </domainAction>

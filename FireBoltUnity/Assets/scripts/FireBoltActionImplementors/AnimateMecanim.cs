@@ -1,7 +1,6 @@
 ﻿using UnityEngine;
 using System.Collections;
 using CM = CinematicModel;
-//using UnityEditor;
 
 namespace Assets.scripts
 {
@@ -64,9 +63,22 @@ namespace Assets.scripts
             animatorOverride.runtimeAnimatorController = Resources.Load<RuntimeAnimatorController>("AnimatorControllers/Generic");
             animator.runtimeAnimatorController = animatorOverride;
 
-            //animation = AssetDatabase.LoadAssetAtPath<AnimationClip>("Assets/Resources/Animations/" + animName);
-            AnimationClip oldAnim =null;//= AssetDatabase.LoadAssetAtPath<AnimationClip>("Assets/Resources/Animations/humanoid_idle.fbx");
+            AnimationClip oldAnim = Resources.Load<AnimationClip>("Animations/humanoid_idle");
+            if(ElPresidente.Instance.GetActiveAssetBundle().Contains(animName))
+            {
+                animation = ElPresidente.Instance.GetActiveAssetBundle().LoadAsset<AnimationClip>(animName);
+                if (animation == null)
+                {
+                    Debug.LogError(string.Format("unable to find animation [{0}] in asset bundle[{1}]",animName, ElPresidente.Instance.GetActiveAssetBundle().name));
+                    return false;
+                }
+            }
             
+
+            //TODO build animation controller dynamically and avoid having to do overriding.  
+            //This allows us to avoid packaging a default animation that may not be valid 
+            //for the rig of a given actor that it's supposed to be played on.
+            //It would also remove the reconfigure on download issue of the animation type and name.
             if (!animation || !oldAnim)
             {
                 Debug.LogError("Missing animation asset");
@@ -95,11 +107,9 @@ namespace Assets.scripts
 
 	    public void Execute () 
         {
-		    //let it roll
-            //animator.SetTrigger(playTriggerHash);
+		    //let it roll          
             float at = Mathf.Repeat ((ElPresidente.currentTime - startTick)/1000, animation.averageDuration);
             animator.CrossFade( "animating", 0, 0, at/animation.averageDuration );
-
 	    }
 
         public void Stop()
