@@ -30,7 +30,7 @@ public class ElPresidente : MonoBehaviour {
     public static ElPresidente Instance;
 
     private AssetBundle assetBundle = null;
-    private static readonly string ASSET_BUNDLE_DEFAULT = "AssetBundles/default";
+    private const string ASSET_BUNDLE_DEFAULT = "AssetBundles/default";
 
 
     /// <summary>
@@ -40,31 +40,37 @@ public class ElPresidente : MonoBehaviour {
     public static float currentTime;
 
 	// Use this for initialization
-	void Awake () {
+	void Start () {
         ActorActionFactory.debugText = debugText;
+        Init(storyPlanPath,cameraPlanPath,cinematicModelPath);
+    }
+
+    /// <summary>
+    /// call to throw out all of the current processing and start over
+    /// </summary>
+    /// <param name="storyPlanPath"></param>
+    /// <param name="cameraPlanPath"></param>
+    /// <param name="cinematicModelPath"></param>
+    /// <param name="assetBundle">relative path to asset bundle</param>
+    public void Init(string newStoryPlanPath, string newCameraPlanPath, string newCinematicModelPath, string newAssetBundlePath=ASSET_BUNDLE_DEFAULT)
+    {
+        this.storyPlanPath = newStoryPlanPath;
+        this.cameraPlanPath = newCameraPlanPath;
+        this.cinematicModelPath = newCinematicModelPath;
+
         executingActions = new FireBoltActionList(new ActionTypeComparer());
         loadStructuredImpulsePlan(storyPlanPath);
         actorActionList = ActorActionFactory.CreateStoryActions(story, cinematicModelPath);
         cameraActionList = CameraActionFactory.CreateCameraActions(story, cameraPlanPath);
-        currentTime = 0;        
+        currentTime = 0;
         //find total time for execution. not sure how to easily find this without searching a lot of actions
         totalTime = 0;
         if (actorActionList.Count > 0)
-            totalTime = actorActionList [actorActionList.Count - 1].EndTick() - actorActionList [0].StartTick();
+            totalTime = actorActionList[actorActionList.Count - 1].EndTick() - actorActionList[0].StartTick();
 
         Instance = this;
-        SetActiveAssetBundle(ASSET_BUNDLE_DEFAULT); 
+        SetActiveAssetBundle(newAssetBundlePath); 
     }
-//
-    //
-    //
-    //
-    //create a default asset bundle that has pudge 
-    //build firebolt
-    //remove animation from walk in the cinematic model
-    //deploy asset bundle & build
-    //pray
-    //run
 
     private void loadStructuredImpulsePlan(string storyPlanPath)
     {
