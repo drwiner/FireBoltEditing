@@ -45,13 +45,13 @@ public class ElPresidente : MonoBehaviour {
         Init(storyPlanPath,cameraPlanPath,cinematicModelPath);
     }
 
-    /// <summary>
-    /// call to throw out all of the current processing and start over
-    /// </summary>
-    /// <param name="storyPlanPath"></param>
-    /// <param name="cameraPlanPath"></param>
-    /// <param name="cinematicModelPath"></param>
-    /// <param name="assetBundle">relative path to asset bundle</param>
+/// <summary>
+/// 
+/// </summary>
+/// <param name="newStoryPlanPath"></param>
+/// <param name="newCameraPlanPath"></param>
+/// <param name="newCinematicModelPath"></param>
+/// <param name="newAssetBundlePath"></param>
     public void Init(string newStoryPlanPath, string newCameraPlanPath, string newCinematicModelPath, string newAssetBundlePath=ASSET_BUNDLE_DEFAULT)
     {
         this.storyPlanPath = newStoryPlanPath;

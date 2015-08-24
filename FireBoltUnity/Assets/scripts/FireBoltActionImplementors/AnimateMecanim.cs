@@ -63,7 +63,6 @@ namespace Assets.scripts
             animatorOverride.runtimeAnimatorController = Resources.Load<RuntimeAnimatorController>("AnimatorControllers/Generic");
             animator.runtimeAnimatorController = animatorOverride;
 
-            AnimationClip oldAnim = Resources.Load<AnimationClip>("Animations/humanoid_idle");
             if(ElPresidente.Instance.GetActiveAssetBundle().Contains(animName))
             {
                 animation = ElPresidente.Instance.GetActiveAssetBundle().LoadAsset<AnimationClip>(animName);
@@ -79,15 +78,17 @@ namespace Assets.scripts
             //This allows us to avoid packaging a default animation that may not be valid 
             //for the rig of a given actor that it's supposed to be played on.
             //It would also remove the reconfigure on download issue of the animation type and name.
-            if (!animation || !oldAnim)
+
+            //we can't do this!  creating new animator controllers is a function only available in the UnityEditor library ftl
+            //can i just not load the old animation?
+            if (!animation) 
             {
                 Debug.LogError("Missing animation asset");
             }
 			if (loop) {
 				animation.wrapMode = WrapMode.Loop;
 			} else
-				animation.wrapMode = WrapMode.Once;
-			oldClip = animatorOverride ["idle"];
+				animation.wrapMode = WrapMode.Once;			
             animatorOverride["idle"] = animation;
             Debug.Log ("duration " + animation.averageDuration);
             return true;
@@ -95,14 +96,11 @@ namespace Assets.scripts
 
 		public void Undo()
 		{
-			if (animatorOverride != null)
-			    animatorOverride["idle"] = oldClip;
 		}
 
         public void Skip()
         {
             animator.SetTrigger(stopTriggerHash);
-            animatorOverride["idle"] = oldClip;
         }
 
 	    public void Execute () 
@@ -115,7 +113,6 @@ namespace Assets.scripts
         public void Stop()
         {
             animator.SetTrigger(stopTriggerHash);
-            animatorOverride["idle"] = oldClip;
         }
 
         public float StartTick()
