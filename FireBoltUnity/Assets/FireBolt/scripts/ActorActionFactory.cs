@@ -26,7 +26,6 @@ namespace Assets.scripts
         private static string[] orderedObjectSets;
         //private static string[] orderedActionTypes;
         private static AStory<UintV, UintT, IIntervalSet<UintV, UintT>> story;
-        public static Text debugText;
 
         /// <summary>
         /// 

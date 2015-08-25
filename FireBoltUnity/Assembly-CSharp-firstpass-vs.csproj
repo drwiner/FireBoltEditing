@@ -110,7 +110,7 @@
      <None Include="Assets\storyPlans\Impulsev1_336\tester.xml" />
      <None Include="Assets\Standard Assets\Effects\TessellationShaders\Shaders\BumpedSpecularDisplacement.shader" />
      <None Include="Assets\Standard Assets\Effects\ImageEffects\Shaders\NoiseEffectShaderYUV.shader" />
-     <None Include="Assets\Cinema Suite\Cinema Pro Cams\Lens Data\Resources\CinemaSuite_LensData.txt" />
+     <None Include="Assets\FireBolt\Cinema Suite\Cinema Pro Cams\Lens Data\Resources\CinemaSuite_LensData.txt" />
      <None Include="Assets\Standard Assets\Effects\ImageEffects\Shaders\ShowAlphaChannel.shader" />
      <None Include="Assets\Standard Assets\Effects\ImageEffects\Shaders\Contrast Stretch\Luminance.shader" />
      <None Include="Assets\Standard Assets\Effects\ImageEffects\Shaders\SepiaToneEffect.shader" />
@@ -138,19 +138,19 @@
      <None Include="Assets\Standard Assets\Effects\ImageEffects\Shaders\GrayscaleEffect.shader" />
      <None Include="Assets\Standard Assets\Effects\ImageEffects\Shaders\ColorCorrectionCurves.shader" />
      <None Include="Assets\Standard Assets\Effects\ImageEffects\Shaders\NoiseAndGrain.shader" />
-     <None Include="Assets\Cinema Suite\Cinema Pro Cams\Image Effects (Pro Only)_CS\_Sources\Shaders\_DepthOfField\DepthOfFieldScatter.shader" />
+     <None Include="Assets\FireBolt\Cinema Suite\Cinema Pro Cams\Image Effects (Pro Only)_CS\_Sources\Shaders\_DepthOfField\DepthOfFieldScatter.shader" />
      <None Include="Assets\cameraPlans\SimplestCamera.xml" />
      <None Include="Assets\Standard Assets\Effects\ImageEffects\Shaders\ColorCorrection3DLut.shader" />
      <None Include="Assets\Standard Assets\Effects\ImageEffects\Shaders\_BloomAndFlares\MultiPassHollywoodFlares.shader" />
-     <None Include="Assets\Cinema Suite\Cinema Pro Cams\tmp\Resources\ProjectFilmFormat.txt" />
+     <None Include="Assets\FireBolt\Cinema Suite\Cinema Pro Cams\tmp\Resources\ProjectFilmFormat.txt" />
      <None Include="Assets\Standard Assets\Effects\TessellationShaders\Shaders\BumpedSpecularSmooth.shader" />
      <None Include="Assets\Standard Assets\Effects\ImageEffects\Shaders\frag_ao.cginc" />
      <None Include="Assets\Standard Assets\Effects\ImageEffects\Shaders\_Antialiasing\FXAA2.shader" />
      <None Include="Assets\Standard Assets\Effects\ImageEffects\Shaders\_Antialiasing\FXAAPreset2.shader" />
      <None Include="Assets\Standard Assets\Effects\GlassRefraction\Shaders\GlassStainedBumpDistort.shader" />
      <None Include="Assets\storyPlans\Impulsev1_336\600924233.xml" />
-     <None Include="Assets\plugins\LN.Planning.xml" />
-     <None Include="Assets\Cinema Suite\Cinema Pro Cams\Image Effects (Pro Only)_CS\_Sources\Shaders\_DepthOfField\DepthOfFieldDX11.shader" />
+     <None Include="Assets\FireBolt\plugins\LN.Planning.xml" />
+     <None Include="Assets\FireBolt\Cinema Suite\Cinema Pro Cams\Image Effects (Pro Only)_CS\_Sources\Shaders\_DepthOfField\DepthOfFieldDX11.shader" />
      <None Include="Assets\Standard Assets\Effects\ToonShading\Shaders\ToonBasic.shader" />
      <None Include="Assets\Standard Assets\CrossPlatformInput\CrossPlatformInputGuidelines.txt" />
      <None Include="Assets\Standard Assets\Effects\ImageEffects\Shaders\ColorCorrectionCurvesSimple.shader" />
@@ -166,7 +166,7 @@
      <None Include="Assets\Standard Assets\Effects\ImageEffects\Shaders\_DepthOfField\SeparableWeightedBlurDof34.shader" />
      <None Include="Assets\Standard Assets\Effects\ImageEffects\Shaders\CreaseApply.shader" />
      <None Include="Assets\Standard Assets\Effects\ImageEffects\Shaders\_Antialiasing\FXAA3Console.shader" />
-     <None Include="Assets\Cinema Suite\Cinema Pro Cams\Shader\Stereo3D.shader" />
+     <None Include="Assets\FireBolt\Cinema Suite\Cinema Pro Cams\Shader\Stereo3D.shader" />
      <None Include="Assets\Standard Assets\Effects\ImageEffects\Shaders\_BloomAndFlares\BrightPassFilter2.shader" />
      <None Include="Assets\Standard Assets\Effects\Projectors\Shaders\ProjectorLight.shader" />
      <None Include="Assets\Standard Assets\Effects\ImageEffects\Shaders\GlobalFog.shader" />
@@ -184,7 +184,7 @@
      <None Include="Assets\Standard Assets\Effects\ImageEffects\Shaders\VignettingShader.shader" />
      <None Include="Assets\Standard Assets\Effects\ImageEffects\Shaders\SunShaftsComposite.shader" />
      <None Include="Assets\Standard Assets\Effects\ImageEffects\Shaders\ColorCorrectionEffect.shader" />
-     <None Include="Assets\plugins\LN.Utilities.xml" />
+     <None Include="Assets\FireBolt\plugins\LN.Utilities.xml" />
      <None Include="Assets\Standard Assets\Effects\ImageEffects\Shaders\Tonemapper.shader" />
      <None Include="Assets\Standard Assets\Effects\ImageEffects\Shaders\_BloomAndFlares\SeparableBlurPlus.shader" />
      <None Include="Assets\Standard Assets\Effects\ImageEffects\Shaders\SSAOShader.shader" />
@@ -202,23 +202,23 @@
  <Reference Include="UnityEngine.Analytics">
  <HintPath>C:/Program Files/Unity/Editor/Data/UnityExtensions/Unity/UnityAnalytics/UnityEngine.Analytics.dll</HintPath>
  </Reference>
- <Reference Include="CinematicModel">
- <HintPath>C:/Users/brthorne/np/NP-FireBolt/FireBoltUnity/Assets/plugins/CinematicModel.dll</HintPath>
- </Reference>
- <Reference Include="Impulse">
- <HintPath>C:/Users/brthorne/np/NP-FireBolt/FireBoltUnity/Assets/plugins/Impulse.dll</HintPath>
- </Reference>
- <Reference Include="Impulse.XmlSerializers">
- <HintPath>C:/Users/brthorne/np/NP-FireBolt/FireBoltUnity/Assets/plugins/Impulse.XmlSerializers.dll</HintPath>
+ <Reference Include="LN.Utilities">
+ <HintPath>C:/Users/brthorne/np/NP-FireBolt/FireBoltUnity/Assets/FireBolt/plugins/LN.Utilities.dll</HintPath>
  </Reference>
  <Reference Include="LN.Planning">
- <HintPath>C:/Users/brthorne/np/NP-FireBolt/FireBoltUnity/Assets/plugins/LN.Planning.dll</HintPath>
+ <HintPath>C:/Users/brthorne/np/NP-FireBolt/FireBoltUnity/Assets/FireBolt/plugins/LN.Planning.dll</HintPath>
  </Reference>
- <Reference Include="LN.Utilities">
- <HintPath>C:/Users/brthorne/np/NP-FireBolt/FireBoltUnity/Assets/plugins/LN.Utilities.dll</HintPath>
+ <Reference Include="CinematicModel">
+ <HintPath>C:/Users/brthorne/np/NP-FireBolt/FireBoltUnity/Assets/FireBolt/plugins/CinematicModel.dll</HintPath>
  </Reference>
  <Reference Include="Oshmirto">
- <HintPath>C:/Users/brthorne/np/NP-FireBolt/FireBoltUnity/Assets/plugins/Oshmirto.dll</HintPath>
+ <HintPath>C:/Users/brthorne/np/NP-FireBolt/FireBoltUnity/Assets/FireBolt/plugins/Oshmirto.dll</HintPath>
+ </Reference>
+ <Reference Include="Impulse">
+ <HintPath>C:/Users/brthorne/np/NP-FireBolt/FireBoltUnity/Assets/FireBolt/plugins/Impulse.dll</HintPath>
+ </Reference>
+ <Reference Include="Impulse.XmlSerializers">
+ <HintPath>C:/Users/brthorne/np/NP-FireBolt/FireBoltUnity/Assets/FireBolt/plugins/Impulse.XmlSerializers.dll</HintPath>
  </Reference>
  <Reference Include="UnityEditor.iOS.Extensions.Xcode">
  <HintPath>C:/Program Files/Unity/Editor/Data/PlaybackEngines/iOSSupport/UnityEditor.iOS.Extensions.Xcode.dll</HintPath>

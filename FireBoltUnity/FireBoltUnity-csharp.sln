@@ -1,8 +1,6 @@
 Microsoft Visual Studio Solution File, Format Version 11.00
 # Visual Studio 2008
 
-Project("{C25FE4AB-1470-398B-5191-97FCDB227B2F}") = "FireBoltUnity", "Assembly-CSharp-firstpass-vs.csproj", "{7D8B16EB-A789-8C13-9071-07310A134B5C}"
-EndProject
 Project("{C25FE4AB-1470-398B-5191-97FCDB227B2F}") = "FireBoltUnity", "Assembly-CSharp-vs.csproj", "{C78C4A60-B45B-3913-2773-B7352EFCA591}"
 EndProject
 Project("{C25FE4AB-1470-398B-5191-97FCDB227B2F}") = "FireBoltUnity", "Assembly-CSharp-Editor-vs.csproj", "{1F4811B1-47B5-95FD-82A3-20A35A98956F}"
@@ -13,10 +11,6 @@ Global
 		Release|Any CPU = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
-		{7D8B16EB-A789-8C13-9071-07310A134B5C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{7D8B16EB-A789-8C13-9071-07310A134B5C}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{7D8B16EB-A789-8C13-9071-07310A134B5C}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{7D8B16EB-A789-8C13-9071-07310A134B5C}.Release|Any CPU.Build.0 = Release|Any CPU
 		{C78C4A60-B45B-3913-2773-B7352EFCA591}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{C78C4A60-B45B-3913-2773-B7352EFCA591}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{C78C4A60-B45B-3913-2773-B7352EFCA591}.Release|Any CPU.ActiveCfg = Release|Any CPU
@@ -29,7 +23,7 @@ Global
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
 	EndGlobalSection
-																																																																									GlobalSection(MonoDevelopProperties) = preSolution
+																																																																																					GlobalSection(MonoDevelopProperties) = preSolution
 		StartupItem = Assembly-CSharp.csproj
 		Policies = $0
 		$0.TextStylePolicy = $1

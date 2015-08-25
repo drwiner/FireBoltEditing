@@ -40,8 +40,7 @@ public class ElPresidente : MonoBehaviour {
     public static float currentTime;
 
 	// Use this for initialization
-	void Start () {
-        ActorActionFactory.debugText = debugText;
+	void Start () {        
         Init(storyPlanPath,cameraPlanPath,cinematicModelPath);
     }
 
@@ -74,7 +73,6 @@ public class ElPresidente : MonoBehaviour {
 
     private void loadStructuredImpulsePlan(string storyPlanPath)
     {
-        debugText.text = "beginning load " + storyPlanPath;
         Debug.Log("begin story plan xml load");
         var xml = Impulse.v_1_336.Xml.Story.LoadFromFile(storyPlanPath);
         Debug.Log("end story plan xml load");
@@ -82,7 +80,6 @@ public class ElPresidente : MonoBehaviour {
         Debug.Log("begin story plan parse");
         story = factory.ParseStory(xml, false);//TODO true! get crackin with that validation, colin!
         Debug.Log("end story plan parse");
-        debugText.text = "story load done!";
     }
 
     /// <summary>
@@ -128,8 +125,9 @@ public class ElPresidente : MonoBehaviour {
     void Update()
     {
         currentTime += Time.deltaTime * 1000;
-        debugText.text = currentTime.ToString();
-        if (currentTime < totalTime)
+        if(debugText != null)
+            debugText.text = currentTime.ToString();
+        if (whereWeAt && currentTime < totalTime)
             whereWeAt.value = currentTime / totalTime;
 		myTime = currentTime;  
         logTicks();
