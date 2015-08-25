@@ -80,7 +80,7 @@ namespace Assets.scripts
             //It would also remove the reconfigure on download issue of the animation type and name.
 
             //we can't do this!  creating new animator controllers is a function only available in the UnityEditor library ftl
-            //can i just not load the old animation?
+            //can i just not load the old animation? indeed we can do just not that!
             if (!animation) 
             {
                 Debug.LogError("Missing animation asset");
