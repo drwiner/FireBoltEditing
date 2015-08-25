@@ -16,9 +16,6 @@ public class ElPresidente : MonoBehaviour {
     FireBoltActionList actorActionList;
     FireBoltActionList cameraActionList;
     FireBoltActionList executingActions;
-    public string storyPlanPath;
-    public string cinematicModelPath;
-    public string cameraPlanPath;
     private float lastTickLogged;
     private float totalTime;
     public Text debugText;
@@ -29,9 +26,9 @@ public class ElPresidente : MonoBehaviour {
 
     public static ElPresidente Instance;
 
-    private AssetBundle assetBundle = null;
-    private const string ASSET_BUNDLE_DEFAULT = "AssetBundles/default";
-
+    private AssetBundle actorsAndAnimations = null;
+    private AssetBundle terrain = null;
+    private bool initialized = false;
 
     /// <summary>
     /// FireBolt point of truth for time.  updated with but independent of time.deltaTime
@@ -39,9 +36,9 @@ public class ElPresidente : MonoBehaviour {
     /// </summary>
     public static float currentTime;
 
-	// Use this for initialization
-	void Start () {        
-        Init(storyPlanPath,cameraPlanPath,cinematicModelPath);
+    public void Init(float a)
+    {
+        Init();
     }
 
 /// <summary>
@@ -50,12 +47,11 @@ public class ElPresidente : MonoBehaviour {
 /// <param name="newStoryPlanPath"></param>
 /// <param name="newCameraPlanPath"></param>
 /// <param name="newCinematicModelPath"></param>
-/// <param name="newAssetBundlePath"></param>
-    public void Init(string newStoryPlanPath, string newCameraPlanPath, string newCinematicModelPath, string newAssetBundlePath=ASSET_BUNDLE_DEFAULT)
-    {
-        this.storyPlanPath = newStoryPlanPath;
-        this.cameraPlanPath = newCameraPlanPath;
-        this.cinematicModelPath = newCinematicModelPath;
+/// <param name="newActorAndAnimationBundlePath"></param>
+    public void Init(string storyPlanPath = "Assets/storyPlans/defaultStory.xml", string cameraPlanPath = "Assets/cameraPlans/defaultCamera.xml", 
+                     string cinematicModelPath = "Assets/cinematicModels/defaultModel.xml", 
+                     string actorsAndAnimationsBundlePath = "AssetBundles/actorsAndAnimations", string terrainBundlePath = "AssetBundles/terrain")
+    {      
 
         executingActions = new FireBoltActionList(new ActionTypeComparer());
         loadStructuredImpulsePlan(storyPlanPath);
@@ -68,7 +64,9 @@ public class ElPresidente : MonoBehaviour {
             totalTime = actorActionList[actorActionList.Count - 1].EndTick() - actorActionList[0].StartTick();
 
         Instance = this;
-        SetActiveAssetBundle(newAssetBundlePath); 
+        actorsAndAnimations = AssetBundle.CreateFromFile(actorsAndAnimationsBundlePath);
+        terrain = AssetBundle.CreateFromFile(terrainBundlePath);
+        initialized = true;
     }
 
     private void loadStructuredImpulsePlan(string storyPlanPath)
@@ -82,25 +80,15 @@ public class ElPresidente : MonoBehaviour {
         Debug.Log("end story plan parse");
     }
 
-    /// <summary>
-    /// provide an asset bundle path on local disk for el presidente to load from
-    /// </summary>
-    /// <param name="bundlePath">may be absolute or relative to execution directory</param>
-    public void SetActiveAssetBundle(string bundlePath)
-    {
-        assetBundle = AssetBundle.CreateFromFile(bundlePath);
-    }
-
-
     public AssetBundle GetActiveAssetBundle()
     {
-        if (assetBundle == null)
+        if (actorsAndAnimations == null)
         {
             Debug.Log("attempting to load from asset bundle before it is set. " +
                       "use ElPresidente.SetActiveAssetBundle() to load an asset bundle");
             return null;
         }
-        return assetBundle;
+        return actorsAndAnimations;
     }
 
     public void togglePause()
@@ -124,6 +112,8 @@ public class ElPresidente : MonoBehaviour {
 
     void Update()
     {
+        if (!initialized)
+            return;
         currentTime += Time.deltaTime * 1000;
         if(debugText != null)
             debugText.text = currentTime.ToString();
@@ -214,6 +204,8 @@ public class ElPresidente : MonoBehaviour {
 
     void LateUpdate()
     {
+        if (!initialized)
+            return;
         foreach (IFireBoltAction actorAction in executingActions)
         {
             actorAction.Execute();

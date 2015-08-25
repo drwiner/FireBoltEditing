@@ -187,6 +187,7 @@
      <None Include="Assets\FireBolt\Standard Assets\Effects\ToonShading\Shaders\ToonBasic.shader" />
      <None Include="Assets\FireBolt\Standard Assets\CrossPlatformInput\CrossPlatformInputGuidelines.txt" />
      <None Include="Assets\FireBolt\Standard Assets\Effects\ImageEffects\Shaders\ColorCorrectionCurvesSimple.shader" />
+     <None Include="Assets\storyPlans\defaultStory.xml" />
      <None Include="Assets\FireBolt\Standard Assets\Effects\ImageEffects\Shaders\_Antialiasing\FXAAPreset3.shader" />
      <None Include="Assets\FireBolt\Standard Assets\Effects\ToonShading\Shaders\ToonLitOutline.shader" />
      <None Include="Assets\FireBolt\Standard Assets\Effects\ImageEffects\Shaders\_BloomAndFlares\LensFlareCreate.shader" />
@@ -218,12 +219,14 @@
      <None Include="Assets\FireBolt\Standard Assets\Effects\ImageEffects\Shaders\SunShaftsComposite.shader" />
      <None Include="Assets\FireBolt\Standard Assets\Effects\ImageEffects\Shaders\ColorCorrectionEffect.shader" />
      <None Include="Assets\plugins\LN.Utilities.xml" />
+     <None Include="Assets\cameraPlans\defaultCamera.xml" />
      <None Include="Assets\FireBolt\Standard Assets\Effects\ImageEffects\Shaders\Tonemapper.shader" />
      <None Include="Assets\FireBolt\Standard Assets\Effects\ImageEffects\Shaders\_BloomAndFlares\SeparableBlurPlus.shader" />
      <None Include="Assets\FireBolt\Standard Assets\Effects\ImageEffects\Shaders\SSAOShader.shader" />
      <None Include="Assets\FireBolt\Standard Assets\Effects\ImageEffects\Shaders\VortexEffect.shader" />
      <None Include="Assets\FireBolt\Standard Assets\Cameras\CameraGuidelines.txt" />
      <None Include="Assets\FireBolt\Standard Assets\Effects\ImageEffects\Shaders\FisheyeShader.shader" />
+     <None Include="Assets\cinematicModels\defaultModel.xml" />
      <None Include="Assets\FireBolt\Standard Assets\Effects\ImageEffects\Shaders\Contrast Stretch\MinMaxReduction.shader" />
      <None Include="Assets\FireBolt\Standard Assets\Effects\ImageEffects\Shaders\TwirlEffect.shader" />
  <Reference Include="UnityEngine.UI">
