@@ -112,8 +112,8 @@ public class ElPresidente : MonoBehaviour {
     /// <param name="cinematicModelPath"></param>
     /// <param name="actorsAndAnimationsBundlePath"></param>
     /// <param name="terrainBundlePath">no terrain loading currently</param>
-    public void Init(string storyPlanPath = "Assets/storyPlans/defaultStory.xml", string cameraPlanPath = "Assets/cameraPlans/defaultCamera.xml", 
-                     string cinematicModelPath = "Assets/cinematicModels/defaultModel.xml", string actorsAndAnimationsBundlePath = "AssetBundles/actorsandanimations", 
+    public void Init(string storyPlanPath = "storyPlans/defaultStory.xml", string cameraPlanPath = "cameraPlans/defaultCamera.xml", 
+                     string cinematicModelPath = "cinematicModels/defaultModel.xml", string actorsAndAnimationsBundlePath = "AssetBundles/actorsandanimations", 
                      string terrainBundlePath = "AssetBundles/terrain")
     {
         setStoryPlanPath(storyPlanPath);

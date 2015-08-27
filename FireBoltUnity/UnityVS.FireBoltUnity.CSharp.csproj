@@ -173,10 +173,6 @@
     <Compile Include="Assets\FireBolt\scripts\IFireBoltAction.cs" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="Assets\cameraPlans\defaultCamera.xml" />
-    <None Include="Assets\cameraPlans\SimplestCamera.xml" />
-    <None Include="Assets\cinematicModels\defaultModel.xml" />
-    <None Include="Assets\cinematicModels\DotaHierarchyModel.xml" />
     <None Include="Assets\FireBolt\Cinema Suite\Cinema Pro Cams\Image Effects (Pro Only)_CS\_Sources\Shaders\_DepthOfField\DepthOfFieldDX11.shader" />
     <None Include="Assets\FireBolt\Cinema Suite\Cinema Pro Cams\Image Effects (Pro Only)_CS\_Sources\Shaders\_DepthOfField\DepthOfFieldScatter.shader" />
     <None Include="Assets\FireBolt\Cinema Suite\Cinema Pro Cams\Lens Data\Resources\CinemaSuite_LensData.txt" />
@@ -263,10 +259,6 @@
     <None Include="Assets\plugins\Impulse.XML" />
     <None Include="Assets\plugins\LN.Planning.xml" />
     <None Include="Assets\plugins\LN.Utilities.xml" />
-    <None Include="Assets\storyPlans\defaultStory.xml" />
-    <None Include="Assets\storyPlans\Impulsev1_336\3DActionTester.xml" />
-    <None Include="Assets\storyPlans\Impulsev1_336\600924233.xml" />
-    <None Include="Assets\storyPlans\Impulsev1_336\tester.xml" />
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath)\SyntaxTree\UnityVS\2013\UnityVS.CSharp.targets" />
 </Project>
