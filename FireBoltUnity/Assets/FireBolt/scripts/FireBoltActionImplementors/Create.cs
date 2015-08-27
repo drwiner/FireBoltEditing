@@ -67,6 +67,7 @@ namespace Assets.scripts
             }
             actor = GameObject.Instantiate(model, position, Quaternion.identity) as GameObject;
             actor.name = actorName;
+            actor.transform.SetParent((GameObject.Find("InstantiatedObjects") as GameObject).transform, true);
             return true;
         }
 
