@@ -19,8 +19,6 @@ namespace Assets.scripts
 {
     public class ActorActionFactory
     {
-        
-        
         //TODO concatenate looping subsequent animations on the same character into a single action?  would require even longer preprocessing...        
         private static CM.CinematicModel cm;
         private static string[] orderedObjectSets;
@@ -33,11 +31,10 @@ namespace Assets.scripts
         /// <param name="storyPlanPath">path to the story plan to load</param>
         /// <param name="cinematicModelPath">path to the cinematic model to load</param>
         /// <returns></returns>
-        public static FireBoltActionList CreateStoryActions(AStory<UintV, UintT, IIntervalSet<UintV, UintT>> story, string cinematicModelPath)
+        public static FireBoltActionList CreateStoryActions(AStory<UintV, UintT, IIntervalSet<UintV, UintT>> story, CM.CinematicModel cm)
         {
+            ActorActionFactory.cm = cm;
             FireBoltActionList aaq = new FireBoltActionList();            
-            cm = loadCinematicModel(cinematicModelPath);
-
             ActorActionFactory.story = story;
             orderedObjectSets = story.ObjectSetGraph.ReverseTopologicalSort().ToArray();
             //orderedActionTypes = story.ActionTypeGraph.ReverseTopologicalSort().ToArray();
@@ -483,12 +480,5 @@ namespace Assets.scripts
             }
             return null;
         }
-
-        private static CM.CinematicModel loadCinematicModel(string cinematicModelPath)
-        {
-            return CM.Parser.Parse(cinematicModelPath);
-        }
-
-        
     }
 }

@@ -28,6 +28,9 @@ namespace CinematicModel
         [XmlElement("smartModelSettings")]
         public SmartModelSettings SmartModelSettings { get; set; }
 
+        [XmlElement("terrain")]
+        public Terrain Terrain { get; set; }
+
         [XmlArray(ElementName = "domainActions")]
         [XmlArrayItem(ElementName = "domainAction")]
         public List<DomainAction> DomainActions { get; set; }

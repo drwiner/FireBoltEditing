@@ -9,6 +9,7 @@ using System;
 using Impulse.v_1_336;
 using UintT = Impulse.v_1_336.Interval<Impulse.v_1_336.Constants.ValueConstant<uint>, uint>;
 using UintV = Impulse.v_1_336.Constants.ValueConstant<uint>;
+using CM = CinematicModel;
 
 
 public class ElPresidente : MonoBehaviour {
@@ -31,7 +32,8 @@ public class ElPresidente : MonoBehaviour {
     private bool initialized = false;
     private bool initNext = false;
     private bool initTriggered = false;
-    
+
+    private CM.CinematicModel cinematicModel = null;
 
     string storyPlanPath;
     bool reloadStoryPlan = false;
@@ -142,6 +144,9 @@ public class ElPresidente : MonoBehaviour {
         if (reloadStoryPlan)
             loadStructuredImpulsePlan(storyPlanPath);
 
+        if(reloadCinematicModel)
+            cinematicModel = CM.Parser.Parse(cinematicModelPath);
+
         if(actorsAndAnimations!=null && reloadActorsAndAnimationsBundle)
             actorsAndAnimations.Unload(true);            
 
@@ -149,15 +154,17 @@ public class ElPresidente : MonoBehaviour {
             actorsAndAnimations = AssetBundle.CreateFromFile(actorsAndAnimationsBundlePath);
 
         if (terrain != null && reloadTerrainBundle)
-            terrain.Unload(true);            
+            terrain.Unload(true);
 
         if (reloadTerrainBundle)
-//            terrain = AssetBundle.CreateFromFile(terrainBundlePath);
-            //put terrain in the world
+        {
+            terrain = AssetBundle.CreateFromFile(terrainBundlePath);
+            loadTerrain();
+        }  
 
         if (reloadStoryPlan || reloadActorsAndAnimationsBundle || reloadCinematicModel)
         {        
-            actorActionList = ActorActionFactory.CreateStoryActions(story, cinematicModelPath);
+            actorActionList = ActorActionFactory.CreateStoryActions(story, cinematicModel);
             totalTime = 0;
             //find total time for execution. not sure how to easily find this without searching a lot of actions
             //current solution is not always correct
@@ -171,6 +178,23 @@ public class ElPresidente : MonoBehaviour {
         initialized = true;
         initNext = false;
         initTriggered = false;
+
+        reloadActorsAndAnimationsBundle = false;
+        reloadCameraPlan = false;
+        reloadCinematicModel = false;
+        reloadStoryPlan = false;
+        reloadTerrainBundle = false;
+    }
+
+    private void loadTerrain()
+    {
+        GameObject go = (terrain.LoadAsset(cinematicModel.Terrain.TerrainFileName) as GameObject);
+        var t = Instantiate(go)as GameObject;
+        t.name = "Terrain";
+        Vector3 v;
+        cinematicModel.Terrain.Location.TryParseVector3(out v);
+        t.transform.position = v; 
+        t.transform.SetParent(GameObject.Find("InstantiatedObjects").transform,true);
     }
 
     private void loadStructuredImpulsePlan(string storyPlanPath)

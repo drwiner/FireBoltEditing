@@ -10,7 +10,7 @@ namespace CinematicModel.Tester
         static void Main(string[] args)
         {
             //Console.Write("enter a filename to parse: ");
-            CinematicModel cm = Parser.Parse("../../../../FireBoltUnity/Assets/cinematicModels/DotaHierarchyModel.xml");
+            CinematicModel cm = Parser.Parse("../../../../FireBoltUnity/cinematicModels/defaultModel.xml");
         }
     }
 }

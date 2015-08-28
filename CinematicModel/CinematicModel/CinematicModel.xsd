@@ -11,6 +11,7 @@
       </xs:documentation>
     </xs:annotation>
     <xs:all>
+      <xs:element minOccurs="1" maxOccurs="1" name="terrain" type="Terrain"/>
       <xs:element minOccurs="1" maxOccurs="1" name="smartModelSettings" type="SmartModelSettings" />
       <xs:element minOccurs="1" maxOccurs="1" name="domainActions" type="ArrayOfDomainAction" />
       <xs:element minOccurs="1" maxOccurs="1" name="actors" type="ArrayOfActor" />
@@ -23,6 +24,11 @@
   <xs:complexType name="SmartModelSettings">
     <xs:attribute name="maxAnimationSearchDepth" type="xs:unsignedInt" use="optional" default="10"/>
     <xs:attribute name="maxActorSearchDepth" type="xs:unsignedInt" use="optional" default="10"/>
+  </xs:complexType>
+
+  <xs:complexType name="Terrain">
+    <xs:attribute name="terrainFileName" type="xs:string" use="optional" default="defaultTerrain"/>
+    <xs:attribute name="location" type="xs:string" use ="optional" default="(0,0,0)"/>
   </xs:complexType>
 
   <xs:complexType name="ArrayOfDomainAction">
