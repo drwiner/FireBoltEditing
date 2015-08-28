@@ -126,6 +126,7 @@ public class ElPresidente : MonoBehaviour {
 
 
         Destroy(GameObject.Find("InstantiatedObjects") as GameObject);
+        if (reloadTerrainBundle) Destroy(GameObject.Find("Terrain") as GameObject);
         executingActions = new FireBoltActionList(new ActionTypeComparer());
         initialized = false;
         initTriggered = true;
@@ -137,7 +138,7 @@ public class ElPresidente : MonoBehaviour {
     /// </summary>
     private void init()
     {
-        currentTime = 0;
+        setTime(0);
         executingActions = new FireBoltActionList(new ActionTypeComparer());
         new GameObject("InstantiatedObjects").transform.SetParent((GameObject.Find("FireBolt") as GameObject).transform);
 
@@ -194,7 +195,7 @@ public class ElPresidente : MonoBehaviour {
         Vector3 v;
         cinematicModel.Terrain.Location.TryParseVector3(out v);
         t.transform.position = v; 
-        t.transform.SetParent(GameObject.Find("InstantiatedObjects").transform,true);
+        t.transform.SetParent(GameObject.Find("FireBolt").transform,true);
     }
 
     private void loadStructuredImpulsePlan(string storyPlanPath)
