@@ -14,7 +14,6 @@ namespace Assets.scripts
         private string animName;
         private Animator animator;
         private AnimationClip animation;
-		private AnimationClip oldClip;
 		AnimatorOverrideController animatorOverride;
         private int playTriggerHash,stopTriggerHash; 
 		private bool loop;
@@ -39,7 +38,7 @@ namespace Assets.scripts
 
         public bool Init()
         {
-			if (animatorOverride != null)
+			if (actor != null && animatorOverride != null)
 			{
 				animatorOverride["idle"] = animation;
                 animator.runtimeAnimatorController = animatorOverride;
