@@ -2,6 +2,8 @@
 <!--<cinematicModel xmlns="http://liquidnarrative.csc.ncsu.edu/cinematicModel/v0.1" millisPerTick="33" domainDistancePerEngineDistance="80">-->
   <smartModelSettings maxActorSearchDepth="2" maxAnimationSearchDepth="2" />
   <terrain location="(0,0,0)" terrainFileName="defaultTerrain.prefab"/>
+	<!--<terrain location="(-20,-2.8,-20)" terrainFileName="dotaTerrain.prefab"/>-->
+	<!--<terrain location="(0,0,0)" terrainFileName="redTerrain.prefab"/>-->
   <!-- animation search depth should generally be at least as deep as actor search depth-->
   <domainActions>
     <domainAction name="spawn-creep" >
