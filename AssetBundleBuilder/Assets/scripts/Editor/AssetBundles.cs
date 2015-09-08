@@ -1,8 +1,17 @@
 ﻿using UnityEditor;
 using UnityEngine;
+using System.IO;
 
 public class AssetBundles
 {
+   
+    //TODO add AssetBundleBuild objects for each bundle and a method of importing asset names and targeting bundles
+    //TODO I only moved the asset settings issues from one location to another by extracting the asset bundles.  
+    //users that want custom assets just have to set everything that they want appropriately or use the default bundle that's already packaged.
+    //slight edits are not welcome. :(
+
+    private static readonly string bundleOutputPath="../FireBoltUnity/AssetBundles";
+
     [MenuItem("Asset Bundles/Log Asset Bundle Names")]
     static void LogAssetBundleNames()
     {
@@ -22,16 +31,19 @@ public class AssetBundles
             {
                 Debug.Log("Asset: " + path);
             }
-        }
-        
+        }        
     }
 
     [MenuItem("Asset Bundles/Build Asset Bundles")]
     static void BuildAllAssetBundles()
     {
         Debug.Log("Building all asset bundles");
-        BuildPipeline.BuildAssetBundles("../FireBoltUnity/AssetBundles",BuildAssetBundleOptions.UncompressedAssetBundle);
-        Debug.Log("Asset bundle build complete");
+
+        if (!Directory.Exists(bundleOutputPath))
+            Directory.CreateDirectory(bundleOutputPath);
+
+        BuildPipeline.BuildAssetBundles(bundleOutputPath,BuildAssetBundleOptions.UncompressedAssetBundle);
+        Debug.Log("Asset bundle build complete @ "+ bundleOutputPath);
     }
 
     [MenuItem("Asset Bundles/Remove Unused Names")]
