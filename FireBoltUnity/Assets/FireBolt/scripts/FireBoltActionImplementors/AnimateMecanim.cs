@@ -17,6 +17,7 @@ namespace Assets.scripts
 		AnimatorOverrideController animatorOverride;
         private int playTriggerHash,stopTriggerHash; 
 		private bool loop;
+        private static readonly string animationToOverride = "_87_a_U1_M_P_idle_Neutral__Fb_p0_No_1";
 
         public static bool ValidForConstruction(string actorName, CM.Animation animation)
         {
@@ -40,7 +41,7 @@ namespace Assets.scripts
         {
 			if (actor != null && animatorOverride != null)
 			{
-				animatorOverride["idle"] = animation;
+				animatorOverride[animationToOverride] = animation;
                 animator.runtimeAnimatorController = animatorOverride;
 				return true;
 			}
@@ -88,7 +89,7 @@ namespace Assets.scripts
 				animation.wrapMode = WrapMode.Loop;
 			} else
 				animation.wrapMode = WrapMode.Once;			
-            animatorOverride["idle"] = animation;
+            animatorOverride[animationToOverride] = animation;
             Debug.Log ("duration " + animation.averageDuration);
             return true;
         }
