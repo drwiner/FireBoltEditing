@@ -169,12 +169,15 @@ public class ElPresidente : MonoBehaviour {
             totalTime = 0;
             //find total time for execution. not sure how to easily find this without searching a lot of actions
             //current solution is not always correct
-            if (actorActionList.Count > 0)
-                totalTime = actorActionList[actorActionList.Count - 1].EndTick() - actorActionList[0].StartTick();
+            
         }
 
-        if(reloadStoryPlan || reloadCameraPlan)
+        if (reloadStoryPlan || reloadCameraPlan)
+        {            
             discourseActionList = CameraActionFactory.CreateCameraActions(story, cameraPlanPath);
+            if (discourseActionList.Count > 0)
+                totalTime = discourseActionList[actorActionList.Count - 1].EndTick(); //TODO populate this value on cameraActionFactory run
+        }
 
         initialized = true;
         initNext = false;
@@ -238,8 +241,8 @@ public class ElPresidente : MonoBehaviour {
 
     public void setTime(float targetPercentComplete)
     {        
-        if (Mathf.Abs(targetPercentComplete * totalTime - currentStoryTime) > MILLIS_PER_FRAME)
-            goToStoryTime (targetPercentComplete * totalTime);
+        if (Mathf.Abs(targetPercentComplete * totalTime - currentDiscourseTime) > MILLIS_PER_FRAME)
+            goToDiscourseTime (targetPercentComplete * totalTime);
     }
 
     void Update()
@@ -251,9 +254,9 @@ public class ElPresidente : MonoBehaviour {
         currentStoryTime += Time.deltaTime * 1000;
         currentDiscourseTime += Time.deltaTime * 1000;
         if(debugText != null)
-            debugText.text = currentStoryTime.ToString();
-        if (whereWeAt && currentStoryTime < totalTime)
-            whereWeAt.value = currentStoryTime / totalTime;
+            debugText.text = currentDiscourseTime.ToString() + " : " + currentStoryTime.ToString();
+        if (whereWeAt && currentDiscourseTime < totalTime)
+            whereWeAt.value = currentDiscourseTime / totalTime;
 		myTime = currentStoryTime;  
         logTicks();
 
