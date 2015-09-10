@@ -106,7 +106,7 @@ namespace Assets.scripts
 	    public void Execute () 
         {
 		    //let it roll          
-            float at = Mathf.Repeat ((ElPresidente.currentTime - startTick)/1000, animation.averageDuration);
+            float at = Mathf.Repeat ((ElPresidente.currentStoryTime - startTick)/1000, animation.averageDuration);
             animator.CrossFade( "animating", 0, 0, at/animation.averageDuration );
 	    }
 

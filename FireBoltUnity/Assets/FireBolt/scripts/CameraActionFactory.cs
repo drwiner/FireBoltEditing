@@ -40,13 +40,20 @@ namespace Assets.scripts
         {
             foreach (Block block in cameraPlan.Blocks)
             {
+                float blockStartTime = Single.MaxValue;
+                float blockEndTime = Single.MinValue;
                 foreach (var fragment in block.ShotFragments)
                 {
+                    if (fragment.StartTime < blockStartTime)
+                        blockStartTime = fragment.StartTime;
+                    if (fragment.EndTime > blockEndTime)
+                        blockEndTime = fragment.EndTime;
+                    
                     Vector3 futurePosition;
                     if (fragment.Anchor.TryParsePlanarCoords(out futurePosition))
                     {
                         cameraActionQueue.Add(new Translate(fragment.StartTime, fragment.StartTime,
-                                                            cameraRig, Vector3.zero, new Vector3Nullable(futurePosition.x,null,futurePosition.z), true, true));
+                                                            cameraRig, Vector3.zero, new Vector3Nullable(futurePosition.x,null,futurePosition.z), true));
 
                     }
                     //the world is not ready for framings
@@ -172,6 +179,10 @@ namespace Assets.scripts
 
                     // Shake it off
                     cameraActionQueue.Add(new Shake(fragment.StartTime, fragment.EndTime, cameraName, fragment.Shake));
+                }
+                if (block.StoryTime.HasValue)
+                {
+                    cameraActionQueue.Add(new SetStoryTime(block.StoryTime.Value, blockStartTime, blockEndTime));
                 }
             }
         }

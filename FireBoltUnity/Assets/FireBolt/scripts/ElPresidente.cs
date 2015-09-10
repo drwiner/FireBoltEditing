@@ -15,8 +15,9 @@ using CM = CinematicModel;
 public class ElPresidente : MonoBehaviour {
 
     FireBoltActionList actorActionList;
-    FireBoltActionList cameraActionList;
-    FireBoltActionList executingActions;
+    FireBoltActionList discourseActionList;
+    FireBoltActionList executingActorActions; //TODO split into camera and actor for the two timestreams so i can purge one without ill effects
+    FireBoltActionList executingDiscourseActions;
     private float lastTickLogged;
     private float totalTime;
     public Text debugText;
@@ -45,11 +46,6 @@ public class ElPresidente : MonoBehaviour {
     bool reloadActorsAndAnimationsBundle = false;
     string terrainBundlePath;
     bool reloadTerrainBundle = false;
-
-
-    //TODO add overrides for Init to specify individual paths or at least the story and camera plans since those will change most often.
-    //then only reload what you need when you need it
-    //still have to deal with re-init before destroy completion
 
     void setStoryPlanPath(string path)
     {
@@ -87,10 +83,14 @@ public class ElPresidente : MonoBehaviour {
     }
 
     /// <summary>
-    /// FireBolt point of truth for time.  updated with but independent of time.deltaTime
-    /// expressed in milliseconds
+    /// story time.  controlled by discourse actions
     /// </summary>
-    public static float currentTime;
+    public static float currentStoryTime;
+
+    /// <summary>
+    /// time as relates to playback scrubbing
+    /// </summary>
+    public static float currentDiscourseTime;
 
     void Start()
     {
@@ -127,7 +127,6 @@ public class ElPresidente : MonoBehaviour {
 
         Destroy(GameObject.Find("InstantiatedObjects") as GameObject);
         if (reloadTerrainBundle) Destroy(GameObject.Find("Terrain") as GameObject);
-        executingActions = new FireBoltActionList(new ActionTypeComparer());
         initialized = false;
         initTriggered = true;
     }
@@ -139,7 +138,8 @@ public class ElPresidente : MonoBehaviour {
     private void init()
     {
         setTime(0);
-        executingActions = new FireBoltActionList(new ActionTypeComparer());
+        executingActorActions = new FireBoltActionList(new ActionTypeComparer());
+        executingDiscourseActions = new FireBoltActionList(new ActionTypeComparer());
         new GameObject("InstantiatedObjects").transform.SetParent((GameObject.Find("FireBolt") as GameObject).transform);
 
         if (reloadStoryPlan)
@@ -174,7 +174,7 @@ public class ElPresidente : MonoBehaviour {
         }
 
         if(reloadStoryPlan || reloadCameraPlan)
-            cameraActionList = CameraActionFactory.CreateCameraActions(story, cameraPlanPath);
+            discourseActionList = CameraActionFactory.CreateCameraActions(story, cameraPlanPath);
 
         initialized = true;
         initNext = false;
@@ -238,8 +238,8 @@ public class ElPresidente : MonoBehaviour {
 
     public void setTime(float targetPercentComplete)
     {        
-        if (Mathf.Abs(targetPercentComplete * totalTime - currentTime) > MILLIS_PER_FRAME)
-            goTo (targetPercentComplete * totalTime);
+        if (Mathf.Abs(targetPercentComplete * totalTime - currentStoryTime) > MILLIS_PER_FRAME)
+            goToStoryTime (targetPercentComplete * totalTime);
     }
 
     void Update()
@@ -248,16 +248,17 @@ public class ElPresidente : MonoBehaviour {
             init();
         else if (!initialized)
             return;
-        currentTime += Time.deltaTime * 1000;
+        currentStoryTime += Time.deltaTime * 1000;
+        currentDiscourseTime += Time.deltaTime * 1000;
         if(debugText != null)
-            debugText.text = currentTime.ToString();
-        if (whereWeAt && currentTime < totalTime)
-            whereWeAt.value = currentTime / totalTime;
-		myTime = currentTime;  
+            debugText.text = currentStoryTime.ToString();
+        if (whereWeAt && currentStoryTime < totalTime)
+            whereWeAt.value = currentStoryTime / totalTime;
+		myTime = currentStoryTime;  
         logTicks();
 
-        updateFireBoltActions(actorActionList);
-        updateFireBoltActions(cameraActionList);
+        updateFireBoltActions(discourseActionList, executingDiscourseActions, currentDiscourseTime);
+        updateFireBoltActions(actorActionList, executingActorActions, currentStoryTime);
     }
 
     void LateUpdate()
@@ -270,34 +271,40 @@ public class ElPresidente : MonoBehaviour {
         else if (!initialized)
             return;
 
-        foreach (IFireBoltAction actorAction in executingActions)
+
+        foreach (IFireBoltAction actorAction in executingDiscourseActions)
+        {
+            actorAction.Execute();
+        }
+
+        foreach (IFireBoltAction actorAction in executingActorActions)
         {
             actorAction.Execute();
         }
     }
 
-    void updateFireBoltActions(FireBoltActionList actions)
+    void updateFireBoltActions(FireBoltActionList actions, FireBoltActionList executingActions, float referenceTime)
     {
         List<IFireBoltAction> removeList = new List<IFireBoltAction>();
-        foreach (IFireBoltAction actorAction in executingActions)
+        foreach (IFireBoltAction action in executingActions)
         {
-            if (actorActionComplete(actorAction) || actorAction.StartTick() > currentTime)
+            if (actionComplete(action,referenceTime) || action.StartTick() > referenceTime)
             {
-                actorAction.Stop();
-                removeList.Add(actorAction);
+                action.Stop();
+                removeList.Add(action);
             }
         }
         foreach (IFireBoltAction action in removeList)
         {
             executingActions.Remove(action);
         }
-        while (actions.NextActionIndex < actions.Count && actions[actions.NextActionIndex].StartTick() <= currentTime) //TODO should probably encapsulate some more of this stuff in the list class
+        while (actions.NextActionIndex < actions.Count && actions[actions.NextActionIndex].StartTick() <= referenceTime) //TODO should probably encapsulate some more of this stuff in the list class
         {
             IFireBoltAction action = actions[actions.NextActionIndex];
             actions.NextActionIndex++;
             if (action.Init())
 			{
-                if (actorActionComplete(action))
+                if (actionComplete(action, referenceTime))
                     action.Skip();                
                 else
                     executingActions.Add(action);                     
@@ -305,12 +312,12 @@ public class ElPresidente : MonoBehaviour {
         }
     }
 
-    void rewindFireBoltActions(FireBoltActionList actions)
+    void rewindFireBoltActions(FireBoltActionList actions, float time)
     {
         int currentIndex = actions.NextActionIndex-1;//next action was pointed to...next action!
         actions.NextActionIndex = 0;
         while (actions.NextActionIndex < actions.Count &&
-               actions[actions.NextActionIndex].EndTick() < currentTime)
+               actions[actions.NextActionIndex].EndTick() < time) //this may orphan actions in the executing list until they get replayed and hit their stop time again.  seems like a leak, but a bounded one
         {
             actions.NextActionIndex++;
         }
@@ -323,28 +330,28 @@ public class ElPresidente : MonoBehaviour {
         Debug.Log ("rewind to " + actions.NextActionIndex + ": " + actions[actions.NextActionIndex]);
     }
 
-    void fastForwardFireBoltActions(FireBoltActionList actions)
+    void fastForwardFireBoltActions(FireBoltActionList actions, float time, FireBoltActionList executingActions, float referenceTime)
     {
         List<IFireBoltAction> removeList = new List<IFireBoltAction>();
-        foreach (IFireBoltAction actorAction in executingActions)
+        foreach (IFireBoltAction action in executingActions)
         {
-            if (actorActionComplete(actorAction))
+            if (actionComplete(action, referenceTime))
             {
-                actorAction.Skip();
-                removeList.Add(actorAction);
+                action.Skip();
+                removeList.Add(action);
             }
         }
         foreach (IFireBoltAction action in removeList)
         {
             executingActions.Remove(action);
         }
-        while (actions.NextActionIndex < actions.Count && actions[actions.NextActionIndex].StartTick() <= currentTime) //TODO should probably encapsulate some more of this stuff in the list class
+        while (actions.NextActionIndex < actions.Count && actions[actions.NextActionIndex].StartTick() <= time) //TODO should probably encapsulate some more of this stuff in the list class
         {
             IFireBoltAction action = actions[actions.NextActionIndex];
             actions.NextActionIndex++;
             if (action.Init())
             {
-                if (!actorActionComplete(action))
+                if (!actionComplete(action, referenceTime))
                     executingActions.Add(action);
                 else
                     action.Skip();
@@ -354,31 +361,52 @@ public class ElPresidente : MonoBehaviour {
 
 
 
-    public float getCurrentTime()
+    public float getCurrentStoryTime()
     {
-        return currentTime;
+        return currentStoryTime;
     }
 
-	public void goTo(float time)
+	public void goToStoryTime(float time)
 	{
         if (time < 0)
             time = 0;
-        Debug.Log ("goto " + time);
+        Debug.Log ("goto story " + time);
         lastTickLogged = time;
-		if (time < currentTime)
+		if (time < currentStoryTime)
         {
-            currentTime = time;
-            rewindFireBoltActions(actorActionList);
-            rewindFireBoltActions(cameraActionList);
+            currentStoryTime = time;
+            rewindFireBoltActions(actorActionList, currentStoryTime);
+            //rewindFireBoltActions(cameraActionList);
         }
         else
         {
-            currentTime = time;
-            fastForwardFireBoltActions(actorActionList);
-            fastForwardFireBoltActions(cameraActionList);
+            currentStoryTime = time;
+            fastForwardFireBoltActions(actorActionList, currentStoryTime, executingActorActions, currentStoryTime);
+            //fastForwardFireBoltActions(cameraActionList);
         }
-		currentTime = time;
+		currentStoryTime = time;
 	}
+
+    public void goToDiscourseTime(float time)
+    {
+        if (time < 0)
+            time = 0;
+        Debug.Log("goto discourse " + time);
+        lastTickLogged = time;
+        if (time < currentDiscourseTime)
+        {
+            currentDiscourseTime = time;
+            //rewindFireBoltActions(actorActionList);
+            rewindFireBoltActions(discourseActionList, currentDiscourseTime);
+        }
+        else
+        {
+            currentDiscourseTime = time;
+            //fastForwardFireBoltActions(actorActionList);
+            fastForwardFireBoltActions(discourseActionList, currentDiscourseTime, executingDiscourseActions, currentDiscourseTime);
+        }
+        currentDiscourseTime = time;
+    }
 
     public void scaleTime(float scale)
     {
@@ -387,20 +415,20 @@ public class ElPresidente : MonoBehaviour {
 
 	public void goToRel(float time)
 	{
-		goTo(currentTime + time);
+		goToStoryTime(currentStoryTime + time);
 	}
 
     void logTicks()
     {
-        if (currentTime - lastTickLogged > 1000)
+        if (currentDiscourseTime - lastTickLogged > 1000)
         {
-            Debug.Log(currentTime);
-            lastTickLogged = currentTime;
+            Debug.Log(currentDiscourseTime + " : " + currentStoryTime);
+            lastTickLogged = currentDiscourseTime;
         }
     }
 
-    bool actorActionComplete(IFireBoltAction iaa)
+    bool actionComplete(IFireBoltAction action, float  referenceTime)
     {
-        return iaa.EndTick() < currentTime;
+        return action.EndTick() < referenceTime;
     }
 }

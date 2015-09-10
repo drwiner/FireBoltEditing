@@ -11,6 +11,8 @@ namespace Assets.scripts
         public int Compare(IFireBoltAction x, IFireBoltAction y)
         {
             if (x.Equals(y)) return 0;
+            if (x is SetStoryTime) return -1;
+            if (y is SetStoryTime) return 1;
             if (x is Destroy) return 1;
             if (y is Destroy) return -1;
             if (x is Create) return -1;

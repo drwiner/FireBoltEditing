@@ -131,6 +131,7 @@
      <Compile Include="Assets\FireBolt\scripts\FireBoltActionImplementors\LensChange.cs" />
      <Compile Include="Assets\FireBolt\scripts\FireBoltActionImplementors\Rotate.cs" />
      <Compile Include="Assets\FireBolt\scripts\FireBoltActionImplementors\RotateRelative.cs" />
+     <Compile Include="Assets\FireBolt\scripts\FireBoltActionImplementors\SetStoryTime.cs" />
      <Compile Include="Assets\FireBolt\scripts\FireBoltActionImplementors\Shake.cs" />
      <Compile Include="Assets\FireBolt\scripts\FireBoltActionImplementors\Translate.cs" />
      <Compile Include="Assets\FireBolt\scripts\FireBoltActionImplementors\TranslateRelative.cs" />
