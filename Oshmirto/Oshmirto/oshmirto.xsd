@@ -88,8 +88,7 @@
       <xs:element minOccurs="1" maxOccurs="1" name="movements" type="ArrayOfCameraMovement" />
     </xs:all>
     <xs:attribute name="anchor" type="xs:string" />
-    <xs:attribute name="startTime" type="xs:float" use="required" />
-    <xs:attribute name="endTime" type="xs:float" use="required" />
+    <xs:attribute name="duration" type="xs:unsignedInt" use="required"/>
     <xs:attribute name="lens" type="lens" use="optional" default="35mm"/>
     <xs:attribute name="f-stop" type="f-stop" use="optional" default="22" />
     <xs:attribute name="focus" type="xs:string" />

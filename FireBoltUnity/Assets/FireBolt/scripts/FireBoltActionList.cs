@@ -67,4 +67,9 @@ namespace Assets.scripts
         /// </summary>
         public int NextActionIndex { get; set; }
     }
+
+    public class DiscourseActionList : FireBoltActionList
+    {
+        public uint EndDiscourseTime { get; set; }
+    }
 }

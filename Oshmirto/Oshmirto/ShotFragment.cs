@@ -25,11 +25,8 @@ namespace Oshmirto
         [XmlArrayItem("framing")]
         public List<Framing> Framings { get; set; } 
 
-        [XmlAttribute("startTime")]
-        public float StartTime { get; set; }
-
-        [XmlAttribute("endTime")]
-        public float EndTime { get; set; }
+        [XmlAttribute("duration")]
+        public uint Duration { get; set; }
 
         [XmlArray("movements")]
         [XmlArrayItem("movement")]

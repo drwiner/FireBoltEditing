@@ -39,7 +39,7 @@
           </framings>
 <shotFragement/>
         </shotFragment>-->
-        <shotFragment anchor="0,-5" startTime="2" endTime="5000" focus="Pudge" f-stop ="22" lens ="25mm" shake ="0">
+        <shotFragment anchor="0,-5" duration="5000" focus="Pudge" f-stop ="22" lens ="25mm" shake ="0">
           <framings/>
           <movements>
             <movement type="Focus" directive="With" subject="Pudge"/>
@@ -96,7 +96,7 @@
     </block>
     <block storyTime="10000">
       <shotFragments>
-        <shotFragment anchor="0,-5" startTime="5000" endTime="10000" focus="Pudge" f-stop ="22" lens ="25mm" shake ="0">
+        <shotFragment anchor="0,-5" duration="5000" focus="Pudge" f-stop ="22" lens ="25mm" shake ="0">
           <framings/>
           <movements>
             <movement type="Focus" directive="With" subject="Pudge"/>
@@ -108,7 +108,7 @@
     </block>
     <block storyTime="5000">
       <shotFragments>
-        <shotFragment anchor="0,-5" startTime="10000" endTime="17000" focus="Pudge" f-stop ="22" lens ="25mm" shake ="0">
+        <shotFragment anchor="0,-5" duration="7000" focus="Pudge" f-stop ="22" lens ="25mm" shake ="0">
           <framings/>
           <movements>
             <movement type="Focus" directive="With" subject="Pudge"/>

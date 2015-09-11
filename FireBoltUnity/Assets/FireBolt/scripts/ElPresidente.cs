@@ -15,11 +15,10 @@ using CM = CinematicModel;
 public class ElPresidente : MonoBehaviour {
 
     FireBoltActionList actorActionList;
-    FireBoltActionList discourseActionList;
+    DiscourseActionList discourseActionList;
     FireBoltActionList executingActorActions; //TODO split into camera and actor for the two timestreams so i can purge one without ill effects
     FireBoltActionList executingDiscourseActions;
     private float lastTickLogged;
-    private float totalTime;
     public Text debugText;
 	public float myTime;
     public Slider whereWeAt;
@@ -137,7 +136,8 @@ public class ElPresidente : MonoBehaviour {
     /// </summary>
     private void init()
     {
-        setTime(0);
+        currentDiscourseTime = 0;
+        currentStoryTime = 0;
         executingActorActions = new FireBoltActionList(new ActionTypeComparer());
         executingDiscourseActions = new FireBoltActionList(new ActionTypeComparer());
         new GameObject("InstantiatedObjects").transform.SetParent((GameObject.Find("FireBolt") as GameObject).transform);
@@ -166,17 +166,11 @@ public class ElPresidente : MonoBehaviour {
         if (reloadStoryPlan || reloadActorsAndAnimationsBundle || reloadCinematicModel)
         {        
             actorActionList = ActorActionFactory.CreateStoryActions(story, cinematicModel);
-            totalTime = 0;
-            //find total time for execution. not sure how to easily find this without searching a lot of actions
-            //current solution is not always correct
-            
         }
 
         if (reloadStoryPlan || reloadCameraPlan)
         {            
             discourseActionList = CameraActionFactory.CreateCameraActions(story, cameraPlanPath);
-            if (discourseActionList.Count > 0)
-                totalTime = discourseActionList[actorActionList.Count - 1].EndTick(); //TODO populate this value on cameraActionFactory run
         }
 
         initialized = true;
@@ -240,9 +234,14 @@ public class ElPresidente : MonoBehaviour {
     }
 
     public void setTime(float targetPercentComplete)
-    {        
-        if (Mathf.Abs(targetPercentComplete * totalTime - currentDiscourseTime) > MILLIS_PER_FRAME)
-            goToDiscourseTime (targetPercentComplete * totalTime);
+    {
+        if (discourseActionList == null)
+            goToDiscourseTime(0);
+
+        else if (Mathf.Abs(targetPercentComplete * discourseActionList.EndDiscourseTime - currentDiscourseTime) > MILLIS_PER_FRAME)
+        {
+            goToDiscourseTime(targetPercentComplete * discourseActionList.EndDiscourseTime);                
+        }            
     }
 
     void Update()
@@ -255,8 +254,8 @@ public class ElPresidente : MonoBehaviour {
         currentDiscourseTime += Time.deltaTime * 1000;
         if(debugText != null)
             debugText.text = currentDiscourseTime.ToString() + " : " + currentStoryTime.ToString();
-        if (whereWeAt && currentDiscourseTime < totalTime)
-            whereWeAt.value = currentDiscourseTime / totalTime;
+        if (whereWeAt && currentDiscourseTime < discourseActionList.EndDiscourseTime)
+            whereWeAt.value = currentDiscourseTime / discourseActionList.EndDiscourseTime;
 		myTime = currentStoryTime;  
         logTicks();
 
