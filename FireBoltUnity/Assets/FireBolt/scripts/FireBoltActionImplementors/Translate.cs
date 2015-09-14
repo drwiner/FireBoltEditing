@@ -16,10 +16,6 @@ namespace Assets.scripts
         string actorName;
         protected GameObject actor;
         /// <summary>
-        /// actual position of the actor when the interval begins
-        /// </summary>
-		Vector3 start;
-        /// <summary>
         /// intended position of the actor when the interval begins
         /// </summary>
         protected Vector3 origin;
@@ -63,11 +59,10 @@ namespace Assets.scripts
             {
                 Debug.LogError("actor name [" + actorName + "] not found. cannot move");
                 return false;
-            }
-			start = actor.transform.position;
+            }			
 
             if (unknownOrigin)
-                origin = start;
+                origin = actor.transform.position;
 
             if (endTick - startTick < ElPresidente.MILLIS_PER_FRAME)
                 Skip();
@@ -82,9 +77,9 @@ namespace Assets.scripts
                 return;
             float lerpPercent = (ElPresidente.currentStoryTime - startTick)/(endTick-startTick);
             Vector3 lerpd;
-            lerpd.x = destination.X.HasValue ? Mathf.Lerp(start.x,destination.X.Value, lerpPercent) : actor.transform.position.x;
-            lerpd.y = destination.Y.HasValue ? Mathf.Lerp(start.y, destination.Y.Value, lerpPercent) : actor.transform.position.y;
-            lerpd.z = destination.Z.HasValue ? Mathf.Lerp(start.z, destination.Z.Value, lerpPercent) : actor.transform.position.z;
+            lerpd.x = destination.X.HasValue ? Mathf.Lerp(origin.x,destination.X.Value, lerpPercent) : actor.transform.position.x;
+            lerpd.y = destination.Y.HasValue ? Mathf.Lerp(origin.y, destination.Y.Value, lerpPercent) : actor.transform.position.y;
+            lerpd.z = destination.Z.HasValue ? Mathf.Lerp(origin.z, destination.Z.Value, lerpPercent) : actor.transform.position.z;
             actor.transform.position = lerpd;
         }
 
@@ -92,17 +87,16 @@ namespace Assets.scripts
 		{
 			if (actor != null)
             {
-                actor.transform.position = start;
-                start = origin;
+                actor.transform.position = origin;
             }
 		}
 
         public virtual void Skip()
         {
             Vector3 newPosition;
-            newPosition.x = destination.X.HasValue ? destination.X.Value : start.x;
-            newPosition.y = destination.Y.HasValue ? destination.Y.Value : start.y;
-            newPosition.z = destination.Z.HasValue ? destination.Z.Value : start.z;
+            newPosition.x = destination.X.HasValue ? destination.X.Value : origin.x;
+            newPosition.y = destination.Y.HasValue ? destination.Y.Value : origin.y;
+            newPosition.z = destination.Z.HasValue ? destination.Z.Value : origin.z;
             actor.transform.position = newPosition;
         }
 
