@@ -39,10 +39,10 @@
 	<Reference Include="System.Core" />
 	<Reference Include="System.Xml.Linq" />
 	<Reference Include="UnityEngine">
-	  <HintPath>C:/Program Files/Unity/Editor/Data/Managed/UnityEngine.dll</HintPath>
+	  <HintPath>J:/Unity/Editor/Data/Managed/UnityEngine.dll</HintPath>
 	</Reference>
 	<Reference Include="UnityEditor">
-	  <HintPath>C:/Program Files/Unity/Editor/Data/Managed/UnityEditor.dll</HintPath>
+	  <HintPath>J:/Unity/Editor/Data/Managed/UnityEditor.dll</HintPath>
 	</Reference>
   </ItemGroup>
   <ItemGroup>
@@ -223,34 +223,34 @@
      <None Include="Assets\FireBolt\Standard Assets\Effects\ImageEffects\Shaders\Contrast Stretch\MinMaxReduction.shader" />
      <None Include="Assets\FireBolt\Standard Assets\Effects\ImageEffects\Shaders\TwirlEffect.shader" />
  <Reference Include="UnityEngine.UI">
- <HintPath>C:/Program Files/Unity/Editor/Data/UnityExtensions/Unity/GUISystem/UnityEngine.UI.dll</HintPath>
+ <HintPath>J:/Unity/Editor/Data/UnityExtensions/Unity/GUISystem/UnityEngine.UI.dll</HintPath>
  </Reference>
  <Reference Include="UnityEngine.Networking">
- <HintPath>C:/Program Files/Unity/Editor/Data/UnityExtensions/Unity/Networking/UnityEngine.Networking.dll</HintPath>
+ <HintPath>J:/Unity/Editor/Data/UnityExtensions/Unity/Networking/UnityEngine.Networking.dll</HintPath>
  </Reference>
  <Reference Include="UnityEngine.Analytics">
- <HintPath>C:/Program Files/Unity/Editor/Data/UnityExtensions/Unity/UnityAnalytics/UnityEngine.Analytics.dll</HintPath>
+ <HintPath>J:/Unity/Editor/Data/UnityExtensions/Unity/UnityAnalytics/UnityEngine.Analytics.dll</HintPath>
  </Reference>
  <Reference Include="CinematicModel">
- <HintPath>C:/Users/brthorne/np/NP-FireBolt/FireBoltUnity/Assets/plugins/CinematicModel.dll</HintPath>
+ <HintPath>J:/LAS/FireBolt/FireBoltUnity/Assets/plugins/CinematicModel.dll</HintPath>
  </Reference>
  <Reference Include="Impulse">
- <HintPath>C:/Users/brthorne/np/NP-FireBolt/FireBoltUnity/Assets/plugins/Impulse.dll</HintPath>
+ <HintPath>J:/LAS/FireBolt/FireBoltUnity/Assets/plugins/Impulse.dll</HintPath>
  </Reference>
  <Reference Include="Impulse.XmlSerializers">
- <HintPath>C:/Users/brthorne/np/NP-FireBolt/FireBoltUnity/Assets/plugins/Impulse.XmlSerializers.dll</HintPath>
+ <HintPath>J:/LAS/FireBolt/FireBoltUnity/Assets/plugins/Impulse.XmlSerializers.dll</HintPath>
  </Reference>
  <Reference Include="LN.Planning">
- <HintPath>C:/Users/brthorne/np/NP-FireBolt/FireBoltUnity/Assets/plugins/LN.Planning.dll</HintPath>
+ <HintPath>J:/LAS/FireBolt/FireBoltUnity/Assets/plugins/LN.Planning.dll</HintPath>
  </Reference>
  <Reference Include="LN.Utilities">
- <HintPath>C:/Users/brthorne/np/NP-FireBolt/FireBoltUnity/Assets/plugins/LN.Utilities.dll</HintPath>
+ <HintPath>J:/LAS/FireBolt/FireBoltUnity/Assets/plugins/LN.Utilities.dll</HintPath>
  </Reference>
  <Reference Include="Oshmirto">
- <HintPath>C:/Users/brthorne/np/NP-FireBolt/FireBoltUnity/Assets/plugins/Oshmirto.dll</HintPath>
+ <HintPath>J:/LAS/FireBolt/FireBoltUnity/Assets/plugins/Oshmirto.dll</HintPath>
  </Reference>
  <Reference Include="UnityEditor.iOS.Extensions.Xcode">
- <HintPath>C:/Program Files/Unity/Editor/Data/PlaybackEngines/iOSSupport/UnityEditor.iOS.Extensions.Xcode.dll</HintPath>
+ <HintPath>J:/Unity/Editor/Data/PlaybackEngines/iOSSupport/UnityEditor.iOS.Extensions.Xcode.dll</HintPath>
  </Reference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

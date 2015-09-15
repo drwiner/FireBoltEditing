@@ -74,6 +74,7 @@ namespace Assets.scripts
                     //    cameraActionQueue.Add(t);
                     //}
 
+                    
 
                     foreach (var movement in fragment.CameraMovements)
                     {
