@@ -54,7 +54,7 @@
         <property name="origin" value="(0, 0)"/>
         <property name="destination" value="(0, 10)"/>
         <property name="actor" value="Pudge"/>
-        <property name="time" value="5-8000"/>
+        <property name="time" value="5-10000"/>
       </action>
     <action type="rotate" name="step7532">
         <property name="start-angle" value="0"/>
@@ -62,6 +62,12 @@
         <property name="actor" value="Pudge"/>
         <property name="time" value="1001-4500"/>
       </action>
+    <action type="move" name="step7535">
+      <property name="origin" value="(0, 10)"/>
+      <property name="destination" value="(10, 10)"/>
+      <property name="actor" value="Pudge"/>
+      <property name="time" value="10000-15000"/>
+    </action>
 <!--      <action type="move" name="step7533">
         <property name="origin" value="(0, 0)"/>
         <property name="destination" value="(-10.0, 0)"/>

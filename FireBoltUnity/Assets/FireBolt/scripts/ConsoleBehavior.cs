@@ -40,7 +40,7 @@ public class ConsoleBehavior : MonoBehaviour {
 					float value = 0.0f;
 					if (tokens.GetLength(0) == 2 && float.TryParse(tokens[1], out value))
 					{
-						castro.goTo(value);
+						castro.goToStoryTime(value);
 					}
 				}
 				else if (command.StartsWith("+ "))
@@ -99,7 +99,7 @@ public class ConsoleBehavior : MonoBehaviour {
                     {
                         log[i] = log[i+1];
                     }
-                    log[2] = "Current time: " + castro.getCurrentTime();
+                    log[2] = "Current time: " + castro.CurrentStoryTime;
                 }
 				command = "";
 			}

@@ -11,7 +11,6 @@ namespace Assets.scripts
     public class Focus : IFireBoltAction
     {
 
-        private static readonly string FOCUS_LOCATOR_NAME = "focuser";
         float startTick, endTick;
 
         string cameraName;
@@ -20,7 +19,6 @@ namespace Assets.scripts
         CameraBody camera;
         GameObject target;
         bool tracking, executed = false;
-
 
         public static bool ValidForConstruction(string actorName)
         {
@@ -52,7 +50,6 @@ namespace Assets.scripts
             Vector3 focusPosition;
             if (targetName.TryParseVector3(out focusPosition))
             {
-                //camera.FocusDistance = Vector3.Distance(camera.NodalCamera.transform.position, focusPosition);
                 Debug.Log("focus @" + focusPosition);
                 return true;
             }
@@ -61,17 +58,20 @@ namespace Assets.scripts
             target = GameObject.Find(targetName);
             if (target == null)
             {
-                Debug.LogError("actor name [" + targetName + "] not found. cannot change focus");
+                Debug.Log("actor name [" + targetName + "] not found. cannot change focus");
                 return false;
             }
-
-            //camera.FocusDistance = Vector3.Distance(camera.NodalCamera.transform.position, target.transform.position);
             Debug.Log(string.Format("focus target[{0}] @{1} tracking[{2}]", targetName, target.transform.position, tracking));
             return true;
         }
 
         public virtual void Execute()
         {
+            if (target == null)
+            {
+                target = GameObject.Find(targetName);
+            }
+
             if (tracking || !executed)
             {
                 Vector3 focusPosition;

@@ -59,7 +59,15 @@
       <xs:enumeration value="Angle" />
     </xs:restriction>
   </xs:simpleType>
-
+  <xs:simpleType name="angleSetting">
+    <xs:restriction base="xs:string">
+      <xs:enumeration value="High" />
+      <xs:enumeration value="Medium" />
+      <xs:enumeration value="Low" />
+    </xs:restriction>
+  </xs:simpleType>
+  
+  
   <xs:complexType name="CameraPlan">
     <xs:sequence>
       <xs:element minOccurs="1" maxOccurs="1" name="blocks" type="ArrayOfBlock" />
@@ -75,6 +83,7 @@
     <xs:sequence>
       <xs:element minOccurs="1" maxOccurs="1" name="shotFragments" type="ArrayOfShotFragment" />
     </xs:sequence>
+    <xs:attribute name="storyTime" type="xs:string" use="optional"/>
   </xs:complexType>
   <xs:complexType name="ArrayOfShotFragment">
     <xs:sequence>
@@ -85,10 +94,10 @@
     <xs:all>
       <xs:element minOccurs="1" maxOccurs="1" name="framings" type="ArrayOfFraming" />
       <xs:element minOccurs="1" maxOccurs="1" name="movements" type="ArrayOfCameraMovement" />
+      <xs:element minOccurs="0" maxOccurs="1" name="angle" type="Angle"/>
     </xs:all>
     <xs:attribute name="anchor" type="xs:string" />
-    <xs:attribute name="startTime" type="xs:float" use="required" />
-    <xs:attribute name="endTime" type="xs:float" use="required" />
+    <xs:attribute name="duration" type="xs:unsignedInt" use="required"/>
     <xs:attribute name="lens" type="lens" use="optional" default="35mm"/>
     <xs:attribute name="f-stop" type="f-stop" use="optional" default="22" />
     <xs:attribute name="focus" type="xs:string" />
@@ -104,6 +113,11 @@
     <xs:attribute name="framingTarget" type="xs:string" use="required"/>
   </xs:complexType>
 
+  <xs:complexType name="Angle">
+    <xs:attribute name="target" type="xs:string" use="required" />    
+    <xs:attribute name="angleSetting" type="angleSetting" use="required"/>
+  </xs:complexType>
+  
   <xs:complexType name="ArrayOfCameraMovement">
     <xs:sequence>
       <xs:element minOccurs="0" maxOccurs="unbounded" name="movement" nillable="false" type="CameraMovement" />

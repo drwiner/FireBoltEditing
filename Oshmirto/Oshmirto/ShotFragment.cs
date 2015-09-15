@@ -21,15 +21,15 @@ namespace Oshmirto
         [XmlAttribute("anchor")]
         public string Anchor { get; set; }
 
+        [XmlElement("angle")]
+        public Angle Angle { get; set; }
+
         [XmlArray("framings")]
         [XmlArrayItem("framing")]
         public List<Framing> Framings { get; set; } 
 
-        [XmlAttribute("startTime")]
-        public float StartTime { get; set; }
-
-        [XmlAttribute("endTime")]
-        public float EndTime { get; set; }
+        [XmlAttribute("duration")]
+        public uint Duration { get; set; }
 
         [XmlArray("movements")]
         [XmlArrayItem("movement")]

@@ -79,7 +79,7 @@ namespace Assets.scripts
         {
             if (endTick - startTick < 1)
                 return;
-            actor.transform.rotation = Quaternion.Lerp (start, target, (ElPresidente.currentTime - startTick) / (endTick - startTick));
+            actor.transform.rotation = Quaternion.Lerp (start, target, (ElPresidente.currentStoryTime - startTick) / (endTick - startTick));
             //Debug.DrawRay(actor.transform.position + Vector3.up, actor.transform.forward,Color.magenta);
         }
 

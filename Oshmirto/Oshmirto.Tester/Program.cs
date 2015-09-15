@@ -10,7 +10,7 @@ namespace Oshmirto.Tester
     {
         static void Main(string[] args)
         {
-            CameraPlan plan = Parser.Parse("../../../../FireBoltUnity/Assets/cameraPlans/SimplestCamera.xml");
+            CameraPlan plan = Parser.Parse("../../../../FireBoltUnity/cameraPlans/defaultCamera.xml");
         }
     }
 }
