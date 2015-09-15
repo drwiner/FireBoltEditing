@@ -259,8 +259,9 @@ public class ElPresidente : MonoBehaviour {
 		myTime = currentStoryTime;  
         logTicks();
 
-        updateFireBoltActions(discourseActionList, executingDiscourseActions, currentDiscourseTime);
+        
         updateFireBoltActions(actorActionList, executingActorActions, currentStoryTime);
+        updateFireBoltActions(discourseActionList, executingDiscourseActions, currentDiscourseTime);
     }
 
     void LateUpdate()
