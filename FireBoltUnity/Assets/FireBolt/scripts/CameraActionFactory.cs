@@ -59,6 +59,11 @@ namespace Assets.scripts
                         discourseActionList.Add(new Translate(fragmentStartTime, fragmentStartTime,
                                                             cameraRig, Vector3.zero, new Vector3Nullable(futurePosition.x,null,futurePosition.z), true));
 
+                        // Check if the fragment has a low, medium, or high angle defined.
+                        if (!fragment.Angle.IsNull()) 
+                            // If so, add a new angle object to the action list.
+                            discourseActionList.Add(new Angle(fragmentStartTime, fragmentStartTime, cameraRig, 
+                                                        new Vector2(futurePosition.x, futurePosition.z), fragment.Angle.Target, fragment.Angle.AngleSetting));
                     }
                     //the world is not ready for framings
                     //else if(fragment.Framings[0] != null &&
@@ -73,8 +78,6 @@ namespace Assets.scripts
                     //    cameraActionQueue.Add(r);
                     //    cameraActionQueue.Add(t);
                     //}
-
-                    
 
                     foreach (var movement in fragment.CameraMovements)
                     {

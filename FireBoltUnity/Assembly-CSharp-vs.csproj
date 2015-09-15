@@ -121,6 +121,7 @@
      <Compile Include="Assets\FireBolt\scripts\ConsoleBehavior.cs" />
      <Compile Include="Assets\FireBolt\scripts\ElPresidente.cs" />
      <Compile Include="Assets\FireBolt\scripts\Extensions.cs" />
+     <Compile Include="Assets\FireBolt\scripts\FireBoltActionImplementors\Angle.cs" />
      <Compile Include="Assets\FireBolt\scripts\FireBoltActionImplementors\AnimateLegacy.cs" />
      <Compile Include="Assets\FireBolt\scripts\FireBoltActionImplementors\AnimateMecanim.cs" />
      <Compile Include="Assets\FireBolt\scripts\FireBoltActionImplementors\Create.cs" />

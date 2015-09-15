@@ -11,11 +11,14 @@ namespace Assets.scripts
 {
     class Angle : IFireBoltAction
     {
+        // The start and end tick.
+        float startTick, endTick;
+
         // The name of the camera being operated on.
         private String cameraName;
 
         // The camera body script attached to the camera.
-        private CameraBody cameraBody;
+        private GameObject camera;
 
         // The camera angling setting.
         private Oshmirto.AngleSetting angleSetting;
@@ -29,9 +32,6 @@ namespace Assets.scripts
         // The camera position computed by the angling algorithm.
         private Vector3 newCameraPosition;
 
-        // The camera rotation computed by the angling algorithm.
-        private Quaternion newCameraRotation;
-
         // The position of the subject being filmed.
         private Vector3 targetPosition;
 
@@ -41,28 +41,34 @@ namespace Assets.scripts
         /// <summary>
         /// Constructs an Angle object given a camera name, an (x,z) anchor, the name of a target GameObject, and a high, medium, or low film angle.
         /// </summary>
-        public Angle (String camera, Vector2 anchor, String target, Oshmirto.AngleSetting setting)
+        public Angle (float startTick, float endTick, String cameraName, Vector2 anchor, String targetName, Oshmirto.AngleSetting angleSetting)
         {
+            // Set the start tick.
+            this.startTick = startTick;
+
+            // Set the end tick.
+            this.endTick = endTick;
+
             // Set the type of angle.
-            angleSetting = setting;
+            this.angleSetting = angleSetting;
 
             // Set the name of the camera to use.
-            cameraName = camera;
+            this.cameraName = cameraName;
 
             // Set the x and z coordinates of the new camera position.
             newCameraPosition = new Vector3(anchor.x, 0, anchor.y);
 
             // Set the name of the target of the shot.
-            targetName = target;
+            this.targetName = targetName;
         }
 
         public bool Init()
         {
             // Look up the camera game object given its name.
-            GameObject cam = GameObject.Find(cameraName);
+            camera = GameObject.Find(cameraName);
 
             // Check if we found the camera in the scene.
-            if (cam == null)
+            if (camera == null)
             {
                 // If not, log a debug message that explains the situation.
                 Debug.LogError("Camera name [" + cameraName + "] not found. Cannot create " + angleSetting + " camera angle.");
@@ -72,10 +78,10 @@ namespace Assets.scripts
             }
 
             // Set the camera's initial position.
-            oldCameraPosition = cam.transform.position;
+            oldCameraPosition = camera.transform.position;
 
             // Set the camera's initial rotation.
-            oldCameraRotation = cam.transform.rotation;
+            oldCameraRotation = camera.transform.rotation;
 
             // Look up the target game object given its name.
             GameObject target = GameObject.Find(targetName);
@@ -135,23 +141,30 @@ namespace Assets.scripts
 
         public float StartTick()
         {
-            throw new System.NotImplementedException();
+            return startTick;
         }
 
         public float EndTick()
         {
-            throw new System.NotImplementedException();
+            return endTick;
         }
 
         public void Undo()
         {
-            // joining the cool kids' club
-            throw new System.NotImplementedException();
+            // Reset the camera's position.
+            camera.transform.position = oldCameraPosition;
+
+            // Reset the camera's rotation.
+            camera.transform.rotation = oldCameraRotation;
         }
 
         public void Skip()
         {
-            throw new System.NotImplementedException();
+            // Set the camera's position.
+            camera.transform.position = newCameraPosition;
+
+            // Set the camera's rotation.
+            camera.transform.LookAt(targetPosition);
         }
     }
 }

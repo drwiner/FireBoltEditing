@@ -63,12 +63,6 @@
     <Reference Include="UnityEngine.Analytics">
       <HintPath>Library\UnityAssemblies\UnityEngine.Analytics.dll</HintPath>
     </Reference>
-    <Reference Include="UnityEngine.Networking">
-      <HintPath>Library\UnityAssemblies\UnityEngine.Networking.dll</HintPath>
-    </Reference>
-    <Reference Include="UnityEngine.UI">
-      <HintPath>Library\UnityAssemblies\UnityEngine.UI.dll</HintPath>
-    </Reference>
     <Reference Include="UnityEditor.iOS.Extensions.Xcode">
       <HintPath>Library\UnityAssemblies\UnityEditor.iOS.Extensions.Xcode.dll</HintPath>
     </Reference>
@@ -167,6 +161,7 @@
     <Compile Include="Assets\FireBolt\scripts\ConsoleBehavior.cs" />
     <Compile Include="Assets\FireBolt\scripts\ElPresidente.cs" />
     <Compile Include="Assets\FireBolt\scripts\Extensions.cs" />
+    <Compile Include="Assets\FireBolt\scripts\FireBoltActionImplementors\Angle.cs" />
     <Compile Include="Assets\FireBolt\scripts\FireBoltActionImplementors\AnimateLegacy.cs" />
     <Compile Include="Assets\FireBolt\scripts\FireBoltActionImplementors\AnimateMecanim.cs" />
     <Compile Include="Assets\FireBolt\scripts\FireBoltActionImplementors\Create.cs" />
