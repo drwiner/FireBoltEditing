@@ -16,7 +16,7 @@ public class ElPresidente : MonoBehaviour {
 
     FireBoltActionList actorActionList;
     DiscourseActionList discourseActionList;
-    FireBoltActionList executingActorActions; //TODO split into camera and actor for the two timestreams so i can purge one without ill effects
+    FireBoltActionList executingActorActions; 
     FireBoltActionList executingDiscourseActions;
     private float lastTickLogged;
     public Text debugText;
@@ -274,15 +274,14 @@ public class ElPresidente : MonoBehaviour {
         else if (!initialized)
             return;
 
-
-        foreach (IFireBoltAction actorAction in executingDiscourseActions)
+        foreach (IFireBoltAction action in executingDiscourseActions)
         {
-            actorAction.Execute();
+            action.Execute();
         }
 
-        foreach (IFireBoltAction actorAction in executingActorActions)
+        foreach (IFireBoltAction action in executingActorActions)
         {
-            actorAction.Execute();
+            action.Execute();
         }
     }
 
@@ -364,17 +363,14 @@ public class ElPresidente : MonoBehaviour {
 
 
 
-    public float getCurrentStoryTime()
-    {
-        return currentStoryTime;
-    }
+    public float CurrentStoryTime { get { return currentStoryTime; } }
+    public float CurrentDiscourseTime { get { return currentDiscourseTime; } }
 
 	public void goToStoryTime(float time)
 	{
         if (time < 0)
             time = 0;
         Debug.Log ("goto story " + time);
-        lastTickLogged = time;
 		if (time < currentStoryTime)
         {
             currentStoryTime = time;
