@@ -99,7 +99,7 @@ public class ConsoleBehavior : MonoBehaviour {
                     {
                         log[i] = log[i+1];
                     }
-                    log[2] = "Current time: " + castro.getCurrentStoryTime();
+                    log[2] = "Current time: " + castro.CurrentStoryTime;
                 }
 				command = "";
 			}

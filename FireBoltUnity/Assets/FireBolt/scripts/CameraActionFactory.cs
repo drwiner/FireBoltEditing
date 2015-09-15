@@ -39,6 +39,7 @@ namespace Assets.scripts
         private static void enqueueCameraActions(CameraPlan cameraPlan, DiscourseActionList discourseActionList)
         {
             uint currentDiscourseTime = 0;
+            float previousStoryTimeOffset = 0;
             foreach (Block block in cameraPlan.Blocks)
             {
                 float blockStartTime = Single.MaxValue;
@@ -188,7 +189,9 @@ namespace Assets.scripts
                 }
                 if (block.StoryTime.HasValue)
                 {
-                    discourseActionList.Add(new SetStoryTime(block.StoryTime.Value, blockStartTime, blockEndTime));
+                    float currentStoryTimeOffset = block.StoryTime.Value - blockStartTime;
+                    discourseActionList.Add(new SetStoryTime(currentStoryTimeOffset, previousStoryTimeOffset, blockStartTime, blockEndTime));
+                    previousStoryTimeOffset = block.StoryTime.Value;
                 }
             }
             discourseActionList.EndDiscourseTime = currentDiscourseTime;
