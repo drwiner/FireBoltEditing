@@ -21,6 +21,9 @@ namespace Oshmirto
         [XmlAttribute("anchor")]
         public string Anchor { get; set; }
 
+        [XmlElement("angle")]
+        public Angle Angle { get; set; }
+
         [XmlArray("framings")]
         [XmlArrayItem("framing")]
         public List<Framing> Framings { get; set; } 
