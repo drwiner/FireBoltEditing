@@ -32,6 +32,9 @@ namespace Assets.scripts
         // The camera position computed by the angling algorithm.
         private Vector3 newCameraPosition;
 
+        // The camera rotation computed by the angling algorithm.
+        private Quaternion newCameraRotation;
+
         // The position of the subject being filmed.
         private Vector3 targetPosition;
 
@@ -102,6 +105,9 @@ namespace Assets.scripts
             // Solve the y-coordinate problem and set the camera's new position.
             newCameraPosition = new Vector3(newCameraPosition.x, solveForY(30), newCameraPosition.z);
 
+            // Find the camera's rotation.
+            newCameraRotation = Quaternion.LookRotation(targetPosition - newCameraPosition);
+
             // Report that no errors were encountered.
             return true;
         }
@@ -164,7 +170,7 @@ namespace Assets.scripts
             camera.transform.position = newCameraPosition;
 
             // Set the camera's rotation.
-            camera.transform.LookAt(targetPosition);
+            camera.transform.rotation = newCameraRotation;
         }
     }
 }
