@@ -1,7 +1,7 @@
 ﻿<?xml version="1.0" encoding="utf-8" ?>
 <cameraPlan xmlns="http://liquidnarrative.csc.ncsu.edu/oshmirto/v0.1">
   <blocks>
-    <block storyTime="0">
+    <block storyTime="100">
       <shotFragments>
         <!--<shotFragment anchor="" startTime="5000" endTime="5001">
           <framings>

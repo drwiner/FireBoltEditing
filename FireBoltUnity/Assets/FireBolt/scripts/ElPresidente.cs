@@ -173,6 +173,8 @@ public class ElPresidente : MonoBehaviour {
             discourseActionList = CameraActionFactory.CreateCameraActions(story, cameraPlanPath);
         }
 
+        StartCoroutine(CreateScreenshots());
+
         initialized = true;
         initNext = false;
         initTriggered = false;
@@ -429,5 +431,17 @@ public class ElPresidente : MonoBehaviour {
     bool actionComplete(IFireBoltAction action, float  referenceTime)
     {
         return action.EndTick() < referenceTime;
+    }
+
+    private IEnumerator CreateScreenshots ()
+    {
+        for (float i = 0; i < discourseActionList.EndDiscourseTime; i = i + 5000)
+        {
+            goToDiscourseTime(i);
+
+            yield return new WaitForEndOfFrame();
+
+            Application.CaptureScreenshot(@"Assets/screens/" + i + ".png");
+        }
     }
 }
