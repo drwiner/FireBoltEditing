@@ -9,6 +9,7 @@ using LN.Utilities;
 
 namespace Assets.scripts
 {
+    [Obsolete("functionality being folded into ShotFragmentInit",false)]
     class Angle : IFireBoltAction
     {
         // The start and end tick.

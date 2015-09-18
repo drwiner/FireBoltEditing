@@ -54,11 +54,11 @@ namespace Assets.scripts
                     if (fragmentEndTime > blockEndTime)
                         blockEndTime = fragmentEndTime;
                     
-                    Vector3 futurePosition;
+                    Vector2 futurePosition;
                     if (fragment.Anchor.TryParsePlanarCoords(out futurePosition))
                     {
                         discourseActionList.Add(new Translate(fragmentStartTime, fragmentStartTime,
-                                                            cameraRig, Vector3.zero, new Vector3Nullable(futurePosition.x,null,futurePosition.z), true));
+                                                            cameraRig, Vector3.zero, new Vector3Nullable(futurePosition.x,null,futurePosition.y), true));
 
                         // Check if the fragment has a low, medium, or high angle defined.
                         if (!fragment.Angle.IsNull()) 
@@ -91,11 +91,11 @@ namespace Assets.scripts
                                         discourseActionList.Add(new TranslateRelative(movement.Subject, fragmentStartTime, fragmentEndTime, cameraName, false, true, false));
                                         break;
                                     case(CameraMovementDirective.To):
-                                        Vector3 destination;
+                                        Vector2 destination;
                                         if (movement.Subject.TryParsePlanarCoords(out destination))
                                         {
                                             discourseActionList.Add(new Translate(fragmentStartTime, fragmentEndTime, cameraName,
-                                                                                Vector3.zero, new Vector3Nullable(destination.x,null,destination.z),true));
+                                                                                Vector3.zero, new Vector3Nullable(destination.x,null,destination.y),true));
                                         }
                                         break;
                                 }                               

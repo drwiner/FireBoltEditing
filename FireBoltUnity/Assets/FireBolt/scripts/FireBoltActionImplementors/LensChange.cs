@@ -8,6 +8,7 @@ using LN.Utilities.Collections;
 
 namespace Assets.scripts
 {
+    [Obsolete("functionality being folded into ShotFragmentInit", false)]
     public class LensChange : IFireBoltAction
     {
         float lastUpdateTime;
