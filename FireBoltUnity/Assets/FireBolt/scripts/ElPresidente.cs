@@ -332,12 +332,12 @@ public class ElPresidente : MonoBehaviour {
         Debug.Log ("rewind to " + actions.NextActionIndex + ": " + actions[actions.NextActionIndex]);
     }
 
-    void fastForwardFireBoltActions(FireBoltActionList actions, float time, FireBoltActionList executingActions, float referenceTime)
+    void fastForwardFireBoltActions(FireBoltActionList actions, float targetTime, FireBoltActionList executingActions, float currentTime)
     {
         List<IFireBoltAction> removeList = new List<IFireBoltAction>();
         foreach (IFireBoltAction action in executingActions)
         {
-            if (actionComplete(action, referenceTime))
+            if (actionComplete(action, currentTime))
             {
                 action.Skip();
                 removeList.Add(action);
@@ -347,13 +347,13 @@ public class ElPresidente : MonoBehaviour {
         {
             executingActions.Remove(action);
         }
-        while (actions.NextActionIndex < actions.Count && actions[actions.NextActionIndex].StartTick() <= time) //TODO should probably encapsulate some more of this stuff in the list class
+        while (actions.NextActionIndex < actions.Count && actions[actions.NextActionIndex].StartTick() <= targetTime) //TODO should probably encapsulate some more of this stuff in the list class
         {
             IFireBoltAction action = actions[actions.NextActionIndex];
             actions.NextActionIndex++;
             if (action.Init())
             {
-                if (!actionComplete(action, referenceTime))
+                if (!actionComplete(action, currentTime))
                     executingActions.Add(action);
                 else
                     action.Skip();
