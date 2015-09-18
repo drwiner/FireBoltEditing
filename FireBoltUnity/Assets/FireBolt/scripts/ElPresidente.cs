@@ -173,6 +173,7 @@ public class ElPresidente : MonoBehaviour {
             discourseActionList = CameraActionFactory.CreateCameraActions(story, cameraPlanPath);
         }
 
+        // Call the screenshot coroutine to create keyframe images for scrubbing.
         StartCoroutine(CreateScreenshots());
 
         initialized = true;
@@ -433,15 +434,37 @@ public class ElPresidente : MonoBehaviour {
         return action.EndTick() < referenceTime;
     }
 
+    /// <summary>
+    /// Creates a series of screenshots to be used as keyframes for scrubbing.
+    /// </summary>
     private IEnumerator CreateScreenshots ()
     {
-        for (float i = 0; i < discourseActionList.EndDiscourseTime; i = i + 5000)
-        {
-            goToDiscourseTime(i);
+        // Find the canvase game object.
+        GameObject canvasGO = GameObject.Find("Canvas");
 
+        // Get the canvas component from the game object.
+        Canvas canvas = canvasGO.GetComponent<Canvas>();
+
+        // Toggle the canvas display off.
+        canvas.enabled = false;
+
+        // Loop through discourse time at intervals of 20%.
+        for (float i = 0; i < 100; i = i + 20)
+        {
+            // Set the time based on the current loop.
+            setTime(i / 100);
+
+            // Allow the frame to process.
             yield return new WaitForEndOfFrame();
 
+            // Save the current frame as an image.
             Application.CaptureScreenshot(@"Assets/screens/" + i + ".png");
         }
+
+        // Toggle the canvas display back on.
+        canvas.enabled = true;
+
+        // Reset the time to zero.
+        setTime(0);
     }
 }
