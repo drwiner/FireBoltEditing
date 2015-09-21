@@ -138,6 +138,7 @@
      <Compile Include="Assets\FireBolt\scripts\FireBoltActionImplementors\TranslateRelative.cs" />
      <Compile Include="Assets\FireBolt\scripts\FireBoltActionList.cs" />
      <Compile Include="Assets\FireBolt\scripts\IFireBoltAction.cs" />
+     <Compile Include="Assets\FireBolt\scripts\SliderManager.cs" />
      <None Include="Assets\FireBolt\Standard Assets\Effects\ImageEffects\Shaders\_DepthOfField\SeparableBlur.shader" />
      <None Include="Assets\FireBolt\Standard Assets\Effects\ImageEffects\Shaders\MotionBlur.shader" />
      <None Include="Assets\FireBolt\Standard Assets\Effects\ImageEffects\Shaders\_BloomAndFlares\BlurAndFlares.shader" />

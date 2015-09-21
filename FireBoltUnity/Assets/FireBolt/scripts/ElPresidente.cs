@@ -505,14 +505,4 @@ public class ElPresidente : MonoBehaviour {
         // Reset the time to zero.
         setTime(0);
     }
-
-    public void DisplayKeyframes()
-    {
-        Debug.Log("Hello World");
-    }
-
-    public void HideKeyframes()
-    {
-        Debug.Log("Goodbye World");
-    }
 }
