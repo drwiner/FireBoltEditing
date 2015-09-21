@@ -64,7 +64,7 @@ namespace Assets.scripts
                         if (!fragment.Angle.IsNull()) 
                             // If so, add a new angle object to the action list.
                             discourseActionList.Add(new Angle(fragmentStartTime, fragmentStartTime, cameraRig, 
-                                                        new Vector2(futurePosition.x, futurePosition.z), fragment.Angle.Target, fragment.Angle.AngleSetting));
+                                                        new Vector2(futurePosition.x, futurePosition.y), fragment.Angle.Target, fragment.Angle.AngleSetting));
                     }
                     //the world is not ready for framings
                     //else if(fragment.Framings[0] != null &&
