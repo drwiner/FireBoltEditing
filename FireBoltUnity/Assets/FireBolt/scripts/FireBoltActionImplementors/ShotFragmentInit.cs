@@ -19,13 +19,16 @@ namespace Assets.scripts
         private CameraBody cameraBody; //need a reference to this guy for setting fstop and lens
         private string lensName;
         private string fStopName;
-        private Angle cameraAngle;
+        private List<Framing> framings;
+        private Oshmirto.Angle cameraAngle;
         private string focusTarget;
 
         //parameter grounding
-        
         Vector3Nullable tempCameraPosition;
         Vector3Nullable tempCameraOrientation;
+        ushort? tempLensIndex;
+        ushort? tempFStopIndex;
+        float? tempFocusDistance;
 
         //saved camera values
         GameObject camera;
@@ -33,15 +36,17 @@ namespace Assets.scripts
         Vector3 previousCameraPosition = Vector3.zero;
         ushort previousLensIndex;
         ushort previousFStopIndex;
+        float previousFocusDistance;
 
         //final camera values
         Quaternion newCameraOrientation;
         Vector3 newCameraPosition;
-        ushort? lensIndex;
-        ushort? fStopIndex;
-        float? newFocusDistance;
+        ushort newLensIndex;
+        ushort newFStopIndex;
+        float newfocusDistance;
 
-        public ShotFragmentInit(float startTick, float endTick, string cameraName, string anchor, float? height, string lensName, string fStopName, Oshmirto.Angle cameraAngle, string focusTarget)
+        public ShotFragmentInit(float startTick, float endTick, string cameraName, string anchor, float? height, 
+                                string lensName, string fStopName, List<Framing> framings, Oshmirto.Angle cameraAngle, string focusTarget)
         {
             this.startTick = startTick;
             this.endTick = endTick;//used in querying for direction over the shot.  not in setting end of this init action
@@ -50,6 +55,7 @@ namespace Assets.scripts
             this.height = height;
             this.lensName = lensName;
             this.fStopName = fStopName;
+            this.framings = framings;
             this.cameraAngle = cameraAngle;
             this.focusTarget = focusTarget;
         }
@@ -58,23 +64,7 @@ namespace Assets.scripts
         {
             if(initialized) return true;
 
-            //save values for undo
-            camera = GameObject.Find(cameraName) as GameObject;
-            if (camera == null)
-            {
-                Debug.LogError(string.Format("could not find camera[{0}] at time d:s[{1}:{2}].  This is really bad.  What did you do to the camera?", 
-                    cameraName, ElPresidente.Instance.CurrentDiscourseTime, ElPresidente.Instance.CurrentDiscourseTime));
-                return false;
-            }
-
-            cameraBody = camera.GetComponentInChildren<CameraBody>();
-            if(cameraBody == null)
-            {
-                Debug.LogError(string.Format("could not find cameraBody component as child of camera[{0}] at time d:s[{1}:{2}].  Why isn't your camera a cinema suites camera?", 
-                    cameraName, ElPresidente.Instance.CurrentDiscourseTime, ElPresidente.Instance.CurrentDiscourseTime));
-                return false;
-            }
-
+            if(!findCamera()) return false;           
             savePreviousCameraState();
 
             //ground parameters
@@ -96,75 +86,151 @@ namespace Assets.scripts
             ushort tempLens;
             if(CameraActionFactory.lenses.TryGetValue(lensName, out tempLens))
             {
-                lensIndex = tempLens;
+                tempLensIndex = tempLens;
             }
 
             //set F Stop
             ushort tempFStop;
             if(CameraActionFactory.fStops.TryGetValue(fStopName, out tempFStop))
             {
-                fStopIndex = tempFStop;
+                tempFStopIndex = tempFStop;
             }
-
-
 
             //framing 
-            if (lensIndex.HasValue && tempCameraPosition.X.HasValue && tempCameraPosition.Z.HasValue) // direction doesn't matter even if it is specified.  we just calculate y rotation
+            GameObject framingTarget; 
+            if (framings != null && framings.Count > 0)
             {
-                
-            }
-            else if(!lensIndex.HasValue && tempCameraPosition.X.HasValue && tempCameraPosition.Z.HasValue)//direction still doesn't matter since we can't move in the x,z plane
-            {
+                framingTarget = GameObject.Find(framings[0].FramingTarget) as GameObject;
+                if (framingTarget != null)
+                {
+                    if (tempLensIndex.HasValue && tempCameraPosition.X.HasValue && tempCameraPosition.Z.HasValue) 
+                    {
+                        //case is here for completeness.  rotation needs to be done for all combinations of lens and anchor specification, so it goes after all the conditionals
+                    }
+                    else if (!tempLensIndex.HasValue && tempCameraPosition.X.HasValue && tempCameraPosition.Z.HasValue)//direction still doesn't matter since we can't move in the x,z plane
+                    {
 
-            }
-            else if (lensIndex.HasValue && //direction matters here.  
-                (!tempCameraPosition.X.HasValue || !tempCameraPosition.Z.HasValue))//also assuming we get x,z in a pair.  if only one is provided, it is invalid and will be ignored
-            {
+                    }
+                    else if (tempLensIndex.HasValue && //direction matters here.  
+                        (!tempCameraPosition.X.HasValue || !tempCameraPosition.Z.HasValue))//also assuming we get x,z in a pair.  if only one is provided, it is invalid and will be ignored
+                    {
 
-            }
-            else //we are calculating everything by framing and direction.  this is going to get a little long.
-            {
+                    }
+                    else //we are calculating everything by framing and direction.  this is going to get a little long.
+                    {
 
-            }
+                    }
 
+                    tempCameraOrientation.Y = Quaternion.LookRotation(framingTarget.transform.position - tempCameraPosition.Merge(previousCameraPosition)).eulerAngles.y;
+                }
+                else
+                {
+                    Debug.LogError(string.Format("could not find actor [{0}] at time d:s[{1}:{2}].  Where's your dude?",
+                    framings[0].FramingTarget, ElPresidente.Instance.CurrentDiscourseTime, ElPresidente.Instance.CurrentDiscourseTime));
+                }
+            }
+            
             //angling must go after framing, since x,z might not be set til we frame.
             //this is potentially problematic for framing things where previous shot was from not eyeline.  
             //perhaps we should be setting the angle down to 0 for our calculations then restore it....
             //lots of opportunity for things to get squirrelly here.
-            
+            if (cameraAngle != null && !string.IsNullOrEmpty(cameraAngle.Target))
+            {
+                // Look up the target game object given its name.
+                GameObject angleTarget = GameObject.Find(cameraAngle.Target);
+
+                // Check if the target was found in the scene.
+                if (angleTarget != null)
+                {
+                    if (!tempCameraPosition.Y.HasValue)//only allow angle to adjust height if it is not set manually
+                    {
+                        tempCameraPosition.Y = solveForYPosition(30f, tempCameraPosition.Merge(previousCameraPosition), angleTarget.transform.position, cameraAngle.AngleSetting);
+                    }
+                    //choosing only to update x axis rotation if angle is specified.  this means that some fragments where the camera was previously tilted
+                    //may fail to show the actor if the fragment only specifies a framing.  we could make angle mandatory...
+                    //this is not ideal, but neither is lacking the ability to leave the camera x axis rotation unchanged.
+                    //like where we do a tilt with and then lock off
+                    tempCameraOrientation.X = Quaternion.LookRotation(angleTarget.transform.position - tempCameraPosition.Merge(previousCameraPosition)).eulerAngles.x;
+                }
+                else
+                {
+                    Debug.LogError(string.Format("could not find actor [{0}] at time d:s[{1}:{2}].  Where's your dude?",
+                    cameraAngle.Target, ElPresidente.Instance.CurrentDiscourseTime, ElPresidente.Instance.CurrentDiscourseTime));
+                }                
+            }
 
             //focus has to go after all possible x,y,z settings to get the correct distance to subject
             Vector3 focusPosition;
             if(calculateFocusPosition(focusTarget,out focusPosition))
             {
-                newFocusDistance = Vector3.Distance(newCameraPosition, focusPosition);       
+                tempFocusDistance = Vector3.Distance(newCameraPosition, focusPosition);       
             }
 
             //sort out what wins where and assign to final camera properties
             //start with previous camera properties in case nothing fills them in
-            newCameraPosition = previousCameraPosition;
-            newCameraOrientation = previousCameraOrientation;
+            newCameraPosition = tempCameraPosition.Merge(previousCameraPosition);
+            newCameraOrientation = Quaternion.Euler(tempCameraOrientation.Merge(previousCameraOrientation.eulerAngles));
+            newLensIndex = tempLensIndex.HasValue ? tempLensIndex.Value : previousLensIndex;
+            newFStopIndex = tempFStopIndex.HasValue ? tempFStopIndex.Value : previousFStopIndex;
+            newfocusDistance = tempFocusDistance.HasValue ? tempFocusDistance.Value : previousFocusDistance;
 
             return true;
         }
 
 
+        /// <summary>
+        /// Given a shot angle, finds the distance to travel from the target's baseline y position.
+        /// Finds the distance by solving the equation: tan(base/hyp angle) * base = height.
+        /// Returns the height found by solving the equation.
+        /// </summary>
+        private float solveForYPosition(float alpha, Vector3 sourcePosition, Vector3 targetPosition, AngleSetting angleSetting)
+        {
+            // If the shot is a medium angle it is on the same y-plane as the target.
+            if (angleSetting == Oshmirto.AngleSetting.Medium) return targetPosition.y;
+
+            // Otherwise, find the length of the triangle's base by finding the (x,z) distance between the camera and target.
+            float baseLength = Mathf.Abs(targetPosition.x - sourcePosition.x) + Mathf.Abs(targetPosition.z - sourcePosition.z);
+
+            // Next, find the tangent of the shot angle converted to radians.
+            float tanAlpha = Mathf.Tan(Mathf.Deg2Rad * alpha);
+
+            // If this is a high shot move in the positive y direction.
+            if (angleSetting == Oshmirto.AngleSetting.High) return baseLength * tanAlpha;
+
+            // Otherwise, move in the negative y direction.
+            return baseLength * tanAlpha * -1;
+        }
+
+        /// <summary>
+        /// capturing state for Undo()'ing
+        /// </summary>
         private void savePreviousCameraState()
         {
             previousCameraOrientation = camera.transform.rotation;
             previousCameraPosition = camera.transform.position;
             previousLensIndex = (ushort)cameraBody.IndexOfLens;
             previousFStopIndex = (ushort)cameraBody.IndexOfFStop;
+            previousFocusDistance = cameraBody.FocusDistance;
         }
 
-
-        /// <summary>
-        /// function of position and angleSetting.  this needs our framing to find x-z position if it's not specified.
-        /// in the simplest case, x,y,z are already set by the author and we simply set the rotation we want.
-        /// </summary>
-        private void calculateCameraAngle()
+        private bool findCamera()
         {
+            camera = GameObject.Find(cameraName) as GameObject;
+            if (camera == null)
+            {
+                Debug.LogError(string.Format("could not find camera[{0}] at time d:s[{1}:{2}].  This is really bad.  What did you do to the camera?",
+                    cameraName, ElPresidente.Instance.CurrentDiscourseTime, ElPresidente.Instance.CurrentDiscourseTime));
+                return false;
+            }
 
+            cameraBody = camera.GetComponentInChildren<CameraBody>();
+            if (cameraBody == null)
+            {
+                Debug.LogError(string.Format("could not find cameraBody component as child of camera[{0}] at time d:s[{1}:{2}].  Why isn't your camera a cinema suites camera?",
+                    cameraName, ElPresidente.Instance.CurrentDiscourseTime, ElPresidente.Instance.CurrentDiscourseTime));
+                return false;
+            }
+            return true;
         }
 
         private bool calculateFocusPosition(string focusTarget, out Vector3 focusPosition)
@@ -247,6 +313,7 @@ namespace Assets.scripts
             camera.transform.rotation = previousCameraOrientation;
             cameraBody.IndexOfLens = previousLensIndex;
             cameraBody.IndexOfFStop = previousFStopIndex;
+            cameraBody.FocusDistance = previousFocusDistance;
             
         }
 
@@ -257,10 +324,9 @@ namespace Assets.scripts
             //executing queue in el Presidente
             camera.transform.position = newCameraPosition;
             camera.transform.rotation = newCameraOrientation;
-            cameraBody.IndexOfLens = lensIndex.Value;
-            cameraBody.IndexOfFStop = fStopIndex.Value;
-            if (newFocusDistance.HasValue) cameraBody.FocusDistance = newFocusDistance.Value;
-                   
+            cameraBody.IndexOfLens = newLensIndex;
+            cameraBody.IndexOfFStop = newFStopIndex;
+            cameraBody.FocusDistance = newfocusDistance;                  
         }
 
     }

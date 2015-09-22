@@ -54,9 +54,8 @@ namespace Assets.scripts
                     if (fragmentEndTime > blockEndTime)
                         blockEndTime = fragmentEndTime;
 
-                    discourseActionList.Add(new ShotFragmentInit(fragmentStartTime, fragmentEndTime, 
-                        cameraRig, fragment.Anchor, fragment.Height, fragment.Lens, fragment.FStop, 
-                        fragment.Angle, fragment.FocusPosition));
+                    discourseActionList.Add(new ShotFragmentInit(fragmentStartTime, fragmentEndTime, cameraRig, fragment.Anchor, fragment.Height,
+                        fragment.Lens, fragment.FStop, fragment.Framings, fragment.Angle, fragment.FocusPosition));
 
                     //Vector2 futurePosition;
                     //if (fragment.Anchor.TryParsePlanarCoords(out futurePosition))

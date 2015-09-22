@@ -168,31 +168,31 @@
  <HintPath>C:/Program Files/Unity/Editor/Data/UnityExtensions/Unity/UnityAnalytics/UnityEngine.Analytics.dll</HintPath>
  </Reference>
  <Reference Include="SyntaxTree.VisualStudio.Unity.Bridge">
- <HintPath>C:/Users/rob/Dev/NP-FireBolt/FireBoltUnity/Assets/FireBolt/UnityVS/Editor/SyntaxTree.VisualStudio.Unity.Bridge.dll</HintPath>
+ <HintPath>C:/Users/brthorne/np/NP-FireBolt/FireBoltUnity/Assets/FireBolt/UnityVS/Editor/SyntaxTree.VisualStudio.Unity.Bridge.dll</HintPath>
  </Reference>
  <Reference Include="SyntaxTree.VisualStudio.Unity.Messaging">
- <HintPath>C:/Users/rob/Dev/NP-FireBolt/FireBoltUnity/Assets/FireBolt/UnityVS/Editor/SyntaxTree.VisualStudio.Unity.Messaging.dll</HintPath>
+ <HintPath>C:/Users/brthorne/np/NP-FireBolt/FireBoltUnity/Assets/FireBolt/UnityVS/Editor/SyntaxTree.VisualStudio.Unity.Messaging.dll</HintPath>
  </Reference>
  <Reference Include="UnityVS.VersionSpecific">
- <HintPath>C:/Users/rob/Dev/NP-FireBolt/FireBoltUnity/Assets/FireBolt/UnityVS/Editor/UnityVS.VersionSpecific.dll</HintPath>
+ <HintPath>C:/Users/brthorne/np/NP-FireBolt/FireBoltUnity/Assets/FireBolt/UnityVS/Editor/UnityVS.VersionSpecific.dll</HintPath>
  </Reference>
  <Reference Include="CinematicModel">
- <HintPath>C:/Users/rob/Dev/NP-FireBolt/FireBoltUnity/Assets/plugins/CinematicModel.dll</HintPath>
+ <HintPath>C:/Users/brthorne/np/NP-FireBolt/FireBoltUnity/Assets/plugins/CinematicModel.dll</HintPath>
  </Reference>
  <Reference Include="Impulse">
- <HintPath>C:/Users/rob/Dev/NP-FireBolt/FireBoltUnity/Assets/plugins/Impulse.dll</HintPath>
+ <HintPath>C:/Users/brthorne/np/NP-FireBolt/FireBoltUnity/Assets/plugins/Impulse.dll</HintPath>
  </Reference>
  <Reference Include="Impulse.XmlSerializers">
- <HintPath>C:/Users/rob/Dev/NP-FireBolt/FireBoltUnity/Assets/plugins/Impulse.XmlSerializers.dll</HintPath>
+ <HintPath>C:/Users/brthorne/np/NP-FireBolt/FireBoltUnity/Assets/plugins/Impulse.XmlSerializers.dll</HintPath>
  </Reference>
  <Reference Include="LN.Planning">
- <HintPath>C:/Users/rob/Dev/NP-FireBolt/FireBoltUnity/Assets/plugins/LN.Planning.dll</HintPath>
+ <HintPath>C:/Users/brthorne/np/NP-FireBolt/FireBoltUnity/Assets/plugins/LN.Planning.dll</HintPath>
  </Reference>
  <Reference Include="LN.Utilities">
- <HintPath>C:/Users/rob/Dev/NP-FireBolt/FireBoltUnity/Assets/plugins/LN.Utilities.dll</HintPath>
+ <HintPath>C:/Users/brthorne/np/NP-FireBolt/FireBoltUnity/Assets/plugins/LN.Utilities.dll</HintPath>
  </Reference>
  <Reference Include="Oshmirto">
- <HintPath>C:/Users/rob/Dev/NP-FireBolt/FireBoltUnity/Assets/plugins/Oshmirto.dll</HintPath>
+ <HintPath>C:/Users/brthorne/np/NP-FireBolt/FireBoltUnity/Assets/plugins/Oshmirto.dll</HintPath>
  </Reference>
  <Reference Include="UnityEditor.Graphs">
  <HintPath>C:/Program Files/Unity/Editor/Data/Managed/UnityEditor.Graphs.dll</HintPath>
@@ -230,6 +230,10 @@
  <Reference Include="UnityEditor.iOS.Extensions.Xcode">
  <HintPath>C:/Program Files/Unity/Editor/Data/PlaybackEngines/iOSSupport/UnityEditor.iOS.Extensions.Xcode.dll</HintPath>
  </Reference>
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="Assembly-CSharp-vs.csproj">
+      <Project>{C78C4A60-B45B-3913-2773-B7352EFCA591}</Project>      <Name>Assembly-CSharp-vs</Name>    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

@@ -100,6 +100,19 @@ namespace Assets.scripts
             return tick * millisPerTick;
         }
 
+        /// <summary>
+        /// applies the specified values in this Vector3Nullable, newValues, over those in overridden.
+        /// for all unspecified values in newValues, overridden controls.
+        /// </summary>
+        /// <param name="newValues"></param>
+        /// <param name="overridden"></param>
+        /// <returns></returns>
+        public static Vector3 Merge(this Vector3Nullable newValues, Vector3 overridden)
+        {
+            return new Vector3(newValues.X.HasValue ? newValues.X.Value : overridden.x,
+                               newValues.Y.HasValue ? newValues.Y.Value : overridden.y,
+                               newValues.Z.HasValue ? newValues.Z.Value : overridden.z);
+        }
 
         public static float convertSourceEngineToUnityRotation(this float sourceDegrees)
         {
