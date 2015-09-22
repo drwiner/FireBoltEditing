@@ -1,9 +1,13 @@
-5.1.1f1:1.9.8.0
+5.1.1f1:2.1.0.0
+StandaloneWindows
+J:/Unity/Editor/Data/Managed/UnityEngine.dll
 J:/Unity/Editor/Data/UnityExtensions/Unity/GUISystem/UnityEngine.UI.dll
-J:/Unity/Editor/Data/UnityExtensions/Unity/GUISystem/Editor/UnityEditor.UI.dll
 J:/Unity/Editor/Data/UnityExtensions/Unity/Networking/UnityEngine.Networking.dll
-J:/Unity/Editor/Data/UnityExtensions/Unity/Networking/Editor/UnityEditor.Networking.dll
 J:/Unity/Editor/Data/UnityExtensions/Unity/UnityAnalytics/UnityEngine.Analytics.dll
+J:/Unity/Editor/Data/Managed/UnityEditor.dll
+J:/Unity/Editor/Data/PlaybackEngines/iOSSupport\UnityEditor.iOS.Extensions.Xcode.dll
+J:/Unity/Editor/Data/UnityExtensions/Unity/GUISystem/Editor/UnityEditor.UI.dll
+J:/Unity/Editor/Data/UnityExtensions/Unity/Networking/Editor/UnityEditor.Networking.dll
 J:/Unity/Editor/Data/Managed/UnityEditor.Graphs.dll
 J:\Unity\Editor\Data\PlaybackEngines\androidplayer/UnityEditor.Android.Extensions.dll
 J:/Unity/Editor/Data/PlaybackEngines/iOSSupport/UnityEditor.iOS.Extensions.dll
@@ -15,4 +19,3 @@ J:\Unity\Editor\Data\PlaybackEngines\webglsupport/UnityEditor.WebGL.Extensions.d
 J:\Unity\Editor\Data\PlaybackEngines\linuxstandalonesupport/UnityEditor.LinuxStandalone.Extensions.dll
 J:\Unity\Editor\Data\PlaybackEngines\windowsstandalonesupport/UnityEditor.WindowsStandalone.Extensions.dll
 J:\Unity\Editor\Data\PlaybackEngines\macstandalonesupport/UnityEditor.OSXStandalone.Extensions.dll
-J:/Unity/Editor/Data/PlaybackEngines/iOSSupport\UnityEditor.iOS.Extensions.Xcode.dll

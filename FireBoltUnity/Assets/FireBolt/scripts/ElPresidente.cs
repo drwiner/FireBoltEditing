@@ -33,6 +33,12 @@ public class ElPresidente : MonoBehaviour {
     private bool initNext = false;
     private bool initTriggered = false;
 
+    private bool keyframesGenerated = false;
+    public bool KeyframesGenerated
+    {
+        get { return keyframesGenerated; }
+    }
+
     private CM.CinematicModel cinematicModel = null;
 
     string storyPlanPath;
@@ -458,8 +464,8 @@ public class ElPresidente : MonoBehaviour {
         Camera.main.backgroundColor = Color.black;
         Camera.main.cullingMask = 0;
 
-        // Loop through discourse time at intervals of 20%.
-        for (float i = 0; i < 100; i = i + 20)
+        // Loop through discourse time at intervals of 5%.
+        for (float i = 0; i < 100; i = i + 5)
         {
             // Set the time based on the current loop.
             setTime(i / 100);
@@ -504,5 +510,8 @@ public class ElPresidente : MonoBehaviour {
 
         // Reset the time to zero.
         setTime(0);
+
+        // Set that the keyframes have been generated.
+        keyframesGenerated = true;
     }
 }
