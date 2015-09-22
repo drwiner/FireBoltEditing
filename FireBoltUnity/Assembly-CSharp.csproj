@@ -128,12 +128,14 @@
      <Compile Include="Assets\FireBolt\scripts\FireBoltActionImplementors\Destroy.cs" />
      <Compile Include="Assets\FireBolt\scripts\FireBoltActionImplementors\FStop.cs" />
      <Compile Include="Assets\FireBolt\scripts\FireBoltActionImplementors\Focus.cs" />
-     <Compile Include="Assets\FireBolt\scripts\FireBoltActionImplementors\Frame.cs" />
      <Compile Include="Assets\FireBolt\scripts\FireBoltActionImplementors\LensChange.cs" />
      <Compile Include="Assets\FireBolt\scripts\FireBoltActionImplementors\Rotate.cs" />
      <Compile Include="Assets\FireBolt\scripts\FireBoltActionImplementors\RotateRelative.cs" />
      <Compile Include="Assets\FireBolt\scripts\FireBoltActionImplementors\SetStoryTime.cs" />
      <Compile Include="Assets\FireBolt\scripts\FireBoltActionImplementors\Shake.cs" />
+     <Compile Include="Assets\FireBolt\scripts\FireBoltActionImplementors\ShotFragmentInit.cs" />
+     <Compile Include="Assets\FireBolt\scripts\FireBoltActionImplementors\ShotFragmentInitParams\AnchorParam.cs" />
+     <Compile Include="Assets\FireBolt\scripts\FireBoltActionImplementors\ShotFragmentInitParams\IShotFragmentInitParam.cs" />
      <Compile Include="Assets\FireBolt\scripts\FireBoltActionImplementors\Translate.cs" />
      <Compile Include="Assets\FireBolt\scripts\FireBoltActionImplementors\TranslateRelative.cs" />
      <Compile Include="Assets\FireBolt\scripts\FireBoltActionList.cs" />
@@ -233,22 +235,22 @@
  <HintPath>C:/Program Files/Unity/Editor/Data/UnityExtensions/Unity/UnityAnalytics/UnityEngine.Analytics.dll</HintPath>
  </Reference>
  <Reference Include="CinematicModel">
- <HintPath>C:/Users/brthorne/np/NP-FireBolt/FireBoltUnity/Assets/plugins/CinematicModel.dll</HintPath>
+ <HintPath>C:/Users/rob/Dev/NP-FireBolt/FireBoltUnity/Assets/plugins/CinematicModel.dll</HintPath>
  </Reference>
  <Reference Include="Impulse">
- <HintPath>C:/Users/brthorne/np/NP-FireBolt/FireBoltUnity/Assets/plugins/Impulse.dll</HintPath>
+ <HintPath>C:/Users/rob/Dev/NP-FireBolt/FireBoltUnity/Assets/plugins/Impulse.dll</HintPath>
  </Reference>
  <Reference Include="Impulse.XmlSerializers">
- <HintPath>C:/Users/brthorne/np/NP-FireBolt/FireBoltUnity/Assets/plugins/Impulse.XmlSerializers.dll</HintPath>
+ <HintPath>C:/Users/rob/Dev/NP-FireBolt/FireBoltUnity/Assets/plugins/Impulse.XmlSerializers.dll</HintPath>
  </Reference>
  <Reference Include="LN.Planning">
- <HintPath>C:/Users/brthorne/np/NP-FireBolt/FireBoltUnity/Assets/plugins/LN.Planning.dll</HintPath>
+ <HintPath>C:/Users/rob/Dev/NP-FireBolt/FireBoltUnity/Assets/plugins/LN.Planning.dll</HintPath>
  </Reference>
  <Reference Include="LN.Utilities">
- <HintPath>C:/Users/brthorne/np/NP-FireBolt/FireBoltUnity/Assets/plugins/LN.Utilities.dll</HintPath>
+ <HintPath>C:/Users/rob/Dev/NP-FireBolt/FireBoltUnity/Assets/plugins/LN.Utilities.dll</HintPath>
  </Reference>
  <Reference Include="Oshmirto">
- <HintPath>C:/Users/brthorne/np/NP-FireBolt/FireBoltUnity/Assets/plugins/Oshmirto.dll</HintPath>
+ <HintPath>C:/Users/rob/Dev/NP-FireBolt/FireBoltUnity/Assets/plugins/Oshmirto.dll</HintPath>
  </Reference>
  <Reference Include="UnityEditor.iOS.Extensions.Xcode">
  <HintPath>C:/Program Files/Unity/Editor/Data/PlaybackEngines/iOSSupport/UnityEditor.iOS.Extensions.Xcode.dll</HintPath>

@@ -10,7 +10,7 @@ namespace Assets.scripts
         /// <summary>
         /// is this parameter specified for the fragment
         /// </summary>
-        public bool IsSpecified();
+        bool IsSpecified();
 
     }
 }

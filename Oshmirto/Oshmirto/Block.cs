@@ -24,7 +24,7 @@ namespace Oshmirto
         public string storyTimeAsText
         {
             get { return (StoryTime.HasValue) ? StoryTime.ToString() : null; }
-            set { StoryTime = !string.IsNullOrEmpty(value) ? int.Parse(value) : default(float?); }
+            set { StoryTime = !string.IsNullOrEmpty(value) ? float.Parse(value) : default(float?); }
         }
     }
 }

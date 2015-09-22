@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using UnityEngine;
+using Oshmirto;
 
 namespace Assets.scripts
 {
@@ -14,7 +15,7 @@ namespace Assets.scripts
         private bool initialized = false;
         private string anchor=string.Empty;
         private float? height;//TODO implement height specification in oshmirto
-        private string cameraName; //this is actually going to manipulate the rig most likely, but it doesn't matter much from in here
+        private string cameraName; //this is actually going to manipulate the rig most likely, but what we call it doesn't matter much from in here
         private CameraBody cameraBody; //need a reference to this guy for setting fstop and lens
         private string lensName;
         private string fStopName;
@@ -40,7 +41,7 @@ namespace Assets.scripts
         ushort? fStopIndex;
         float? newFocusDistance;
 
-        public ShotFragmentInit(float startTick, float endTick, string cameraName, string anchor, float? height, string lensName, string fStopName, Angle cameraAngle, string focusTarget)
+        public ShotFragmentInit(float startTick, float endTick, string cameraName, string anchor, float? height, string lensName, string fStopName, Oshmirto.Angle cameraAngle, string focusTarget)
         {
             this.startTick = startTick;
             this.endTick = endTick;//used in querying for direction over the shot.  not in setting end of this init action
