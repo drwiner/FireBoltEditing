@@ -80,7 +80,7 @@ public class SliderManager : MonoBehaviour
         // Loop through the image array
         for (int i = 0; i < 20; i++)
             // And load each keyframe from file into the array.
-            images[i] = LoadPNG(@"Assets/screens/" + (i * 5) + ".png");
+            images[i] = LoadPNG(@"Assets/.screens/" + (i * 5) + ".png");
     }
 
     /// <summary>

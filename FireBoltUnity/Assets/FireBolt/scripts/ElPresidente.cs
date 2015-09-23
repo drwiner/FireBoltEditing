@@ -497,7 +497,7 @@ public class ElPresidente : MonoBehaviour {
 
             // Save the texture 2D as a PNG.
             byte[] bytes = screenShot.EncodeToPNG();
-            File.WriteAllBytes(@"Assets/screens/" + i + ".png", bytes);
+            File.WriteAllBytes(@"Assets/.screens/" + i + ".png", bytes);
         }
 
         // Reset the main camera to its default configuration.
