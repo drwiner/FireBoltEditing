@@ -112,20 +112,26 @@ public class SliderManager : MonoBehaviour
     /// </summary>
     private void drawThumbnail ()
     {
-        // Store the width of the slider in Canvas space.
-        float width = sliderRect.rect.width;
+        // Calculate the x-position of the left side of the slider in canvas space.
+        float sliderLeft = sliderRect.position.x - (sliderRect.rect.width / 2);
 
-        // Get the position of the slider's progress relative to its width.
-        float deltaX = (width - slider.targetGraphic.rectTransform.rect.width) * slider.value;
+        // Calculate the x-position of the right side of the slider in canvas space.
+        float sliderRight = sliderLeft + sliderRect.rect.width;
 
-        // Caclulate the position of the slider's progress in Canvas space.
-        float x = deltaX + sliderRect.position.x + (slider.targetGraphic.rectTransform.rect.width / 2) - (width / 2);
+        // Create a variable to track the position of the mouse relative to the slider.
+        float mouseRel = 0;
+
+        // If the mouse is in the range of the slider, calculate the position of the mouse relative to the slider.
+        if (Input.mousePosition.x > sliderLeft && Input.mousePosition.x < sliderRight) mouseRel = (Input.mousePosition.x - sliderLeft) / sliderRect.rect.width;
+
+        // Otherwise, if the mouse is past the right boundary, set the relative position to one.
+        else if (Input.mousePosition.x > sliderRight) mouseRel = 1;
 
         // Set the thumbnail UI object's position.
-        thumb.rectTransform.position = new Vector3(x, sliderRect.position.y + (thumb.rectTransform.rect.height / 1.5f), thumb.rectTransform.position.z);
+        thumb.rectTransform.position = new Vector3(Input.mousePosition.x, sliderRect.position.y + (thumb.rectTransform.rect.height / 1.5f), thumb.rectTransform.position.z);
 
         // Calculate the array position of the current keyframe image to display.
-        int position = System.Convert.ToInt32(Mathf.Round((slider.value * 100.0f) / 5.0f));
+        int position = System.Convert.ToInt32(Mathf.Round((mouseRel * 100.0f) / 5.0f));
 
         // Set the thumbnail UI object's texture to the calculate keyframe.
         thumb.texture = images[position];

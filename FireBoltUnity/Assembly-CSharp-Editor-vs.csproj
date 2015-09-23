@@ -194,15 +194,6 @@
  <Reference Include="Oshmirto">
  <HintPath>J:/LAS/FireBolt/FireBoltUnity/Assets/plugins/Oshmirto.dll</HintPath>
  </Reference>
- <Reference Include="SyntaxTree.VisualStudio.Unity.Bridge">
- <HintPath>J:/LAS/FireBolt/FireBoltUnity/Assets/UnityVS/Editor/SyntaxTree.VisualStudio.Unity.Bridge.dll</HintPath>
- </Reference>
- <Reference Include="SyntaxTree.VisualStudio.Unity.Messaging">
- <HintPath>J:/LAS/FireBolt/FireBoltUnity/Assets/UnityVS/Editor/SyntaxTree.VisualStudio.Unity.Messaging.dll</HintPath>
- </Reference>
- <Reference Include="UnityVS.VersionSpecific">
- <HintPath>J:/LAS/FireBolt/FireBoltUnity/Assets/UnityVS/Editor/UnityVS.VersionSpecific.dll</HintPath>
- </Reference>
  <Reference Include="UnityEditor.Graphs">
  <HintPath>J:/Unity/Editor/Data/Managed/UnityEditor.Graphs.dll</HintPath>
  </Reference>
