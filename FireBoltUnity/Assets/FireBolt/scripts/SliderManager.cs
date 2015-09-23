@@ -112,11 +112,14 @@ public class SliderManager : MonoBehaviour
     /// </summary>
     private void drawThumbnail ()
     {
+        // Calculate half the width of the thumb used on the scrollbar.
+        float thumbOffset = slider.targetGraphic.rectTransform.rect.width / 2;
+
         // Calculate the x-position of the left side of the slider in canvas space.
-        float sliderLeft = sliderRect.position.x - (sliderRect.rect.width / 2);
+        float sliderLeft = sliderRect.position.x - (sliderRect.rect.width / 2) + thumbOffset;
 
         // Calculate the x-position of the right side of the slider in canvas space.
-        float sliderRight = sliderLeft + sliderRect.rect.width;
+        float sliderRight = sliderLeft + sliderRect.rect.width - (2 * thumbOffset);
 
         // Create a variable to track the position of the mouse relative to the slider.
         float mouseRel = 0;
@@ -125,10 +128,19 @@ public class SliderManager : MonoBehaviour
         if (Input.mousePosition.x > sliderLeft && Input.mousePosition.x < sliderRight) mouseRel = (Input.mousePosition.x - sliderLeft) / sliderRect.rect.width;
 
         // Otherwise, if the mouse is past the right boundary, set the relative position to one.
-        else if (Input.mousePosition.x > sliderRight) mouseRel = 1;
+        else if (Input.mousePosition.x >= sliderRight) mouseRel = 1;
+
+        // Set the thumbnail's x-position to that of the mouse.
+        float imageX = Input.mousePosition.x;
+
+        // Make the thumbnail stop at the left edge of the slider.
+        if (mouseRel == 0) imageX = sliderLeft;
+
+        // Also make the thumbnail stop at the right edge of the slider.
+        else if (mouseRel == 1) imageX = sliderRight;
 
         // Set the thumbnail UI object's position.
-        thumb.rectTransform.position = new Vector3(Input.mousePosition.x, sliderRect.position.y + (thumb.rectTransform.rect.height / 1.5f), thumb.rectTransform.position.z);
+        thumb.rectTransform.position = new Vector3(imageX, sliderRect.position.y + (thumb.rectTransform.rect.height / 1.5f), thumb.rectTransform.position.z);
 
         // Calculate the array position of the current keyframe image to display.
         int position = System.Convert.ToInt32(Mathf.Round((mouseRel * 100.0f) / 5.0f));
