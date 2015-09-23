@@ -116,10 +116,10 @@ public class SliderManager : MonoBehaviour
         float width = sliderRect.rect.width;
 
         // Get the position of the slider's progress relative to its width.
-        float deltaX = width * slider.value;
+        float deltaX = (width - slider.targetGraphic.rectTransform.rect.width) * slider.value;
 
         // Caclulate the position of the slider's progress in Canvas space.
-        float x = deltaX + sliderRect.position.x - (width / 2);
+        float x = deltaX + sliderRect.position.x + (slider.targetGraphic.rectTransform.rect.width / 2) - (width / 2);
 
         // Set the thumbnail UI object's position.
         thumb.rectTransform.position = new Vector3(x, sliderRect.position.y + (thumb.rectTransform.rect.height / 1.5f), thumb.rectTransform.position.z);
