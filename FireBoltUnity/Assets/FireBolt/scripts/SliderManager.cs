@@ -81,6 +81,18 @@ public class SliderManager : MonoBehaviour
         for (int i = 0; i < 20; i++)
             // And load each keyframe from file into the array.
             images[i] = LoadPNG(@"Assets/.screens/" + (i * 5) + ".png");
+
+        // Scale the keyframe thumbnail to the correct size ratio.
+        if (images[0].height < images[0].width)
+        {
+            float offset = (float)images[0].height / (float)images[0].width;
+            thumb.uvRect = new Rect(offset / 2, 0, offset, 1);
+        }
+        else if (images[0].height > images[0].width)
+        {
+            float offset = (float)images[0].width / (float)images[0].height;
+            thumb.uvRect = new Rect(0, offset / 2, 1, offset);
+        }
     }
 
     /// <summary>
