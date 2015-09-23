@@ -85,13 +85,17 @@ public class SliderManager : MonoBehaviour
         // Scale the keyframe thumbnail to the correct size ratio.
         if (images[0].height < images[0].width)
         {
-            float offset = (float)images[0].height / (float)images[0].width;
-            thumb.uvRect = new Rect(offset / 2, 0, offset, 1);
+            float imageOff = (float)images[0].height / (float)images[0].width;
+            float thumbOff = thumb.rectTransform.rect.height / thumb.rectTransform.rect.width;
+            float offset = imageOff / thumbOff; 
+            thumb.uvRect = new Rect((1 - offset) / 2, 0, offset, 1);
         }
         else if (images[0].height > images[0].width)
         {
-            float offset = (float)images[0].width / (float)images[0].height;
-            thumb.uvRect = new Rect(0, offset / 2, 1, offset);
+            float imageOff = (float)images[0].width / (float)images[0].height;
+            float thumbOff = thumb.rectTransform.rect.width / thumb.rectTransform.rect.height;
+            float offset = imageOff * thumbOff; 
+            thumb.uvRect = new Rect(0, (1 - offset) / 2, 1, offset);
         }
     }
 
