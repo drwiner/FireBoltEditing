@@ -157,6 +157,9 @@ public class SliderManager : MonoBehaviour
         // Calculate the array position of the current keyframe image to display.
         int position = System.Convert.ToInt32(Mathf.Round((mouseRel * 100.0f) / 5.0f));
 
+        // Scale position back if it is over length.
+        if (position >= images.Length) position = images.Length - 1;
+
         // Set the thumbnail UI object's texture to the calculate keyframe.
         thumb.texture = images[position];
     }
