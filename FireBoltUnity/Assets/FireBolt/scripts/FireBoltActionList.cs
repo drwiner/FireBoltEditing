@@ -17,8 +17,6 @@ namespace Assets.scripts
             if (y is Destroy) return -1;
             if (x is Create) return -1;
             if (y is Create) return 1;
-            if (x is Frame) return -1;
-            if (y is Frame) return 1;
 
             if (x is Translate && y is Rotate) return -1;
             if (x is Rotate && y is Translate) return 1;
@@ -41,8 +39,6 @@ namespace Assets.scripts
             {
                 if (x is Create) return -1;
                 if (y is Create) return 1;
-                if (x is Frame) return -1;
-                if (y is Frame) return 1;
             }
             return -1;
         }
