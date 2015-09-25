@@ -198,7 +198,7 @@ namespace Assets.scripts
             if (angleSetting == Oshmirto.AngleSetting.High) return baseLength * tanAlpha;
 
             // Otherwise, move in the negative y direction.
-            return baseLength * tanAlpha * -1;
+            return baseLength * tanAlpha * -1 + targetPosition.y;
         }
 
         /// <summary>
