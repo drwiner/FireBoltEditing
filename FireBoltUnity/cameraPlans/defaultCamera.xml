@@ -1,7 +1,7 @@
 ﻿<?xml version="1.0" encoding="utf-8" ?>
 <cameraPlan xmlns="http://liquidnarrative.csc.ncsu.edu/oshmirto/v0.1">
   <blocks>
-    <block>
+    <block storyTime="0">
     <shotFragments>
         <shotFragment anchor="0,-5"  duration="15000" focus="Tower" f-stop ="1.4" lens ="25mm" shake ="0">
           <!--height="5"-->
