@@ -163,7 +163,7 @@ namespace Assets.scripts
             Vector3 focusPosition;
             if(calculateFocusPosition(focusTarget,out focusPosition))
             {
-                tempFocusDistance = Vector3.Distance(newCameraPosition, focusPosition);       
+                tempFocusDistance = Vector3.Distance(tempCameraPosition.Merge(previousCameraPosition), focusPosition);       
             }
 
             //sort out what wins where and assign to final camera properties
@@ -252,6 +252,7 @@ namespace Assets.scripts
                     Debug.Log("actor name [" + focusTarget + "] not found. cannot change focus");
                     return false;
                 }
+                focusPosition = target.transform.position;
                 //Debug.Log(string.Format("focus target[{0}] @{1} tracking[{2}]", focusTarget, target.transform.position));
             }
             return true;

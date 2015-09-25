@@ -1,20 +1,50 @@
 ﻿<?xml version="1.0" encoding="utf-8" ?>
 <cameraPlan xmlns="http://liquidnarrative.csc.ncsu.edu/oshmirto/v0.1">
   <blocks>
-    <block storyTime="0">
+    <!--<block storyTime="0">
       <shotFragments>
-        <shotFragment anchor="0,-5" height="0.5" duration="4000" focus="Pudge" f-stop ="1.4" lens ="25mm" shake ="0">
-          <!--<angle angleSetting="High" target="Pudge"/>-->
+        <shotFragment anchor="0,-5" height="1" duration="15000" focus="Tower" f-stop ="1.4" lens ="25mm" shake ="0">
+          --><!--<angle angleSetting="High" target="Skywrath Mage"/>--><!--
           <framings>
             <framing framingType="Full" framingTarget="Pudge"/>
           </framings>
           <movements>
-            <movement type="Focus" directive="With" subject="Pudge"/>
+            --><!--<movement type="Focus" directive="With" subject="Pudge"/>--><!--
+          </movements>
+        </shotFragment>
+      </shotFragments>
+    </block>-->
+
+    <block >
+      <shotFragments>
+        <shotFragment anchor="0,-5" height="1" duration="5000" focus="Tower" f-stop ="1.4" lens ="25mm" shake ="0">
+          <!--<angle angleSetting="High" target="Skywrath Mage"/>-->
+          <framings>
+            <framing framingType="Full" framingTarget="Pudge"/>
+          </framings>
+          <movements>
+            <!--<movement type="Focus" directive="With" subject="Pudge"/>-->
           </movements>
         </shotFragment>
       </shotFragments>
     </block>
-    <block storyTime="10000">
+
+    <block >
+      <shotFragments>
+        <shotFragment anchor="0,-5" height="1" duration="5000" focus="Skywrath Mage" f-stop ="1.4" lens ="25mm" shake ="0">
+          <!--<angle angleSetting="High" target="Skywrath Mage"/>-->
+          <framings>
+            <framing framingType="Full" framingTarget="Pudge"/>
+          </framings>
+          <movements>
+            <!--<movement type="Focus" directive="With" subject="Pudge"/>-->
+          </movements>
+        </shotFragment>
+      </shotFragments>
+    </block>
+    
+
+    <!--<block storyTime="10000">
       <shotFragments>
         <shotFragment anchor="0,-5" duration="5000" focus="Pudge" f-stop ="1.4" lens ="25mm" shake ="0">
           <framings/>
@@ -33,7 +63,7 @@
           </movements>
         </shotFragment>
       </shotFragments>
-    </block>
+    </block>-->
     
         <!--<shotFragment anchor="" startTime="5000" endTime="5001">
           <framings>

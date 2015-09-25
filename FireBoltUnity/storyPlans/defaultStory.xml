@@ -19,7 +19,28 @@
       <property name="actor" value="npc_dota_creep_goodguys_ranged 1893510"/>
       <property name="time" value="2000-15000"/>
     </action>-->
-        <action type="spawn-hero" name="step7000">
+    
+     <action type="spawn-hero" name="step7001">
+      <property name="location" value="(-5,8)"/>
+      <property name="actor" value="Skywrath Mage"/>
+      <property name="time" value="0-1"/>
+    </action>
+
+    <action type="move" name="step7002">
+      <property name="origin" value="(-5, 8)"/>
+      <property name="destination" value="(-6, 8)"/>
+      <property name="actor" value="Skywrath Mage"/>
+      <property name="time" value="5-40000"/>
+    </action>
+
+    <action type="rotate" name="step7003">
+      <property name="start-angle" value="0"/>
+      <property name="end-angle" value="130"/>
+      <property name="actor" value="Skywrath Mage"/>
+      <property name="time" value="3000-4000"/>
+    </action>
+
+    <action type="spawn-hero" name="step7000">
       <property name="location" value="(2,3)"/>
       <property name="actor" value="Tower"/>
       <property name="time" value="0-1"/>
@@ -68,7 +89,7 @@
         <property name="start-angle" value="0"/>
         <property name="end-angle" value="180"/>
         <property name="actor" value="Pudge"/>
-        <property name="time" value="1001-4500"/>
+        <property name="time" value="1001-1500"/>
       </action>
     <action type="move" name="step7535">
       <property name="origin" value="(0, 10)"/>

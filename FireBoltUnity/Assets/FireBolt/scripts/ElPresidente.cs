@@ -75,7 +75,7 @@ public class ElPresidente : MonoBehaviour {
     /// <param name="a"></param>
     public void Init(float a)
     {
-        Init(null);
+        Init(null, true);
     }
 
     //new class to hold specified input file paths.  
