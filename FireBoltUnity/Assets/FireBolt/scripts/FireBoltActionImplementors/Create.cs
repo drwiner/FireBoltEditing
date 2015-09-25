@@ -43,7 +43,7 @@ namespace Assets.scripts
             {
                 actor.SetActive(true);
                 actor.transform.position = position;
-                actor.transform.rotation = Quaternion.identity;
+                //actor.transform.rotation = Quaternion.identity;
                 return true;
             }
             GameObject model = null;

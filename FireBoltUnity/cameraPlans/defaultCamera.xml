@@ -51,7 +51,7 @@
 
 
 
-    <block >
+    <block storyTime="0">
       <shotFragments>
         <shotFragment anchor="0,-5" height="1" duration="15000" focus="Tower" f-stop ="1.4" lens ="25mm" shake ="0">
           <!--height="5"-->
