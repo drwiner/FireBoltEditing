@@ -169,6 +169,10 @@
       </animationMappings>
     </actor>-->
 
+    <actor name="Tower" model="Tower.prefab">
+      <animationMappings/>
+    </actor>
+    
     <actor name="Couriers" model="m005.fbx">
       <animationMappings/>
     </actor>

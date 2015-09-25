@@ -58,7 +58,7 @@ namespace Assets.scripts
                                              modelName, ElPresidente.Instance.GetActiveAssetBundle().name));
                 return false;
             }
-            actor = GameObject.Instantiate(model, position, Quaternion.identity) as GameObject;
+            actor = GameObject.Instantiate(model, position, model.transform.rotation) as GameObject;
             actor.name = actorName;
             actor.transform.SetParent((GameObject.Find("InstantiatedObjects") as GameObject).transform, true);
             return true;
