@@ -1,12 +1,10 @@
 ﻿<?xml version="1.0" encoding="utf-8" ?>
 <cameraPlan xmlns="http://liquidnarrative.csc.ncsu.edu/oshmirto/v0.1">
   <blocks>
-
-
-    <!--<block >
-      <shotFragments>
+    <block storyTime="0">
+    <shotFragments>
         <shotFragment anchor="0,-5"  duration="15000" focus="Tower" f-stop ="1.4" lens ="25mm" shake ="0">
-          --><!--height="5"--><!--
+          <!--height="5"-->
           <angle angleSetting="High" target="Skywrath Mage"/>
           <framings>
             <framing framingType="Full" framingTarget="Pudge"/>
@@ -16,7 +14,7 @@
           </movements>
         </shotFragment>
       </shotFragments>
-    </block>-->
+    </block>
 
     
     
@@ -51,11 +49,11 @@
 
 
 
-    <block storyTime="0">
+    <!--<block >
       <shotFragments>
         <shotFragment anchor="0,-5" height="1" duration="15000" focus="Tower" f-stop ="1.4" lens ="25mm" shake ="0">
-          <!--height="5"-->
-          <!--<angle angleSetting="High" target="Skywrath Mage"/>-->
+          --><!--height="5"--><!--
+          --><!--<angle angleSetting="High" target="Skywrath Mage"/>--><!--
           <framings>
             <framing framingType="Full" framingTarget="Skywrath Mage"/>
           </framings>
@@ -64,7 +62,7 @@
           </movements>
         </shotFragment>
       </shotFragments>
-    </block>
+    </block>-->
     
     
     
@@ -142,9 +140,7 @@
 <shotFragement/>
         </shotFragment>-->
 
-          
-
-            <!--<movement type="Tilt" directive="With" subject="Pudge" />
+      <!--<movement type="Tilt" directive="With" subject="Pudge" />
             <movement type="Pan" directive="With" subject="Pudge"/>-->
 
         <!--<shotFragment anchor="0,-5" startTime="4000" endTime="7000" focus ="PosZ" lens ="25mm" >

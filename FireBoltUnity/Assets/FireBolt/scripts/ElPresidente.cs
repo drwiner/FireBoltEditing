@@ -33,6 +33,12 @@ public class ElPresidente : MonoBehaviour {
     private bool initNext = false;
     private bool initTriggered = false;
 
+    private bool keyframesGenerated = false;
+    public bool KeyframesGenerated
+    {
+        get { return keyframesGenerated; }
+    }
+
     private CM.CinematicModel cinematicModel = null;
 
     InputSet currentInputSet=null;
@@ -189,6 +195,9 @@ public class ElPresidente : MonoBehaviour {
         executingActorActions = new FireBoltActionList(new ActionTypeComparer());
         executingDiscourseActions = new FireBoltActionList(new ActionTypeComparer());
         new GameObject("InstantiatedObjects").transform.SetParent((GameObject.Find("FireBolt") as GameObject).transform);
+
+        // Call the screenshot coroutine to create keyframe images for scrubbing.
+        StartCoroutine(CreateScreenshots());
 
         initialized = true;
         initNext = false;
@@ -441,5 +450,80 @@ public class ElPresidente : MonoBehaviour {
     bool actionComplete(IFireBoltAction action, float  referenceTime)
     {
         return action.EndTick() < referenceTime;
+    }
+
+    /// <summary>
+    /// Creates a series of screenshots to be used as keyframes for scrubbing.
+    /// </summary>
+    private IEnumerator CreateScreenshots ()
+    {
+        // Find the canvase game object.
+        GameObject canvasGO = GameObject.Find("Canvas");
+
+        // Get the canvas component from the game object.
+        Canvas canvas = canvasGO.GetComponent<Canvas>();
+
+        // Toggle the canvas display off.
+        canvas.enabled = false;
+
+        // Store the main camera's default settings.
+        CameraClearFlags defClearFlags = Camera.main.clearFlags;
+        Color defBackgroundColor = Camera.main.backgroundColor;
+        int defCullingMask = Camera.main.cullingMask;
+
+        // Make the main camera display a black screen while the system iterates through the keyframes.
+        Camera.main.clearFlags = CameraClearFlags.SolidColor;
+        Camera.main.backgroundColor = Color.black;
+        Camera.main.cullingMask = 0;
+
+        // Loop through discourse time at intervals of 5%.
+        for (float i = 0; i < 100; i = i + 5)
+        {
+            // Set the time based on the current loop.
+            setTime(i / 100);
+
+            // Allow the frame to process.
+            yield return new WaitForEndOfFrame();
+
+            // Initialize the render texture and texture 2D.
+            RenderTexture rt = new RenderTexture(Screen.width, Screen.height, 24);
+            Texture2D screenShot = new Texture2D(Screen.width, Screen.height, TextureFormat.RGB24, false);
+
+            // Create a new camera object and position it where the main camera is.
+            GameObject testCameraGO = new GameObject();
+            testCameraGO.transform.position = Camera.main.transform.position;
+            testCameraGO.transform.rotation = Camera.main.transform.rotation;
+            Camera test = testCameraGO.AddComponent<Camera>();
+
+            // Render the texture.
+            test.targetTexture = rt;
+            test.Render();
+
+            // Read the rendered texture into the texture 2D and reset the camera.
+            RenderTexture.active = rt;
+            screenShot.ReadPixels(new Rect(0, 0, Screen.width, Screen.height), 0, 0);
+            test.targetTexture = null;
+            RenderTexture.active = null;
+            Destroy(rt);
+            Destroy(testCameraGO);
+
+            // Save the texture 2D as a PNG.
+            byte[] bytes = screenShot.EncodeToPNG();
+            File.WriteAllBytes(@"Assets/.screens/" + i + ".png", bytes);
+        }
+
+        // Reset the main camera to its default configuration.
+        Camera.main.clearFlags = defClearFlags;
+        Camera.main.backgroundColor = defBackgroundColor;
+        Camera.main.cullingMask = defCullingMask;
+
+        // Toggle the canvas display back on.
+        canvas.enabled = true;
+
+        // Reset the time to zero.
+        setTime(0);
+
+        // Set that the keyframes have been generated.
+        keyframesGenerated = true;
     }
 }

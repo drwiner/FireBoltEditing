@@ -7,16 +7,14 @@
     <SchemaVersion>2.0</SchemaVersion>
     <ProjectGuid>{C10AD983-AF61-27A7-6ECD-94BFF46B1DA4}</ProjectGuid>
     <OutputType>Library</OutputType>
-    <RootNamespace>
-    </RootNamespace>
+    <RootNamespace></RootNamespace>
     <AssemblyName>Assembly-CSharp</AssemblyName>
     <FileAlignment>512</FileAlignment>
     <ProjectTypeGuids>{E097FAD1-6243-4DAD-9C02-E9B9EFC3FFC1};{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</ProjectTypeGuids>
     <TargetFrameworkIdentifier>.NETFramework</TargetFrameworkIdentifier>
     <TargetFrameworkVersion>v3.5</TargetFrameworkVersion>
     <TargetFrameworkProfile>Unity Full v3.5</TargetFrameworkProfile>
-    <CompilerResponseFile>
-    </CompilerResponseFile>
+    <CompilerResponseFile></CompilerResponseFile>
     <UnityProjectType>Game:1</UnityProjectType>
     <UnityBuildTarget>StandaloneWindows:5</UnityBuildTarget>
     <UnityVersion>5.1.1f1</UnityVersion>
@@ -96,7 +94,6 @@
     <Compile Include="Assets\FireBolt\Cinema Suite\Cinema Pro Cams\Scripts\Stereo3D.cs" />
     <Compile Include="Assets\FireBolt\Cinema Suite\Cinema Pro Cams\Scripts\Stereo3DGUI.cs" />
     <Compile Include="Assets\FireBolt\Cinema Suite\Cinema Pro Cams\Scripts\Stereo3DRenderer.cs" />
-    <Compile Include="Assets\FireBolt\scripts\InputSet.cs" />
     <Compile Include="Assets\FireBolt\Standard Assets\Cameras\Scripts\AbstractTargetFollower.cs" />
     <Compile Include="Assets\FireBolt\Standard Assets\Cameras\Scripts\AutoCam.cs" />
     <Compile Include="Assets\FireBolt\Standard Assets\Cameras\Scripts\FreeLookCam.cs" />
@@ -178,6 +175,8 @@
     <Compile Include="Assets\FireBolt\scripts\FireBoltActionImplementors\TranslateRelative.cs" />
     <Compile Include="Assets\FireBolt\scripts\FireBoltActionList.cs" />
     <Compile Include="Assets\FireBolt\scripts\IFireBoltAction.cs" />
+    <Compile Include="Assets\FireBolt\scripts\InputSet.cs" />
+    <Compile Include="Assets\FireBolt\scripts\SliderManager.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Assets\FireBolt\Cinema Suite\Cinema Pro Cams\Image Effects (Pro Only)_CS\_Sources\Shaders\_DepthOfField\DepthOfFieldDX11.shader" />
