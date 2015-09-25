@@ -53,19 +53,23 @@ namespace Assets.scripts
                         blockStartTime = fragmentStartTime;                                     
                     if (fragmentEndTime > blockEndTime)
                         blockEndTime = fragmentEndTime;
-                    
-                    Vector3 futurePosition;
-                    if (fragment.Anchor.TryParsePlanarCoords(out futurePosition))
-                    {
-                        discourseActionList.Add(new Translate(fragmentStartTime, fragmentStartTime,
-                                                            cameraRig, Vector3.zero, new Vector3Nullable(futurePosition.x,null,futurePosition.z), true));
 
-                        // Check if the fragment has a low, medium, or high angle defined.
-                        if (!fragment.Angle.IsNull()) 
-                            // If so, add a new angle object to the action list.
-                            discourseActionList.Add(new Angle(fragmentStartTime, fragmentStartTime, cameraRig, 
-                                                        new Vector2(futurePosition.x, futurePosition.z), fragment.Angle.Target, fragment.Angle.AngleSetting));
-                    }
+                    discourseActionList.Add(new ShotFragmentInit(fragmentStartTime, fragmentEndTime, cameraRig, fragment.Anchor, fragment.Height,
+                        fragment.Lens, fragment.FStop, fragment.Framings, fragment.Angle, fragment.FocusPosition));
+
+                    //Vector2 futurePosition;
+                    //if (fragment.Anchor.TryParsePlanarCoords(out futurePosition))
+                    //{
+                    //    discourseActionList.Add(new Translate(fragmentStartTime, fragmentStartTime,
+                    //                                        cameraRig, Vector3.zero, new Vector3Nullable(futurePosition.x,null,futurePosition.y), true));
+
+                    //    // Check if the fragment has a low, medium, or high angle defined.
+                    //    if (!fragment.Angle.IsNull()) 
+                    //        // If so, add a new angle object to the action list.
+                    //        discourseActionList.Add(new Angle(fragmentStartTime, fragmentStartTime, cameraRig, 
+                    //                                    new Vector2(futurePosition.x, futurePosition.y), fragment.Angle.Target, fragment.Angle.AngleSetting));
+                    //}
+
                     //the world is not ready for framings
                     //else if(fragment.Framings[0] != null &&
                     //        fragment.Framings[0].FramingType != FramingType.None && 
@@ -91,11 +95,11 @@ namespace Assets.scripts
                                         discourseActionList.Add(new TranslateRelative(movement.Subject, fragmentStartTime, fragmentEndTime, cameraName, false, true, false));
                                         break;
                                     case(CameraMovementDirective.To):
-                                        Vector3 destination;
+                                        Vector2 destination;
                                         if (movement.Subject.TryParsePlanarCoords(out destination))
                                         {
                                             discourseActionList.Add(new Translate(fragmentStartTime, fragmentEndTime, cameraName,
-                                                                                Vector3.zero, new Vector3Nullable(destination.x,null,destination.z),true));
+                                                                                Vector3.zero, new Vector3Nullable(destination.x,null,destination.y),true));
                                         }
                                         break;
                                 }                               
@@ -126,7 +130,7 @@ namespace Assets.scripts
                             case CameraMovementType.Tilt:
                                 switch(movement.Directive)
                                 {
-                                    case CameraMovementDirective.With: // will this co-execute with pan-with?
+                                    case CameraMovementDirective.With: // will this co-execute with pan-with? not currently
                                         discourseActionList.Add(new RotateRelative(movement.Subject, fragmentStartTime, fragmentEndTime, cameraRig,
                                                                                  false, true, true));
                                         break;
@@ -148,46 +152,46 @@ namespace Assets.scripts
 
 
                     
-                    if (fragment.Framings.Count > 0 && fragment.Framings[0].FramingType == FramingType.Angle)
-                    {
-                        float rotation = 0f;
-                        if(float.TryParse(fragment.Framings[0].FramingTarget, out rotation))
-                            discourseActionList.Add(new Rotate(fragmentStartTime, fragmentStartTime, cameraName, rotation));
-                    }
-                    else
-                    {
-                        //TODO handle calculating actor target facing
-                    }
+                    //if (fragment.Framings.Count > 0 && fragment.Framings[0].FramingType == FramingType.Angle)
+                    //{
+                    //    float rotation = 0f;
+                    //    if(float.TryParse(fragment.Framings[0].FramingTarget, out rotation))
+                    //        discourseActionList.Add(new Rotate(fragmentStartTime, fragmentStartTime, cameraName, rotation));
+                    //}
+                    //else
+                    //{
+                    //    //TODO handle calculating actor target facing
+                    //}
 
-                    // Lens change
-                    ushort lensNumber;
-                    if (lenses.TryGetValue(fragment.Lens, out lensNumber))
-                    {
-                        discourseActionList.Add(new LensChange(fragmentStartTime, fragmentEndTime, cameraName, lensNumber));
-                    }
-                    else
-                    {
-                        Debug.LogError(string.Format("lens [{0}] for cameraPlan interval [{1}-{2}] is invalid",fragment.Lens,fragmentStartTime,fragmentEndTime));
-                    }
+                    //// Lens change
+                    //ushort lensNumber;
+                    //if (lenses.TryGetValue(fragment.Lens, out lensNumber))
+                    //{
+                    //    discourseActionList.Add(new LensChange(fragmentStartTime, fragmentEndTime, cameraName, lensNumber));
+                    //}
+                    //else
+                    //{
+                    //    Debug.LogError(string.Format("lens [{0}] for cameraPlan interval [{1}-{2}] is invalid",fragment.Lens,fragmentStartTime,fragmentEndTime));
+                    //}
                         
 
-                    // FStop change
-                    ushort fStopNumber;
-                    if (fStops.TryGetValue(fragment.FStop, out fStopNumber))
-                    {
-                        discourseActionList.Add(new FStop(fragmentStartTime, fragmentEndTime, cameraName, fStopNumber));
-                    }
-                    else
-                    {
-                        Debug.LogError(string.Format("f-stop [{0}] for cameraPlan interval [{1}-{2}] is invalid", fragment.FStop, fragmentStartTime, fragmentEndTime));
-                    }                      
+                    //// FStop change
+                    //ushort fStopNumber;
+                    //if (fStops.TryGetValue(fragment.FStop, out fStopNumber))
+                    //{
+                    //    discourseActionList.Add(new FStop(fragmentStartTime, fragmentEndTime, cameraName, fStopNumber));
+                    //}
+                    //else
+                    //{
+                    //    Debug.LogError(string.Format("f-stop [{0}] for cameraPlan interval [{1}-{2}] is invalid", fragment.FStop, fragmentStartTime, fragmentEndTime));
+                    //}                      
 
-                    // Focus Change
-                    if(fragment.FocusPosition !=null)
-                        discourseActionList.Add(new Focus(fragmentStartTime, fragmentEndTime, cameraName, fragment.FocusPosition));
+                    //// Focus Change
+                    //if(fragment.FocusPosition !=null)
+                    //    discourseActionList.Add(new Focus(fragmentStartTime, fragmentEndTime, cameraName, fragment.FocusPosition));
 
-                    // Shake it off
-                    discourseActionList.Add(new Shake(fragmentStartTime, fragmentEndTime, cameraName, fragment.Shake));
+                    //// Shake it off
+                    //discourseActionList.Add(new Shake(fragmentStartTime, fragmentEndTime, cameraName, fragment.Shake));
 
                     currentDiscourseTime = fragmentEndTime;
                 }

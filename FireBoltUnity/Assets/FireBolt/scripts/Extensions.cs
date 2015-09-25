@@ -36,16 +36,16 @@ namespace Assets.scripts
         /// </summary>
         /// <param name="s">string of format x,z </param>
         /// <returns>vector 3</returns>     
-        public static bool TryParsePlanarCoords(this string s, out Vector3 vector3)
+        public static bool TryParsePlanarCoords(this string s, out Vector2 v)
         {
-            vector3 = Vector3.zero;
+            v = Vector3.zero;
             string[] values = s.Split(new char[] { ',' });
             float x, z;
             if (values.Length > 1 &&
                 float.TryParse(values[0], out x )&&
                 float.TryParse(values[1], out z)) //we got two coords
             {
-                vector3 = new Vector3(x, 0f, z);
+                v = new Vector2(x, z);
                 return true;
             }
             return false;
@@ -100,6 +100,19 @@ namespace Assets.scripts
             return tick * millisPerTick;
         }
 
+        /// <summary>
+        /// applies the specified values in this Vector3Nullable, newValues, over those in overridden.
+        /// for all unspecified values in newValues, overridden controls.
+        /// </summary>
+        /// <param name="newValues"></param>
+        /// <param name="overridden"></param>
+        /// <returns></returns>
+        public static Vector3 Merge(this Vector3Nullable newValues, Vector3 overridden)
+        {
+            return new Vector3(newValues.X.HasValue ? newValues.X.Value : overridden.x,
+                               newValues.Y.HasValue ? newValues.Y.Value : overridden.y,
+                               newValues.Z.HasValue ? newValues.Z.Value : overridden.z);
+        }
 
         public static float convertSourceEngineToUnityRotation(this float sourceDegrees)
         {

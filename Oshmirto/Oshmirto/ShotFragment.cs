@@ -21,6 +21,19 @@ namespace Oshmirto
         [XmlAttribute("anchor")]
         public string Anchor { get; set; }
 
+        [XmlIgnore]
+        public float? Height { get; set; }
+
+        /// <summary>
+        /// exists for nullable parsing only.  use Height instead
+        /// </summary>
+        [XmlAttribute("height")]
+        public string HeightAsString
+        {
+            get { return (Height.HasValue) ? Height.ToString() : null; }
+            set { Height = !string.IsNullOrEmpty(value) ? float.Parse(value) : default(float?); }
+        }
+
         [XmlElement("angle")]
         public Angle Angle { get; set; }
 

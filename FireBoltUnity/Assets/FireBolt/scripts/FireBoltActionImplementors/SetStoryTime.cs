@@ -5,7 +5,7 @@ using System.Text;
 using UnityEngine;
 
 namespace Assets.scripts
-{
+{    
     public class SetStoryTime : IFireBoltAction
     {
         private float storyTimeOffset, previousStoryTimeOffset;

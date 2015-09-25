@@ -41,51 +41,21 @@ public class ElPresidente : MonoBehaviour {
 
     private CM.CinematicModel cinematicModel = null;
 
-    string storyPlanPath;
+    InputSet currentInputSet=null;
+    DateTime storyPlanLastReadTimeStamp = DateTime.Now;
     bool reloadStoryPlan = false;
-    string cameraPlanPath;
+    
+    DateTime cameraPlanLastReadTimeStamp = DateTime.Now;    
     bool reloadCameraPlan = false;
-    string cinematicModelPath;
+    
+    DateTime cinematicModelPlanLastReadTimeStamp = DateTime.Now;
     bool reloadCinematicModel = false;
-    string actorsAndAnimationsBundlePath;
+
+    DateTime actorsAndAnimationsBundleLastReadTimeStamp = DateTime.Now;
     bool reloadActorsAndAnimationsBundle = false;
-    string terrainBundlePath;
+
+    DateTime terrainBundleLastReadTimeStamp = DateTime.Now;
     bool reloadTerrainBundle = false;
-
-    void setStoryPlanPath(string path)
-    {
-        if (string.Compare(storyPlanPath, path) != 0)
-            reloadStoryPlan = true;
-        this.storyPlanPath = path;
-    }
-
-    void setCameraPlanPath(string path)
-    {
-        if (string.Compare(cameraPlanPath, path) != 0)
-            reloadCameraPlan = true;
-        this.cameraPlanPath = path;
-    }
-
-    void setCinematicModelPath(string path)
-    {
-        if (string.Compare(cinematicModelPath, path) != 0)
-            reloadCinematicModel = true;
-        this.cinematicModelPath= path;
-    }
-
-    void setActorsAndAnimationsBundlePath(string path)
-    {
-        if (string.Compare(actorsAndAnimationsBundlePath, path) != 0)
-            reloadActorsAndAnimationsBundle = true;
-        this.actorsAndAnimationsBundlePath = path;
-    }
-
-    void setTerrainBundlePath(string path)
-    {
-        if (string.Compare(terrainBundlePath, path) != 0)
-            reloadTerrainBundle = true;
-        this.terrainBundlePath = path;
-    }
 
     /// <summary>
     /// story time.  controlled by discourse actions
@@ -96,6 +66,9 @@ public class ElPresidente : MonoBehaviour {
     /// time as relates to playback scrubbing
     /// </summary>
     public static float currentDiscourseTime;
+
+    public float CurrentStoryTime { get { return currentStoryTime; } }
+    public float CurrentDiscourseTime { get { return currentDiscourseTime; } }
 
     void Start()
     {
@@ -108,32 +81,61 @@ public class ElPresidente : MonoBehaviour {
     /// <param name="a"></param>
     public void Init(float a)
     {
-        Init();
+        Init(null, true);
     }
 
-    /// <summary>
-    /// set paths for assets to use in firebolt and restart system with freshly loaded assets on next update.  all arguments optional.  
-    /// </summary>
-    /// <param name="storyPlanPath"></param>
-    /// <param name="cameraPlanPath"></param>
-    /// <param name="cinematicModelPath"></param>
-    /// <param name="actorsAndAnimationsBundlePath"></param>
-    /// <param name="terrainBundlePath">no terrain loading currently</param>
-    public void Init(string storyPlanPath = "storyPlans/defaultStory.xml", string cameraPlanPath = "cameraPlans/defaultCamera.xml", 
-                     string cinematicModelPath = "cinematicModels/defaultModel.xml", string actorsAndAnimationsBundlePath = "AssetBundles/actorsandanimations", 
-                     string terrainBundlePath = "AssetBundles/terrain")
-    {
-        setStoryPlanPath(storyPlanPath);
-        setCameraPlanPath(cameraPlanPath);
-        setCinematicModelPath(cinematicModelPath);
-        setActorsAndAnimationsBundlePath(actorsAndAnimationsBundlePath);
-        setTerrainBundlePath(terrainBundlePath);
+    //new class to hold specified input file paths.  
 
+    public void Init(InputSet newInputSet, bool forceFullReload=false)
+    {
+        //if we didn't get handed one, generate an input set with the default paths
+        if (newInputSet == null) 
+        {
+            newInputSet = new InputSet();
+        }
+
+        //don't have to do file modification timestamp compares.  just set all the load flags to reload everything
+        if (forceFullReload || currentInputSet == null)
+        {
+            reloadStoryPlan = true;
+            reloadCameraPlan = true;
+            reloadCinematicModel = true;
+            reloadActorsAndAnimationsBundle = true;
+            reloadTerrainBundle = true;
+        }
+        else //we actually should figure out what's changed so we can reload only those required inputs
+        {
+            reloadStoryPlan = requiresReload(currentInputSet.StoryPlanPath, newInputSet.StoryPlanPath, storyPlanLastReadTimeStamp);
+            reloadCameraPlan = requiresReload(currentInputSet.CameraPlanPath, newInputSet.CameraPlanPath, cameraPlanLastReadTimeStamp);
+            reloadCinematicModel = requiresReload(currentInputSet.CinematicModelPath, newInputSet.CinematicModelPath, cinematicModelPlanLastReadTimeStamp);
+            reloadActorsAndAnimationsBundle = requiresReload(currentInputSet.ActorsAndAnimationsBundlePath, newInputSet.ActorsAndAnimationsBundlePath, actorsAndAnimationsBundleLastReadTimeStamp);
+            reloadTerrainBundle = requiresReload(currentInputSet.TerrainBundlePath, newInputSet.TerrainBundlePath, terrainBundleLastReadTimeStamp);
+        }
 
         Destroy(GameObject.Find("InstantiatedObjects") as GameObject);
         if (reloadTerrainBundle) Destroy(GameObject.Find("Terrain") as GameObject);
         initialized = false;
         initTriggered = true;
+        currentInputSet = newInputSet;
+    }
+
+    private bool requiresReload(string oldPath, string newPath, DateTime lastRead)
+    {
+        if(string.Compare(oldPath, newPath)==0 && //same file
+           getFileLastModifiedTime(newPath) < lastRead)//file was last modified before the last time we read it.
+        {
+            return false;
+        }
+        return true;
+    }
+
+    private DateTime getFileLastModifiedTime(string path)
+    {
+        if (!File.Exists(path))
+        {
+            Debug.LogError(string.Format("file[{0}] cannot be found for FireBolt load. This will crash in a sec :)", path));            
+        }
+        return File.GetLastWriteTime(path);        
     }
 
     /// <summary>
@@ -142,31 +144,36 @@ public class ElPresidente : MonoBehaviour {
     /// </summary>
     private void init()
     {
-        currentDiscourseTime = 0;
-        currentStoryTime = 0;
-        executingActorActions = new FireBoltActionList(new ActionTypeComparer());
-        executingDiscourseActions = new FireBoltActionList(new ActionTypeComparer());
-        new GameObject("InstantiatedObjects").transform.SetParent((GameObject.Find("FireBolt") as GameObject).transform);
-
         if (reloadStoryPlan)
-            loadStructuredImpulsePlan(storyPlanPath);
+        {
+            loadStructuredImpulsePlan(currentInputSet.StoryPlanPath);
+            storyPlanLastReadTimeStamp = DateTime.Now;
+        }
 
-        if(reloadCinematicModel)
-            cinematicModel = CM.Parser.Parse(cinematicModelPath);
+        if (reloadCinematicModel)
+        {
+            cinematicModel = CM.Parser.Parse(currentInputSet.CinematicModelPath);
+            cinematicModelPlanLastReadTimeStamp = DateTime.Now;
+        }
 
-        if(actorsAndAnimations!=null && reloadActorsAndAnimationsBundle)
-            actorsAndAnimations.Unload(true);            
+        if (actorsAndAnimations != null && reloadActorsAndAnimationsBundle)
+            actorsAndAnimations.Unload(true);
+
 
         if (reloadActorsAndAnimationsBundle)
-            actorsAndAnimations = AssetBundle.CreateFromFile(actorsAndAnimationsBundlePath);
+        {
+            actorsAndAnimations = AssetBundle.CreateFromFile(currentInputSet.ActorsAndAnimationsBundlePath);
+            actorsAndAnimationsBundleLastReadTimeStamp = DateTime.Now;
+        }            
 
         if (terrain != null && reloadTerrainBundle)
             terrain.Unload(true);
 
         if (reloadTerrainBundle)
         {
-            terrain = AssetBundle.CreateFromFile(terrainBundlePath);
-            loadTerrain();
+            terrain = AssetBundle.CreateFromFile(currentInputSet.TerrainBundlePath);
+            terrainBundleLastReadTimeStamp = DateTime.Now;
+            instantiateTerrain();
         }  
 
         if (reloadStoryPlan || reloadActorsAndAnimationsBundle || reloadCinematicModel)
@@ -176,8 +183,18 @@ public class ElPresidente : MonoBehaviour {
 
         if (reloadStoryPlan || reloadCameraPlan)
         {            
-            discourseActionList = CameraActionFactory.CreateCameraActions(story, cameraPlanPath);
+            discourseActionList = CameraActionFactory.CreateCameraActions(story, currentInputSet.CameraPlanPath);
+            cameraPlanLastReadTimeStamp = DateTime.Now;
         }
+
+        currentDiscourseTime = 0;
+        currentStoryTime = 0;
+        actorActionList.NextActionIndex = 0;
+        discourseActionList.NextActionIndex = 0;
+
+        executingActorActions = new FireBoltActionList(new ActionTypeComparer());
+        executingDiscourseActions = new FireBoltActionList(new ActionTypeComparer());
+        new GameObject("InstantiatedObjects").transform.SetParent((GameObject.Find("FireBolt") as GameObject).transform);
 
         // Call the screenshot coroutine to create keyframe images for scrubbing.
         StartCoroutine(CreateScreenshots());
@@ -193,7 +210,7 @@ public class ElPresidente : MonoBehaviour {
         reloadTerrainBundle = false;
     }
 
-    private void loadTerrain()
+    private void instantiateTerrain()
     {
         GameObject go = (terrain.LoadAsset(cinematicModel.Terrain.TerrainFileName) as GameObject);
         var t = Instantiate(go)as GameObject;
@@ -259,16 +276,17 @@ public class ElPresidente : MonoBehaviour {
             init();
         else if (!initialized)
             return;
+
         currentStoryTime += Time.deltaTime * 1000;
         currentDiscourseTime += Time.deltaTime * 1000;
-        if(debugText != null)
+
+        if (debugText != null)
             debugText.text = currentDiscourseTime.ToString() + " : " + currentStoryTime.ToString();
         if (whereWeAt && currentDiscourseTime < discourseActionList.EndDiscourseTime)
             whereWeAt.value = currentDiscourseTime / discourseActionList.EndDiscourseTime;
-		myTime = currentStoryTime;  
+        myTime = currentStoryTime;
         logTicks();
 
-        
         updateFireBoltActions(actorActionList, executingActorActions, currentStoryTime);
         updateFireBoltActions(discourseActionList, executingDiscourseActions, currentDiscourseTime);
     }
@@ -328,7 +346,7 @@ public class ElPresidente : MonoBehaviour {
         int currentIndex = actions.NextActionIndex-1;//next action was pointed to...next action!
         actions.NextActionIndex = 0;
         while (actions.NextActionIndex < actions.Count &&
-               actions[actions.NextActionIndex].EndTick() < time) //this may orphan actions in the executing list until they get replayed and hit their stop time again.  seems like a leak, but a bounded one
+               actions[actions.NextActionIndex].EndTick() < time) 
         {
             actions.NextActionIndex++;
         }
@@ -338,15 +356,18 @@ public class ElPresidente : MonoBehaviour {
             actions[currentIndex].Undo();
             currentIndex--;
         }
-        Debug.Log ("rewind to " + actions.NextActionIndex + ": " + actions[actions.NextActionIndex]);
+        if (actions.Count > actions.NextActionIndex)
+            Debug.Log("rewind to " + actions.NextActionIndex + ": " + actions[actions.NextActionIndex]);
+        else
+            Debug.Log("rewind to action #" + actions.NextActionIndex);
     }
 
-    void fastForwardFireBoltActions(FireBoltActionList actions, float time, FireBoltActionList executingActions, float referenceTime)
+    void fastForwardFireBoltActions(FireBoltActionList actions, float targetTime, FireBoltActionList executingActions, float currentTime)
     {
         List<IFireBoltAction> removeList = new List<IFireBoltAction>();
         foreach (IFireBoltAction action in executingActions)
         {
-            if (actionComplete(action, referenceTime))
+            if (actionComplete(action, currentTime))
             {
                 action.Skip();
                 removeList.Add(action);
@@ -356,24 +377,19 @@ public class ElPresidente : MonoBehaviour {
         {
             executingActions.Remove(action);
         }
-        while (actions.NextActionIndex < actions.Count && actions[actions.NextActionIndex].StartTick() <= time) //TODO should probably encapsulate some more of this stuff in the list class
+        while (actions.NextActionIndex < actions.Count && actions[actions.NextActionIndex].StartTick() <= targetTime) //TODO should probably encapsulate some more of this stuff in the list class
         {
             IFireBoltAction action = actions[actions.NextActionIndex];
             actions.NextActionIndex++;
             if (action.Init())
             {
-                if (!actionComplete(action, referenceTime))
+                if (!actionComplete(action, currentTime))
                     executingActions.Add(action);
                 else
                     action.Skip();
             }
         }
     }
-
-
-
-    public float CurrentStoryTime { get { return currentStoryTime; } }
-    public float CurrentDiscourseTime { get { return currentDiscourseTime; } }
 
 	public void goToStoryTime(float time)
 	{
@@ -384,13 +400,11 @@ public class ElPresidente : MonoBehaviour {
         {
             currentStoryTime = time;
             rewindFireBoltActions(actorActionList, currentStoryTime);
-            //rewindFireBoltActions(cameraActionList);
         }
         else
         {
             currentStoryTime = time;
             fastForwardFireBoltActions(actorActionList, currentStoryTime, executingActorActions, currentStoryTime);
-            //fastForwardFireBoltActions(cameraActionList);
         }
 		currentStoryTime = time;
 	}
@@ -404,13 +418,11 @@ public class ElPresidente : MonoBehaviour {
         if (time < currentDiscourseTime)
         {
             currentDiscourseTime = time;
-            //rewindFireBoltActions(actorActionList);
             rewindFireBoltActions(discourseActionList, currentDiscourseTime);
         }
         else
         {
             currentDiscourseTime = time;
-            //fastForwardFireBoltActions(actorActionList);
             fastForwardFireBoltActions(discourseActionList, currentDiscourseTime, executingDiscourseActions, currentDiscourseTime);
         }
         currentDiscourseTime = time;

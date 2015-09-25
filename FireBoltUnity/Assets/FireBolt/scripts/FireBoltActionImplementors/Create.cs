@@ -51,13 +51,6 @@ namespace Assets.scripts
             {
                 model = ElPresidente.Instance.GetActiveAssetBundle().LoadAsset<GameObject>(modelName);
             }
-            //GameObject model = AssetDatabase.LoadAssetAtPath<GameObject>("Assets/Resources/Models/" + modelName);
-            //GameObject model = Resources.Load<GameObject>("Models/" + modelName);
-            //if (model == null)
-            //{
-            //    Debug.LogError(string.Format("could not find model[{0}] to create",modelName));
-            //    return false;
-            //}
 
             if (model == null)
             {
@@ -65,7 +58,7 @@ namespace Assets.scripts
                                              modelName, ElPresidente.Instance.GetActiveAssetBundle().name));
                 return false;
             }
-            actor = GameObject.Instantiate(model, position, Quaternion.identity) as GameObject;
+            actor = GameObject.Instantiate(model, position, model.transform.rotation) as GameObject;
             actor.name = actorName;
             actor.transform.SetParent((GameObject.Find("InstantiatedObjects") as GameObject).transform, true);
             return true;
