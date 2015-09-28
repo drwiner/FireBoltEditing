@@ -57,6 +57,8 @@ public class ElPresidente : MonoBehaviour {
     DateTime terrainBundleLastReadTimeStamp = DateTime.Now;
     bool reloadTerrainBundle = false;
 
+    bool generateKeyframes = true;
+
     /// <summary>
     /// story time.  controlled by discourse actions
     /// </summary>
@@ -84,10 +86,24 @@ public class ElPresidente : MonoBehaviour {
         Init(null, true);
     }
 
+    /// <summary>
+    /// re Initialize using default paths and only reloading files when 
+    /// they are updated
+    /// </summary>
+    /// <param name="generateKeyframes">toggles keyframe generation.  
+    /// Keyframe generation runs the entire story through and may take 
+    /// a large amount of time to initialize.</param>
+    public void Init(bool generateKeyframes)
+    {
+        Debug.Log(string.Format("reload keyframes[{0}]",generateKeyframes));
+        Init(null, false, generateKeyframes);
+    }
+
     //new class to hold specified input file paths.  
 
-    public void Init(InputSet newInputSet, bool forceFullReload=false)
+    public void Init(InputSet newInputSet, bool forceFullReload=false, bool generateKeyframes=true)
     {
+        this.generateKeyframes = generateKeyframes;
         //if we didn't get handed one, generate an input set with the default paths
         if (newInputSet == null) 
         {
@@ -196,8 +212,11 @@ public class ElPresidente : MonoBehaviour {
         executingDiscourseActions = new FireBoltActionList(new ActionTypeComparer());
         new GameObject("InstantiatedObjects").transform.SetParent((GameObject.Find("FireBolt") as GameObject).transform);
 
-        // Call the screenshot coroutine to create keyframe images for scrubbing.
-        StartCoroutine(CreateScreenshots());
+        if (generateKeyframes) 
+        {
+            // Call the screenshot coroutine to create keyframe images for scrubbing.
+            StartCoroutine(CreateScreenshots());
+        }       
 
         initialized = true;
         initNext = false;

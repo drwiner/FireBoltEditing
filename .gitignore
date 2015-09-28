@@ -13,7 +13,23 @@ FireBoltUnity/*.pidb
 FireBoltUnity/*.sln
 FireBoltUnity/*.unityproj
 FireBoltUnity/*.booproj
-.screens/*
+.screens/
+
+#===============================
+#AssetBundleBuilder Unity Project stuff
+#===============================
+AssetBundleBuilder/AssetBundles/
+AssetBundleBuilder/Temp/
+AssetBundleBuilder/Library/
+AssetBundleBuilder/ExportedObj/
+AssetBundleBuilder/obj/
+AssetBundleBuilder/*.svd
+AssetBundleBuilder/*.userprefs
+AssetBundleBuilder/*.csproj
+AssetBundleBuilder/*.pidb
+AssetBundleBuilder/*.sln
+AssetBundleBuilder/*.unityproj
+AssetBundleBuilder/*.booproj
 
 #==============================
 #Visual Studio Specific Things
