@@ -13,6 +13,7 @@ FireBoltUnity/*.pidb
 FireBoltUnity/*.sln
 FireBoltUnity/*.unityproj
 FireBoltUnity/*.booproj
+.screens/
 
 #==============================
 #Visual Studio Specific Things
