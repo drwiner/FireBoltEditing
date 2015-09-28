@@ -75,6 +75,10 @@ public class ElPresidente : MonoBehaviour {
     void Start()
     {
         Instance = this;
+        if (whereWeAt != null)
+        {
+            whereWeAt.gameObject.AddComponent<SliderManager>();
+        }
     }
 
     /// <summary>
@@ -104,6 +108,11 @@ public class ElPresidente : MonoBehaviour {
     public void Init(InputSet newInputSet, bool forceFullReload=false, bool generateKeyframes=true)
     {
         this.generateKeyframes = generateKeyframes;
+        if (whereWeAt == null) //if there is no slider to display them on, don't generate keyframes
+        {
+            this.generateKeyframes = false;
+        }
+
         //if we didn't get handed one, generate an input set with the default paths
         if (newInputSet == null) 
         {
