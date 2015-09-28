@@ -38,7 +38,7 @@ namespace Assets.scripts
 
         public bool Init()
         {
-            Debug.Log("init create");
+            Debug.Log(string.Format("init create model[{0}] for actor [{1}]",modelName, actorName));
             if (actor != null)
             {
                 actor.SetActive(true);
