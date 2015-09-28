@@ -331,8 +331,16 @@ public class ElPresidente : MonoBehaviour {
         }
     }
 
+    /// <summary>
+    /// appends and removes from the executing lists based on the time and the last action
+    /// appended from the full list of actions
+    /// </summary>
+    /// <param name="actions">action list of either story or discourse actions.  both will be update each frame</param>
+    /// <param name="executingActions">executing list for story or discourse actions.  should match first parameter</param>
+    /// <param name="referenceTime">current story or discourse time. also should match the lists</param>
     void updateFireBoltActions(FireBoltActionList actions, FireBoltActionList executingActions, float referenceTime)
     {
+        //stop things that should be finished now and remove them from the executing list
         List<IFireBoltAction> removeList = new List<IFireBoltAction>();
         foreach (IFireBoltAction action in executingActions)
         {
@@ -346,20 +354,22 @@ public class ElPresidente : MonoBehaviour {
         {
             executingActions.Remove(action);
         }
-        while (actions.NextActionIndex < actions.Count && actions[actions.NextActionIndex].StartTick() <= referenceTime) //TODO should probably encapsulate some more of this stuff in the list class
+
+        //go through the full action list until the next action shouldn't have started yet
+        while (actions.NextActionIndex < actions.Count && actions[actions.NextActionIndex].StartTick() <= referenceTime) 
         {
             IFireBoltAction action = actions[actions.NextActionIndex];
             actions.NextActionIndex++;
-            if (action.Init())
+            if (action.Init()) 
 			{
                 if (actionComplete(action, referenceTime))
-                    action.Skip();                
+                    action.Skip();                //if the new action should have already completed, run the skip on it
                 else
                     executingActions.Add(action);                     
 			}
         }
     }
-
+    
     void rewindFireBoltActions(FireBoltActionList actions, float time)
     {
         int currentIndex = actions.NextActionIndex-1;//next action was pointed to...next action!
@@ -396,7 +406,7 @@ public class ElPresidente : MonoBehaviour {
         {
             executingActions.Remove(action);
         }
-        while (actions.NextActionIndex < actions.Count && actions[actions.NextActionIndex].StartTick() <= targetTime) //TODO should probably encapsulate some more of this stuff in the list class
+        while (actions.NextActionIndex < actions.Count && actions[actions.NextActionIndex].StartTick() <= targetTime) 
         {
             IFireBoltAction action = actions[actions.NextActionIndex];
             actions.NextActionIndex++;
