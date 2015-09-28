@@ -1,11 +1,13 @@
 ﻿using UnityEngine;
 using System.Collections;
 using System.IO;
+using UnityEngine.UI;
+using UnityEngine.EventSystems;
 
 public class SliderManager : MonoBehaviour 
 {
-    // The slider UI object.
-    private UnityEngine.UI.Slider slider;
+    //slider we are putting thumbnail over
+    private Slider slider;
 
     // The slider's transform rectangle.
     private RectTransform sliderRect;
@@ -19,44 +21,73 @@ public class SliderManager : MonoBehaviour
     // An array containing keyframe images.
     private Texture2D[] images;
 
-    // Stores the El Presidente script.
-    private ElPresidente elPresidente;
-
     // Stores whether initialization has occurred.
     private bool hasInitialized;
+
+    //create a function type that we can attach to event listeners on the slider
+    public delegate void SliderEventDelegate(UnityEngine.EventSystems.BaseEventData baseEventData);
 
 	// Use this for initialization
 	void Start () 
     {
-        // Get the slider UI object from the slider game object.
-        slider = gameObject.GetComponent<UnityEngine.UI.Slider>();
+        //if we are here, then el presidente attached this component to a slider
+        slider = ElPresidente.Instance.whereWeAt;
 
-        // Get the slider's transform rectangle from the game object.
-        sliderRect = gameObject.GetComponent<RectTransform>();
+        registerSliderMouseEvents();
+
+        // Get the slider's transform rectangle.
+        sliderRect = slider.GetComponent<RectTransform>();
 
         // Set the thumbnail to be hidden on initialization.
         thumbnailEnabled = false;
 
-        // Find the thumbnail game object in the scene.
-        GameObject thumbGO = GameObject.Find("Thumbnail");
-
-        // Grab the thumbnail UI object from the game object.
-        thumb = thumbGO.GetComponent<UnityEngine.UI.RawImage>();
-
-        // Find the FireBolt game object.
-        GameObject fireBoltGO = GameObject.Find("FireBolt");
-
-        // Grab the El Presidente script from the FireBolt game object.
-        elPresidente = fireBoltGO.GetComponent<ElPresidente>();
+        //create a thumbnail to use for displaying keyframes and staple it onto the canvas
+        thumb = (GameObject.Instantiate(Resources.Load("Thumbnail")) as GameObject).GetComponent<UnityEngine.UI.RawImage>();
+        var canvas = GameObject.Find("Canvas");
+        thumb.transform.parent = canvas.transform;
 
         // Remember that initialization has not occurred.
         hasInitialized = false;
 	}
-	
+
+    //dynamically assign slider mouse events so we can avoid requiring a bunch more stuff in the hierarchy
+    //when someone imports the firebolt package and doesn't want to use sliders or keyframes
+    private void registerSliderMouseEvents()
+    {
+        //enter
+        EventTrigger eventTrigger = slider.GetComponent<EventTrigger>();
+        EventTrigger.Entry pointerEnterEntry = new EventTrigger.Entry();
+        pointerEnterEntry.eventID = EventTriggerType.PointerEnter;
+        pointerEnterEntry.callback = new EventTrigger.TriggerEvent();
+        pointerEnterEntry.callback.AddListener(new UnityEngine.Events.UnityAction<BaseEventData>(ThumbnailOn));
+        eventTrigger.triggers.Add(pointerEnterEntry);
+
+        //exit
+        EventTrigger.Entry pointerExitEntry = new EventTrigger.Entry();
+        pointerExitEntry.eventID = EventTriggerType.PointerExit;
+        pointerExitEntry.callback = new EventTrigger.TriggerEvent();
+        pointerExitEntry.callback.AddListener(new UnityEngine.Events.UnityAction<BaseEventData>(ThumbnailOff));
+        eventTrigger.triggers.Add(pointerExitEntry);
+
+        //drag
+        EventTrigger.Entry dragEntry = new EventTrigger.Entry();
+        dragEntry.eventID = EventTriggerType.Drag;
+        dragEntry.callback = new EventTrigger.TriggerEvent();
+        dragEntry.callback.AddListener(new UnityEngine.Events.UnityAction<BaseEventData>(ThumbnailOn));
+        eventTrigger.triggers.Add(dragEntry);
+
+        //end drag
+        EventTrigger.Entry endDragEntry = new EventTrigger.Entry();
+        endDragEntry.eventID = EventTriggerType.EndDrag;
+        endDragEntry.callback = new EventTrigger.TriggerEvent();
+        endDragEntry.callback.AddListener(new UnityEngine.Events.UnityAction<BaseEventData>(ThumbnailOff));
+        eventTrigger.triggers.Add(endDragEntry);
+    }
+
 	void Update ()
     {
         // If keyframes have not been loaded and El Presidente has initialized the keyframes...
-        if (!hasInitialized && elPresidente.KeyframesGenerated)
+        if (!hasInitialized && ElPresidente.Instance.KeyframesGenerated)
         {
             // Load the keyframe images from file.
             loadImages();
@@ -102,7 +133,7 @@ public class SliderManager : MonoBehaviour
     /// <summary>
     /// Toggles the keyframe thumbnail on.
     /// </summary>
-    public void ThumbnailOn ()
+    public void ThumbnailOn(BaseEventData baseEventData)
     {
         // Remember that the thumbnail is toggled on.
         thumbnailEnabled = true;
@@ -114,7 +145,7 @@ public class SliderManager : MonoBehaviour
     /// <summary>
     /// Toggles the keyframe thumbnail off.
     /// </summary>
-    public void ThumbnailOff ()
+    public void ThumbnailOff(BaseEventData baseEventData)
     {
         // Remember that the thumbnail is toggled off.
         thumbnailEnabled = false;
