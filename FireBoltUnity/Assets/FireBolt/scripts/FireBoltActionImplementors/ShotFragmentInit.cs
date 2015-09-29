@@ -116,7 +116,7 @@ namespace Assets.scripts
                     //if the model does not directly have a renderer, accumulate from child bounds
                     else
                     {
-                        targetBounds = new Bounds();
+                        targetBounds = new Bounds(framingTarget.transform.position, Vector3.zero);
                         foreach (var renderer in framingTarget.GetComponentsInChildren<Renderer>())
                         {
                             targetBounds.Encapsulate(renderer.bounds);
@@ -167,22 +167,25 @@ namespace Assets.scripts
                             Vector3 bMax = nodalCam.WorldToViewportPoint(targetBounds.max);
                             Vector3 bMin = nodalCam.WorldToViewportPoint(targetBounds.min);
 
+                            float FullMinPercent = 0.95f;
+                            float FullMaxPercent = 1.0f;
+                            float FovStepSize = 0.5f;
                             //compare with static percentages for different framings
                             switch (framings[0].FramingType)
                             {
                                 case FramingType.Full:
-                                    if (bMax.y - bMin.y > 0.85f && bMax.y - bMin.y < 1.0f)
+                                    if (bMax.y - bMin.y > FullMinPercent && bMax.y - bMin.y < FullMaxPercent)
                                     {
                                         targetFov = nodalCam.fieldOfView;
                                         
                                     }
-                                    else if (bMax.y - bMin.y > 1.0f)
+                                    else if (bMax.y - bMin.y > FullMaxPercent)
                                     {
-                                        nodalCam.fieldOfView += 2.5f;//consider making step size a function of current size to increase granularity at low fov
+                                        nodalCam.fieldOfView += FovStepSize;//consider making step size a function of current size to increase granularity at low fov
                                     }
-                                    else if (bMax.y - bMin.y < 0.85f)
+                                    else if (bMax.y - bMin.y < FullMinPercent)
                                     {
-                                        nodalCam.fieldOfView -= 2.5f;
+                                        nodalCam.fieldOfView -= FovStepSize;
                                     }
                                     break;
                                 default:
