@@ -33,6 +33,8 @@ public class ElPresidente : MonoBehaviour {
     private bool initNext = false;
     private bool initTriggered = false;
 
+    public List<ProCamsLensDataTable.FOVData> lensFovData;
+
     private bool keyframesGenerated = false;
     public bool KeyframesGenerated
     {
@@ -79,8 +81,31 @@ public class ElPresidente : MonoBehaviour {
         {
             whereWeAt.gameObject.AddComponent<SliderManager>();
         }
+        ProCamsLensDataTable.Instance.LoadData();
+        lensFovData = ProCamsLensDataTable.Instance.GetFilmFormat("35mm 16:9 Aperture (1.78:1)").GetLensKitData(0)._fovDataset;
     }
 
+    /// <summary>
+    /// look up tightest lens for loaded kit that has a larger vertical fov than requested
+    /// this way we don't lose anything that was in the frame...though it's not as precise
+    /// as we had wanted.
+    /// </summary>
+    /// <param name="targetVerticalFov">vertical fov calculated to frame the target</param>
+    /// <returns>lens kit index to apply to cameraBody</returns>
+    public int GetLensIndex(float targetVerticalFov)
+    {
+        int lensIndex = 0;
+        //iterates over the entire array of lenses always.  it has 10 elements, so it doesn't make much difference
+        for (int i = 0; i < lensFovData.Count; i++ )
+        {
+            if (lensFovData[i]._unityVFOV > targetVerticalFov)
+            {
+                lensIndex = i;
+            }
+        }
+        return lensIndex;
+    }
+    
     /// <summary>
     /// wrapper for default args Init to use from UI button as default args methods are not visible in UI click event assignment in inspector
     /// </summary>

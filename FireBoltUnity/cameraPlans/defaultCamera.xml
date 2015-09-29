@@ -3,14 +3,14 @@
   <blocks>
     <block storyTime="0">
     <shotFragments>
-        <shotFragment anchor="0,-5"  duration="15000" focus="Tower" f-stop ="1.4" lens ="25mm" shake ="0">
+        <shotFragment anchor="0,-5"  duration="15000" focus="Pudge" f-stop ="1.4" shake ="0">
           <!--height="5"-->
-          <angle angleSetting="High" target="Skywrath Mage"/>
+          <!--<angle angleSetting="High" target="Skywrath Mage"/>-->
           <framings>
             <framing framingType="Full" framingTarget="Pudge"/>
           </framings>
           <movements>
-            <movement type="Focus" directive="With" subject="Pudge"/>
+            <!--<movement type="Focus" directive="With" subject="Pudge"/>-->
           </movements>
         </shotFragment>
       </shotFragments>

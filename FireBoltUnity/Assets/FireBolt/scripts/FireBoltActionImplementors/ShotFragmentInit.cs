@@ -84,14 +84,16 @@ namespace Assets.scripts
 
             //set lens 
             ushort tempLens;
-            if(CameraActionFactory.lenses.TryGetValue(lensName, out tempLens))
+            if(!string.IsNullOrEmpty(lensName) && 
+               CameraActionFactory.lenses.TryGetValue(lensName, out tempLens))
             {
                 tempLensIndex = tempLens;
             }
 
             //set F Stop
             ushort tempFStop;
-            if(CameraActionFactory.fStops.TryGetValue(fStopName, out tempFStop))
+            if(!string.IsNullOrEmpty(fStopName) &&
+               CameraActionFactory.fStops.TryGetValue(fStopName, out tempFStop))
             {
                 tempFStopIndex = tempFStop;
             }
@@ -103,13 +105,98 @@ namespace Assets.scripts
                 framingTarget = GameObject.Find(framings[0].FramingTarget) as GameObject;
                 if (framingTarget != null)
                 {
+                    //calculate a bounding box for target
+                    Bounds targetBounds; 
+                    var targetRenderer = framingTarget.GetComponent<Renderer>();
+                    
+                    if(targetRenderer!=null)
+                    {
+                        targetBounds = targetRenderer.bounds;
+                    }
+                    //if the model does not directly have a renderer, accumulate from child bounds
+                    else
+                    {
+                        targetBounds = new Bounds();
+                        foreach (var renderer in framingTarget.GetComponentsInChildren<Renderer>())
+                        {
+                            targetBounds.Encapsulate(renderer.bounds);
+                        }
+                        //add some debugging box for the area we think we are framing
+                        Vector3 center = targetBounds.center;
+                        Vector3 extents = targetBounds.extents;
+                        Vector3 [] corners = new Vector3[8];
+                        //top face
+                        corners[0] = new Vector3(center.x + extents.x, center.y + extents.y, center.z + extents.z);
+                        corners[1] = new Vector3(center.x - extents.x, center.y + extents.y, center.z + extents.z);
+                        corners[2] = new Vector3(center.x + extents.x, center.y + extents.y, center.z - extents.z);
+                        corners[3] = new Vector3(center.x - extents.x, center.y + extents.y, center.z - extents.z);
+                        //bottom face
+                        corners[4] = new Vector3(center.x + extents.x, center.y - extents.y, center.z + extents.z);
+                        corners[5] = new Vector3(center.x - extents.x, center.y - extents.y, center.z + extents.z);
+                        corners[6] = new Vector3(center.x + extents.x, center.y - extents.y, center.z - extents.z);
+                        corners[7] = new Vector3(center.x - extents.x, center.y - extents.y, center.z - extents.z);
+                        //vertical lines
+                        for (int i = 0; i < 8; i++)
+                        {
+                            for (int j = 0; j < 8; j++)
+                            {
+                                if (i == j) continue;
+                                Debug.DrawLine(corners[i], corners[j], Color.cyan, 150);
+                                //shows that we are finding a volume for the actor before he is positioned correctly.  
+                                //we so we frame for pudge lying down :(
+                            }
+                        }
+                    }
+
+                    Camera nodalCam = Camera.FindObjectOfType<Camera>();
+                                        
                     if (tempLensIndex.HasValue && tempCameraPosition.X.HasValue && tempCameraPosition.Z.HasValue) 
                     {
                         //case is here for completeness.  rotation needs to be done for all combinations of lens and anchor specification, so it goes after all the conditionals
                     }
                     else if (!tempLensIndex.HasValue && tempCameraPosition.X.HasValue && tempCameraPosition.Z.HasValue)//direction still doesn't matter since we can't move in the x,z plane
                     {
+                        //naively guessing and checking
+                        Quaternion savedCameraRotation = nodalCam.transform.rotation;
+                        //point the camera at the thing
+                        nodalCam.transform.rotation = Quaternion.LookRotation(targetBounds.center - nodalCam.transform.position);
+                        float targetFov = 0;
+                        while (targetFov < float.Epsilon)
+                        {                            
+                            //find where on the screen the extents are.  using viewport space so this will be in %. z is world units away from camera
+                            Vector3 bMax = nodalCam.WorldToViewportPoint(targetBounds.max);
+                            Vector3 bMin = nodalCam.WorldToViewportPoint(targetBounds.min);
 
+                            //compare with static percentages for different framings
+                            switch (framings[0].FramingType)
+                            {
+                                case FramingType.Full:
+                                    if (bMax.y - bMin.y > 0.85f && bMax.y - bMin.y < 1.0f)
+                                    {
+                                        targetFov = nodalCam.fieldOfView;
+                                        
+                                    }
+                                    else if (bMax.y - bMin.y > 1.0f)
+                                    {
+                                        nodalCam.fieldOfView += 2.5f;//consider making step size a function of current size to increase granularity at low fov
+                                    }
+                                    else if (bMax.y - bMin.y < 0.85f)
+                                    {
+                                        nodalCam.fieldOfView -= 2.5f;
+                                    }
+                                    break;
+                                default:
+                                    break;
+                            }
+                            //force matrix recalculations on the camera after adjusting fov
+                            nodalCam.ResetProjectionMatrix();
+                            nodalCam.ResetWorldToCameraMatrix();                            
+                            //raycast to ensure visibility.  don't have to if we were handed the camera position
+                            //if failed then try somewhere else                            
+                        }
+                        //reset camera position...we should only be moving the rig
+                        nodalCam.transform.rotation = savedCameraRotation;
+                        tempLensIndex = (ushort)ElPresidente.Instance.GetLensIndex(targetFov);
                     }
                     else if (tempLensIndex.HasValue && //direction matters here.  
                         (!tempCameraPosition.X.HasValue || !tempCameraPosition.Z.HasValue))//also assuming we get x,z in a pair.  if only one is provided, it is invalid and will be ignored

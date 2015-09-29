@@ -13,9 +13,6 @@ namespace Oshmirto
 
         public ShotFragment()
         {
-            Lens = "35mm";
-            FStop = "22";
-            Shake = 0f;
         }
 
         [XmlAttribute("anchor")]
