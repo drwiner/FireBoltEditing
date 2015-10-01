@@ -106,47 +106,10 @@ namespace Assets.scripts
                 if (framingTarget != null)
                 {
                     //calculate a bounding box for target
-                    Bounds targetBounds; 
-                    var targetRenderer = framingTarget.GetComponent<Renderer>();
-                    
-                    if(targetRenderer!=null)
-                    {
-                        targetBounds = targetRenderer.bounds;
-                    }
-                    //if the model does not directly have a renderer, accumulate from child bounds
-                    else
-                    {
-                        targetBounds = new Bounds(framingTarget.transform.position, Vector3.zero);
-                        foreach (var renderer in framingTarget.GetComponentsInChildren<Renderer>())
-                        {
-                            targetBounds.Encapsulate(renderer.bounds);
-                        }
-                        //add some debugging box for the area we think we are framing
-                        Vector3 center = targetBounds.center;
-                        Vector3 extents = targetBounds.extents;
-                        Vector3 [] corners = new Vector3[8];
-                        //top face
-                        corners[0] = new Vector3(center.x + extents.x, center.y + extents.y, center.z + extents.z);
-                        corners[1] = new Vector3(center.x - extents.x, center.y + extents.y, center.z + extents.z);
-                        corners[2] = new Vector3(center.x + extents.x, center.y + extents.y, center.z - extents.z);
-                        corners[3] = new Vector3(center.x - extents.x, center.y + extents.y, center.z - extents.z);
-                        //bottom face
-                        corners[4] = new Vector3(center.x + extents.x, center.y - extents.y, center.z + extents.z);
-                        corners[5] = new Vector3(center.x - extents.x, center.y - extents.y, center.z + extents.z);
-                        corners[6] = new Vector3(center.x + extents.x, center.y - extents.y, center.z - extents.z);
-                        corners[7] = new Vector3(center.x - extents.x, center.y - extents.y, center.z - extents.z);
-                        //vertical lines
-                        for (int i = 0; i < 8; i++)
-                        {
-                            for (int j = 0; j < 8; j++)
-                            {
-                                if (i == j) continue;
-                                Debug.DrawLine(corners[i], corners[j], Color.cyan, 150);
-                                //shows that we are finding a volume for the actor before he is positioned correctly.  
-                                //we so we frame for pudge lying down :(
-                            }
-                        }
-                    }
+                    Bounds targetBounds = getBounds(framingTarget);
+                    targetBounds.BuildDebugBox();
+
+                    FramingParameters fp = FramingParameters.FramingTable[framings[0].FramingType];
 
                     Camera nodalCam = Camera.FindObjectOfType<Camera>();
                                         
@@ -161,50 +124,72 @@ namespace Assets.scripts
                         //point the camera at the thing
                         nodalCam.transform.rotation = Quaternion.LookRotation(targetBounds.center - nodalCam.transform.position);
                         float targetFov = 0;
-                        while (targetFov < float.Epsilon)
+                        //need to keep from stepping up and down over some boundary
+                        bool incremented =false;
+                        bool decremented = false;
+                        while (targetFov < float.Epsilon && !(incremented && decremented))  //if we haven't set a value and we haven't stepped both up and down.  
                         {                            
                             //find where on the screen the extents are.  using viewport space so this will be in %. z is world units away from camera
                             Vector3 bMax = nodalCam.WorldToViewportPoint(targetBounds.max);
                             Vector3 bMin = nodalCam.WorldToViewportPoint(targetBounds.min);
 
-                            float FullMinPercent = 0.95f;
-                            float FullMaxPercent = 1.0f;
-                            float FovStepSize = 0.5f;
+                            float FovStepSize = 2.5f;//consider making step size a function of current size to increase granularity at low fov.  2.5 is big enough to jump 100-180 oddly
                             //compare with static percentages for different framings
-                            switch (framings[0].FramingType)
+
+                            
+                            if (bMax.y - bMin.y > fp.MaxPercent && bMax.y - bMin.y < fp.MinPercent)
                             {
-                                case FramingType.Full:
-                                    if (bMax.y - bMin.y > FullMinPercent && bMax.y - bMin.y < FullMaxPercent)
-                                    {
-                                        targetFov = nodalCam.fieldOfView;
-                                        
-                                    }
-                                    else if (bMax.y - bMin.y > FullMaxPercent)
-                                    {
-                                        nodalCam.fieldOfView += FovStepSize;//consider making step size a function of current size to increase granularity at low fov
-                                    }
-                                    else if (bMax.y - bMin.y < FullMinPercent)
-                                    {
-                                        nodalCam.fieldOfView -= FovStepSize;
-                                    }
-                                    break;
-                                default:
-                                    break;
+                                break;//we found our answer in nodalCamera.fov
                             }
+                            else if (bMax.y - bMin.y < fp.MinPercent)
+                            {
+                                nodalCam.fieldOfView -= FovStepSize;
+                                decremented = true;
+                            }
+                            else //(bMax.y - bMin.y > fp.MaxPercent)
+                            {
+                                nodalCam.fieldOfView += FovStepSize;
+                                incremented = true;
+                            }
+
                             //force matrix recalculations on the camera after adjusting fov
                             nodalCam.ResetProjectionMatrix();
-                            nodalCam.ResetWorldToCameraMatrix();                            
+                            nodalCam.ResetWorldToCameraMatrix();
                             //raycast to ensure visibility.  don't have to if we were handed the camera position
                             //if failed then try somewhere else                            
                         }
                         //reset camera position...we should only be moving the rig
+                        targetFov = nodalCam.fieldOfView;
                         nodalCam.transform.rotation = savedCameraRotation;
                         tempLensIndex = (ushort)ElPresidente.Instance.GetLensIndex(targetFov);
                     }
                     else if (tempLensIndex.HasValue && //direction matters here.  
                         (!tempCameraPosition.X.HasValue || !tempCameraPosition.Z.HasValue))//also assuming we get x,z in a pair.  if only one is provided, it is invalid and will be ignored
                     {
+                        //screen space horizontal position of center of targetBounds.  we define this as an objective
+                        float bcxp = 1 / 3;
+                        //negated camera.transform.position.x.  this is half our answer
+                        float wcx;
+                        //negated camera.transform.position.y. this is given as height or calculated based on supplied angle specification
+                        float wcy = -tempCameraPosition.Y.Value;  //TODO does not deal with angles or default values yet
+                        //negated camera.transform.position.z. this is the other half of the answer
+                        float wcz;
+                        //target percent height.  actor as percentage of screen height
+                        float tph = fp.TargetPercent;
+                        //aspect ratio
+                        float ar = 16f / 9f;
+                        //alpha based on given lens
+                        float vFov = ElPresidente.Instance.lensFovData[tempLensIndex.Value]._unityVFOV * Mathf.Deg2Rad;
 
+                        wcz = ((wcy + 1) / (tph * Mathf.Tan(vFov / 2))) * ((targetBounds.max.y / targetBounds.max.z) - (targetBounds.min.y / targetBounds.min.z)) + 1;
+
+                        wcx = (bcxp / (targetBounds.center.z * targetBounds.center.x * ar * Mathf.Tan(vFov / 2) * wcz)) - 1;
+
+                        Vector3 calculatedPosition = new Vector3(-wcx, -wcy, -wcz); //this position is always with the camera having no rotation.  
+                        //we can further use it to derive a distance to the subject aka a radius of the circle that will give an appropriate framing
+
+                        tempCameraPosition.X = -wcx;
+                        tempCameraPosition.Z = -wcz;
                     }
                     else //we are calculating everything by framing and direction.  this is going to get a little long.
                     {
@@ -267,6 +252,26 @@ namespace Assets.scripts
             return true;
         }
 
+        private Bounds getBounds(GameObject framingTarget)
+        {
+            Bounds targetBounds;
+            var targetRenderer = framingTarget.GetComponent<Renderer>();
+
+            if (targetRenderer != null)
+            {
+                targetBounds = targetRenderer.bounds;
+            }
+            //if the model does not directly have a renderer, accumulate from child bounds
+            else
+            {
+                targetBounds = new Bounds(framingTarget.transform.position, Vector3.zero);
+                foreach (var renderer in framingTarget.GetComponentsInChildren<Renderer>())
+                {
+                    targetBounds.Encapsulate(renderer.bounds);
+                }
+            }
+            return targetBounds;
+        }
 
         /// <summary>
         /// Given a shot angle, finds the distance to travel from the target's baseline y position.
