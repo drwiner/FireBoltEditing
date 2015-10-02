@@ -166,30 +166,17 @@ namespace Assets.scripts
                     else if (tempLensIndex.HasValue && //direction matters here.  
                         (!tempCameraPosition.X.HasValue || !tempCameraPosition.Z.HasValue))//also assuming we get x,z in a pair.  if only one is provided, it is invalid and will be ignored
                     {
-                        //screen space horizontal position of center of targetBounds.  we define this as an objective
-                        float bcxp = 1 / 3;
-                        //negated camera.transform.position.x.  this is half our answer
-                        float wcx;
-                        //negated camera.transform.position.y. this is given as height or calculated based on supplied angle specification
-                        float wcy = -tempCameraPosition.Y.Value;  //TODO does not deal with angles or default values yet
-                        //negated camera.transform.position.z. this is the other half of the answer
-                        float wcz;
-                        //target percent height.  actor as percentage of screen height
-                        float tph = fp.TargetPercent;
-                        //aspect ratio
-                        float ar = 16f / 9f;
-                        //alpha based on given lens
+                        //converting to radians when we lookup so we don't have to worry about it later
                         float vFov = ElPresidente.Instance.lensFovData[tempLensIndex.Value]._unityVFOV * Mathf.Deg2Rad;
 
-                        wcz = ((wcy + 1) / (tph * Mathf.Tan(vFov / 2))) * ((targetBounds.max.y / targetBounds.max.z) - (targetBounds.min.y / targetBounds.min.z)) + 1;
+                        float h = (1/fp.TargetPercent) * (targetBounds.max.y - targetBounds.min.y)/2;
 
-                        wcx = (bcxp / (targetBounds.center.z * targetBounds.center.x * ar * Mathf.Tan(vFov / 2) * wcz)) - 1;
-
-                        Vector3 calculatedPosition = new Vector3(-wcx, -wcy, -wcz); //this position is always with the camera having no rotation.  
-                        //we can further use it to derive a distance to the subject aka a radius of the circle that will give an appropriate framing
-
-                        tempCameraPosition.X = -wcx;
-                        tempCameraPosition.Z = -wcz;
+                        float distance = h / Mathf.Tan(vFov / 2);
+                        tempCameraPosition.X = targetBounds.center.x;
+                        tempCameraPosition.Z = targetBounds.center.z-distance;
+                        //use facing to determine direction
+                        //put camera somwhere on the r=distance circle where facing is respected
+                        //raycast to check for LoS
                     }
                     else //we are calculating everything by framing and direction.  this is going to get a little long.
                     {
@@ -217,9 +204,10 @@ namespace Assets.scripts
                 // Check if the target was found in the scene.
                 if (angleTarget != null)
                 {
+                    Bounds targetBounds = getBounds(angleTarget);
                     if (!tempCameraPosition.Y.HasValue)//only allow angle to adjust height if it is not set manually
                     {
-                        tempCameraPosition.Y = solveForYPosition(30f, tempCameraPosition.Merge(previousCameraPosition), angleTarget.transform.position, cameraAngle.AngleSetting);
+                        tempCameraPosition.Y = solveForYPosition(30f, tempCameraPosition.Merge(previousCameraPosition), targetBounds.center, cameraAngle.AngleSetting); //center is not best, but it's better than feet
                     }
                     //choosing only to update x axis rotation if angle is specified.  this means that some fragments where the camera was previously tilted
                     //may fail to show the actor if the fragment only specifies a framing.  we could make angle mandatory...
