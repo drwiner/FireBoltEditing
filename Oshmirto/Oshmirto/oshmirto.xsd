@@ -66,6 +66,14 @@
       <xs:enumeration value="Low" />
     </xs:restriction>
   </xs:simpleType>
+  <xs:simpleType name="Heading">
+    <xs:restriction base="xs:string">
+      <xs:enumeration value="Toward"/>
+      <xs:enumeration value="Away" />
+      <xs:enumeration value="Right" />
+      <xs:enumeration value="Left"/>
+    </xs:restriction>    
+  </xs:simpleType>
   
   
   <xs:complexType name="CameraPlan">
@@ -95,6 +103,7 @@
       <xs:element minOccurs="1" maxOccurs="1" name="framings" type="ArrayOfFraming" />
       <xs:element minOccurs="1" maxOccurs="1" name="movements" type="ArrayOfCameraMovement" />
       <xs:element minOccurs="0" maxOccurs="1" name="angle" type="Angle"/>
+      <xs:element minOccurs="0" maxOccurs="1" name="direction" type="Direction"/>
     </xs:all>
     <xs:attribute name="anchor" type="xs:string" />
     <xs:attribute name="height" type="xs:string" />
@@ -114,6 +123,11 @@
     <xs:attribute name="framingTarget" type="xs:string" use="required"/>
   </xs:complexType>
 
+  <xs:complexType name="Direction">
+    <xs:attribute name="heading" type="Heading" use="required"/>
+    <xs:attribute name="target" type="xs:string" use ="required"/>
+  </xs:complexType>
+  
   <xs:complexType name="Angle">
     <xs:attribute name="target" type="xs:string" use="required" />    
     <xs:attribute name="angleSetting" type="angleSetting" use="required"/>

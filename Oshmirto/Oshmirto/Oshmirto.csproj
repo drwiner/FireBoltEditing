@@ -42,6 +42,7 @@
     <Compile Include="Block.cs" />
     <Compile Include="CameraMovement.cs" />
     <Compile Include="CameraPlan.cs" />
+    <Compile Include="Direction.cs" />
     <Compile Include="Framing.cs" />
     <Compile Include="ShotFragment.cs" />
     <Compile Include="Parser.cs" />

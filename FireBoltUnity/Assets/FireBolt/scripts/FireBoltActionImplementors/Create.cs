@@ -61,7 +61,34 @@ namespace Assets.scripts
             actor = GameObject.Instantiate(model, position, model.transform.rotation) as GameObject;
             actor.name = actorName;
             actor.transform.SetParent((GameObject.Find("InstantiatedObjects") as GameObject).transform, true);
+
+            //add a collider so we can raycast against this thing
+            if (actor.GetComponent<Collider>() == null)
+            {
+                actor.AddComponent<BoxCollider>().bounds.Encapsulate(getBounds(actor));
+            }
             return true;
+        }
+
+        private Bounds getBounds(GameObject gameObject)
+        {
+            Bounds bounds;
+            var renderer = gameObject.GetComponent<Renderer>();
+
+            if (renderer != null)
+            {
+                bounds = renderer.bounds;
+            }
+            //if the model does not directly have a renderer, accumulate from child bounds
+            else
+            {
+                bounds = new Bounds(gameObject.transform.position, Vector3.zero);
+                foreach (var r in gameObject.GetComponentsInChildren<Renderer>())
+                {
+                    bounds.Encapsulate(r.bounds);
+                }
+            }
+            return bounds;
         }
 
 		public void Undo()

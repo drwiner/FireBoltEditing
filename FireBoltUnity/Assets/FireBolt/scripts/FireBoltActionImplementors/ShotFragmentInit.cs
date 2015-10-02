@@ -20,6 +20,7 @@ namespace Assets.scripts
         private string lensName;
         private string fStopName;
         private List<Framing> framings;
+        private Oshmirto.Direction direction;
         private Oshmirto.Angle cameraAngle;
         private string focusTarget;
 
@@ -46,7 +47,8 @@ namespace Assets.scripts
         float newfocusDistance;
 
         public ShotFragmentInit(float startTick, float endTick, string cameraName, string anchor, float? height, 
-                                string lensName, string fStopName, List<Framing> framings, Oshmirto.Angle cameraAngle, string focusTarget)
+                                string lensName, string fStopName, List<Framing> framings, Oshmirto.Direction direction,
+                                Oshmirto.Angle cameraAngle, string focusTarget)
         {
             this.startTick = startTick;
             this.endTick = endTick;//used in querying for direction over the shot.  not in setting end of this init action
@@ -56,6 +58,7 @@ namespace Assets.scripts
             this.lensName = lensName;
             this.fStopName = fStopName;
             this.framings = framings;
+            this.direction = direction;
             this.cameraAngle = cameraAngle;
             this.focusTarget = focusTarget;
         }
@@ -105,8 +108,8 @@ namespace Assets.scripts
                 framingTarget = GameObject.Find(framings[0].FramingTarget) as GameObject;
                 if (framingTarget != null)
                 {
-                    //calculate a bounding box for target
-                    Bounds targetBounds = getBounds(framingTarget);
+                    
+                    Bounds targetBounds = framingTarget.GetComponent<BoxCollider>().bounds;                                        
                     targetBounds.BuildDebugBox();
 
                     FramingParameters fp = FramingParameters.FramingTable[framings[0].FramingType];
@@ -134,9 +137,7 @@ namespace Assets.scripts
                             Vector3 bMin = nodalCam.WorldToViewportPoint(targetBounds.min);
 
                             float FovStepSize = 2.5f;//consider making step size a function of current size to increase granularity at low fov.  2.5 is big enough to jump 100-180 oddly
-                            //compare with static percentages for different framings
-
-                            
+                           
                             if (bMax.y - bMin.y > fp.MaxPercent && bMax.y - bMin.y < fp.MinPercent)
                             {
                                 break;//we found our answer in nodalCamera.fov
@@ -155,8 +156,6 @@ namespace Assets.scripts
                             //force matrix recalculations on the camera after adjusting fov
                             nodalCam.ResetProjectionMatrix();
                             nodalCam.ResetWorldToCameraMatrix();
-                            //raycast to ensure visibility.  don't have to if we were handed the camera position
-                            //if failed then try somewhere else                            
                         }
                         //reset camera position...we should only be moving the rig
                         targetFov = nodalCam.fieldOfView;
@@ -169,14 +168,52 @@ namespace Assets.scripts
                         //converting to radians when we lookup so we don't have to worry about it later
                         float vFov = ElPresidente.Instance.lensFovData[tempLensIndex.Value]._unityVFOV * Mathf.Deg2Rad;
 
-                        float h = (1/fp.TargetPercent) * (targetBounds.max.y - targetBounds.min.y)/2;
+                        float h = (1/fp.TargetPercent) * (targetBounds.max.y - targetBounds.min.y);
 
-                        float distance = h / Mathf.Tan(vFov / 2);
-                        tempCameraPosition.X = targetBounds.center.x;
-                        tempCameraPosition.Z = targetBounds.center.z-distance;
+                        float distanceToCamera = h / Mathf.Tan(vFov / 2);
+
                         //use facing to determine direction
-                        //put camera somwhere on the r=distance circle where facing is respected
-                        //raycast to check for LoS
+                        Vector2 subjectToCamera = getIdealCameraPlacementDirection(framingTarget);
+
+                        bool searchSign = true;
+                        float searchStepSize = 5f * Mathf.Deg2Rad;
+                        ushort searchIterations = 0;                        
+                        bool subjectVisible = false;
+                        while (!subjectVisible)//search over the range about ideal position
+                        {
+                            searchIterations++;
+                            //put camera at ideal position on the r=distance circle 
+                            tempCameraPosition.X = targetBounds.center.x + subjectToCamera.x * distanceToCamera;
+                            tempCameraPosition.Z = targetBounds.center.z + subjectToCamera.y * distanceToCamera;
+
+                            //raycast to check for LoS
+                            RaycastHit hit;
+                            if(Physics.Raycast(tempCameraPosition.Merge(previousCameraPosition), 
+                                targetBounds.center - tempCameraPosition.Merge(previousCameraPosition), out hit))
+                            {
+                                //we can see our target
+                                subjectVisible = true;
+                            }
+                            else//search around the circle
+                            {                                
+                                //convert unit vector to rotation
+                                float theta = Mathf.Atan2(subjectToCamera.y, subjectToCamera.x);
+                                
+                                //adjust rotation 
+                                float offset = searchIterations * searchStepSize;
+                                offset = searchSign ? offset : -offset;
+                                theta = theta + offset;
+                                searchSign = !searchSign;
+
+                                if (Mathf.Abs(offset) > 6) // we made it all the way around the circle.  just give up
+                                {
+                                    subjectVisible = true;
+                                }
+
+                                //convert back
+                                subjectToCamera = new Vector2(Mathf.Cos(theta), Mathf.Sin(theta)).normalized;
+                            }
+                        }                        
                     }
                     else //we are calculating everything by framing and direction.  this is going to get a little long.
                     {
@@ -204,7 +241,7 @@ namespace Assets.scripts
                 // Check if the target was found in the scene.
                 if (angleTarget != null)
                 {
-                    Bounds targetBounds = getBounds(angleTarget);
+                    Bounds targetBounds = angleTarget.GetComponent<BoxCollider>().bounds;
                     if (!tempCameraPosition.Y.HasValue)//only allow angle to adjust height if it is not set manually
                     {
                         tempCameraPosition.Y = solveForYPosition(30f, tempCameraPosition.Merge(previousCameraPosition), targetBounds.center, cameraAngle.AngleSetting); //center is not best, but it's better than feet
@@ -238,28 +275,43 @@ namespace Assets.scripts
             newfocusDistance = tempFocusDistance.HasValue ? tempFocusDistance.Value : previousFocusDistance;
 
             return true;
-        }
+        }        
 
-        private Bounds getBounds(GameObject framingTarget)
+        private Vector2 getIdealCameraPlacementDirection(GameObject framingTarget)
         {
-            Bounds targetBounds;
-            var targetRenderer = framingTarget.GetComponent<Renderer>();
-
-            if (targetRenderer != null)
+            //default to framing target in case direction wasn't specified
+            Vector2 subjectToCameraIdeal = new Vector2(framingTarget.transform.forward.x, framingTarget.transform.forward.z);  
+            if (direction != null)
             {
-                targetBounds = targetRenderer.bounds;
-            }
-            //if the model does not directly have a renderer, accumulate from child bounds
-            else
-            {
-                targetBounds = new Bounds(framingTarget.transform.position, Vector3.zero);
-                foreach (var renderer in framingTarget.GetComponentsInChildren<Renderer>())
+                GameObject directionTarget = GameObject.Find(direction.Target) as GameObject;
+                if (directionTarget != null)
                 {
-                    targetBounds.Encapsulate(renderer.bounds);
+                    Quaternion savedRotation = directionTarget.transform.rotation;
+                    switch (direction.Heading)
+                    {
+                        case Heading.Toward:
+                            ;//exists for completeness.  
+                            break;
+                        case Heading.Away:
+                            directionTarget.transform.Rotate(Vector3.up, 180);
+                            break;
+                        case Heading.Left:
+                            directionTarget.transform.Rotate(Vector3.up, -90);
+                            break;
+                        case Heading.Right:
+                            directionTarget.transform.Rotate(Vector3.up, 90);
+                            break;
+                        default:
+                            break;
+                    }
+                    subjectToCameraIdeal = new Vector2(directionTarget.transform.forward.x, directionTarget.transform.forward.z);
+                    directionTarget.transform.rotation = savedRotation;
                 }
             }
-            return targetBounds;
+            return subjectToCameraIdeal.normalized;
         }
+
+
 
         /// <summary>
         /// Given a shot angle, finds the distance to travel from the target's baseline y position.

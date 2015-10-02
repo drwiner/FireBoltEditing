@@ -34,6 +34,9 @@ namespace Oshmirto
         [XmlElement("angle")]
         public Angle Angle { get; set; }
 
+        [XmlElement("direction")]
+        public Direction Direction { get; set; }
+
         [XmlArray("framings")]
         [XmlArrayItem("framing")]
         public List<Framing> Framings { get; set; } 
