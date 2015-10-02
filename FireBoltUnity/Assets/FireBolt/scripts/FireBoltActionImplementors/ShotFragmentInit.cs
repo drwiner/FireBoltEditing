@@ -188,17 +188,19 @@ namespace Assets.scripts
 
                             //raycast to check for LoS
                             RaycastHit hit;
-                            if(Physics.Raycast(tempCameraPosition.Merge(previousCameraPosition), 
-                                targetBounds.center - tempCameraPosition.Merge(previousCameraPosition), out hit))
+                            if (Physics.Raycast(tempCameraPosition.Merge(previousCameraPosition),
+                                targetBounds.center - tempCameraPosition.Merge(previousCameraPosition), out hit) &&
+                                hit.transform == framingTarget.transform)
                             {
                                 //we can see our target
                                 subjectVisible = true;
+
                             }
                             else//search around the circle
-                            {                                
+                            {
                                 //convert unit vector to rotation
                                 float theta = Mathf.Atan2(subjectToCamera.y, subjectToCamera.x);
-                                
+
                                 //adjust rotation 
                                 float offset = searchIterations * searchStepSize;
                                 offset = searchSign ? offset : -offset;

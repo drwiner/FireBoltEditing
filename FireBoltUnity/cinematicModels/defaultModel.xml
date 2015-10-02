@@ -101,6 +101,9 @@
     </domainAction>   
   </domainActions>
   <actors>
+    <actor name="Wall" model="Wall.prefab" >
+      <animationMappings/>       
+    </actor>
     <actor name="secretAgentMan" model="m005.fbx" >
       <animationMappings>
         <animationMapping animateActionName="observe" animationName="idle" loopAnimation="true" />
