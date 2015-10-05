@@ -146,7 +146,7 @@ namespace Assets.scripts
                                 nodalCam.fieldOfView -= FovStepSize;
                                 decremented = true;
                             }
-                            else //(bMax.y - bMin.y > fp.MaxPercent)
+                            else //(bMax.y - bMin.y >= fp.MaxPercent)
                             {
                                 nodalCam.fieldOfView += FovStepSize;
                                 incremented = true;
@@ -171,7 +171,7 @@ namespace Assets.scripts
                                                     framings[0].FramingTarget, framings[0].FramingType.ToString(), ElPresidente.Instance.lensFovData[tempLensIndex.Value]._focalLength));
                         }
                     }
-                    else //we are calculating everything by framing and direction.  this is going to get a little long.
+                    else //we are calculating everything by framing and direction.  
                     {
                         //x,z does not have value
                         //pick a typical lens for this type of shot
@@ -200,7 +200,7 @@ namespace Assets.scripts
                             }
                             else if(tempLensIndex + offset > 16) //highest lens index...this should not be hard coded it feels
                             {
-                                //what do i do on failure? 
+                                //explore on the other side of our start lens until we hit our max iterations
                                 iterations++;
                                 offset = sign ? -iterations : iterations;
                             }
@@ -267,14 +267,40 @@ namespace Assets.scripts
             return true;
         }
 
+        private void angleCameraTo(string targetName, AngleSetting angleSetting)
+        {
+            // Look up the target game object given its name.
+            GameObject angleTarget = GameObject.Find(targetName);
+
+            // Check if the target was found in the scene.
+            if (angleTarget != null)
+            {
+                Bounds targetBounds = angleTarget.GetComponent<BoxCollider>().bounds;
+                if (!tempCameraPosition.Y.HasValue)//only allow angle to adjust height if it is not set manually
+                {
+                    tempCameraPosition.Y = solveForYPosition(30f, tempCameraPosition.Merge(previousCameraPosition), targetBounds.center, cameraAngle.AngleSetting); //center is not best, but it's better than feet
+                }
+                //choosing only to update x axis rotation if angle is specified.  this means that some fragments where the camera was previously tilted
+                //may fail to show the actor if the fragment only specifies a framing.  we could make angle mandatory...
+                //this is not ideal, but neither is lacking the ability to leave the camera x axis rotation unchanged.
+                //like where we do a tilt with and then lock off
+                tempCameraOrientation.X = Quaternion.LookRotation(targetBounds.center - tempCameraPosition.Merge(previousCameraPosition)).eulerAngles.x; //again center is not best
+            }
+            else
+            {
+                Debug.LogError(string.Format("could not find actor [{0}] at time d:s[{1}:{2}].  Where's your dude?",
+                cameraAngle.Target, ElPresidente.Instance.CurrentDiscourseTime, ElPresidente.Instance.CurrentStoryTime));
+            }       
+        }
+
         private bool findCameraPositionForLens(GameObject framingTarget, Bounds targetBounds, FramingParameters framingParameters, float maxSearchPercent)
         {
             //converting to radians when we lookup so we don't have to worry about it later
             float vFov = ElPresidente.Instance.lensFovData[tempLensIndex.Value]._unityVFOV * Mathf.Deg2Rad;
 
-            float h = (1 / framingParameters.TargetPercent) * (targetBounds.max.y - targetBounds.min.y);
+            float frustumHeight = (1 / framingParameters.TargetPercent) * (targetBounds.max.y - targetBounds.min.y);
 
-            float distanceToCamera = h / Mathf.Tan(vFov / 2);
+            float distanceToCamera = frustumHeight / Mathf.Tan(vFov / 2);
 
             //use facing to determine direction
             Vector2 subjectToCamera = getIdealCameraPlacementDirection(framingTarget);
@@ -289,6 +315,15 @@ namespace Assets.scripts
                 //put camera at ideal position on the r=distance circle 
                 tempCameraPosition.X = targetBounds.center.x + subjectToCamera.x * distanceToCamera;
                 tempCameraPosition.Z = targetBounds.center.z + subjectToCamera.y * distanceToCamera;
+
+                //place at an appropriate height and angle
+                //this is increasing distance between the camera and the subject by a function of the angle setting.
+                //we don't have to solve this right now b/c it's only a 15% difference.  if we have more angle settings
+                //or change the degree measure, we should revisit calculating the x,z with this as a consideration
+                if (cameraAngle != null && !string.IsNullOrEmpty(cameraAngle.Target))
+                {
+                    angleCameraTo(cameraAngle.Target, cameraAngle.AngleSetting);
+                }
 
                 //raycast to check for LoS
                 RaycastHit hit;
