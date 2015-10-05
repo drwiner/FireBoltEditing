@@ -225,28 +225,7 @@ namespace Assets.scripts
             //lots of opportunity for things to get squirrelly here.
             if (cameraAngle != null && !string.IsNullOrEmpty(cameraAngle.Target))
             {
-                // Look up the target game object given its name.
-                GameObject angleTarget = GameObject.Find(cameraAngle.Target);
-
-                // Check if the target was found in the scene.
-                if (angleTarget != null)
-                {
-                    Bounds targetBounds = angleTarget.GetComponent<BoxCollider>().bounds;
-                    if (!tempCameraPosition.Y.HasValue)//only allow angle to adjust height if it is not set manually
-                    {
-                        tempCameraPosition.Y = solveForYPosition(30f, tempCameraPosition.Merge(previousCameraPosition), targetBounds.center, cameraAngle.AngleSetting); //center is not best, but it's better than feet
-                    }
-                    //choosing only to update x axis rotation if angle is specified.  this means that some fragments where the camera was previously tilted
-                    //may fail to show the actor if the fragment only specifies a framing.  we could make angle mandatory...
-                    //this is not ideal, but neither is lacking the ability to leave the camera x axis rotation unchanged.
-                    //like where we do a tilt with and then lock off
-                    tempCameraOrientation.X = Quaternion.LookRotation(angleTarget.transform.position - tempCameraPosition.Merge(previousCameraPosition)).eulerAngles.x;
-                }
-                else
-                {
-                    Debug.LogError(string.Format("could not find actor [{0}] at time d:s[{1}:{2}].  Where's your dude?",
-                    cameraAngle.Target, ElPresidente.Instance.CurrentDiscourseTime, ElPresidente.Instance.CurrentStoryTime));
-                }                
+                angleCameraTo(cameraAngle.Target, cameraAngle.AngleSetting);           
             }
 
             //focus has to go after all possible x,y,z settings to get the correct distance to subject
@@ -278,19 +257,36 @@ namespace Assets.scripts
                 Bounds targetBounds = angleTarget.GetComponent<BoxCollider>().bounds;
                 if (!tempCameraPosition.Y.HasValue)//only allow angle to adjust height if it is not set manually
                 {
-                    tempCameraPosition.Y = solveForYPosition(30f, tempCameraPosition.Merge(previousCameraPosition), targetBounds.center, cameraAngle.AngleSetting); //center is not best, but it's better than feet
+                    tempCameraPosition.Y = solveForYPosition(30f, tempCameraPosition.Merge(previousCameraPosition), findTargetLookAtPoint(targetName,targetBounds), cameraAngle.AngleSetting); //center is not best, but it's better than feet
                 }
                 //choosing only to update x axis rotation if angle is specified.  this means that some fragments where the camera was previously tilted
                 //may fail to show the actor if the fragment only specifies a framing.  we could make angle mandatory...
                 //this is not ideal, but neither is lacking the ability to leave the camera x axis rotation unchanged.
                 //like where we do a tilt with and then lock off
-                tempCameraOrientation.X = Quaternion.LookRotation(targetBounds.center - tempCameraPosition.Merge(previousCameraPosition)).eulerAngles.x; //again center is not best
+                tempCameraOrientation.X = Quaternion.LookRotation(findTargetLookAtPoint(targetName, targetBounds) - tempCameraPosition.Merge(previousCameraPosition)).eulerAngles.x; //again center is not best
             }
             else
             {
                 Debug.LogError(string.Format("could not find actor [{0}] at time d:s[{1}:{2}].  Where's your dude?",
                 cameraAngle.Target, ElPresidente.Instance.CurrentDiscourseTime, ElPresidente.Instance.CurrentStoryTime));
             }       
+        }
+
+        private Vector3 findTargetLookAtPoint(string targetName, Bounds targetBounds)
+        {
+            CinematicModel.Actor actor;
+            ElPresidente.Instance.CinematicModel.TryGetActor(targetName, out actor); //find the CM definition for the actor we are supposed to angle against
+            Framing framing = framings.Find(x => x.FramingTarget == targetName); //see if there is a target being framed with that name
+            float pointOfInterestScalar = 0;
+            if(framing != null)
+            {
+                pointOfInterestScalar = framing.FramingType > FramingType.Waist ? 0 : actor.PointOfInterest;
+            }
+            
+            Vector3 targetLookAtPoint = new Vector3(targetBounds.center.x,
+                                        targetBounds.center.y + pointOfInterestScalar * targetBounds.extents.y,
+                                        targetBounds.center.z);
+            return targetLookAtPoint;
         }
 
         private bool findCameraPositionForLens(GameObject framingTarget, Bounds targetBounds, FramingParameters framingParameters, float maxSearchPercent)

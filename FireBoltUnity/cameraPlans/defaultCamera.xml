@@ -5,8 +5,8 @@
     <shotFragments>
         <shotFragment duration="15000" focus="Pudge" f-stop ="2.8" shake ="0">
           <!--height="5"-->
-          <angle angleSetting="High" target="Pudge"/>
-          <direction heading="Away" target="Pudge"/>
+          <angle angleSetting="Medium" target="Pudge"/>
+          <direction heading="Toward" target="Pudge"/>
           <framings>
             <framing framingType="Waist" framingTarget="Pudge"/>
           </framings>

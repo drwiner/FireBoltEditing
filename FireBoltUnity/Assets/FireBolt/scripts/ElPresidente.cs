@@ -42,6 +42,7 @@ public class ElPresidente : MonoBehaviour {
     }
 
     private CM.CinematicModel cinematicModel = null;
+    public CM.CinematicModel CinematicModel { get { return cinematicModel; } }
 
     InputSet currentInputSet=null;
     DateTime storyPlanLastReadTimeStamp = DateTime.Now;
