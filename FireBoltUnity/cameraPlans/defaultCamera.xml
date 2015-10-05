@@ -3,12 +3,12 @@
   <blocks>
     <block storyTime="0">
     <shotFragments>
-        <shotFragment lens="65mm" height="1.25" duration="15000" focus="Pudge" f-stop ="11" shake ="0">
+        <shotFragment height="1.25" duration="15000" focus="Pudge" f-stop ="2.8" shake ="0">
           <!--height="5"-->
           <!--<angle angleSetting="High" target="Pudge"/>-->
-          <direction heading="Left" target="Pudge"/>
+          <direction heading="Away" target="Pudge"/>
           <framings>
-            <framing framingType="Full" framingTarget="Pudge"/>
+            <framing framingType="Long" framingTarget="Pudge"/>
           </framings>
           <movements>
             <!--<movement type="Focus" directive="With" subject="Pudge"/>-->

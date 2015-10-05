@@ -107,12 +107,11 @@ namespace Assets.scripts
             {
                 framingTarget = GameObject.Find(framings[0].FramingTarget) as GameObject;
                 if (framingTarget != null)
-                {
-                    
+                {                    
                     Bounds targetBounds = framingTarget.GetComponent<BoxCollider>().bounds;                                        
                     targetBounds.BuildDebugBox();
 
-                    FramingParameters fp = FramingParameters.FramingTable[framings[0].FramingType];
+                    FramingParameters framingParameters = FramingParameters.FramingTable[framings[0].FramingType];
 
                     Camera nodalCam = Camera.FindObjectOfType<Camera>();
                                         
@@ -138,11 +137,11 @@ namespace Assets.scripts
 
                             float FovStepSize = 2.5f;//consider making step size a function of current size to increase granularity at low fov.  2.5 is big enough to jump 100-180 oddly
                            
-                            if (bMax.y - bMin.y > fp.MaxPercent && bMax.y - bMin.y < fp.MinPercent)
+                            if (bMax.y - bMin.y > framingParameters.MaxPercent && bMax.y - bMin.y < framingParameters.MinPercent)
                             {
                                 break;//we found our answer in nodalCamera.fov
                             }
-                            else if (bMax.y - bMin.y < fp.MinPercent)
+                            else if (bMax.y - bMin.y < framingParameters.MinPercent)
                             {
                                 nodalCam.fieldOfView -= FovStepSize;
                                 decremented = true;
@@ -165,61 +164,50 @@ namespace Assets.scripts
                     else if (tempLensIndex.HasValue && //direction matters here.  
                         (!tempCameraPosition.X.HasValue || !tempCameraPosition.Z.HasValue))//also assuming we get x,z in a pair.  if only one is provided, it is invalid and will be ignored
                     {
-                        //converting to radians when we lookup so we don't have to worry about it later
-                        float vFov = ElPresidente.Instance.lensFovData[tempLensIndex.Value]._unityVFOV * Mathf.Deg2Rad;
-
-                        float h = (1/fp.TargetPercent) * (targetBounds.max.y - targetBounds.min.y);
-
-                        float distanceToCamera = h / Mathf.Tan(vFov / 2);
-
-                        //use facing to determine direction
-                        Vector2 subjectToCamera = getIdealCameraPlacementDirection(framingTarget);
-
-                        bool searchSign = true;
-                        float searchStepSize = 5f * Mathf.Deg2Rad;
-                        ushort searchIterations = 0;                        
-                        bool subjectVisible = false;
-                        while (!subjectVisible)//search over the range about ideal position
+                        //allow full exploration of circle about target since we can't move in or out and keep the same framing                        
+                        if (!findCameraPositionForLens(framingTarget, targetBounds, framingParameters, 1.0f))
                         {
-                            searchIterations++;
-                            //put camera at ideal position on the r=distance circle 
-                            tempCameraPosition.X = targetBounds.center.x + subjectToCamera.x * distanceToCamera;
-                            tempCameraPosition.Z = targetBounds.center.z + subjectToCamera.y * distanceToCamera;
-
-                            //raycast to check for LoS
-                            RaycastHit hit;
-                            if (Physics.Raycast(tempCameraPosition.Merge(previousCameraPosition),
-                                targetBounds.center - tempCameraPosition.Merge(previousCameraPosition), out hit) &&
-                                hit.transform == framingTarget.transform)
-                            {
-                                //we can see our target
-                                subjectVisible = true;
-
-                            }
-                            else//search around the circle
-                            {
-                                //convert unit vector to rotation
-                                float theta = Mathf.Atan2(subjectToCamera.y, subjectToCamera.x);
-
-                                //adjust rotation 
-                                float offset = searchIterations * searchStepSize;
-                                offset = searchSign ? offset : -offset;
-                                theta = theta + offset;
-                                searchSign = !searchSign;
-
-                                if (Mathf.Abs(offset) > 6) // we made it all the way around the circle.  just give up
-                                {
-                                    subjectVisible = true;
-                                }
-
-                                //convert back
-                                subjectToCamera = new Vector2(Mathf.Cos(theta), Mathf.Sin(theta)).normalized;
-                            }
-                        }                        
+                            Debug.Log(string.Format("failed to find satisfactory position for camera to frame [{0}] [{1}] with lens [{2}]. view will be obstructed",
+                                                    framings[0].FramingTarget, framings[0].FramingType.ToString(), ElPresidente.Instance.lensFovData[tempLensIndex.Value]._focalLength));
+                        }
                     }
                     else //we are calculating everything by framing and direction.  this is going to get a little long.
                     {
+                        //x,z does not have value
+                        //pick a typical lens for this type of shot
+                        tempLensIndex = CameraActionFactory.lenses[framingParameters.DefaultFocalLength];
+                        //see if we can find a camera location for this lens
+                        //allow less than 35% of a the circle variance from ideal viewing.  if we don't find an answer, change the lens
 
+                        bool sign = true;
+                        short iterations = 0;
+                        ushort lastLensIndex = tempLensIndex.Value;
+                        ushort maxLensChangeIterations = 6;
+                        while (!findCameraPositionForLens(framingTarget, targetBounds, framingParameters, 0.35f))
+                        {
+                            iterations++;
+                            if (iterations > maxLensChangeIterations)
+                            {
+                                Debug.Log(string.Format("exceeded max lens change iterations[{0}] solving framing[{1}] on target[{2}] at time d:s[{3}:{4}]",
+                                                        maxLensChangeIterations, framingParameters.Type, framings[0].FramingTarget,
+                                                        ElPresidente.Instance.CurrentDiscourseTime, ElPresidente.Instance.CurrentStoryTime));
+                                break; //framing is just not working out.  we will return a shot that's not so good and get on with things
+                            }
+                            int offset = sign? iterations : -iterations;
+                            if (tempLensIndex + offset < 0 )
+                            {
+                                //should never get here since the smallest we specify is 27mm and we will cap at +-3 lenses
+                            }
+                            else if(tempLensIndex + offset > 16) //highest lens index...this should not be hard coded it feels
+                            {
+                                //what do i do on failure? 
+                                iterations++;
+                                offset = sign ? -iterations : iterations;
+                            }
+
+                            lastLensIndex = tempLensIndex.Value;
+                            tempLensIndex = (ushort)(tempLensIndex + offset);
+                        }
                     }
 
                     tempCameraOrientation.Y = Quaternion.LookRotation(framingTarget.transform.position - tempCameraPosition.Merge(previousCameraPosition)).eulerAngles.y;
@@ -227,7 +215,7 @@ namespace Assets.scripts
                 else
                 {
                     Debug.LogError(string.Format("could not find actor [{0}] at time d:s[{1}:{2}].  Where's your dude?",
-                    framings[0].FramingTarget, ElPresidente.Instance.CurrentDiscourseTime, ElPresidente.Instance.CurrentDiscourseTime));
+                    framings[0].FramingTarget, ElPresidente.Instance.CurrentDiscourseTime, ElPresidente.Instance.CurrentStoryTime));
                 }
             }
             
@@ -257,7 +245,7 @@ namespace Assets.scripts
                 else
                 {
                     Debug.LogError(string.Format("could not find actor [{0}] at time d:s[{1}:{2}].  Where's your dude?",
-                    cameraAngle.Target, ElPresidente.Instance.CurrentDiscourseTime, ElPresidente.Instance.CurrentDiscourseTime));
+                    cameraAngle.Target, ElPresidente.Instance.CurrentDiscourseTime, ElPresidente.Instance.CurrentStoryTime));
                 }                
             }
 
@@ -277,6 +265,60 @@ namespace Assets.scripts
             newfocusDistance = tempFocusDistance.HasValue ? tempFocusDistance.Value : previousFocusDistance;
 
             return true;
+        }
+
+        private bool findCameraPositionForLens(GameObject framingTarget, Bounds targetBounds, FramingParameters framingParameters, float maxSearchPercent)
+        {
+            //converting to radians when we lookup so we don't have to worry about it later
+            float vFov = ElPresidente.Instance.lensFovData[tempLensIndex.Value]._unityVFOV * Mathf.Deg2Rad;
+
+            float h = (1 / framingParameters.TargetPercent) * (targetBounds.max.y - targetBounds.min.y);
+
+            float distanceToCamera = h / Mathf.Tan(vFov / 2);
+
+            //use facing to determine direction
+            Vector2 subjectToCamera = getIdealCameraPlacementDirection(framingTarget);
+
+            bool searchSign = true;
+            float searchStepSize = 5f * Mathf.Deg2Rad;
+            ushort searchIterations = 0;
+            bool subjectVisible = false;
+            while (!subjectVisible)//search over the range about ideal position
+            {
+                searchIterations++;
+                //put camera at ideal position on the r=distance circle 
+                tempCameraPosition.X = targetBounds.center.x + subjectToCamera.x * distanceToCamera;
+                tempCameraPosition.Z = targetBounds.center.z + subjectToCamera.y * distanceToCamera;
+
+                //raycast to check for LoS
+                RaycastHit hit;
+                if (Physics.Raycast(tempCameraPosition.Merge(previousCameraPosition),
+                    targetBounds.center - tempCameraPosition.Merge(previousCameraPosition), out hit) &&
+                    hit.transform == framingTarget.transform)
+                {
+                    //we can see our target
+                    subjectVisible = true;
+                }
+                else//search around the circle
+                {
+                    //convert unit vector to rotation
+                    float theta = Mathf.Atan2(subjectToCamera.y, subjectToCamera.x);
+
+                    //adjust rotation 
+                    float offset = searchIterations * searchStepSize;
+                    offset = searchSign ? offset : -offset;
+                    theta = theta + offset;
+                    searchSign = !searchSign;
+
+                    if (Mathf.Abs(offset) > 6 * maxSearchPercent) //have we gone more than the allotted amount around the circle?
+                    {
+                        break;
+                    }
+                    //convert rotation back to unit vector
+                    subjectToCamera = new Vector2(Mathf.Cos(theta), Mathf.Sin(theta)).normalized;
+                }
+            }
+            return subjectVisible;
         }        
 
         private Vector2 getIdealCameraPlacementDirection(GameObject framingTarget)
@@ -356,7 +398,7 @@ namespace Assets.scripts
             if (camera == null)
             {
                 Debug.LogError(string.Format("could not find camera[{0}] at time d:s[{1}:{2}].  This is really bad.  What did you do to the camera?",
-                    cameraName, ElPresidente.Instance.CurrentDiscourseTime, ElPresidente.Instance.CurrentDiscourseTime));
+                    cameraName, ElPresidente.Instance.CurrentDiscourseTime, ElPresidente.Instance.CurrentStoryTime));
                 return false;
             }
 
@@ -364,7 +406,7 @@ namespace Assets.scripts
             if (cameraBody == null)
             {
                 Debug.LogError(string.Format("could not find cameraBody component as child of camera[{0}] at time d:s[{1}:{2}].  Why isn't your camera a cinema suites camera?",
-                    cameraName, ElPresidente.Instance.CurrentDiscourseTime, ElPresidente.Instance.CurrentDiscourseTime));
+                    cameraName, ElPresidente.Instance.CurrentDiscourseTime, ElPresidente.Instance.CurrentStoryTime));
                 return false;
             }
             return true;
@@ -416,7 +458,7 @@ namespace Assets.scripts
                 {
                     //sadly there is no such thing.  we should complain and then try to get on with business
                     Debug.LogError(string.Format("anchor actor [{0}] not found at time d:s[{1}:{2}].  calculating anchor freely.", 
-                        anchor, ElPresidente.Instance.CurrentDiscourseTime, ElPresidente.Instance.CurrentDiscourseTime));
+                        anchor, ElPresidente.Instance.CurrentDiscourseTime, ElPresidente.Instance.CurrentStoryTime));
                     return false;
                 }
                 Vector3 actorPosition = actorToAnchorOn.transform.position;
