@@ -19,16 +19,23 @@
       <property name="actor" value="npc_dota_creep_goodguys_ranged 1893510"/>
       <property name="time" value="2000-15000"/>
     </action>-->
+
+
+    <action type="spawn-hero" name="step7000">
+      <property name="location" value="(-2,5)"/>
+      <property name="actor" value="Wall"/>
+      <property name="time" value="0-1"/>
+    </action>
     
      <action type="spawn-hero" name="step7001">
-      <property name="location" value="(-2,3)"/>
+      <property name="location" value="(-2,10)"/>
       <property name="actor" value="Pudge"/>
       <property name="time" value="0-1"/>
     </action>
 
     <action type="move" name="step7002">
-      <property name="origin" value="(-2, 3)"/>
-      <property name="destination" value="(-2, 4)"/>
+      <property name="origin" value="(-2, 10)"/>
+      <property name="destination" value="(-2, 10)"/>
       <property name="actor" value="Pudge"/>
       <property name="time" value="5-40000"/>
     </action>

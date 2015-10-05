@@ -52,6 +52,37 @@ namespace Assets.scripts
         }
 
         /// <summary>
+        /// gives a pretty cyan box at the bounds...only in scene view as it's a debug thinger
+        /// </summary>
+        /// <param name="bounds"></param>
+        public static void BuildDebugBox(this Bounds bounds)
+        {
+            //add some debugging box for the area we think we are framing
+            Vector3 center = bounds.center;
+            Vector3 extents = bounds.extents;
+            Vector3[] corners = new Vector3[8];
+            //top face
+            corners[0] = new Vector3(center.x + extents.x, center.y + extents.y, center.z + extents.z);
+            corners[1] = new Vector3(center.x - extents.x, center.y + extents.y, center.z + extents.z);
+            corners[2] = new Vector3(center.x + extents.x, center.y + extents.y, center.z - extents.z);
+            corners[3] = new Vector3(center.x - extents.x, center.y + extents.y, center.z - extents.z);
+            //bottom face
+            corners[4] = new Vector3(center.x + extents.x, center.y - extents.y, center.z + extents.z);
+            corners[5] = new Vector3(center.x - extents.x, center.y - extents.y, center.z + extents.z);
+            corners[6] = new Vector3(center.x + extents.x, center.y - extents.y, center.z - extents.z);
+            corners[7] = new Vector3(center.x - extents.x, center.y - extents.y, center.z - extents.z);
+            //gogo complete graph!
+            for (int i = 0; i < 8; i++)
+            {
+                for (int j = 0; j < 8; j++)
+                {
+                    if (i == j) continue;
+                    Debug.DrawLine(corners[i], corners[j], Color.cyan, 150);
+                }
+            }
+        }
+
+        /// <summary>
         /// finds the angle of rotation to change orientation from "from" to "to"
         /// ignores Y values
         /// </summary>

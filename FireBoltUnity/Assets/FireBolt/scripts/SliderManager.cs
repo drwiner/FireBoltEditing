@@ -44,7 +44,7 @@ public class SliderManager : MonoBehaviour
         //create a thumbnail to use for displaying keyframes and staple it onto the canvas
         thumb = (GameObject.Instantiate(Resources.Load("Thumbnail")) as GameObject).GetComponent<UnityEngine.UI.RawImage>();
         var canvas = GameObject.Find("Canvas");
-        thumb.transform.parent = canvas.transform;
+        thumb.transform.SetParent(canvas.transform);
 
         // Remember that initialization has not occurred.
         hasInitialized = false;

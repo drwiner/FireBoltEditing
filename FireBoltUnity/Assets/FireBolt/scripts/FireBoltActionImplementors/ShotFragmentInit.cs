@@ -20,6 +20,7 @@ namespace Assets.scripts
         private string lensName;
         private string fStopName;
         private List<Framing> framings;
+        private Oshmirto.Direction direction;
         private Oshmirto.Angle cameraAngle;
         private string focusTarget;
 
@@ -46,7 +47,8 @@ namespace Assets.scripts
         float newfocusDistance;
 
         public ShotFragmentInit(float startTick, float endTick, string cameraName, string anchor, float? height, 
-                                string lensName, string fStopName, List<Framing> framings, Oshmirto.Angle cameraAngle, string focusTarget)
+                                string lensName, string fStopName, List<Framing> framings, Oshmirto.Direction direction,
+                                Oshmirto.Angle cameraAngle, string focusTarget)
         {
             this.startTick = startTick;
             this.endTick = endTick;//used in querying for direction over the shot.  not in setting end of this init action
@@ -56,6 +58,7 @@ namespace Assets.scripts
             this.lensName = lensName;
             this.fStopName = fStopName;
             this.framings = framings;
+            this.direction = direction;
             this.cameraAngle = cameraAngle;
             this.focusTarget = focusTarget;
         }
@@ -104,49 +107,11 @@ namespace Assets.scripts
             {
                 framingTarget = GameObject.Find(framings[0].FramingTarget) as GameObject;
                 if (framingTarget != null)
-                {
-                    //calculate a bounding box for target
-                    Bounds targetBounds; 
-                    var targetRenderer = framingTarget.GetComponent<Renderer>();
-                    
-                    if(targetRenderer!=null)
-                    {
-                        targetBounds = targetRenderer.bounds;
-                    }
-                    //if the model does not directly have a renderer, accumulate from child bounds
-                    else
-                    {
-                        targetBounds = new Bounds();
-                        foreach (var renderer in framingTarget.GetComponentsInChildren<Renderer>())
-                        {
-                            targetBounds.Encapsulate(renderer.bounds);
-                        }
-                        //add some debugging box for the area we think we are framing
-                        Vector3 center = targetBounds.center;
-                        Vector3 extents = targetBounds.extents;
-                        Vector3 [] corners = new Vector3[8];
-                        //top face
-                        corners[0] = new Vector3(center.x + extents.x, center.y + extents.y, center.z + extents.z);
-                        corners[1] = new Vector3(center.x - extents.x, center.y + extents.y, center.z + extents.z);
-                        corners[2] = new Vector3(center.x + extents.x, center.y + extents.y, center.z - extents.z);
-                        corners[3] = new Vector3(center.x - extents.x, center.y + extents.y, center.z - extents.z);
-                        //bottom face
-                        corners[4] = new Vector3(center.x + extents.x, center.y - extents.y, center.z + extents.z);
-                        corners[5] = new Vector3(center.x - extents.x, center.y - extents.y, center.z + extents.z);
-                        corners[6] = new Vector3(center.x + extents.x, center.y - extents.y, center.z - extents.z);
-                        corners[7] = new Vector3(center.x - extents.x, center.y - extents.y, center.z - extents.z);
-                        //vertical lines
-                        for (int i = 0; i < 8; i++)
-                        {
-                            for (int j = 0; j < 8; j++)
-                            {
-                                if (i == j) continue;
-                                Debug.DrawLine(corners[i], corners[j], Color.cyan, 150);
-                                //shows that we are finding a volume for the actor before he is positioned correctly.  
-                                //we so we frame for pudge lying down :(
-                            }
-                        }
-                    }
+                {                    
+                    Bounds targetBounds = framingTarget.GetComponent<BoxCollider>().bounds;                                        
+                    targetBounds.BuildDebugBox();
+
+                    FramingParameters framingParameters = FramingParameters.FramingTable[framings[0].FramingType];
 
                     Camera nodalCam = Camera.FindObjectOfType<Camera>();
                                         
@@ -161,51 +126,88 @@ namespace Assets.scripts
                         //point the camera at the thing
                         nodalCam.transform.rotation = Quaternion.LookRotation(targetBounds.center - nodalCam.transform.position);
                         float targetFov = 0;
-                        while (targetFov < float.Epsilon)
+                        //need to keep from stepping up and down over some boundary
+                        bool incremented =false;
+                        bool decremented = false;
+                        while (targetFov < float.Epsilon && !(incremented && decremented))  //if we haven't set a value and we haven't stepped both up and down.  
                         {                            
                             //find where on the screen the extents are.  using viewport space so this will be in %. z is world units away from camera
                             Vector3 bMax = nodalCam.WorldToViewportPoint(targetBounds.max);
                             Vector3 bMin = nodalCam.WorldToViewportPoint(targetBounds.min);
 
-                            //compare with static percentages for different framings
-                            switch (framings[0].FramingType)
+                            float FovStepSize = 2.5f;//consider making step size a function of current size to increase granularity at low fov.  2.5 is big enough to jump 100-180 oddly
+                           
+                            if (bMax.y - bMin.y > framingParameters.MaxPercent && bMax.y - bMin.y < framingParameters.MinPercent)
                             {
-                                case FramingType.Full:
-                                    if (bMax.y - bMin.y > 0.85f && bMax.y - bMin.y < 1.0f)
-                                    {
-                                        targetFov = nodalCam.fieldOfView;
-                                        
-                                    }
-                                    else if (bMax.y - bMin.y > 1.0f)
-                                    {
-                                        nodalCam.fieldOfView += 2.5f;//consider making step size a function of current size to increase granularity at low fov
-                                    }
-                                    else if (bMax.y - bMin.y < 0.85f)
-                                    {
-                                        nodalCam.fieldOfView -= 2.5f;
-                                    }
-                                    break;
-                                default:
-                                    break;
+                                break;//we found our answer in nodalCamera.fov
                             }
+                            else if (bMax.y - bMin.y < framingParameters.MinPercent)
+                            {
+                                nodalCam.fieldOfView -= FovStepSize;
+                                decremented = true;
+                            }
+                            else //(bMax.y - bMin.y >= fp.MaxPercent)
+                            {
+                                nodalCam.fieldOfView += FovStepSize;
+                                incremented = true;
+                            }
+
                             //force matrix recalculations on the camera after adjusting fov
                             nodalCam.ResetProjectionMatrix();
-                            nodalCam.ResetWorldToCameraMatrix();                            
-                            //raycast to ensure visibility.  don't have to if we were handed the camera position
-                            //if failed then try somewhere else                            
+                            nodalCam.ResetWorldToCameraMatrix();
                         }
                         //reset camera position...we should only be moving the rig
+                        targetFov = nodalCam.fieldOfView;
                         nodalCam.transform.rotation = savedCameraRotation;
                         tempLensIndex = (ushort)ElPresidente.Instance.GetLensIndex(targetFov);
                     }
                     else if (tempLensIndex.HasValue && //direction matters here.  
                         (!tempCameraPosition.X.HasValue || !tempCameraPosition.Z.HasValue))//also assuming we get x,z in a pair.  if only one is provided, it is invalid and will be ignored
                     {
-
+                        //allow full exploration of circle about target since we can't move in or out and keep the same framing                        
+                        if (!findCameraPositionForLens(framingTarget, targetBounds, framingParameters, 1.0f))
+                        {
+                            Debug.Log(string.Format("failed to find satisfactory position for camera to frame [{0}] [{1}] with lens [{2}]. view will be obstructed",
+                                                    framings[0].FramingTarget, framings[0].FramingType.ToString(), ElPresidente.Instance.lensFovData[tempLensIndex.Value]._focalLength));
+                        }
                     }
-                    else //we are calculating everything by framing and direction.  this is going to get a little long.
+                    else //we are calculating everything by framing and direction.  
                     {
+                        //x,z does not have value
+                        //pick a typical lens for this type of shot
+                        tempLensIndex = CameraActionFactory.lenses[framingParameters.DefaultFocalLength];
+                        //see if we can find a camera location for this lens
+                        //allow less than 35% of a the circle variance from ideal viewing.  if we don't find an answer, change the lens
 
+                        bool sign = true;
+                        short iterations = 0;
+                        ushort lastLensIndex = tempLensIndex.Value;
+                        ushort maxLensChangeIterations = 6;
+                        while (!findCameraPositionForLens(framingTarget, targetBounds, framingParameters, 0.35f))
+                        {
+                            iterations++;
+                            if (iterations > maxLensChangeIterations)
+                            {
+                                Debug.Log(string.Format("exceeded max lens change iterations[{0}] solving framing[{1}] on target[{2}] at time d:s[{3}:{4}]",
+                                                        maxLensChangeIterations, framingParameters.Type, framings[0].FramingTarget,
+                                                        ElPresidente.Instance.CurrentDiscourseTime, ElPresidente.Instance.CurrentStoryTime));
+                                break; //framing is just not working out.  we will return a shot that's not so good and get on with things
+                            }
+                            int offset = sign? iterations : -iterations;
+                            if (tempLensIndex + offset < 0 )
+                            {
+                                //should never get here since the smallest we specify is 27mm and we will cap at +-3 lenses
+                            }
+                            else if(tempLensIndex + offset > 16) //highest lens index...this should not be hard coded it feels
+                            {
+                                //explore on the other side of our start lens until we hit our max iterations
+                                iterations++;
+                                offset = sign ? -iterations : iterations;
+                            }
+
+                            lastLensIndex = tempLensIndex.Value;
+                            tempLensIndex = (ushort)(tempLensIndex + offset);
+                        }
                     }
 
                     tempCameraOrientation.Y = Quaternion.LookRotation(framingTarget.transform.position - tempCameraPosition.Merge(previousCameraPosition)).eulerAngles.y;
@@ -213,7 +215,7 @@ namespace Assets.scripts
                 else
                 {
                     Debug.LogError(string.Format("could not find actor [{0}] at time d:s[{1}:{2}].  Where's your dude?",
-                    framings[0].FramingTarget, ElPresidente.Instance.CurrentDiscourseTime, ElPresidente.Instance.CurrentDiscourseTime));
+                    framings[0].FramingTarget, ElPresidente.Instance.CurrentDiscourseTime, ElPresidente.Instance.CurrentStoryTime));
                 }
             }
             
@@ -223,27 +225,7 @@ namespace Assets.scripts
             //lots of opportunity for things to get squirrelly here.
             if (cameraAngle != null && !string.IsNullOrEmpty(cameraAngle.Target))
             {
-                // Look up the target game object given its name.
-                GameObject angleTarget = GameObject.Find(cameraAngle.Target);
-
-                // Check if the target was found in the scene.
-                if (angleTarget != null)
-                {
-                    if (!tempCameraPosition.Y.HasValue)//only allow angle to adjust height if it is not set manually
-                    {
-                        tempCameraPosition.Y = solveForYPosition(30f, tempCameraPosition.Merge(previousCameraPosition), angleTarget.transform.position, cameraAngle.AngleSetting);
-                    }
-                    //choosing only to update x axis rotation if angle is specified.  this means that some fragments where the camera was previously tilted
-                    //may fail to show the actor if the fragment only specifies a framing.  we could make angle mandatory...
-                    //this is not ideal, but neither is lacking the ability to leave the camera x axis rotation unchanged.
-                    //like where we do a tilt with and then lock off
-                    tempCameraOrientation.X = Quaternion.LookRotation(angleTarget.transform.position - tempCameraPosition.Merge(previousCameraPosition)).eulerAngles.x;
-                }
-                else
-                {
-                    Debug.LogError(string.Format("could not find actor [{0}] at time d:s[{1}:{2}].  Where's your dude?",
-                    cameraAngle.Target, ElPresidente.Instance.CurrentDiscourseTime, ElPresidente.Instance.CurrentDiscourseTime));
-                }                
+                angleCameraTo(cameraAngle.Target, cameraAngle.AngleSetting);           
             }
 
             //focus has to go after all possible x,y,z settings to get the correct distance to subject
@@ -263,6 +245,147 @@ namespace Assets.scripts
 
             return true;
         }
+
+        private void angleCameraTo(string targetName, AngleSetting angleSetting)
+        {
+            // Look up the target game object given its name.
+            GameObject angleTarget = GameObject.Find(targetName);
+
+            // Check if the target was found in the scene.
+            if (angleTarget != null)
+            {
+                Bounds targetBounds = angleTarget.GetComponent<BoxCollider>().bounds;
+                if (!tempCameraPosition.Y.HasValue)//only allow angle to adjust height if it is not set manually
+                {
+                    tempCameraPosition.Y = solveForYPosition(30f, tempCameraPosition.Merge(previousCameraPosition), findTargetLookAtPoint(targetName,targetBounds), cameraAngle.AngleSetting); //center is not best, but it's better than feet
+                }
+                //choosing only to update x axis rotation if angle is specified.  this means that some fragments where the camera was previously tilted
+                //may fail to show the actor if the fragment only specifies a framing.  we could make angle mandatory...
+                //this is not ideal, but neither is lacking the ability to leave the camera x axis rotation unchanged.
+                //like where we do a tilt with and then lock off
+                tempCameraOrientation.X = Quaternion.LookRotation(findTargetLookAtPoint(targetName, targetBounds) - tempCameraPosition.Merge(previousCameraPosition)).eulerAngles.x; //again center is not best
+            }
+            else
+            {
+                Debug.LogError(string.Format("could not find actor [{0}] at time d:s[{1}:{2}].  Where's your dude?",
+                cameraAngle.Target, ElPresidente.Instance.CurrentDiscourseTime, ElPresidente.Instance.CurrentStoryTime));
+            }       
+        }
+
+        private Vector3 findTargetLookAtPoint(string targetName, Bounds targetBounds)
+        {
+            CinematicModel.Actor actor;
+            ElPresidente.Instance.CinematicModel.TryGetActor(targetName, out actor); //find the CM definition for the actor we are supposed to angle against
+            Framing framing = framings.Find(x => x.FramingTarget == targetName); //see if there is a target being framed with that name
+            float pointOfInterestScalar = 0;
+            if(framing != null)
+            {
+                pointOfInterestScalar = framing.FramingType > FramingType.Waist ? 0 : actor.PointOfInterest;
+            }
+            
+            Vector3 targetLookAtPoint = new Vector3(targetBounds.center.x,
+                                        targetBounds.center.y + pointOfInterestScalar * targetBounds.extents.y,
+                                        targetBounds.center.z);
+            return targetLookAtPoint;
+        }
+
+        private bool findCameraPositionForLens(GameObject framingTarget, Bounds targetBounds, FramingParameters framingParameters, float maxSearchPercent)
+        {
+            //converting to radians when we lookup so we don't have to worry about it later
+            float vFov = ElPresidente.Instance.lensFovData[tempLensIndex.Value]._unityVFOV * Mathf.Deg2Rad;
+
+            float frustumHeight = (1 / framingParameters.TargetPercent) * (targetBounds.max.y - targetBounds.min.y);
+
+            float distanceToCamera = frustumHeight / Mathf.Tan(vFov / 2);
+
+            //use facing to determine direction
+            Vector2 subjectToCamera = getIdealCameraPlacementDirection(framingTarget);
+
+            bool searchSign = true;
+            float searchStepSize = 5f * Mathf.Deg2Rad;
+            ushort searchIterations = 0;
+            bool subjectVisible = false;
+            while (!subjectVisible)//search over the range about ideal position
+            {
+                searchIterations++;
+                //put camera at ideal position on the r=distance circle 
+                tempCameraPosition.X = targetBounds.center.x + subjectToCamera.x * distanceToCamera;
+                tempCameraPosition.Z = targetBounds.center.z + subjectToCamera.y * distanceToCamera;
+
+                //place at an appropriate height and angle
+                //this is increasing distance between the camera and the subject by a function of the angle setting.
+                //we don't have to solve this right now b/c it's only a 15% difference.  if we have more angle settings
+                //or change the degree measure, we should revisit calculating the x,z with this as a consideration
+                if (cameraAngle != null && !string.IsNullOrEmpty(cameraAngle.Target))
+                {
+                    angleCameraTo(cameraAngle.Target, cameraAngle.AngleSetting);
+                }
+
+                //raycast to check for LoS
+                RaycastHit hit;
+                if (Physics.Raycast(tempCameraPosition.Merge(previousCameraPosition),
+                    targetBounds.center - tempCameraPosition.Merge(previousCameraPosition), out hit) &&
+                    hit.transform == framingTarget.transform)
+                {
+                    //we can see our target
+                    subjectVisible = true;
+                }
+                else//search around the circle
+                {
+                    //convert unit vector to rotation
+                    float theta = Mathf.Atan2(subjectToCamera.y, subjectToCamera.x);
+
+                    //adjust rotation 
+                    float offset = searchIterations * searchStepSize;
+                    offset = searchSign ? offset : -offset;
+                    theta = theta + offset;
+                    searchSign = !searchSign;
+
+                    if (Mathf.Abs(offset) > 6 * maxSearchPercent) //have we gone more than the allotted amount around the circle?
+                    {
+                        break;
+                    }
+                    //convert rotation back to unit vector
+                    subjectToCamera = new Vector2(Mathf.Cos(theta), Mathf.Sin(theta)).normalized;
+                }
+            }
+            return subjectVisible;
+        }        
+
+        private Vector2 getIdealCameraPlacementDirection(GameObject framingTarget)
+        {
+            //default to framing target in case direction wasn't specified
+            Vector2 subjectToCameraIdeal = new Vector2(framingTarget.transform.forward.x, framingTarget.transform.forward.z);  
+            if (direction != null)
+            {
+                GameObject directionTarget = GameObject.Find(direction.Target) as GameObject;
+                if (directionTarget != null)
+                {
+                    Quaternion savedRotation = directionTarget.transform.rotation;
+                    switch (direction.Heading)
+                    {
+                        case Heading.Toward:
+                            ;//exists for completeness.  
+                            break;
+                        case Heading.Away:
+                            directionTarget.transform.Rotate(Vector3.up, 180);
+                            break;
+                        case Heading.Left:
+                            directionTarget.transform.Rotate(Vector3.up, -90);
+                            break;
+                        case Heading.Right:
+                            directionTarget.transform.Rotate(Vector3.up, 90);
+                            break;
+                        default:
+                            break;
+                    }
+                    subjectToCameraIdeal = new Vector2(directionTarget.transform.forward.x, directionTarget.transform.forward.z);
+                    directionTarget.transform.rotation = savedRotation;
+                }
+            }
+            return subjectToCameraIdeal.normalized;
+        }
+
 
 
         /// <summary>
@@ -306,7 +429,7 @@ namespace Assets.scripts
             if (camera == null)
             {
                 Debug.LogError(string.Format("could not find camera[{0}] at time d:s[{1}:{2}].  This is really bad.  What did you do to the camera?",
-                    cameraName, ElPresidente.Instance.CurrentDiscourseTime, ElPresidente.Instance.CurrentDiscourseTime));
+                    cameraName, ElPresidente.Instance.CurrentDiscourseTime, ElPresidente.Instance.CurrentStoryTime));
                 return false;
             }
 
@@ -314,7 +437,7 @@ namespace Assets.scripts
             if (cameraBody == null)
             {
                 Debug.LogError(string.Format("could not find cameraBody component as child of camera[{0}] at time d:s[{1}:{2}].  Why isn't your camera a cinema suites camera?",
-                    cameraName, ElPresidente.Instance.CurrentDiscourseTime, ElPresidente.Instance.CurrentDiscourseTime));
+                    cameraName, ElPresidente.Instance.CurrentDiscourseTime, ElPresidente.Instance.CurrentStoryTime));
                 return false;
             }
             return true;
@@ -366,7 +489,7 @@ namespace Assets.scripts
                 {
                     //sadly there is no such thing.  we should complain and then try to get on with business
                     Debug.LogError(string.Format("anchor actor [{0}] not found at time d:s[{1}:{2}].  calculating anchor freely.", 
-                        anchor, ElPresidente.Instance.CurrentDiscourseTime, ElPresidente.Instance.CurrentDiscourseTime));
+                        anchor, ElPresidente.Instance.CurrentDiscourseTime, ElPresidente.Instance.CurrentStoryTime));
                     return false;
                 }
                 Vector3 actorPosition = actorToAnchorOn.transform.position;

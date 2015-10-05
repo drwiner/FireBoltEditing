@@ -42,6 +42,7 @@ public class ElPresidente : MonoBehaviour {
     }
 
     private CM.CinematicModel cinematicModel = null;
+    public CM.CinematicModel CinematicModel { get { return cinematicModel; } }
 
     InputSet currentInputSet=null;
     DateTime storyPlanLastReadTimeStamp = DateTime.Now;
@@ -95,7 +96,7 @@ public class ElPresidente : MonoBehaviour {
     public int GetLensIndex(float targetVerticalFov)
     {
         int lensIndex = 0;
-        //iterates over the entire array of lenses always.  it has 10 elements, so it doesn't make much difference
+        //iterates over the entire array of lenses always.  it has 15 elements, so it doesn't make much difference
         for (int i = 0; i < lensFovData.Count; i++ )
         {
             if (lensFovData[i]._unityVFOV > targetVerticalFov)

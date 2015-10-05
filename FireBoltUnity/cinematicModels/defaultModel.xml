@@ -101,13 +101,16 @@
     </domainAction>   
   </domainActions>
   <actors>
+    <actor name="Wall" model="Wall.prefab" >
+      <animationMappings/>       
+    </actor>
     <actor name="secretAgentMan" model="m005.fbx" >
       <animationMappings>
         <animationMapping animateActionName="observe" animationName="idle" loopAnimation="true" />
         <animationMapping animateActionName="walk" animationName="cm_walk" loopAnimation="true" />
       </animationMappings>
     </actor>
-    <actor name="Pudge" model="pudge_model.fbx" >
+    <actor name="Pudge" model="m005.fbx" pointOfInterest="0.85">
       <animationMappings>
         <animationMapping animateActionName="sneak" animationName="sneak" loopAnimation="true" />
         <animationMapping animateActionName="walk" animationName="walk" loopAnimation="true" />
