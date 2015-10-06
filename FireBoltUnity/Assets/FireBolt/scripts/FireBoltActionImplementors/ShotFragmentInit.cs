@@ -67,6 +67,9 @@ namespace Assets.scripts
         {
             if(initialized) return true;
 
+            Debug.Log(string.Format("init shot fragment start[{0}] end[{1}] anchor[{2}] height[{3}] lens[{4}] fStop[{5}] framing[{6}] direction[{7}] angle[{8}] focus[{9}] d:s[{10}:{11}]",
+                                    startTick,endTick,anchor,height,lensName,fStopName,framings[0].ToString(),direction.ToString(),cameraAngle.ToString(),focusTarget,
+                                    ElPresidente.Instance.CurrentDiscourseTime, ElPresidente.Instance.CurrentStoryTime));
             if(!findCamera()) return false;           
             savePreviousCameraState();
 
@@ -110,6 +113,8 @@ namespace Assets.scripts
                 {                    
                     Bounds targetBounds = framingTarget.GetComponent<BoxCollider>().bounds;                                        
                     targetBounds.BuildDebugBox();
+
+                    Debug.Log(string.Format("framing target[{0}] bounds[{1},{2}]", framings[0].FramingTarget, targetBounds.min.y, targetBounds.max.y));
 
                     FramingParameters framingParameters = FramingParameters.FramingTable[framings[0].FramingType];
 
@@ -277,11 +282,11 @@ namespace Assets.scripts
             CinematicModel.Actor actor;
             ElPresidente.Instance.CinematicModel.TryGetActor(targetName, out actor); //find the CM definition for the actor we are supposed to angle against
             Framing framing = framings.Find(x => x.FramingTarget == targetName); //see if there is a target being framed with that name
+
             float pointOfInterestScalar = 0;
-            if(framing != null)
-            {
-                pointOfInterestScalar = framing.FramingType > FramingType.Waist ? 0 : actor.PointOfInterest;
-            }
+            if(framing != null && framing.FramingType <= FramingType.Waist )
+                pointOfInterestScalar = actor.PointOfInterest;
+            
             
             Vector3 targetLookAtPoint = new Vector3(targetBounds.center.x,
                                         targetBounds.center.y + pointOfInterestScalar * targetBounds.extents.y,

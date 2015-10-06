@@ -89,8 +89,7 @@ namespace Assets.scripts
 				animation.wrapMode = WrapMode.Loop;
 			} else
 				animation.wrapMode = WrapMode.Once;			
-            animatorOverride[animationToOverride] = animation;
-            Debug.Log ("duration " + animation.averageDuration);
+            animatorOverride[animationToOverride] = animation;            
             return true;
         }
 

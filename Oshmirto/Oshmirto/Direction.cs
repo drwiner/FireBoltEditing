@@ -22,5 +22,10 @@ namespace Oshmirto
 
         [XmlAttribute("heading")]
         public Heading Heading { get; set; }
+
+        public override string ToString()
+        {
+            return string.Format("({0},{1})", Target, Heading.ToString());
+        }
     }
 }

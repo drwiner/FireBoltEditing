@@ -29,5 +29,10 @@ namespace Oshmirto
 
         [XmlAttribute("framingTarget")]
         public string FramingTarget { get; set; }
+
+        public override string ToString()
+        {
+            return string.Format("({0},{1})", FramingTarget, FramingType.ToString());
+        }
     }
 }

@@ -22,5 +22,10 @@ namespace Oshmirto
 
         [XmlAttribute("angleSetting")]
         public AngleSetting AngleSetting { get; set; }
+
+        public override string ToString()
+        {
+            return string.Format("({0},{1})", Target, AngleSetting.ToString());
+        }
     }
 }
