@@ -122,8 +122,8 @@ namespace Assets.scripts
                                 break;
                         }
                     }
-                    //// Shake it off
-                    //discourseActionList.Add(new Shake(fragmentStartTime, fragmentEndTime, cameraName, fragment.Shake));
+                    // Shake it off
+                    discourseActionList.Add(new Shake(fragmentStartTime, fragmentEndTime, cameraName, fragment.Shake));
 
                     currentDiscourseTime = fragmentEndTime;
                 }
