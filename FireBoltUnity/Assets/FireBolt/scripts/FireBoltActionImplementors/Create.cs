@@ -63,9 +63,12 @@ namespace Assets.scripts
             actor.transform.SetParent((GameObject.Find("InstantiatedObjects") as GameObject).transform, true);
 
             //add a collider so we can raycast against this thing
-            if (actor.GetComponent<Collider>() == null)
+            if (actor.GetComponent<BoxCollider>() == null)
             {
-                actor.AddComponent<BoxCollider>().bounds.Encapsulate(getBounds(actor));
+                BoxCollider collider = actor.AddComponent<BoxCollider>();
+                Bounds bounds = getBounds(actor);
+                collider.center = new Vector3(0,0.75f,0); //TODO un-hack and find proper center of model                
+                collider.size = bounds.max - bounds.min;
             }
             return true;
         }

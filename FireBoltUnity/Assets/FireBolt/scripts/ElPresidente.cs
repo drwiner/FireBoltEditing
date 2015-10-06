@@ -195,15 +195,21 @@ public class ElPresidente : MonoBehaviour {
     /// </summary>
     private void init()
     {
+        string timestampFormat = "HH:mm:ss.FF";
+
         if (reloadStoryPlan)
         {
             loadStructuredImpulsePlan(currentInputSet.StoryPlanPath);
+            Debug.Log(string.Format("loading story plan[{0}] @ [{1}].  least read [{2}]", 
+                                    currentInputSet.StoryPlanPath, DateTime.Now.ToString(timestampFormat), storyPlanLastReadTimeStamp.ToString(timestampFormat)));
             storyPlanLastReadTimeStamp = DateTime.Now;
         }
 
         if (reloadCinematicModel)
         {
-            cinematicModel = CM.Parser.Parse(currentInputSet.CinematicModelPath);
+            cinematicModel = CM.Parser.Parse(currentInputSet.CinematicModelPath); 
+            Debug.Log(string.Format("loading cinematic model[{0}] @ [{1}].  least read [{2}]",
+                                     currentInputSet.CinematicModelPath, DateTime.Now.ToString(timestampFormat), storyPlanLastReadTimeStamp.ToString(timestampFormat)));
             cinematicModelPlanLastReadTimeStamp = DateTime.Now;
         }
 
@@ -214,6 +220,8 @@ public class ElPresidente : MonoBehaviour {
         if (reloadActorsAndAnimationsBundle)
         {
             actorsAndAnimations = AssetBundle.CreateFromFile(currentInputSet.ActorsAndAnimationsBundlePath);
+            Debug.Log(string.Format("loading actors bundle[{0}] @ [{1}].  least read [{2}]",
+                         currentInputSet.ActorsAndAnimationsBundlePath, DateTime.Now.ToString(timestampFormat), storyPlanLastReadTimeStamp.ToString(timestampFormat)));
             actorsAndAnimationsBundleLastReadTimeStamp = DateTime.Now;
         }            
 
@@ -223,6 +231,8 @@ public class ElPresidente : MonoBehaviour {
         if (reloadTerrainBundle)
         {
             terrain = AssetBundle.CreateFromFile(currentInputSet.TerrainBundlePath);
+            Debug.Log(string.Format("loading terrain bundle[{0}] @ [{1}].  least read [{2}]",
+                                    currentInputSet.TerrainBundlePath, DateTime.Now.ToString(timestampFormat), storyPlanLastReadTimeStamp.ToString(timestampFormat)));
             terrainBundleLastReadTimeStamp = DateTime.Now;
             instantiateTerrain();
         }  
@@ -230,11 +240,15 @@ public class ElPresidente : MonoBehaviour {
         if (reloadStoryPlan || reloadActorsAndAnimationsBundle || reloadCinematicModel)
         {        
             actorActionList = ActorActionFactory.CreateStoryActions(story, cinematicModel);
+            Debug.Log(string.Format("upstream components reloaded, rebuilding actor action queue @ [{0}].",
+                                    DateTime.Now.ToString(timestampFormat)));
         }
 
         if (reloadStoryPlan || reloadCameraPlan)
         {            
             discourseActionList = CameraActionFactory.CreateCameraActions(story, currentInputSet.CameraPlanPath);
+            Debug.Log(string.Format("upstream components reloaded, rebuilding camera action queue @ [{0}].",
+                                    DateTime.Now.ToString(timestampFormat)));
             cameraPlanLastReadTimeStamp = DateTime.Now;
         }
 
