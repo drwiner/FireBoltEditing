@@ -14,7 +14,7 @@ namespace Assets.scripts
         private float startTick,endTick;
         private bool initialized = false;
         private string anchor=string.Empty;
-        private float? height;//TODO implement height specification in oshmirto
+        private float? height;
         private string cameraName; //this is actually going to manipulate the rig most likely, but what we call it doesn't matter much from in here
         private CameraBody cameraBody; //need a reference to this guy for setting fstop and lens
         private string lensName;
@@ -68,7 +68,7 @@ namespace Assets.scripts
             if(initialized) return true;
 
             Debug.Log(string.Format("init shot fragment start[{0}] end[{1}] anchor[{2}] height[{3}] lens[{4}] fStop[{5}] framing[{6}] direction[{7}] angle[{8}] focus[{9}] d:s[{10}:{11}]",
-                                    startTick,endTick,anchor,height,lensName,fStopName,framings[0].ToString(),direction.ToString(),cameraAngle.ToString(),focusTarget,
+                                    startTick,endTick,anchor,height,lensName,fStopName,framings[0],direction,cameraAngle,focusTarget,
                                     ElPresidente.Instance.CurrentDiscourseTime, ElPresidente.Instance.CurrentStoryTime));
             if(!findCamera()) return false;           
             savePreviousCameraState();
@@ -228,9 +228,14 @@ namespace Assets.scripts
             //this is potentially problematic for framing things where previous shot was from not eyeline.  
             //perhaps we should be setting the angle down to 0 for our calculations then restore it....
             //lots of opportunity for things to get squirrelly here.
-            if (cameraAngle != null && !string.IsNullOrEmpty(cameraAngle.Target))
+            if (tempCameraOrientation.X == null && cameraAngle != null && !string.IsNullOrEmpty(cameraAngle.Target))
             {
                 angleCameraTo(cameraAngle.Target, cameraAngle.AngleSetting);           
+            }
+
+            if (!tempCameraPosition.Y.HasValue && framings[0] != null)//we still haven't set height.  place camera at subject's point of interest
+            {
+                tempCameraPosition.Y = findTargetLookAtPoint(framings[0].FramingTarget, GameObject.Find(framings[0].FramingTarget).GetComponent<BoxCollider>().bounds).y;
             }
 
             //focus has to go after all possible x,y,z settings to get the correct distance to subject
@@ -248,7 +253,8 @@ namespace Assets.scripts
             newFStopIndex = tempFStopIndex.HasValue ? tempFStopIndex.Value : previousFStopIndex;
             newfocusDistance = tempFocusDistance.HasValue ? tempFocusDistance.Value : previousFocusDistance;
 
-            return true;
+            initialized = true;
+            return initialized;
         }
 
         private void angleCameraTo(string targetName, AngleSetting angleSetting)
@@ -262,13 +268,13 @@ namespace Assets.scripts
                 Bounds targetBounds = angleTarget.GetComponent<BoxCollider>().bounds;
                 if (!tempCameraPosition.Y.HasValue)//only allow angle to adjust height if it is not set manually
                 {
-                    tempCameraPosition.Y = solveForYPosition(30f, tempCameraPosition.Merge(previousCameraPosition), findTargetLookAtPoint(targetName,targetBounds), cameraAngle.AngleSetting); //center is not best, but it's better than feet
+                    tempCameraPosition.Y = solveForYPosition(30f, tempCameraPosition.Merge(previousCameraPosition), findTargetLookAtPoint(targetName,targetBounds), cameraAngle.AngleSetting); 
                 }
                 //choosing only to update x axis rotation if angle is specified.  this means that some fragments where the camera was previously tilted
                 //may fail to show the actor if the fragment only specifies a framing.  we could make angle mandatory...
                 //this is not ideal, but neither is lacking the ability to leave the camera x axis rotation unchanged.
                 //like where we do a tilt with and then lock off
-                tempCameraOrientation.X = Quaternion.LookRotation(findTargetLookAtPoint(targetName, targetBounds) - tempCameraPosition.Merge(previousCameraPosition)).eulerAngles.x; //again center is not best
+                tempCameraOrientation.X = Quaternion.LookRotation(findTargetLookAtPoint(targetName, targetBounds) - tempCameraPosition.Merge(previousCameraPosition)).eulerAngles.x; 
             }
             else
             {

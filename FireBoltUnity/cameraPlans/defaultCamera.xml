@@ -14,10 +14,10 @@
             --><!--<movement type="Focus" directive="With" subject="Pudge"/>--><!--
           </movements>
         </shotFragment>-->
-      <shotFragment duration="5000" focus="Pudge" f-stop ="2.8" shake ="0">
+      <shotFragment duration="5000" >
         <!--height="5"-->
-        <angle angleSetting="Medium" target="Pudge"/>
-        <direction heading="Toward" target="Pudge"/>
+        <angle angleSetting="High" target="Pudge"/>
+        <!--<direction heading="Toward" target="Pudge"/>-->
         <framings>
           <framing framingType="CloseUp" framingTarget="Pudge"/>
         </framings>
@@ -28,7 +28,7 @@
       </shotFragments>
     </block>
 
-    <block>
+    <!--<block>
       <shotFragments>
         <shotFragment duration="15000" focus="Pudge" f-stop ="2.8" shake ="0">
           <angle angleSetting="Medium" target="Pudge"/>
@@ -41,9 +41,9 @@
           </movements>
         </shotFragment>
       </shotFragments>
-    </block>
-    
-    
+    </block>-->
+
+
     <!--<block >
       <shotFragments>
         <shotFragment anchor="0,-5" height="1" duration="5000" focus="Tower" f-stop ="1.4" lens ="25mm" shake ="0">
