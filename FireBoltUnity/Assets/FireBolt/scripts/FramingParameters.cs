@@ -12,7 +12,8 @@ namespace Assets.scripts
                 MaxPercent=20.25f, 
                 MinPercent=15.01f,
                 TargetPercent=18.0f,
-                DefaultFocalLength="150mm"
+                DefaultFocalLength="150mm",
+                DefaultFStop="2.8"
             }},
             {FramingType.CloseUp, new FramingParameters()
             {
@@ -20,7 +21,8 @@ namespace Assets.scripts
                 MaxPercent=10.25f, 
                 MinPercent=8.01f,
                 TargetPercent=9.0f,
-                DefaultFocalLength="100mm"
+                DefaultFocalLength="100mm",
+                DefaultFStop="2.8"
             }},            
             {FramingType.Waist, new FramingParameters()
             {
@@ -28,7 +30,8 @@ namespace Assets.scripts
                 MaxPercent=2.25f, 
                 MinPercent=1.75f,
                 TargetPercent=2.0f,
-                DefaultFocalLength="50mm"
+                DefaultFocalLength="50mm",
+                DefaultFStop="5.6"
             }},
             {FramingType.Full,new FramingParameters()
             {
@@ -36,7 +39,8 @@ namespace Assets.scripts
                 MaxPercent=1.0f,
                 MinPercent=0.9f,
                 TargetPercent=0.95f,
-                DefaultFocalLength="35mm"
+                DefaultFocalLength="35mm",
+                DefaultFStop="8"
             }},
             {FramingType.Long,new FramingParameters()
             {
@@ -44,7 +48,8 @@ namespace Assets.scripts
                 MaxPercent=0.75f,
                 MinPercent=0.35f,
                 TargetPercent=0.5f,
-                DefaultFocalLength="27mm"
+                DefaultFocalLength="27mm",
+                DefaultFStop="16"
             }},
             {FramingType.ExtremeLong, new FramingParameters()
             {
@@ -52,7 +57,8 @@ namespace Assets.scripts
                 MaxPercent=0.25f,
                 MinPercent=0.01f, 
                 TargetPercent=0.2f,
-                DefaultFocalLength="27mm"
+                DefaultFocalLength="27mm",
+                DefaultFStop="22"
             }},
         };
 
@@ -61,5 +67,6 @@ namespace Assets.scripts
         public float MinPercent { get; set; }
         public float TargetPercent { get; set; }
         public string DefaultFocalLength { get; set; }
+        public string DefaultFStop { get; set; }
     }
 }

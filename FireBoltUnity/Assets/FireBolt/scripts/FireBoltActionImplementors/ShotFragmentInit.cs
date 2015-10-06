@@ -105,18 +105,23 @@ namespace Assets.scripts
             }
 
             //framing 
-            GameObject framingTarget; 
+            GameObject framingTarget = null; 
             if (framings != null && framings.Count > 0)
             {
                 framingTarget = GameObject.Find(framings[0].FramingTarget) as GameObject;
                 if (framingTarget != null)
-                {                    
+                {                                        
                     Bounds targetBounds = framingTarget.GetComponent<BoxCollider>().bounds;                                        
                     targetBounds.BuildDebugBox();
 
                     Debug.Log(string.Format("framing target[{0}] bounds[{1},{2}]", framings[0].FramingTarget, targetBounds.min.y, targetBounds.max.y));
 
                     FramingParameters framingParameters = FramingParameters.FramingTable[framings[0].FramingType];
+
+                    //default our aperture to one appropriate to the framing if it's not set
+                    if (!tempFStopIndex.HasValue &&
+                        CameraActionFactory.fStops.TryGetValue(framingParameters.DefaultFStop, out tempFStop))
+                            tempFStopIndex = tempFStop;
 
                     Camera nodalCam = Camera.FindObjectOfType<Camera>();
                                         
@@ -224,10 +229,7 @@ namespace Assets.scripts
                 }
             }
             
-            //angling must go after framing, since x,z might not be set til we frame.
-            //this is potentially problematic for framing things where previous shot was from not eyeline.  
-            //perhaps we should be setting the angle down to 0 for our calculations then restore it....
-            //lots of opportunity for things to get squirrelly here.
+            //angling must go after framing(or during), since x,z might not be set til we frame.
             if (tempCameraOrientation.X == null && cameraAngle != null && !string.IsNullOrEmpty(cameraAngle.Target))
             {
                 angleCameraTo(cameraAngle.Target, cameraAngle.AngleSetting);           
@@ -243,6 +245,10 @@ namespace Assets.scripts
             if(calculateFocusPosition(focusTarget,out focusPosition))
             {
                 tempFocusDistance = Vector3.Distance(tempCameraPosition.Merge(previousCameraPosition), focusPosition);       
+            }
+            else if (framingTarget != null)//we didn't specify what to focus on, but we framed something.  let's focus on that by default
+            {
+                tempFocusDistance = Vector3.Distance(tempCameraPosition.Merge(previousCameraPosition), findTargetLookAtPoint(framingTarget.name, framingTarget.GetComponent<BoxCollider>().bounds));
             }
 
             //sort out what wins where and assign to final camera properties
@@ -268,7 +274,7 @@ namespace Assets.scripts
                 Bounds targetBounds = angleTarget.GetComponent<BoxCollider>().bounds;
                 if (!tempCameraPosition.Y.HasValue)//only allow angle to adjust height if it is not set manually
                 {
-                    tempCameraPosition.Y = solveForYPosition(30f, tempCameraPosition.Merge(previousCameraPosition), findTargetLookAtPoint(targetName,targetBounds), cameraAngle.AngleSetting); 
+                    tempCameraPosition.Y = findCameraYPosition(30f, tempCameraPosition.Merge(previousCameraPosition), findTargetLookAtPoint(targetName,targetBounds), cameraAngle.AngleSetting); 
                 }
                 //choosing only to update x axis rotation if angle is specified.  this means that some fragments where the camera was previously tilted
                 //may fail to show the actor if the fragment only specifies a framing.  we could make angle mandatory...
@@ -404,7 +410,7 @@ namespace Assets.scripts
         /// Finds the distance by solving the equation: tan(base/hyp angle) * base = height.
         /// Returns the height found by solving the equation.
         /// </summary>
-        private float solveForYPosition(float alpha, Vector3 sourcePosition, Vector3 targetPosition, AngleSetting angleSetting)
+        private float findCameraYPosition(float alpha, Vector3 sourcePosition, Vector3 targetPosition, AngleSetting angleSetting)
         {
             // If the shot is a medium angle it is on the same y-plane as the target.
             if (angleSetting == Oshmirto.AngleSetting.Medium) return targetPosition.y;
@@ -457,25 +463,26 @@ namespace Assets.scripts
         private bool calculateFocusPosition(string focusTarget, out Vector3 focusPosition)
         {
             focusPosition = new Vector3();
-            if (!string.IsNullOrEmpty(focusTarget))
-            {
-                //try to parse target as a coordinate                
-                if (focusTarget.TryParseVector3(out focusPosition))
-                {
-                    Debug.Log("focus @" + focusPosition);
-                    return true;
-                }
+            if (string.IsNullOrEmpty(focusTarget))
+                return false;
 
-                //try to find the target as an actor
-                var target = GameObject.Find(focusTarget);
-                if (target == null)
-                {
-                    Debug.Log("actor name [" + focusTarget + "] not found. cannot change focus");
-                    return false;
-                }
-                focusPosition = target.transform.position;
-                //Debug.Log(string.Format("focus target[{0}] @{1} tracking[{2}]", focusTarget, target.transform.position));
+            //try to parse target as a coordinate                
+            if (focusTarget.TryParseVector3(out focusPosition))
+            {
+                Debug.Log("focus @" + focusPosition);
+                return true;
             }
+
+            //try to find the target as an actor
+            var target = GameObject.Find(focusTarget);
+            if (target == null)
+            {
+                Debug.Log("actor name [" + focusTarget + "] not found. cannot change focus");
+                return false;
+            }
+            focusPosition = target.transform.position;
+            //Debug.Log(string.Format("focus target[{0}] @{1} tracking[{2}]", focusTarget, target.transform.position));
+
             return true;
         }
 
