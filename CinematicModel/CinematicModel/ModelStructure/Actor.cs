@@ -11,14 +11,21 @@ namespace CinematicModel
         
         private Dictionary<string, AnimationMapping> animationMappings;
 
-        [XmlAttribute(AttributeName="name")]
+        [XmlAttribute("name")]
         public string Name { get; set; }
 
-        [XmlAttribute(AttributeName = "model")]
+        [XmlAttribute("model")]
         public string Model { get; set; }
 
-        [XmlArray(ElementName = "animationMappings")]
-        [XmlArrayItem(ElementName = "animationMapping")]
+        /// <summary>
+        /// y offset in % size of the model relative to center.
+        /// used for framing < full
+        /// </summary>
+        [XmlAttribute("pointOfInterest")]
+        public float PointOfInterest { get; set; }
+
+        [XmlArray("animationMappings")]
+        [XmlArrayItem("animationMapping")]
         public List<AnimationMapping> AnimationMappings { get; set; }
 
         public Actor()
