@@ -57,6 +57,7 @@ namespace Assets.scripts
                     discourseActionList.Add(new ShotFragmentInit(fragmentStartTime, fragmentEndTime, cameraRig, fragment.Anchor, fragment.Height,
                         fragment.Lens, fragment.FStop, fragment.Framings, fragment.Direction, fragment.Angle, fragment.FocusPosition));
 
+                    float movementStartTime = fragmentStartTime + 1; //force moves to sort after inits
                     foreach (var movement in fragment.CameraMovements)
                     {
                         switch (movement.Type) //TODO why do some movements use cameraName directly and some use rig?  rig should be the thing we use always
@@ -65,13 +66,13 @@ namespace Assets.scripts
                                 switch (movement.Directive)
                                 {
                                     case(CameraMovementDirective.With):
-                                        discourseActionList.Add(new TranslateRelative(movement.Subject, fragmentStartTime, fragmentEndTime, cameraName, false, true, false));
+                                        discourseActionList.Add(new TranslateRelative(movement.Subject, movementStartTime, fragmentEndTime, cameraRig, false, true, false));
                                         break;
                                     case(CameraMovementDirective.To):
                                         Vector2 destination;
                                         if (movement.Subject.TryParsePlanarCoords(out destination))
                                         {
-                                            discourseActionList.Add(new Translate(fragmentStartTime, fragmentEndTime, cameraName,
+                                            discourseActionList.Add(new Translate(movementStartTime, fragmentEndTime, cameraRig,
                                                                                 Vector3.zero, new Vector3Nullable(destination.x,null,destination.y),true));
                                         }
                                         break;
@@ -83,7 +84,7 @@ namespace Assets.scripts
                                     case CameraMovementDirective.With:
                                         break;
                                     case CameraMovementDirective.To:
-                                        discourseActionList.Add(new Translate(fragmentStartTime, fragmentEndTime, cameraName,
+                                        discourseActionList.Add(new Translate(movementStartTime, fragmentEndTime, cameraRig,
                                                                             Vector3.zero, new Vector3Nullable(null, float.Parse(movement.Subject), null), true));
                                         break;
                                 }
@@ -92,11 +93,11 @@ namespace Assets.scripts
                                 switch (movement.Directive)
                                 {
                                     case CameraMovementDirective.With:
-                                        discourseActionList.Add(new RotateRelative(movement.Subject, fragmentStartTime, fragmentEndTime, cameraRig,
+                                        discourseActionList.Add(new RotateRelative(movement.Subject, movementStartTime, fragmentEndTime, cameraRig,
                                                                                  true, false, true));
                                         break;
                                     case CameraMovementDirective.To:
-                                        discourseActionList.Add(new Rotate(fragmentStartTime, fragmentEndTime, cameraName, float.Parse(movement.Subject)));
+                                        discourseActionList.Add(new Rotate(movementStartTime, fragmentEndTime, cameraRig, float.Parse(movement.Subject)));
                                         break;
                                 }
                                 break;
@@ -104,7 +105,7 @@ namespace Assets.scripts
                                 switch(movement.Directive)
                                 {
                                     case CameraMovementDirective.With: // will this co-execute with pan-with? not currently
-                                        discourseActionList.Add(new RotateRelative(movement.Subject, fragmentStartTime, fragmentEndTime, cameraRig,
+                                        discourseActionList.Add(new RotateRelative(movement.Subject, movementStartTime, fragmentEndTime, cameraRig,
                                                                                  false, true, true));
                                         break;
                                     case CameraMovementDirective.To:
@@ -116,14 +117,14 @@ namespace Assets.scripts
                                 switch (movement.Directive)
                                 {
                                     case CameraMovementDirective.With:
-                                        discourseActionList.Add(new Focus(fragmentStartTime, fragmentEndTime, cameraName, movement.Subject, true));
+                                        discourseActionList.Add(new Focus(movementStartTime, fragmentEndTime, cameraName, movement.Subject, true));
                                         break;
                                 }
                                 break;
                         }
                     }
                     // Shake it off
-                    discourseActionList.Add(new Shake(fragmentStartTime, fragmentEndTime, cameraName, fragment.Shake));
+                    discourseActionList.Add(new Shake(movementStartTime, fragmentEndTime, cameraName, fragment.Shake));
 
                     currentDiscourseTime = fragmentEndTime;
                 }

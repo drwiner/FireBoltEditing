@@ -6,6 +6,19 @@
 	<terrain location="(0,0,0)" terrainFileName="flatDotaTerrain.prefab"/>
   <!-- animation search depth should generally be at least as deep as actor search depth-->
   <domainActions>
+    <domainAction name="standAround" >
+      <params>
+        <param name="actor" />
+      </params>
+      <createActions>
+      </createActions>
+      <destroyActions/>
+      <rotateActions/>
+      <translateActions/>
+      <animateActions>
+        <animateAction name="chill" actorNameParamName="actor" />
+      </animateActions>
+    </domainAction>
     <domainAction name="spawn-creep" >
       <params>
         <param name="actor" />
@@ -104,10 +117,11 @@
     <actor name="Wall" model="Wall.prefab" >
       <animationMappings/>       
     </actor>
-    <actor name="secretAgentMan" model="m005.fbx" >
+    <actor name="secretAgentMan" model="m005.fbx" pointOfInterest="0.85">
       <animationMappings>
         <animationMapping animateActionName="observe" animationName="idle" loopAnimation="true" />
-        <animationMapping animateActionName="walk" animationName="cm_walk" loopAnimation="true" />
+        <animationMapping animateActionName="walk" animationName="walk" loopAnimation="true" />
+        <animationMapping animateActionName="chill" animationName="idle" loopAnimation="true" />
       </animationMappings>
     </actor>
     <actor name="Pudge" model="pudge_model.fbx" pointOfInterest="0.75">
@@ -116,6 +130,7 @@
         <animationMapping animateActionName="walk" animationName="walk" loopAnimation="true" />
         <animationMapping animateActionName="buy-item1" animationName="verticalSwipe" loopAnimation="true" />
         <animationMapping animateActionName="idle" animationName="idle" loopAnimation="true" />
+        <animationMapping animateActionName="chill" animationName="idle" loopAnimation="true" />
       </animationMappings>
     </actor>
 

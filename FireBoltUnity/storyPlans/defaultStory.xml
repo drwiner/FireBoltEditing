@@ -21,24 +21,49 @@
     </action>-->
 
 
-    <!--<action type="spawn-hero" name="step7000">
-      <property name="location" value="(-2,5)"/>
+    <action type="spawn-hero" name="step7000">
+      <property name="location" value="(0,5)"/>
       <property name="actor" value="Wall"/>
       <property name="time" value="0-1"/>
-    </action>-->
-    
-     <action type="spawn-hero" name="step7001">
-      <property name="location" value="(-2,10)"/>
+    </action>
+
+
+    <action type="spawn-hero" name="step6001">
+      <property name="location" value="(0,15)"/>
+      <property name="actor" value="secretAgentMan"/>
+      <property name="time" value="0-1"/>
+    </action>
+
+    <action type="rotate" name="step6003">
+      <property name="start-angle" value="0"/>
+      <property name="end-angle" value="180"/>
+      <property name="actor" value="secretAgentMan"/>
+      <property name="time" value="1500-2000"/>
+    </action>
+
+    <action type="standAround" name="step6004">
+      <property name="actor" value="secretAgentMan"/>
+      <property name="time" value="4-40000"/>
+    </action>
+
+    <action type="spawn-hero" name="step7001">
+      <property name="location" value="(0,10)"/>
       <property name="actor" value="Pudge"/>
       <property name="time" value="0-1"/>
     </action>
 
-    <action type="move" name="step7002">
-      <property name="origin" value="(-2, 10)"/>
-      <property name="destination" value="(-2, 9)"/>
+
+    <action type="standAround" name="step7013">
       <property name="actor" value="Pudge"/>
       <property name="time" value="4-40000"/>
     </action>
+    
+    <!--<action type="move" name="step7002">
+      <property name="origin" value="(0, 10)"/>
+      <property name="destination" value="(0, 9.9)"/>
+      <property name="actor" value="Pudge"/>
+      <property name="time" value="4-40000"/>
+    </action>-->
 
     <!--<action type="rotate" name="step7003">
       <property name="start-angle" value="0"/>
@@ -235,6 +260,7 @@
       <action-type-ref name="spawn-rune"/>
       <action-type-ref name="spawn-ward"/>
     </action-type>
+    <action-type name="standAround" />
     <action-type name="spawn-creep"/>
     <action-type name="move"/>
     <action-type name="buy-item-courier"/>
