@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using CM=CinematicModel;
+using LN.Utilities;
 
 namespace Assets.scripts
 {
@@ -11,13 +12,12 @@ namespace Assets.scripts
     {
         float startTick, endTick;
         string actorName;
-        Vector3 destination;
-        float targetDegrees;
+       
         protected GameObject actor;
         Quaternion target;
 		protected Quaternion start;
 
-
+        Vector3Nullable targetRotation;
 
         public static bool ValidForConstruction(string actorName)
         {
@@ -38,18 +38,13 @@ namespace Assets.scripts
         /// <param name="startTick"></param>
         /// <param name="endTick"></param>
         /// <param name="actorName"></param>
-        /// <param name="targetDegrees">must be in unity axes</param>
-        public Rotate(float startTick, float endTick, string actorName, float targetDegrees) 
+        /// <param name="targetRotation">must be in unity axes</param>
+        public Rotate(float startTick, float endTick, string actorName, Vector3Nullable targetRotation) 
         {
             this.startTick = startTick;
             this.actorName = actorName;
             this.endTick = endTick;
-            this.targetDegrees = targetDegrees;
-        }
-
-        public void SetTargetDegrees(float targetDegrees)
-        {
-            this.targetDegrees = targetDegrees;
+            this.targetRotation = targetRotation;
         }
 
         public virtual bool Init()
@@ -67,11 +62,21 @@ namespace Assets.scripts
             }
 			start = actor.transform.rotation;
         
-            target = Quaternion.Euler(0, targetDegrees, 0);
 
-            if (endTick - startTick < ElPresidente.MILLIS_PER_FRAME)//we aren't guaranteed a single execution cycle, so move it now and make sure it doesn't move later
-                Skip();
+            //if i fill in zeros here, there are issues
+            //i'm saying that my orientation is 0 about the x and 0 about the z, so i can't tilt or yaw
+            //that was great for planar actors, but it's not general enough
+            //now we get values(or lack thereof) for all 3 axes from constructor.
+            //I have to devise a mechanism that varies only those axes and allows variation for other by other rotate objects
+            //this seems to indicate that i should be getting and setting my quaternion for actor rotation all within the execute.
+            //how do i track how close we are to completed for a given rotation?
 
+            //target = Quaternion.Euler(0, targetRotation, 0);
+
+            //this line of reasoning sends me back toward what i was doing originally where i did interpolation myself.
+            //then i was keeping track of where I should be using some additive method, but that no longer works with how 
+            //we are scrubbing and setting time.
+            // i must away to el Presidente and discover what happens when I scrub back to the middle of an action
             return true;
         }
 
@@ -93,7 +98,11 @@ namespace Assets.scripts
 
         public virtual void Skip()
         {
-            actor.transform.rotation = target;
+            Vector3 actorTransformEulerAngles = actor.transform.rotation.eulerAngles;
+            //for any unspecified values in targetRotation, set that axis angle to current value
+            actor.transform.rotation = Quaternion.Euler(new Vector3(targetRotation.X ?? actorTransformEulerAngles.x,
+                                                                    targetRotation.Y ?? actorTransformEulerAngles.y,
+                                                                    targetRotation.Z ?? actorTransformEulerAngles.z));
         }
 
         public void Stop()

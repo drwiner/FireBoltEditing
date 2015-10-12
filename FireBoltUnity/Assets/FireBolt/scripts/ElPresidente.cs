@@ -200,7 +200,7 @@ public class ElPresidente : MonoBehaviour {
         if (reloadStoryPlan)
         {
             loadStructuredImpulsePlan(currentInputSet.StoryPlanPath);
-            Debug.Log(string.Format("loading story plan[{0}] @ [{1}].  least read [{2}]", 
+            Debug.Log(string.Format("loading story plan[{0}] @ [{1}].  last read [{2}]", 
                                     currentInputSet.StoryPlanPath, DateTime.Now.ToString(timestampFormat), storyPlanLastReadTimeStamp.ToString(timestampFormat)));
             storyPlanLastReadTimeStamp = DateTime.Now;
         }
@@ -208,7 +208,7 @@ public class ElPresidente : MonoBehaviour {
         if (reloadCinematicModel)
         {
             cinematicModel = CM.Parser.Parse(currentInputSet.CinematicModelPath); 
-            Debug.Log(string.Format("loading cinematic model[{0}] @ [{1}].  least read [{2}]",
+            Debug.Log(string.Format("loading cinematic model[{0}] @ [{1}].  last read [{2}]",
                                      currentInputSet.CinematicModelPath, DateTime.Now.ToString(timestampFormat), storyPlanLastReadTimeStamp.ToString(timestampFormat)));
             cinematicModelPlanLastReadTimeStamp = DateTime.Now;
         }
@@ -220,7 +220,7 @@ public class ElPresidente : MonoBehaviour {
         if (reloadActorsAndAnimationsBundle)
         {
             actorsAndAnimations = AssetBundle.CreateFromFile(currentInputSet.ActorsAndAnimationsBundlePath);
-            Debug.Log(string.Format("loading actors bundle[{0}] @ [{1}].  least read [{2}]",
+            Debug.Log(string.Format("loading actors bundle[{0}] @ [{1}].  last read [{2}]",
                          currentInputSet.ActorsAndAnimationsBundlePath, DateTime.Now.ToString(timestampFormat), storyPlanLastReadTimeStamp.ToString(timestampFormat)));
             actorsAndAnimationsBundleLastReadTimeStamp = DateTime.Now;
         }            
@@ -231,7 +231,7 @@ public class ElPresidente : MonoBehaviour {
         if (reloadTerrainBundle)
         {
             terrain = AssetBundle.CreateFromFile(currentInputSet.TerrainBundlePath);
-            Debug.Log(string.Format("loading terrain bundle[{0}] @ [{1}].  least read [{2}]",
+            Debug.Log(string.Format("loading terrain bundle[{0}] @ [{1}].  last read [{2}]",
                                     currentInputSet.TerrainBundlePath, DateTime.Now.ToString(timestampFormat), storyPlanLastReadTimeStamp.ToString(timestampFormat)));
             terrainBundleLastReadTimeStamp = DateTime.Now;
             instantiateTerrain();
@@ -423,12 +423,14 @@ public class ElPresidente : MonoBehaviour {
     {
         int currentIndex = actions.NextActionIndex-1;//next action was pointed to...next action!
         actions.NextActionIndex = 0;
+        //find the point to which we should back up
         while (actions.NextActionIndex < actions.Count &&
-               actions[actions.NextActionIndex].EndTick() < time) 
+               actions[actions.NextActionIndex].EndTick() < time) //this is bad.  actions are ordered by startTick, and we are searching by endTick...there will be some small issues
         {
             actions.NextActionIndex++;
         }
 
+        //walk backward, undoing actions until current action is actually before nextAction
         while (currentIndex >= actions.NextActionIndex)
         {
             actions[currentIndex].Undo();
