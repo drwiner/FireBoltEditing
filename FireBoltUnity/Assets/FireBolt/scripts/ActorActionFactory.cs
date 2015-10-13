@@ -130,7 +130,7 @@ namespace Assets.scripts
                 endTick = getEndTick(storyAction, ra, effectingAnimation, startTick);
                 if (Rotate.ValidForConstruction(actorName))
                 {                    
-                    aaq.Add(new Rotate(startTick, endTick, actorName, targetDegrees));
+                    aaq.Add(new Rotate(startTick, endTick, actorName, new Vector3Nullable(null, targetDegrees, null)));
                 }                
             }
         }

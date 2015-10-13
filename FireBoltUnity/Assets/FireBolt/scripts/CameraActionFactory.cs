@@ -60,7 +60,7 @@ namespace Assets.scripts
                     float movementStartTime = fragmentStartTime + 1; //force moves to sort after inits
                     foreach (var movement in fragment.CameraMovements)
                     {
-                        switch (movement.Type) //TODO why do some movements use cameraName directly and some use rig?  rig should be the thing we use always
+                        switch (movement.Type) 
                         {
                             case CameraMovementType.Dolly :
                                 switch (movement.Directive)
@@ -97,7 +97,7 @@ namespace Assets.scripts
                                                                                  true, false, true));
                                         break;
                                     case CameraMovementDirective.To:
-                                        discourseActionList.Add(new Rotate(movementStartTime, fragmentEndTime, cameraRig, float.Parse(movement.Subject)));
+                                        discourseActionList.Add(new Rotate(movementStartTime, fragmentEndTime, cameraRig, new Vector3Nullable(null, float.Parse(movement.Subject), null)));
                                         break;
                                 }
                                 break;
@@ -109,7 +109,7 @@ namespace Assets.scripts
                                                                                  false, true, true));
                                         break;
                                     case CameraMovementDirective.To:
-                                        //cameraActionQueue.Add(new Rotate(fragmentStartTime, fragmentEndTime, ))
+                                        discourseActionList.Add(new Rotate(movementStartTime, fragmentEndTime, cameraRig, new Vector3Nullable(float.Parse(movement.Subject), null, null)));
                                         break;
                                 }
                                 break;

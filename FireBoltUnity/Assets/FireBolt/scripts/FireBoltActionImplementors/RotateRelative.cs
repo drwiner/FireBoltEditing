@@ -28,7 +28,7 @@ namespace Assets.scripts
         /// <param name="yLock">rotate about y axis</param>
         /// <param name="zLock">rotate about z axis</param>
         public RotateRelative(string trackedActorName, float startTick, float endTick, string actorName, bool xLock, bool yLock, bool zLock, bool instant=false) :
-            base(startTick, endTick, actorName, 0f ) //TODO consider using nullable vector3 to pass rotation axes
+            base(startTick, endTick, actorName, new Vector3Nullable(null,null,null) )
         {
             this.trackedActorName = trackedActorName;
             dimensionLock[0] = xLock;
@@ -88,7 +88,7 @@ namespace Assets.scripts
 
         public override void Undo()
         {
-            this.actor.transform.rotation = this.start;
+            this.actor.transform.rotation = Quaternion.Euler(this.start);
         }
     }
 }
