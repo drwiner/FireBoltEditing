@@ -6,9 +6,9 @@ using LN.Utilities.Collections;
 
 namespace Assets.scripts
 {
-    public class ActionTypeComparer : IComparer<IFireBoltAction>
+    public class ActionTypeComparer : IComparer<FireBoltAction>
     {
-        public int Compare(IFireBoltAction x, IFireBoltAction y)
+        public int Compare(FireBoltAction x, FireBoltAction y)
         {
             if (x.Equals(y)) return 0;
             if (x is SetStoryTime) return -1;
@@ -27,9 +27,9 @@ namespace Assets.scripts
         }
     }
 
-    public class StartTickComparer : IComparer<IFireBoltAction>
+    public class StartTickComparer : IComparer<FireBoltAction>
     {
-        public int Compare(IFireBoltAction x, IFireBoltAction y)
+        public int Compare(FireBoltAction x, FireBoltAction y)
         {
             if (x.StartTick() > y.StartTick())
             {
@@ -44,7 +44,7 @@ namespace Assets.scripts
         }
     }
 
-    public class FireBoltActionList : SortedSet<IFireBoltAction>
+    public class FireBoltActionList : SortedSet<FireBoltAction>
     {
         public FireBoltActionList() :
             base(new StartTickComparer())
@@ -52,7 +52,7 @@ namespace Assets.scripts
             NextActionIndex = 0;
         }
 
-        public FireBoltActionList(IComparer<IFireBoltAction> comparer) :
+        public FireBoltActionList(IComparer<FireBoltAction> comparer) :
             base(comparer)
         {
             NextActionIndex = 0;

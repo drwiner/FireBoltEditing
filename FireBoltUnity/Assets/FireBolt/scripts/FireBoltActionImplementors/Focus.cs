@@ -8,11 +8,8 @@ using LN.Utilities.Collections;
 
 namespace Assets.scripts
 {
-    public class Focus : IFireBoltAction
+    public class Focus : FireBoltAction
     {
-
-        float startTick, endTick;
-
         string cameraName;
         string targetName;
         Transform focusLocation;
@@ -27,16 +24,15 @@ namespace Assets.scripts
             return true;
         }
 
-        public Focus(float startTick, float endTick, string cameraName, string targetName, bool tracking=false) 
+        public Focus(float startTick, float endTick, string cameraName, string targetName, bool tracking=false) :
+            base(startTick, endTick)
         {
-            this.startTick = startTick;
-            this.endTick = endTick;
             this.cameraName = cameraName;
             this.targetName = targetName;
             this.tracking = tracking;
         }
 
-        public virtual bool Init()
+        public override bool Init()
         {
             //get camera
             camera = GameObject.Find(cameraName).GetComponent<CameraBody>() as CameraBody;
@@ -65,7 +61,7 @@ namespace Assets.scripts
             return true;
         }
 
-        public virtual void Execute()
+        public override void Execute()
         {
             if (target == null)
             {
@@ -87,29 +83,20 @@ namespace Assets.scripts
             }        
         }
 
-		public virtual void Undo()
+		public override void Undo()
 		{
             executed = false;
 		}
 
-        public virtual void Skip()
+        public override void Skip()
         {
 
         }
 
-        public virtual void Stop()
+        public override void Stop()
         {
             //nothing to stop
         }
 
-        public float StartTick()
-        {
-            return startTick;
-        }
-
-        public float EndTick()
-        {
-            return endTick;
-        }
     }
 }

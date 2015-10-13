@@ -369,12 +369,11 @@ public class ElPresidente : MonoBehaviour {
         else if (!initialized)
             return;
 
-        foreach (IFireBoltAction action in executingDiscourseActions)
+        foreach (FireBoltAction action in executingActorActions)
         {
             action.Execute();
         }
-
-        foreach (IFireBoltAction action in executingActorActions)
+        foreach (FireBoltAction action in executingDiscourseActions)//moved to after executing actor actions...could be problematic when going to different times
         {
             action.Execute();
         }
@@ -390,8 +389,8 @@ public class ElPresidente : MonoBehaviour {
     void updateFireBoltActions(FireBoltActionList actions, FireBoltActionList executingActions, float referenceTime)
     {
         //stop things that should be finished now and remove them from the executing list
-        List<IFireBoltAction> removeList = new List<IFireBoltAction>();
-        foreach (IFireBoltAction action in executingActions)
+        List<FireBoltAction> removeList = new List<FireBoltAction>();
+        foreach (FireBoltAction action in executingActions)
         {
             if (actionComplete(action,referenceTime) || action.StartTick() > referenceTime)
             {
@@ -399,7 +398,7 @@ public class ElPresidente : MonoBehaviour {
                 removeList.Add(action);
             }
         }
-        foreach (IFireBoltAction action in removeList)
+        foreach (FireBoltAction action in removeList)
         {
             executingActions.Remove(action);
         }
@@ -407,7 +406,7 @@ public class ElPresidente : MonoBehaviour {
         //go through the full action list until the next action shouldn't have started yet
         while (actions.NextActionIndex < actions.Count && actions[actions.NextActionIndex].StartTick() <= referenceTime) 
         {
-            IFireBoltAction action = actions[actions.NextActionIndex];
+            FireBoltAction action = actions[actions.NextActionIndex];
             actions.NextActionIndex++;
             if (action.Init()) 
 			{
@@ -444,8 +443,8 @@ public class ElPresidente : MonoBehaviour {
 
     void fastForwardFireBoltActions(FireBoltActionList actions, float targetTime, FireBoltActionList executingActions, float currentTime)
     {
-        List<IFireBoltAction> removeList = new List<IFireBoltAction>();
-        foreach (IFireBoltAction action in executingActions)
+        List<FireBoltAction> removeList = new List<FireBoltAction>();
+        foreach (FireBoltAction action in executingActions)
         {
             if (actionComplete(action, currentTime))
             {
@@ -453,13 +452,13 @@ public class ElPresidente : MonoBehaviour {
                 removeList.Add(action);
             }
         }
-        foreach (IFireBoltAction action in removeList)
+        foreach (FireBoltAction action in removeList)
         {
             executingActions.Remove(action);
         }
         while (actions.NextActionIndex < actions.Count && actions[actions.NextActionIndex].StartTick() <= targetTime) 
         {
-            IFireBoltAction action = actions[actions.NextActionIndex];
+            FireBoltAction action = actions[actions.NextActionIndex];
             actions.NextActionIndex++;
             if (action.Init())
             {
@@ -527,7 +526,7 @@ public class ElPresidente : MonoBehaviour {
         }
     }
 
-    bool actionComplete(IFireBoltAction action, float  referenceTime)
+    bool actionComplete(FireBoltAction action, float  referenceTime)
     {
         return action.EndTick() < referenceTime;
     }

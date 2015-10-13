@@ -6,25 +6,23 @@ using UnityEngine;
 
 namespace Assets.scripts
 {    
-    public class SetStoryTime : IFireBoltAction
+    public class SetStoryTime : FireBoltAction
     {
         private float storyTimeOffset, previousStoryTimeOffset;
-        private float startTick, endTick;
         
-        public SetStoryTime(float storyTimeOffset, float previousStoryTimeOffset, float startTick, float endTick)
+        public SetStoryTime(float storyTimeOffset, float previousStoryTimeOffset, float startTick, float endTick) :
+            base(startTick, endTick)
         {
             this.storyTimeOffset = storyTimeOffset;
-            this.previousStoryTimeOffset = previousStoryTimeOffset;
-            this.startTick = startTick;
-            this.endTick = endTick;
+            this.previousStoryTimeOffset = previousStoryTimeOffset;            
         }
 
-        public bool Init()
+        public override bool Init()
         {                     
             return true;
         }
 
-        public void Execute()
+        public override void Execute()
         {
             if (Mathf.Abs(ElPresidente.Instance.CurrentStoryTime - (ElPresidente.Instance.CurrentDiscourseTime + storyTimeOffset)) > ElPresidente.MILLIS_PER_FRAME)
             {
@@ -32,28 +30,18 @@ namespace Assets.scripts
             }
         }
 
-        public void Stop()
+        public override void Stop()
         {
             //nothin
         }
 
-        public float StartTick()
-        {
-            return startTick;
-        }
-
-        public float EndTick()
-        {
-            return endTick;
-        }
-
-        public void Undo()
+        public override void Undo()
         {
             Debug.Log(string.Format("set story time[{0}] ", startTick + previousStoryTimeOffset));
             ElPresidente.Instance.goToStoryTime(startTick + previousStoryTimeOffset);
         }
 
-        public void Skip()
+        public override void Skip()
         {
             Debug.Log(string.Format("set story time[{0}] ", endTick + storyTimeOffset));
             ElPresidente.Instance.goToStoryTime(endTick + storyTimeOffset);

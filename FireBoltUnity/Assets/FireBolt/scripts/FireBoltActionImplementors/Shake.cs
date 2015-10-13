@@ -9,10 +9,9 @@ using LN.Utilities.Collections;
 namespace Assets.scripts
 {
     [Obsolete("functionality being folded into ShotFragmentInit", false)]    
-    public class Shake : IFireBoltAction
+    public class Shake : FireBoltAction
     {
         float lastUpdateTime;
-        float startTick, endTick;
         float shakeValue;
 
         string cameraName;
@@ -28,15 +27,14 @@ namespace Assets.scripts
             return true;
         }
 
-        public Shake(float startTick, float endTick, string cameraName, float shakeValue) 
+        public Shake(float startTick, float endTick, string cameraName, float shakeValue) :
+            base(startTick,endTick)
         {
-            this.startTick = startTick;
-            this.endTick = endTick;
             this.cameraName = cameraName;
             this.shakeValue = shakeValue;
         }
 
-        public virtual bool Init()
+        public override bool Init()
         {
             GameObject actor = GameObject.Find(cameraName);
             if (actor == null)
@@ -56,35 +54,25 @@ namespace Assets.scripts
             return true;
         }
 
-        public virtual void Execute()
+        public override void Execute()
         {
                        
         }
 
-		public virtual void Undo()
+		public override void Undo()
 		{
             //intentionally blank
         }
 
-        public virtual void Skip()
+        public override void Skip()
         {
             shakeCam.positionShakeSpeed = shakeValue;
             shakeCam.rotationShakeSpeed = shakeValue; 
         }
 
-        public virtual void Stop()
+        public override void Stop()
         {
             //nothing to stop
-        }
-
-        public float StartTick()
-        {
-            return startTick;
-        }
-
-        public float EndTick()
-        {
-            return endTick;
         }
     }
 }

@@ -9,10 +9,9 @@ using LN.Utilities;
 
 namespace Assets.scripts
 {
-    public class Translate : IFireBoltAction
+    public class Translate : FireBoltAction
     {
         float lastUpdateTime;
-        float startTick, endTick;
         string actorName;
         protected GameObject actor;
         /// <summary>
@@ -31,16 +30,15 @@ namespace Assets.scripts
             return true;
         }
 
-        public Translate(float startTick, float endTick, string actorName,  Vector3 origin, Vector3Nullable destination) 
+        public Translate(float startTick, float endTick, string actorName,  Vector3 origin, Vector3Nullable destination) :
+            base(startTick, endTick)
         {
-            this.startTick = startTick;
             this.actorName = actorName;
-            this.endTick = endTick;
             this.origin = origin;
             this.destination = destination;
         }
 
-        public virtual bool Init()
+        public override bool Init()
         {
             if (actor != null)
                 return true;
@@ -55,7 +53,7 @@ namespace Assets.scripts
             return true;
         }
 
-        public virtual void Execute()
+        public override void Execute()
         {
             if (endTick - startTick < 1)
                 return;
@@ -67,7 +65,7 @@ namespace Assets.scripts
             actor.transform.position = lerpd;
         }
 
-		public virtual void Undo()
+        public override void Undo()
 		{
 			if (actor != null)
             {
@@ -75,7 +73,7 @@ namespace Assets.scripts
             }
 		}
 
-        public virtual void Skip()
+        public override void Skip()
         {
             Vector3 newPosition;
             newPosition.x = destination.X ?? actor.transform.position.x;
@@ -84,19 +82,9 @@ namespace Assets.scripts
             actor.transform.position = newPosition;
         }
 
-        public virtual void Stop()
+        public override void Stop()
         {
             //nothing to stop
-        }
-
-        public float StartTick()
-        {
-            return startTick;
-        }
-
-        public float EndTick()
-        {
-            return endTick;
         }
     }
 }

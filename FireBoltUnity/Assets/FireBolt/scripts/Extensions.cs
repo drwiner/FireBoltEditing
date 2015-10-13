@@ -147,16 +147,32 @@ namespace Assets.scripts
 
         public static float convertSourceEngineToUnityRotation(this float sourceDegrees)
         {
-            float unityDegrees = -sourceDegrees + 90 % 360;
-            while (unityDegrees > 180)
-            {
-                unityDegrees -= 360;
-            }
-            while (unityDegrees < -180)
-            {
-                unityDegrees += 360;
-            }
+            float unityDegrees = -sourceDegrees + 90;
+            unityDegrees = unityDegrees.BindToSemiCircle();
+            //% 360;
+            //while (unityDegrees > 180)
+            //{
+            //    unityDegrees -= 360;
+            //}
+            //while (unityDegrees < -180)
+            //{
+            //    unityDegrees += 360;
+            //}
             return unityDegrees;
+        }
+
+        public static float BindToSemiCircle(this float theta)
+        {
+            theta = theta % 360;
+            while (theta > 180)
+            {
+                theta -= 360;
+            }
+            while (theta < -180)
+            {
+                theta += 360;
+            }
+            return theta;
         }
     }
 }
