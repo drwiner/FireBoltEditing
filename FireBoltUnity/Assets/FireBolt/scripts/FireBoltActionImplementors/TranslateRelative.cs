@@ -16,7 +16,7 @@ namespace Assets.scripts
         private bool[] dimensionLock = {false,false,false};
 
         public TranslateRelative(string trackedActorName, float startTick, float endTick, string actorName, bool xLock, bool yLock, bool zLock) :
-            base(startTick, endTick, actorName, Vector3.zero, new Vector3Nullable(null,null,null),true)
+            base(startTick, endTick, actorName, Vector3.zero, new Vector3Nullable(null,null,null))
         {
             this.trackedActorName = trackedActorName;
             dimensionLock[0] = xLock;

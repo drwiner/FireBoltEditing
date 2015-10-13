@@ -23,10 +23,6 @@ namespace Assets.scripts
         /// intended position of the actor when the interval ends
         /// </summary>
         Vector3Nullable destination;
-        /// <summary>
-        /// ignore origin and reset from start
-        /// </summary>
-        bool unknownOrigin;
 
         public static bool ValidForConstruction(string actorName)
         {
@@ -35,18 +31,12 @@ namespace Assets.scripts
             return true;
         }
 
-        public Translate(float startTick, float endTick, string actorName,  Vector3 origin, Vector3Nullable destination, bool unknownOrigin=false) 
+        public Translate(float startTick, float endTick, string actorName,  Vector3 origin, Vector3Nullable destination) 
         {
             this.startTick = startTick;
             this.actorName = actorName;
             this.endTick = endTick;
             this.origin = origin;
-            this.destination = destination;
-            this.unknownOrigin = unknownOrigin;
-        }
-
-        public void SetDestination(Vector3Nullable destination)
-        {
             this.destination = destination;
         }
 
@@ -61,13 +51,7 @@ namespace Assets.scripts
                 return false;
             }			
 
-            if (unknownOrigin)
-                origin = actor.transform.position;
-
-            if (endTick - startTick < ElPresidente.MILLIS_PER_FRAME)
-                Skip();
-
-            Debug.Log(string.Format("translate {0} from {1} to {2}",actorName,origin,destination));
+            Debug.Log(string.Format("translate [{0}] from [{1}] to [{2}]",actorName,origin,destination));
             return true;
         }
 
@@ -94,9 +78,9 @@ namespace Assets.scripts
         public virtual void Skip()
         {
             Vector3 newPosition;
-            newPosition.x = destination.X.HasValue ? destination.X.Value : origin.x;
-            newPosition.y = destination.Y.HasValue ? destination.Y.Value : origin.y;
-            newPosition.z = destination.Z.HasValue ? destination.Z.Value : origin.z;
+            newPosition.x = destination.X ?? actor.transform.position.x;
+            newPosition.y = destination.Y ?? actor.transform.position.y;
+            newPosition.z = destination.Z ?? actor.transform.position.z;
             actor.transform.position = newPosition;
         }
 

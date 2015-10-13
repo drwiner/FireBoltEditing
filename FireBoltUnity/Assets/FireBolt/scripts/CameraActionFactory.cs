@@ -73,7 +73,7 @@ namespace Assets.scripts
                                         if (movement.Subject.TryParsePlanarCoords(out destination))
                                         {
                                             discourseActionList.Add(new Translate(movementStartTime, fragmentEndTime, cameraRig,
-                                                                                Vector3.zero, new Vector3Nullable(destination.x,null,destination.y),true));
+                                                                                Vector3.zero, new Vector3Nullable(destination.x,null,destination.y)));
                                         }
                                         break;
                                 }                               
@@ -85,7 +85,7 @@ namespace Assets.scripts
                                         break;
                                     case CameraMovementDirective.To:
                                         discourseActionList.Add(new Translate(movementStartTime, fragmentEndTime, cameraRig,
-                                                                            Vector3.zero, new Vector3Nullable(null, float.Parse(movement.Subject), null), true));
+                                                                            Vector3.zero, new Vector3Nullable(null, float.Parse(movement.Subject), null)));
                                         break;
                                 }
                                 break;
