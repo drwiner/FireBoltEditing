@@ -73,6 +73,16 @@ namespace Assets.scripts
             if(ElPresidente.Instance.GetActiveAssetBundle().Contains(animName))
             {
                 animation = ElPresidente.Instance.GetActiveAssetBundle().LoadAsset<AnimationClip>(animName);
+                if (ElPresidente.Instance.GetActiveAssetBundle().Contains(stateName) && !stateName.Equals("")) //added by DrW
+                {
+                    assignEndState = true;
+                    state = ElPresidente.Instance.GetActiveAssetBundle().LoadAsset<AnimationClip>(stateName);
+                    if (state == null)
+                    {
+                        Debug.LogError(string.Format("unable to find animation [{0}] in asset bundle[{1}]", stateName, ElPresidente.Instance.GetActiveAssetBundle().name));
+                        if (state == null) return false;
+                    }
+                }
                 if (animation == null)
                 {
                     Debug.LogError(string.Format("unable to find animation [{0}] in asset bundle[{1}]",animName, ElPresidente.Instance.GetActiveAssetBundle().name));
@@ -92,11 +102,18 @@ namespace Assets.scripts
             {
                 Debug.LogError("Missing animation asset");
             }
+            if (assignEndState && !state)
+            {
+                Debug.LogError("Missing state asset");
+            }
+
 			if (loop) {
 				animation.wrapMode = WrapMode.Loop;
 			} else
 				animation.wrapMode = WrapMode.Once;			
-            animatorOverride[animationToOverride] = animation;            
+            animatorOverride[animationToOverride] = animation;
+            if (assignEndState)
+                animatorOverride[stateToOverride] = state;
             return true;
         }
 
