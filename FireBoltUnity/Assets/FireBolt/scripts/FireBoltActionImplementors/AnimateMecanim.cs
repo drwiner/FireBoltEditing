@@ -6,18 +6,22 @@ namespace Assets.scripts
 {
     public class AnimateMecanim : IFireBoltAction
     {
-       
+
         private float startTick;
         private float endTick;
         private string actorName;
         private GameObject actor;
         private string animName;
+        private string stateName;
         private Animator animator;
         private AnimationClip animation;
-		AnimatorOverrideController animatorOverride;
-        private int playTriggerHash,stopTriggerHash; 
-		private bool loop;
+        private AnimationClip state;
+        AnimatorOverrideController animatorOverride;
+        private int playTriggerHash, stopTriggerHash;
+        private bool loop;
         private static readonly string animationToOverride = "_87_a_U1_M_P_idle_Neutral__Fb_p0_No_1";
+        private static readonly string stateToOverride = "state";
+        bool assignEndState = false;
 
         public static bool ValidForConstruction(string actorName, CM.Animation animation)
         {
@@ -26,13 +30,14 @@ namespace Assets.scripts
             return true;
         }
 
-        public AnimateMecanim(float startTick, float endTick, string actorName, string animName, bool loop) 
+        public AnimateMecanim(float startTick, float endTick, string actorName, string animName, bool loop, string endingName) 
         {
             this.startTick = startTick;
             this.endTick = endTick;
             this.actorName = actorName;
             this.animName = animName;
 			this.loop = loop;
+            this.stateName = endingName; 
             playTriggerHash = Animator.StringToHash("play");
             stopTriggerHash = Animator.StringToHash("stop");
         }
@@ -43,6 +48,8 @@ namespace Assets.scripts
 			{
 				animatorOverride[animationToOverride] = animation;
                 animator.runtimeAnimatorController = animatorOverride;
+                if (assignEndState)
+                    animatorOverride[stateToOverride] = state;
 				return true;
 			}
             actor = GameObject.Find(actorName);

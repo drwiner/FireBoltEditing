@@ -249,29 +249,58 @@ namespace Assets.scripts
                 float startTick = 0;
                 float endTick = 0;
                 CM.AnimationMapping animMapping = null;
+                CM.AnimationMapping stateMapping = null;
                 CM.Animation animation = null;
-                foreach(CM.DomainActionParameter domainActionParameter in domainAction.Params)
+                string endName = "";
+                string animationName = "";
+
+                //PURPOSE: if domain action parameter is the name of an animateAction, then that animateAction takes the name indicated by the parameter value.
+                // Used when a domain action has a variable for accepting an action to play, handy for spawn actions that require an initial state
+                foreach (CM.DomainActionParameter domainActionParameter in domainAction.Params)
                 {
+                    endName = "";
+                    //  Debug.Log("beforeset: " + animateAction.Name + " " +  domainActionParameter.Name);
+                    if (domainActionParameter.Name.Equals(animateAction.Name))
+                    {
+                        getActorName(storyAction, domainActionParameter, out animationName);//animationName - name of the animation to play
+                        endName = animationName;
+                        break;
+                    }
+                }
+
+                if (animationName.Equals(""))
+                {
+                    animationName = animateAction.Name; //animationName - name of the animation to play
+                    if (!animateAction.End.Equals(""))
+                    {
+                        endName = animateAction.End;
+                    }
+                }
+
+                foreach (CM.DomainActionParameter domainActionParameter in domainAction.Params)
+                {
+
                     if (domainActionParameter.Name == animateAction.ActorNameParamName)
                     {
                         if (getActorName(storyAction, domainActionParameter, out actorName))
                         {
+                            //  animMapping = null;
+                            // Debug.Log(actorName + ", " + animationName);
                             int objectSetIndex = 0;
                             int actorHierarchyStepLevel = 1;
                             string abstractActorName = actorName;
-                            getAnimationMapping(abstractActorName, animateAction.Name, out animMapping);
-
+                            getAnimationMapping(abstractActorName, animationName, out animMapping);
                             while (objectSetIndex < orderedObjectSets.Length &&
                                   actorHierarchyStepLevel < cm.SmartModelSettings.ActorMaxSearchDepth &&
                                   animMapping == null)
                             {
-                                
+
                                 if (story.ObjectSets[orderedObjectSets[objectSetIndex]].
                                     Contains(new ClassConstant<string>(actorName)))
                                 {
                                     actorHierarchyStepLevel++;
                                     abstractActorName = orderedObjectSets[objectSetIndex];
-                                    if (getAnimationMapping(abstractActorName, animateAction.Name, out animMapping))
+                                    if (getAnimationMapping(abstractActorName, animationName, out animMapping))
                                     {
                                         break;
                                         //found our mapping
@@ -282,23 +311,35 @@ namespace Assets.scripts
                             if (animMapping == null)
                             {
                                 Debug.Log("cinematic model animation instance undefined for actor[" +
-                                    abstractActorName + "] animateAction[" + animateAction.Name + "]");
+                                    abstractActorName + "] animateAction[" + animationName + "]");
                                 break;
                             }
                             animation = cm.FindAnimation(animMapping.AnimationName);
                             if (animation == null)
                             {
-                                Debug.Log(string.Format("animation name [{0}] undefined",animMapping.AnimationName));
+                                Debug.Log(string.Format("animation name [{0}] undefined", animMapping.AnimationName));
                                 break;
                             }
                         }
                     }
                 }
+
                 startTick = getStartTick(storyAction, animateAction, effectingAnimation);
                 endTick = getEndTick(storyAction, animateAction, effectingAnimation, startTick);
+
                 if (AnimateMecanim.ValidForConstruction(actorName, animation))
                 {
-                    aaq.Add(new AnimateMecanim(startTick, endTick, actorName, animation.FileName, animMapping.LoopAnimation));
+                    if (!endName.Equals(""))
+                    {
+                        getAnimationMapping(actorName, endName, out stateMapping);
+                        if (!(animMapping == null))
+                        {
+                            endName = cm.FindAnimation(stateMapping.AnimationName).FileName;
+                            Debug.Log("end name: " + endName);
+                        }
+                    }
+                    Debug.Log("actor: " + actorName + " animMappingName: " + animMapping.AnimationName + " animateActionName: " + animMapping.AnimateActionName + " loop: " + animMapping.LoopAnimation);
+                    aaq.Add(new AnimateMecanim(startTick, endTick, actorName, animation.FileName, animMapping.LoopAnimation, endName));
                 }
             }
         }
