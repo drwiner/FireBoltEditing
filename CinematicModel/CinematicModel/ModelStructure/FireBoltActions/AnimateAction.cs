@@ -13,6 +13,7 @@ namespace CinematicModel
         public AnimateAction()
         {
             Effector = false;
+            End = "";
         }
 
         [XmlAttribute("name")]
@@ -21,5 +22,9 @@ namespace CinematicModel
         [XmlAttribute("effector")]
         [DefaultValue(false)]
         public bool Effector { get; set; }
+		
+		[XmlAttribute("endingAction")]
+        [DefaultValue("")]
+        public string End { get; set; }
     }
 }
