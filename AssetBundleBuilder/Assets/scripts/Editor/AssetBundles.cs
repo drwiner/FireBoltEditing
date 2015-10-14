@@ -10,7 +10,8 @@ public class AssetBundles
     //users that want custom assets just have to set everything that they want appropriately or use the default bundle that's already packaged.
     //slight edits are not welcome. :(
 
-    private static readonly string bundleOutputPath="../FireBoltUnity/AssetBundles";
+    private static readonly string bundleOutputPath="../FireBoltUnity/AssetBundles/newAssets/";
+  //  private static readonly string bundleInputPath = "../FireBoltUnity/AssetBundles/";
 
     [MenuItem("Asset Bundles/Log Asset Bundle Names")]
     static void LogAssetBundleNames()
@@ -51,7 +52,22 @@ public class AssetBundles
     {
         AssetDatabase.RemoveUnusedAssetBundleNames();
     }
+	
+    //[MenuItem("Asset Bundles/Load bundles to editor")]
+    //static void LoadAssetFromAssetBundle()
+    //{
+    //    AssetDatabase.LoadAllAssetsAtPath(bundleInputPath);
+    //   StartCoroutine( DownloadAssetBundle(bundleInputPath));
+    //}
 
+    //IEnumerator DownloadAssetBundle(string url)
+    //{
+    //    yield return StartCoroutine(AssetBundleManager.downloadAssetBundle(url, version));
+    //    bundle = AssetBundleManager.getAssetBundle(url, version);
+    //    GameObject obj = Instantiate(bundle.LoadAsset("ExampleObject"),Vector3.zero,Quaternion.identity) as GameObject;
+    //    // Unload the AssetBundles compressed contents to conserve memory
+    //    bundle.Unload(false);
+    //}
     
 
 }
