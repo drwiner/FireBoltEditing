@@ -253,6 +253,7 @@ namespace Assets.scripts
                 CM.Animation animation = null;
                 string endName = "";
                 string animationName = "";
+                float addTick = 0;
 
                 //PURPOSE: if domain action parameter is the name of an animateAction, then that animateAction takes the name indicated by the parameter value.
                 // Used when a domain action has a variable for accepting an action to play, handy for spawn actions that require an initial state
@@ -264,6 +265,7 @@ namespace Assets.scripts
                     {
                         getActorName(storyAction, domainActionParameter, out animationName);//animationName - name of the animation to play
                         endName = animationName;
+                        addTick += 1f;
                         break;
                     }
                 }
@@ -327,6 +329,7 @@ namespace Assets.scripts
                 startTick = getStartTick(storyAction, animateAction, effectingAnimation);
                 endTick = getEndTick(storyAction, animateAction, effectingAnimation, startTick);
 
+               
                 if (AnimateMecanim.ValidForConstruction(actorName, animation))
                 {
                     if (!endName.Equals(""))
@@ -339,7 +342,7 @@ namespace Assets.scripts
                         }
                     }
                     Debug.Log("actor: " + actorName + " animMappingName: " + animMapping.AnimationName + " animateActionName: " + animMapping.AnimateActionName + " loop: " + animMapping.LoopAnimation);
-                    aaq.Add(new AnimateMecanim(startTick, endTick, actorName, animation.FileName, animMapping.LoopAnimation, endName));
+                    aaq.Add(new AnimateMecanim(startTick + addTick, endTick, actorName, animation.FileName, animMapping.LoopAnimation, endName));
                 }
             }
         }

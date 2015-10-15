@@ -61,6 +61,7 @@
       <params>
         <param name="actor" />
         <param name="location" />
+		<param name="action"/>
       </params>
       <createActions>
         <createAction actorNameParamName="actor" originParamName="location" />
@@ -68,7 +69,9 @@
       <destroyActions/>
       <rotateActions/>
       <translateActions/>
-      <animateActions/>
+      <animateActions>
+		<animateAction name="action" actorNameParamName="actor"/>
+	  </animateActions>
     </domainAction>
     <domainAction name="move" >
       <params>
@@ -107,7 +110,8 @@
     <actor name="secretAgentMan" model="m005.fbx" >
       <animationMappings>
         <animationMapping animateActionName="observe" animationName="idle" loopAnimation="true" />
-        <animationMapping animateActionName="walk" animationName="cm_walk" loopAnimation="true" />
+        <animationMapping animateActionName="walk" animationName="walk" loopAnimation="true" />
+		<animationMapping animateActionName="idle" animationName="idle" loopAnimation="true" />
       </animationMappings>
     </actor>
     <actor name="Pudge" model="pudge_model.fbx" pointOfInterest="0.75">
@@ -276,7 +280,10 @@
     <animation fileName="Pudge_walk.fbx" name="pudge_walk">
       <animationIndices/>
     </animation>
-    <animation fileName="humanoid_idle.fbx" name="idle">
+    <animation fileName="humanoid_idle.fbx" name="humanoid_idle">
+      <animationIndices/>
+    </animation>
+	<animation fileName="pudge_idle.fbx" name="idle">
       <animationIndices/>
     </animation>
   </animations>

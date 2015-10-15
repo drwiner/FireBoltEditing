@@ -101,6 +101,7 @@ namespace Assets.scripts
             if (!animation) 
             {
                 Debug.LogError("Missing animation asset");
+                Debug.Log(animName);
             }
             if (assignEndState && !state)
             {
