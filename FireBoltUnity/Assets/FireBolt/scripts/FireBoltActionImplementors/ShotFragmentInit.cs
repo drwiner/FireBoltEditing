@@ -45,13 +45,12 @@ namespace Assets.scripts
         ushort newFStopIndex;
         float newfocusDistance;
 
-        public ShotFragmentInit(float startTick, float endTick, string cameraName, string anchor, float? height, 
+        public ShotFragmentInit(float startTick, string cameraName, string anchor, float? height, 
                                 string lensName, string fStopName, List<Framing> framings, Oshmirto.Direction direction,
                                 Oshmirto.Angle cameraAngle, string focusTarget) :
-            base(startTick, endTick)
+            base(startTick, startTick)
         {
-            this.startTick = startTick;
-            this.endTick = endTick;//used in querying for direction over the shot.  not in setting end of this init action
+            this.startTick = startTick;            
             this.cameraName = cameraName;
             this.anchor = anchor;
             this.height = height;
@@ -191,7 +190,6 @@ namespace Assets.scripts
 
                         bool sign = true;
                         short iterations = 0;
-                        ushort lastLensIndex = tempLensIndex.Value;
                         ushort maxLensChangeIterations = 6;
                         while (!findCameraPositionForLens(framingTarget, targetBounds, framingParameters, 0.35f))
                         {
@@ -214,8 +212,6 @@ namespace Assets.scripts
                                 iterations++;
                                 offset = sign ? -iterations : iterations;
                             }
-
-                            lastLensIndex = tempLensIndex.Value;
                             tempLensIndex = (ushort)(tempLensIndex + offset);
                         }
                     }
@@ -340,8 +336,9 @@ namespace Assets.scripts
 
                 //raycast to check for LoS
                 RaycastHit hit;
-                if (Physics.Raycast(tempCameraPosition.Merge(previousCameraPosition),
-                    targetBounds.center - tempCameraPosition.Merge(previousCameraPosition), out hit) &&
+                Vector3 from = tempCameraPosition.Merge(previousCameraPosition);
+                Vector3 direction = targetBounds.center - tempCameraPosition.Merge(previousCameraPosition);
+                if (Physics.Raycast(from, direction, out hit) &&
                     hit.transform == framingTarget.transform)
                 {
                     //we can see our target
@@ -521,7 +518,7 @@ namespace Assets.scripts
             //nothing to see here.  this is all instant
         }
 
-        public void Stop()
+        public override void Stop()
         {
             //nothing to do and nothing to stop
         }

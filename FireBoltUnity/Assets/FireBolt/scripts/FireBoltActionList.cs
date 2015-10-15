@@ -59,12 +59,23 @@ namespace Assets.scripts
         }
 
         /// <summary>
+        /// call execute for all actions in the list.
+        /// </summary>
+        public void ExecuteList()
+        {
+            foreach (FireBoltAction action in this)
+            {
+                action.Execute();
+            }
+        }
+
+        /// <summary>
         /// pointer to the next action from the queue
         /// </summary>
         public int NextActionIndex { get; set; }
     }
 
-    public class DiscourseActionList : FireBoltActionList
+    public class CameraActionList : FireBoltActionList
     {
         public uint EndDiscourseTime { get; set; }
     }

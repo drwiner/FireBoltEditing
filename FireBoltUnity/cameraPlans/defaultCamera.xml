@@ -1,7 +1,7 @@
 ﻿<?xml version="1.0" encoding="utf-8" ?>
 <cameraPlan xmlns="http://liquidnarrative.csc.ncsu.edu/oshmirto/v0.1">
   <blocks>
-    <block storyTime="0">
+    <block storyTime="7000">
     <shotFragments>
         <!--<shotFragment duration="35" focus="Pudge" f-stop ="2.8" shake ="0">
           --><!--height="5"--><!--
@@ -43,13 +43,13 @@
       </shotFragment>-->
       <shotFragment duration="5000" >
         <angle angleSetting="Medium" target="secretAgentMan"/>
-        <direction heading="Toward" target="secretAgentMan"/>
+        <direction heading="Left" target="secretAgentMan"/>
         <framings>
           <framing framingType="Long" framingTarget="secretAgentMan"/>
         </framings>
         <movements>
-          <movement type="Pan" directive="To" subject="315"/>
-          <movement type="Tilt" directive="To" subject="-90"/>
+          <!--<movement type="Pan" directive="To" subject="315"/>-->
+          <!--<movement type="Tilt" directive="To" subject="-90"/>-->
         </movements>
       </shotFragment>
 

@@ -10,6 +10,14 @@ namespace Assets.scripts
     {
         private float storyTimeOffset, previousStoryTimeOffset;
         
+        /// <summary>
+        /// Moves story time pointer.  Jump around...
+        /// </summary>
+        /// <param name="storyTimeOffset">this value + current discourse time tells you what story events should be playing</param>
+        /// <param name="previousStoryTimeOffset">what the last offset was so we can undo our jump</param>
+        /// <param name="startTick">when does the block for which we are setting story time start</param>
+        /// <param name="endTick">when does the block end? This is necessary for scrubbing backward into the 
+        /// set story time action</param>
         public SetStoryTime(float storyTimeOffset, float previousStoryTimeOffset, float startTick, float endTick) :
             base(startTick, endTick)
         {
@@ -18,7 +26,10 @@ namespace Assets.scripts
         }
 
         public override bool Init()
-        {                     
+        {
+            //normally we allow the skip to handle any instantaneous executions, but here we need to have the 
+            //full block time as the duration for undoing and redoing over the edges
+            ElPresidente.Instance.goToStoryTime(ElPresidente.Instance.CurrentDiscourseTime + storyTimeOffset);
             return true;
         }
 
