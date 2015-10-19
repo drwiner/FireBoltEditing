@@ -54,7 +54,8 @@ namespace Assets.scripts
                     cameraActionList.Add(new ShotFragmentInit(fragmentStartTime, cameraRig, fragment.Anchor, fragment.Height,
                         fragment.Lens, fragment.FStop, fragment.Framings, fragment.Direction, fragment.Angle, fragment.FocusPosition));
 
-                    float movementStartTime = fragmentStartTime + 1; //force moves to sort after inits
+                    var movementStartTime = fragmentStartTime + 1; //force moves to sort after inits
+                    RotateRelative rotateWith = null; //collect all the relative rotations together for the camera so we can avoid representational nightmares
                     foreach (var movement in fragment.CameraMovements)
                     {
                         switch (movement.Type) 
@@ -90,8 +91,16 @@ namespace Assets.scripts
                                 switch (movement.Directive)
                                 {
                                     case CameraMovementDirective.With:
-                                        cameraActionList.Add(new RotateRelative(movement.Subject, movementStartTime, fragmentEndTime, cameraRig,
-                                                                                 true, false, true));
+                                        if (rotateWith != null)
+                                        {
+                                            rotateWith.AppendAxis(movement.Subject, cameraRig, true, false);
+                                        }
+                                        else
+                                        {
+                                            rotateWith = new RotateRelative(movement.Subject, movementStartTime, fragmentEndTime, cameraRig,
+                                                                               true, false);
+                                        }
+                                       
                                         break;
                                     case CameraMovementDirective.To:
                                         cameraActionList.Add(new Rotate(movementStartTime, fragmentEndTime, cameraRig, new Vector3Nullable(null, float.Parse(movement.Subject), null)));
@@ -102,8 +111,15 @@ namespace Assets.scripts
                                 switch(movement.Directive)
                                 {
                                     case CameraMovementDirective.With: // will this co-execute with pan-with? not currently
-                                        cameraActionList.Add(new RotateRelative(movement.Subject, movementStartTime, fragmentEndTime, cameraRig,
-                                                                                 false, true, true));
+                                        if (rotateWith != null)
+                                        {
+                                            rotateWith.AppendAxis(movement.Subject, cameraRig, false, true);
+                                        }
+                                        else
+                                        {
+                                            rotateWith = new RotateRelative(movement.Subject, movementStartTime, fragmentEndTime, cameraRig,
+                                                                               false, true);
+                                        }
                                         break;
                                     case CameraMovementDirective.To:
                                         cameraActionList.Add(new Rotate(movementStartTime, fragmentEndTime, cameraRig, new Vector3Nullable(float.Parse(movement.Subject), null, null)));
@@ -120,6 +136,7 @@ namespace Assets.scripts
                                 break;
                         }
                     }
+                    cameraActionList.Add(rotateWith);
                     // Shake it off
                     cameraActionList.Add(new Shake(movementStartTime, fragmentEndTime, cameraName, fragment.Shake));
 
@@ -134,5 +151,6 @@ namespace Assets.scripts
             }
             cameraActionList.EndDiscourseTime = currentDiscourseTime;
         }
+
     }
 }

@@ -26,6 +26,8 @@ public class ElPresidente : MonoBehaviour {
     FireBoltActionList executingCameraActions;
     FireBoltActionList executingDiscourseActions;
 
+    public static string timestampFormat = "HH:mm:ss.FF";
+
     private float lastTickLogged;
     public Text debugText;
 	public float myTime;
@@ -203,7 +205,7 @@ public class ElPresidente : MonoBehaviour {
     /// </summary>
     private void init()
     {
-        string timestampFormat = "HH:mm:ss.FF";
+        
 
         if (reloadStoryPlan)
         {
