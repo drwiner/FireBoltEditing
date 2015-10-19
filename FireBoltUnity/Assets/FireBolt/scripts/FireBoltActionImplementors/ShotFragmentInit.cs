@@ -8,10 +8,9 @@ using Oshmirto;
 
 namespace Assets.scripts
 {
-    public class ShotFragmentInit : IFireBoltAction
+    public class ShotFragmentInit : FireBoltAction
     {
         //passed in params
-        private float startTick,endTick;
         private bool initialized = false;
         private string anchor=string.Empty;
         private float? height;
@@ -46,12 +45,12 @@ namespace Assets.scripts
         ushort newFStopIndex;
         float newfocusDistance;
 
-        public ShotFragmentInit(float startTick, float endTick, string cameraName, string anchor, float? height, 
+        public ShotFragmentInit(float startTick, string cameraName, string anchor, float? height, 
                                 string lensName, string fStopName, List<Framing> framings, Oshmirto.Direction direction,
-                                Oshmirto.Angle cameraAngle, string focusTarget)
+                                Oshmirto.Angle cameraAngle, string focusTarget) :
+            base(startTick, startTick)
         {
-            this.startTick = startTick;
-            this.endTick = endTick;//used in querying for direction over the shot.  not in setting end of this init action
+            this.startTick = startTick;            
             this.cameraName = cameraName;
             this.anchor = anchor;
             this.height = height;
@@ -63,7 +62,7 @@ namespace Assets.scripts
             this.focusTarget = focusTarget;
         }
 
-        public bool Init()
+        public override bool Init()
         {
             if(initialized) return true;
 
@@ -191,7 +190,6 @@ namespace Assets.scripts
 
                         bool sign = true;
                         short iterations = 0;
-                        ushort lastLensIndex = tempLensIndex.Value;
                         ushort maxLensChangeIterations = 6;
                         while (!findCameraPositionForLens(framingTarget, targetBounds, framingParameters, 0.35f))
                         {
@@ -214,8 +212,6 @@ namespace Assets.scripts
                                 iterations++;
                                 offset = sign ? -iterations : iterations;
                             }
-
-                            lastLensIndex = tempLensIndex.Value;
                             tempLensIndex = (ushort)(tempLensIndex + offset);
                         }
                     }
@@ -340,8 +336,9 @@ namespace Assets.scripts
 
                 //raycast to check for LoS
                 RaycastHit hit;
-                if (Physics.Raycast(tempCameraPosition.Merge(previousCameraPosition),
-                    targetBounds.center - tempCameraPosition.Merge(previousCameraPosition), out hit) &&
+                Vector3 from = tempCameraPosition.Merge(previousCameraPosition);
+                Vector3 direction = targetBounds.center - tempCameraPosition.Merge(previousCameraPosition);
+                if (Physics.Raycast(from, direction, out hit) &&
                     hit.transform == framingTarget.transform)
                 {
                     //we can see our target
@@ -516,27 +513,17 @@ namespace Assets.scripts
             }
         }
 
-        public void Execute()
+        public override void Execute()
         {
             //nothing to see here.  this is all instant
         }
 
-        public void Stop()
+        public override void Stop()
         {
             //nothing to do and nothing to stop
         }
 
-        public float StartTick()
-        {
-            return startTick;
-        }
-
-        public float EndTick()
-        {
-            return startTick;
-        }
-
-        public void Undo()
+        public override void Undo()
         {
             camera.transform.position = previousCameraPosition;
             camera.transform.rotation = previousCameraOrientation;
@@ -546,7 +533,7 @@ namespace Assets.scripts
             
         }
 
-        public void Skip()
+        public override void Skip()
         {
             //since this action always happens instantaneously we can assume that the 
             //skip will get run anytime it's selected for addition in the 

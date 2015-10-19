@@ -55,7 +55,11 @@ namespace Assets.scripts
         }
 
 
-        //assumes this action sorts after the move that it mirrors.  fails when we track over multiple actor moves.  
+        //skipping assumes this action sorts after the move that it mirrors.  fails when we track over multiple actor moves.  
+        //this is handled for camera move-withs since camera actions happen after actor actions.  If we want to expose this
+        //as a base fireBolt action within the cinematic model, we need to figure out ordering when skipping.  It might be
+        //able to carry a reference to the actions on the tracked actor...somehow, and itself make calls to skip those when appropriate
+
         //should implement sorting on executing actions to put relative movements last || just fix this so it's not so janky
         public override void Skip() 
         {

@@ -8,16 +8,18 @@ using LN.Utilities;
 
 namespace Assets.scripts
 {
-    public class Rotate : IFireBoltAction
+    public class Rotate : FireBoltAction
     {
-        float startTick, endTick;
         string actorName;
-       
         protected GameObject actor;
-        Quaternion target;
-		protected Vector3 start;
 
-        Vector3Nullable targetRotation;
+        //where was the actor facing at start
+		protected Vector3 startOrientation;
+
+        //where should the actor be facing when this is done
+        Vector3Nullable targetOrientation;
+
+        //should be added to startOrientation to achieve targetOrientation
         Vector3 rotationChangeRequired;
 
         public static bool ValidForConstruction(string actorName)
@@ -29,7 +31,7 @@ namespace Assets.scripts
 
         public override string ToString ()
         {
-            return "Rotate " + actorName + " from " + start + " to " + target;
+            return "Rotate " + actorName + " from " + startOrientation + " to " + targetOrientation;
         }
 
 
@@ -40,19 +42,18 @@ namespace Assets.scripts
         /// <param name="endTick"></param>
         /// <param name="actorName"></param>
         /// <param name="targetRotation">must be in unity axes</param>
-        public Rotate(float startTick, float endTick, string actorName, Vector3Nullable targetRotation) 
+        public Rotate(float startTick, float endTick, string actorName, Vector3Nullable targetRotation) :
+            base(startTick, endTick)
         {
-            this.startTick = startTick;
             this.actorName = actorName;
-            this.endTick = endTick;
-            this.targetRotation = targetRotation;
+            this.targetOrientation = targetRotation;
         }
 
-        public virtual bool Init()
+        public override bool Init()
         {
             if (actor != null)
             {
-                start = actor.transform.rotation.eulerAngles;
+                startOrientation = actor.transform.rotation.eulerAngles;
                 return true;
             }
             actor = GameObject.Find(actorName);
@@ -61,49 +62,38 @@ namespace Assets.scripts
                 Debug.LogError("actor name [" + actorName + "] not found. cannot rotate");
                 return false;
             }
-			start = actor.transform.rotation.eulerAngles;
+			startOrientation = actor.transform.rotation.eulerAngles;
         
-            //if i fill in zeros here, there are issues
-            //i'm saying that my orientation is 0 about the x and 0 about the z, so i can't tilt or yaw
-            //that was great for planar actors, but it's not general enough
-            //now we get values(or lack thereof) for all 3 axes from constructor.
-            //I have to devise a mechanism that varies only those axes and allows variation for other by other rotate objects
-            //this seems to indicate that i should be getting and setting my quaternion for actor rotation all within the execute.
-            //how do i track how close we are to completed for a given rotation?
-
-            //target = Quaternion.Euler(0, targetRotation, 0);
-
-            //this line of reasoning sends me back toward what i was doing originally where i did interpolation myself.
-            //then i was keeping track of where I should be using some additive method, but that no longer works with how 
-            //we are scrubbing and setting time.
             // i must away to el Presidente and discover what happens when I scrub back to the middle of an action
             //the verdict: all actions that have not yet completed at the target time will be undone and then reinitialized and executed
 
             //let's figure out how far we need to go
             //first we need to convert all the rotation values we have into a standard form.
             //reduce to less than a full rotation
-            rotationChangeRequired = new Vector3(targetRotation.X.HasValue ? bindToSemiCircle(targetRotation.X.Value - start.x) : 0,
-                                                 targetRotation.Y.HasValue ? bindToSemiCircle(targetRotation.Y.Value - start.y) : 0,
-                                                 targetRotation.Z.HasValue ? bindToSemiCircle(targetRotation.Z.Value - start.z) : 0);
+            rotationChangeRequired = new Vector3(targetOrientation.X.HasValue ? (targetOrientation.X.Value - startOrientation.x).BindToSemiCircle() : 0,
+                                                 targetOrientation.Y.HasValue ? (targetOrientation.Y.Value - startOrientation.y).BindToSemiCircle() : 0,
+                                                 targetOrientation.Z.HasValue ? (targetOrientation.Z.Value - startOrientation.z).BindToSemiCircle() : 0);
 
             return true;
         }
 
-        private float bindToSemiCircle(float theta)
-        {
-            theta = theta % 360;
-            while (theta > 180)
-            {
-                theta -= 360;
-            }
-            while(theta < -180)
-            {
-                theta += 360;
-            }
-            return theta;
-        }
+        //not the best name, but we are reducing the rotation value between -180 and 180 degrees, 
+        //so we always take the shortest way round to our target
+        //private float bindToSemiCircle(float theta)
+        //{
+        //    theta = theta % 360;
+        //    while (theta > 180)
+        //    {
+        //        theta -= 360;
+        //    }
+        //    while(theta < -180)
+        //    {
+        //        theta += 360;
+        //    }
+        //    return theta;
+        //}
 
-        public virtual void Execute()
+        public override void Execute()
         {
             if (endTick - startTick < 1)
                 return;
@@ -112,9 +102,9 @@ namespace Assets.scripts
             
             //if this rotate had something specified on a given axis, we set its position that we are going to add onto to the start position
             //otherwise we will preserve any changes done to actor's orientation subsequent to init of this rotate
-            Vector3 newRotation = new Vector3(targetRotation.X.HasValue ? start.x : currentRotation.x,
-                                              targetRotation.Y.HasValue ? start.y : currentRotation.y,
-                                              targetRotation.Z.HasValue ? start.z : currentRotation.z);
+            Vector3 newRotation = new Vector3(targetOrientation.X.HasValue ? startOrientation.x : currentRotation.x,
+                                              targetOrientation.Y.HasValue ? startOrientation.y : currentRotation.y,
+                                              targetOrientation.Z.HasValue ? startOrientation.z : currentRotation.z);
 
             //how much of our rotate duration has elapsed?
             float percentCompleted = (ElPresidente.currentStoryTime - startTick) / (endTick - startTick);
@@ -128,36 +118,26 @@ namespace Assets.scripts
             //Debug.DrawRay(actor.transform.position + Vector3.up, actor.transform.forward,Color.magenta);
         }
 
-		public virtual void Undo()
+        public override void Undo()
 		{
 			if (actor != null)
             {
-                actor.transform.rotation = Quaternion.Euler(start);
+                actor.transform.rotation = Quaternion.Euler(startOrientation);
             }
 		}
 
-        public virtual void Skip()
+        public override void Skip()
         {
             Vector3 actorTransformEulerAngles = actor.transform.rotation.eulerAngles;
             //for any unspecified values in targetRotation, set that axis angle to current value
-            actor.transform.rotation = Quaternion.Euler(new Vector3(targetRotation.X ?? actorTransformEulerAngles.x,
-                                                                    targetRotation.Y ?? actorTransformEulerAngles.y,
-                                                                    targetRotation.Z ?? actorTransformEulerAngles.z));
+            actor.transform.rotation = Quaternion.Euler(new Vector3(targetOrientation.X ?? actorTransformEulerAngles.x,
+                                                                    targetOrientation.Y ?? actorTransformEulerAngles.y,
+                                                                    targetOrientation.Z ?? actorTransformEulerAngles.z));
         }
 
-        public void Stop()
+        public override void Stop()
         {
             //nothing to stop
-        }
-
-        public float StartTick()
-        {
-            return startTick;
-        }
-
-        public float EndTick()
-        {
-            return endTick;
         }
     }
 }

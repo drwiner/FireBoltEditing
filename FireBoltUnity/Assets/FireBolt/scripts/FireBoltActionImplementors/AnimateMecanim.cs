@@ -4,11 +4,8 @@ using CM = CinematicModel;
 
 namespace Assets.scripts
 {
-    public class AnimateMecanim : IFireBoltAction
+    public class AnimateMecanim : FireBoltAction
     {
-       
-        private float startTick;
-        private float endTick;
         private string actorName;
         private GameObject actor;
         private string animName;
@@ -26,10 +23,9 @@ namespace Assets.scripts
             return true;
         }
 
-        public AnimateMecanim(float startTick, float endTick, string actorName, string animName, bool loop) 
+        public AnimateMecanim(float startTick, float endTick, string actorName, string animName, bool loop) :
+            base(startTick, endTick)
         {
-            this.startTick = startTick;
-            this.endTick = endTick;
             this.actorName = actorName;
             this.animName = animName;
 			this.loop = loop;
@@ -37,7 +33,7 @@ namespace Assets.scripts
             stopTriggerHash = Animator.StringToHash("stop");
         }
 
-        public bool Init()
+        public override bool Init()
         {
 			if (actor != null && animatorOverride != null)
 			{
@@ -93,35 +89,25 @@ namespace Assets.scripts
             return true;
         }
 
-		public void Undo()
+        public override void Undo()
 		{
 		}
 
-        public void Skip()
+        public override void Skip()
         {
             animator.SetTrigger(stopTriggerHash);
         }
 
-	    public void Execute () 
+        public override void Execute() 
         {
 		    //let it roll          
             float at = Mathf.Repeat ((ElPresidente.currentStoryTime - startTick)/1000, animation.length);
             animator.CrossFade( "animating", 0, 0, at/animation.length);
 	    }
 
-        public void Stop()
+        public override void Stop()
         {
             animator.SetTrigger(stopTriggerHash);
-        }
-
-        public float StartTick()
-        {
-            return startTick;
-        }
-
-        public float EndTick()
-        {
-            return endTick;
         }
     }
 }

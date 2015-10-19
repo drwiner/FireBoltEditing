@@ -7,15 +7,21 @@ using LN.Utilities;
 
 namespace Assets.scripts
 {
-    public class RotateRelative : Rotate
+    //used to override rotate, but we minimally used underlying code, and it was just confusing.
+    public class RotateRelative : FireBoltAction
     {
         private string trackedActorName;
-        private GameObject trackedActor;
-        private Vector3 trackedPositionInit;
-        private Vector3 trackedPositionLast;
-        private bool[] dimensionLock = {false,false,false};
+        private GameObject trackedActor;      
+
+        private string actorName;
+        private GameObject actor;
+        private Vector3 startOrientation;
+
+        private bool[] rotationAxes = {false,false,false};
         private bool instant = false;
-        private static readonly float ROTATION_SPEED_MAX = .75f;
+
+        private bool pan;
+        private bool tilt;
 
         /// <summary>
         /// 
@@ -26,69 +32,143 @@ namespace Assets.scripts
         /// <param name="actorName"></param>
         /// <param name="xLock">rotate about x axis</param>
         /// <param name="yLock">rotate about y axis</param>
-        /// <param name="zLock">rotate about z axis</param>
-        public RotateRelative(string trackedActorName, float startTick, float endTick, string actorName, bool xLock, bool yLock, bool zLock, bool instant=false) :
-            base(startTick, endTick, actorName, new Vector3Nullable(null,null,null) )
+        /// <param name="rotateZ">rotate about z axis</param>
+        public RotateRelative(string trackedActorName, float startTick, float endTick, string actorName, bool pan, bool tilt) :
+            base(startTick, endTick)
         {
             this.trackedActorName = trackedActorName;
-            dimensionLock[0] = xLock;
-            dimensionLock[1] = yLock;
-            dimensionLock[2] = zLock;
-            this.instant = instant;
+            this.actorName = actorName;
+            this.pan = pan;
+            this.tilt = tilt;
         }
 
         public override bool Init()
         {
-            trackedActor = GameObject.Find(trackedActorName);
-            if (trackedActor != null)
+            if (trackedActor && actor)
+                return true;                
+
+            //get our actor
+            actor = GameObject.Find(actorName);                                           
+            if (actor == null)
             {
-                trackedPositionInit = trackedActor.transform.position;
-                trackedPositionLast = trackedPositionInit;
-                if (base.Init())
-                {                    
-                    return true;
-                }                              
-            }                
-            return false;
+                Debug.LogError("actor name [" + actorName + "] not found. cannot rotate");
+                return false;
+            }
+            startOrientation = actor.transform.rotation.eulerAngles;
+
+            //find actor that should be tracked
+            trackedActor = GameObject.Find(trackedActorName);
+            if (trackedActor == null)
+            {
+                Debug.LogError(string.Format("actor to track [{0}] by actor [{1}] not found.  cannot rotate",trackedActorName, actorName));
+                return false;
+            }
+
+            return true;
         }
 
         public override void Execute()
         {
-            //TODO check interactions in multiple axes with slerping.  does not work for axes other than y
-
-            Vector3 trackedPositionCurrent = trackedActor.transform.position;
-
-            Vector3 direction;
-            direction.x = !dimensionLock[0] ? 0 : trackedPositionCurrent.x - this.actor.transform.position.x;
-            direction.y = !dimensionLock[1] ? 0 : trackedPositionCurrent.y - this.actor.transform.position.y;
-            direction.z = !dimensionLock[2] ? 0 : trackedPositionCurrent.z - this.actor.transform.position.z;
-            direction = direction.normalized;
-
-            Quaternion lookRotation = Quaternion.LookRotation(direction, Vector3.up);
-            float rotation = instant? 1f : ROTATION_SPEED_MAX * Time.deltaTime;
-            this.actor.transform.rotation = Quaternion.Slerp(this.actor.transform.rotation, lookRotation, rotation);
-
-            trackedPositionLast = trackedPositionCurrent;
+            setRotation();
         }
-
-
-        //assumes this action sorts after the move that it mirrors.  fails when we track over multiple actor moves.  
-        //should implement sorting on executing actions to put relative movements last || just fix this so it's not so janky
+        
+        //assumes this action sorts after the move that it mirrors.  this works well for cameras tracking things and 
+        //less well for actors tracking other actors since camera actions are forced to play second        
+        //assumes we will land on the actor when this is over
         public override void Skip()
         {
-            Vector3 direction;
-            direction.x = dimensionLock[0] ? trackedActor.transform.position.x - this.actor.transform.position.x : this.actor.transform.position.x;
-            direction.y = dimensionLock[1] ? trackedActor.transform.position.y - this.actor.transform.position.y : this.actor.transform.position.y;
-            direction.z = dimensionLock[2] ? trackedActor.transform.position.z - this.actor.transform.position.z : this.actor.transform.position.z;
-            direction = direction.normalized;
-
-            Quaternion lookRotation = Quaternion.LookRotation(direction);
-            this.actor.transform.rotation = lookRotation;
+            setRotation();
         }
 
         public override void Undo()
         {
-            this.actor.transform.rotation = Quaternion.Euler(this.start);
+            this.actor.transform.rotation = Quaternion.Euler(startOrientation);
+        }
+
+        public override void Stop()
+        {
+            
+        }
+
+        private void setRotation()
+        {
+            //capture updated tracked position
+            Vector3 trackedPositionCurrent = trackedActor.transform.position;
+
+            //find the shortest way to get to him
+            //get current position for our actor
+            Vector3 actorPosition = actor.transform.position;
+
+            Vector3 actorRotation = actor.transform.rotation.eulerAngles;
+
+            //get the direction from our actor to the tracked actor.  this is the vector along which we are trying to align
+            //apply no direction along axes we are not tracking
+            Vector3 targetRotation = Vector3.zero;
+            targetRotation = Quaternion.LookRotation(trackedPositionCurrent - actorPosition).eulerAngles;
+
+            //remove roll 
+            targetRotation.z = actorRotation.z;
+            if (!pan)
+            {
+                targetRotation.y = actorRotation.y;
+            }
+            if (!tilt)
+            {
+                targetRotation.x = actorRotation.x;
+            }
+
+            //i want to use slerp here, but when manipulating time, it doesn't work.  if i scrub back into the very tail end of a 
+            //camera action, it gets undone, so the camera rig orientation is at start, then my tracked actor gets set to a point 
+            //where his move is almost completed, then i need to catch up to being close and then slerp.  or just force myself to 
+            //face the tracked actor.  this is unfortunate b/c it limits my ability to cap rotation speeds on the camera
+            actor.transform.rotation = Quaternion.Euler(targetRotation);
+        }
+
+        /// <summary>
+        /// kind of a second constructor for mashing up a pan and tilt with operation at the same time.
+        /// only allows merging if both tracked and actor are the same and there isn't already a rotation 
+        /// on the requested axis within this rotate action.
+        /// </summary>
+        /// <param name="trackedActorName"></param>
+        /// <param name="actorName"></param>
+        /// <param name="pan"></param>
+        /// <param name="tilt"></param>
+        /// <returns></returns>
+        public void AppendAxis(string trackedActorName, string actorName, bool pan, bool tilt)
+        {
+            if (trackedActorName != this.trackedActorName)
+            {
+                Debug.Log(string.Format("Cannot merge on multiple tracking targets. Attempt to append rotate relative with tracked actor[{0}], to existing rotate with tracked actor[{1}].",
+                                        trackedActorName, this.trackedActorName));                
+                return;
+            }
+            if (actorName != this.actorName)
+            {
+                Debug.Log(string.Format("Cannot merge on multiple actors. Attempt to append rotate relative with actor[{0}], to existing rotate with actor[{1}].",
+                                        actorName, this.actorName));
+                return;
+            }
+            if(pan && this.pan)
+            {
+                Debug.Log(string.Format("Cannot merge multiple same axis rotations. Attempt to append rotate relative with pan[{0}] to exsisting rotate with pan[{1}].",
+                                        pan, this.pan));
+                return;
+            }
+            else if (pan && !this.pan)
+            {
+                this.pan = true;
+            }
+            if (tilt && this.tilt)
+            {
+                Debug.Log(string.Format("Cannot merge multiple same axis tilts. Attempt to append rotate relative with tilt[{0}] to exsisting rotate with tilt[{1}].",
+                                        tilt, this.tilt));
+                return;
+            }
+            else if (tilt && !this.tilt)
+            {
+                this.tilt = true;
+            }
+            
         }
     }
 }
