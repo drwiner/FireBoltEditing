@@ -19,8 +19,6 @@ namespace Assets.scripts
 
         private bool[] rotationAxes = {false,false,false};
         private bool instant = false;
-        //TODO parameterize from Oshmirto
-        private float rotationSpeed = 20f; 
 
         private bool pan;
         private bool tilt;
@@ -71,6 +69,29 @@ namespace Assets.scripts
 
         public override void Execute()
         {
+            setRotation();
+        }
+        
+        //assumes this action sorts after the move that it mirrors.  this works well for cameras tracking things and 
+        //less well for actors tracking other actors since camera actions are forced to play second        
+        //assumes we will land on the actor when this is over
+        public override void Skip()
+        {
+            setRotation();
+        }
+
+        public override void Undo()
+        {
+            this.actor.transform.rotation = Quaternion.Euler(startOrientation);
+        }
+
+        public override void Stop()
+        {
+            
+        }
+
+        private void setRotation()
+        {
             //capture updated tracked position
             Vector3 trackedPositionCurrent = trackedActor.transform.position;
 
@@ -85,9 +106,6 @@ namespace Assets.scripts
             Vector3 targetRotation = Vector3.zero;
             targetRotation = Quaternion.LookRotation(trackedPositionCurrent - actorPosition).eulerAngles;
 
-            //i think i'm invalidating the rotation set that i'm getting by hacking things off of it.
-            //maybe i should be using the lookRotation calculation on a projected vector....though this is basically what i tried before
-
             //remove roll 
             targetRotation.z = actorRotation.z;
             if (!pan)
@@ -99,36 +117,11 @@ namespace Assets.scripts
                 targetRotation.x = actorRotation.x;
             }
 
-            actor.transform.rotation = Quaternion.Slerp(actor.transform.rotation, Quaternion.Euler(targetRotation), rotationSpeed * Time.deltaTime);
-
-            //Quaternion lookRotation = Quaternion.LookRotation(targetDirection, Vector3.up);
-            //float rotation = rotationSpeed * Time.deltaTime;
-            //this.actor.transform.rotation = Quaternion.Slerp(this.actor.transform.rotation, lookRotation, rotation);
-        }
-
-
-        //assumes this action sorts after the move that it mirrors.  this works well for cameras tracking things and 
-        //less well for actors tracking other actors since camera actions are forced to play second        
-        public override void Skip()
-        {
-            Vector3 direction = Vector3.zero;
-            //direction.x = dimensionLock[0] ? trackedActor.transform.position.x - this.actor.transform.position.x : this.actor.transform.position.x;
-            //direction.y = dimensionLock[1] ? trackedActor.transform.position.y - this.actor.transform.position.y : this.actor.transform.position.y;
-            //direction.z = dimensionLock[2] ? trackedActor.transform.position.z - this.actor.transform.position.z : this.actor.transform.position.z;
-            //direction = direction.normalized;
-
-            Quaternion lookRotation = Quaternion.LookRotation(direction);
-            this.actor.transform.rotation = lookRotation;
-        }
-
-        public override void Undo()
-        {
-            this.actor.transform.rotation = Quaternion.Euler(startOrientation);
-        }
-
-        public override void Stop()
-        {
-            
+            //i want to use slerp here, but when manipulating time, it doesn't work.  if i scrub back into the very tail end of a 
+            //camera action, it gets undone, so the camera rig orientation is at start, then my tracked actor gets set to a point 
+            //where his move is almost completed, then i need to catch up to being close and then slerp.  or just force myself to 
+            //face the tracked actor.  this is unfortunate b/c it limits my ability to cap rotation speeds on the camera
+            actor.transform.rotation = Quaternion.Euler(targetRotation);
         }
 
         /// <summary>

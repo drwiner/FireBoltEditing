@@ -504,11 +504,14 @@ public class ElPresidente : MonoBehaviour {
         if (time < currentDiscourseTime)
         {
             currentDiscourseTime = time;
+            rewindFireBoltActions(discourseActionList, currentDiscourseTime);
             rewindFireBoltActions(cameraActionList, currentDiscourseTime);
+            
         }
         else
         {
             currentDiscourseTime = time;
+            fastForwardFireBoltActions(discourseActionList, currentDiscourseTime, executingDiscourseActions, currentDiscourseTime);
             fastForwardFireBoltActions(cameraActionList, currentDiscourseTime, executingCameraActions, currentDiscourseTime);
         }
         currentDiscourseTime = time;
