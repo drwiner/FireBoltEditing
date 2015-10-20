@@ -12,6 +12,7 @@ namespace Assets.scripts
         private static readonly string CINEMATIC_MODEL_PATH_DEFAULT = "cinematicModels/defaultModel.xml";
         private static readonly string ACTORS_AND_ANIMATIONS_BUNDLE_PATH_DEFAULT = "AssetBundles/actorsandanimations";
         private static readonly string TERRAIN_BUNDLE_PATH_DEFAULT = "AssetBundles/terrain";
+       // private static readonly string ACTORS_AND_ANIMTATIONS2 = "AssetBundles/actorsandanimations2";
 
         public InputSet()
         {

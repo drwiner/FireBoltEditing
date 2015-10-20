@@ -124,6 +124,7 @@
       <xs:extension base="FireBoltAction">
         <xs:attribute name="name" type="xs:string" use="required"/>
         <xs:attribute name="effector" type="xs:boolean" use="optional" default="false"/>
+        <xs:attribute name="endingAction" type="xs:string" use ="optional" />
       </xs:extension>
     </xs:complexContent>
   </xs:complexType>

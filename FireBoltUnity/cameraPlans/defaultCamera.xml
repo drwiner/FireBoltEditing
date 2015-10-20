@@ -14,65 +14,17 @@
             --><!--<movement type="Focus" directive="With" subject="Pudge"/>--><!--
           </movements>
         </shotFragment>-->
-      <!--<shotFragment duration="5000" >
-        <angle angleSetting="Medium" target="Pudge"/>
-        <direction heading="Right" target="Pudge"/>
-        <framings>
-          <framing framingType="ExtremeLong" framingTarget="Pudge"/>
-        </framings>
-        <movements>
-          <movement type="Dolly" directive="To" subject="15,10"/>
-        </movements>
-      </shotFragment>-->
-      <!--<shotFragment duration="5000" >
+      <shotFragment duration="5000" >
+        <!--height="5"-->
         <angle angleSetting="High" target="Pudge"/>
-        <direction heading="Right" target="Pudge"/>
-        <framings>
-          <framing framingType="ExtremeLong" framingTarget="Pudge"/>
-        </framings>
-        <movements/>
-      </shotFragment>-->
-      <!--<shotFragment duration="5000" >
-        <angle angleSetting="Medium" target="Pudge"/>
-        <direction heading="Toward" target="Pudge"/>
+        <!--<direction heading="Right" target="Pudge"/>-->
         <framings>
           <framing framingType="Waist" framingTarget="Pudge"/>
         </framings>
         <movements>
-        </movements>
-      </shotFragment>-->
-      <shotFragment duration="7250" >
-        <angle angleSetting="Medium" target="secretAgentMan"/>
-        <direction heading="Away" target="secretAgentMan"/>
-        <framings>
-          <framing framingType="Long" framingTarget="secretAgentMan"/>
-        </framings>
-        <movements>
-          <movement type="Tilt" directive="With" subject="secretAgentMan"/>
-          <movement type="Pan" directive="With" subject="secretAgentMan"/>
-          <!--<movement type="Pan" directive="To" subject="315"/>-->
-          <!--<movement type="Tilt" directive="To" subject="-90"/>-->
+          <!--<movement type="Focus" directive="With" subject="Pudge"/>-->
         </movements>
       </shotFragment>
-
-      <!--<shotFragment duration="5000" >
-        <angle angleSetting="Medium" target="Pudge"/>
-        <direction heading="Toward" target="Pudge"/>
-        <framings>
-          <framing framingType="Full" framingTarget="Pudge"/>
-        </framings>
-        <movements>
-        </movements>
-      </shotFragment>
-      <shotFragment duration="5000" >
-        <angle angleSetting="High" target="secretAgentMan"/>
-        <direction heading="Toward" target="secretAgentMan"/>
-        <framings>
-          <framing framingType="Long" framingTarget="secretAgentMan"/>
-        </framings>
-        <movements>
-        </movements>
-      </shotFragment>-->
       </shotFragments>
     </block>
 

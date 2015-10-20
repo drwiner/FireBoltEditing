@@ -9,12 +9,16 @@ namespace Assets.scripts
         private string actorName;
         private GameObject actor;
         private string animName;
+        private string stateName;
         private Animator animator;
         private AnimationClip animation;
-		AnimatorOverrideController animatorOverride;
-        private int playTriggerHash,stopTriggerHash; 
-		private bool loop;
+        private AnimationClip state;
+        AnimatorOverrideController animatorOverride;
+        private int playTriggerHash, stopTriggerHash;
+        private bool loop;
         private static readonly string animationToOverride = "_87_a_U1_M_P_idle_Neutral__Fb_p0_No_1";
+        private static readonly string stateToOverride = "state";
+        bool assignEndState = false;
 
         public static bool ValidForConstruction(string actorName, CM.Animation animation)
         {
@@ -23,12 +27,14 @@ namespace Assets.scripts
             return true;
         }
 
-        public AnimateMecanim(float startTick, float endTick, string actorName, string animName, bool loop) :
+
+        public AnimateMecanim(float startTick, float endTick, string actorName, string animName, bool loop, string endingName) :
             base(startTick, endTick)
         {
             this.actorName = actorName;
             this.animName = animName;
 			this.loop = loop;
+            this.stateName = endingName; 
             playTriggerHash = Animator.StringToHash("play");
             stopTriggerHash = Animator.StringToHash("stop");
         }
@@ -39,6 +45,8 @@ namespace Assets.scripts
 			{
 				animatorOverride[animationToOverride] = animation;
                 animator.runtimeAnimatorController = animatorOverride;
+                if (assignEndState)
+                    animatorOverride[stateToOverride] = state;
 				return true;
 			}
             actor = GameObject.Find(actorName);
@@ -62,10 +70,22 @@ namespace Assets.scripts
             if(ElPresidente.Instance.GetActiveAssetBundle().Contains(animName))
             {
                 animation = ElPresidente.Instance.GetActiveAssetBundle().LoadAsset<AnimationClip>(animName);
+
                 if (animation == null)
                 {
                     Debug.LogError(string.Format("unable to find animation [{0}] in asset bundle[{1}]",animName, ElPresidente.Instance.GetActiveAssetBundle().name));
                     return false;
+                }
+
+            }
+            if (!string.IsNullOrEmpty(stateName) && ElPresidente.Instance.GetActiveAssetBundle().Contains(stateName) ) 
+            {
+                assignEndState = true;
+                state = ElPresidente.Instance.GetActiveAssetBundle().LoadAsset<AnimationClip>(stateName);
+                if (state == null)
+                {
+                    Debug.LogError(string.Format("unable to find animation [{0}] in asset bundle[{1}]", stateName, ElPresidente.Instance.GetActiveAssetBundle().name));
+                    if (state == null) return false;
                 }
             }
             
@@ -80,12 +100,20 @@ namespace Assets.scripts
             if (!animation) 
             {
                 Debug.LogError("Missing animation asset");
+                Debug.Log(animName);
             }
+            if (assignEndState && !state)
+            {
+                Debug.LogError("Missing state asset");
+            }
+
 			if (loop) {
 				animation.wrapMode = WrapMode.Loop;
 			} else
 				animation.wrapMode = WrapMode.Once;			
-            animatorOverride[animationToOverride] = animation;            
+            animatorOverride[animationToOverride] = animation;
+            if (assignEndState)
+                animatorOverride[stateToOverride] = state;
             return true;
         }
 

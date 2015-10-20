@@ -136,7 +136,8 @@ namespace Assets.scripts
                                 break;
                         }
                     }
-                    cameraActionList.Add(rotateWith);
+                    if(rotateWith!=null)
+                        cameraActionList.Add(rotateWith);
                     // Shake it off
                     cameraActionList.Add(new Shake(movementStartTime, fragmentEndTime, cameraName, fragment.Shake));
 
