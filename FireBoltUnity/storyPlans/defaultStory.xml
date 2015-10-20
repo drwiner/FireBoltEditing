@@ -38,9 +38,16 @@
       <property name="origin" value="(-2, 10)"/>
       <property name="destination" value="(-2, 9)"/>
       <property name="actor" value="Pudge"/>
-      <property name="time" value="4000-12000"/>
+      <property name="time" value="4000-5000"/>
     </action>
 
+
+    <action type="face-position" name="step7003">
+      <property name="look-at" value="(10, -10)"/>      
+      <property name="actor" value="Pudge"/>
+      <property name="time" value="5000-7000"/>
+    </action>
+    
     <!--<action type="rotate" name="step7003">
       <property name="start-angle" value="0"/>
       <property name="end-angle" value="130"/>
@@ -275,8 +282,10 @@
     <action-type name="courier-upgrade"/>
     <action-type name="spawn-hero"/>
     <action-type name="idle" />
+    <action-type name="face-position" />
   </action-types>
   <action-properties>
+    <action-property name="look-at" action="face-position" range="coordinate2d"/>
     <action-property name="origin" action="move" range="coordinate2d"/>
     <action-property name="experience-now" action="last-hit" range="int"/>
     <action-property name="old" action="ability-level-up" range="int"/>

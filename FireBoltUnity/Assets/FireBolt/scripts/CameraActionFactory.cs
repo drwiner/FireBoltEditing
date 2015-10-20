@@ -103,7 +103,7 @@ namespace Assets.scripts
                                        
                                         break;
                                     case CameraMovementDirective.To:
-                                        cameraActionList.Add(new Rotate(movementStartTime, fragmentEndTime, cameraRig, new Vector3Nullable(null, float.Parse(movement.Subject), null)));
+                                        cameraActionList.Add(new Rotate(movementStartTime, fragmentEndTime, cameraRig, new Vector3Nullable(null, float.Parse(movement.Subject), null),null));
                                         break;
                                 }
                                 break;
@@ -122,7 +122,7 @@ namespace Assets.scripts
                                         }
                                         break;
                                     case CameraMovementDirective.To:
-                                        cameraActionList.Add(new Rotate(movementStartTime, fragmentEndTime, cameraRig, new Vector3Nullable(float.Parse(movement.Subject), null, null)));
+                                        cameraActionList.Add(new Rotate(movementStartTime, fragmentEndTime, cameraRig, new Vector3Nullable(float.Parse(movement.Subject), null, null),null));
                                         break;
                                 }
                                 break;

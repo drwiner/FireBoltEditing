@@ -101,7 +101,20 @@
         <rotateAction actorNameParamName="actor" destinationParamName="end-angle" /><!--maxDuration="400"-->
       </rotateActions>
       <animateActions/>
-    </domainAction>   
+    </domainAction>
+    <domainAction name="face-position">
+      <params>
+        <param name="actor" />
+        <param name="look-at" />
+      </params>
+      <createActions/>
+      <destroyActions/>
+      <translateActions/>
+      <rotateActions>
+        <rotateAction actorNameParamName="actor" destinationParamName="look-at" />
+      </rotateActions>
+      <animateActions/>
+    </domainAction>
   </domainActions>
   <actors>
     <actor name="Wall" model="Wall.prefab" >

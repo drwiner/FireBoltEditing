@@ -22,9 +22,12 @@ namespace Assets.scripts
         //should be added to startOrientation to achieve targetOrientation
         Vector3 rotationChangeRequired;
 
-        public static bool ValidForConstruction(string actorName)
+        public static bool ValidForConstruction(string actorName, Vector3Nullable targetRotation, Vector2? targetPoint)
         {
             if (string.IsNullOrEmpty(actorName))
+                return false;
+            if ((targetRotation.X.HasValue || targetRotation.Y.HasValue || targetRotation.Z.HasValue) && //can't define an angle and a point
+                targetPoint.HasValue)
                 return false;
             return true;
         }
@@ -34,19 +37,25 @@ namespace Assets.scripts
             return "Rotate " + actorName + " from " + startOrientation + " to " + targetOrientation;
         }
 
-
         /// <summary>
         /// 
         /// </summary>
         /// <param name="startTick"></param>
         /// <param name="endTick"></param>
         /// <param name="actorName"></param>
-        /// <param name="targetRotation">must be in unity axes</param>
-        public Rotate(float startTick, float endTick, string actorName, Vector3Nullable targetRotation) :
+        /// <param name="targetRotation"></param>
+        /// <param name="targetPoint">x,z</param>
+        public Rotate(float startTick, float endTick, string actorName, Vector3Nullable targetRotation, Vector2? targetPoint) :
             base(startTick, endTick)
         {
             this.actorName = actorName;
-            this.targetOrientation = targetRotation;
+            
+            //TODO this smells.  but generality in all dimensions will take too long to figure out
+            //if the targetPoint is specified, prefer to use it over a bare rotation value
+            if (targetPoint.HasValue)
+                this.targetOrientation = new Vector3Nullable(null, Mathf.Atan2(targetPoint.Value.x, targetPoint.Value.y) * Mathf.Rad2Deg, null);
+            else
+                this.targetOrientation = targetRotation;           
         }
 
         public override bool Init()
@@ -73,7 +82,7 @@ namespace Assets.scripts
             rotationChangeRequired = new Vector3(targetOrientation.X.HasValue ? (targetOrientation.X.Value - startOrientation.x).BindToSemiCircle() : 0,
                                                  targetOrientation.Y.HasValue ? (targetOrientation.Y.Value - startOrientation.y).BindToSemiCircle() : 0,
                                                  targetOrientation.Z.HasValue ? (targetOrientation.Z.Value - startOrientation.z).BindToSemiCircle() : 0);
-
+            Debug.Log(this.ToString());
             return true;
         }
 

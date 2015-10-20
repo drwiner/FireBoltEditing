@@ -101,7 +101,8 @@ namespace Assets.scripts
                 float startTick = 0;
                 float endTick = 0;
                 string actorName = null;
-                float targetDegrees=0;
+                float? targetDegrees = null;
+                Vector2? targetPoint = null;
                 foreach (CM.DomainActionParameter domainActionParameter in domainAction.Params)
                 {
                     if (domainActionParameter.Name == ra.ActorNameParamName)
@@ -116,9 +117,17 @@ namespace Assets.scripts
                         IActionProperty targetOrientation;
                         if (storyAction.TryGetProperty(domainActionParameter.Name, out targetOrientation))
                         {
-                            targetDegrees = (float)targetOrientation.Value.Value;      
-                            if(targetOrientation.Range.Name == "x+degrees")
-                                targetDegrees = targetDegrees.convertSourceEngineToUnityRotation();                                           
+                            if (targetOrientation.Value.Value is float)
+                            {
+                                targetDegrees = (float)targetOrientation.Value.Value;
+                                if (targetOrientation.Range.Name == "x+degrees")
+                                    targetDegrees = targetDegrees.Value.convertSourceEngineToUnityRotation();
+                            }
+                            else if (targetOrientation.Value.Value is Coordinate2D)
+                            {
+                                targetPoint = new Vector2((float)((Coordinate2D)targetOrientation.Value.Value).X,
+                                                          (float)((Coordinate2D)targetOrientation.Value.Value).Y);
+                            }
                         }
                         else
                         {
@@ -128,9 +137,10 @@ namespace Assets.scripts
                 }
                 startTick = getStartTick(storyAction, ra, effectingAnimation);
                 endTick = getEndTick(storyAction, ra, effectingAnimation, startTick);
-                if (Rotate.ValidForConstruction(actorName))
+                var targetRotation = new Vector3Nullable(null, targetDegrees, null);
+                if (Rotate.ValidForConstruction(actorName, targetRotation, targetPoint))
                 {                    
-                    aaq.Add(new Rotate(startTick, endTick, actorName, new Vector3Nullable(null, targetDegrees, null)));
+                    aaq.Add(new Rotate(startTick, endTick, actorName, targetRotation, targetPoint));
                 }                
             }
         }
