@@ -4,11 +4,8 @@ using CM = CinematicModel;
 
 namespace Assets.scripts
 {
-    public class AnimateMecanim : IFireBoltAction
+    public class AnimateMecanim : FireBoltAction
     {
-
-        private float startTick;
-        private float endTick;
         private string actorName;
         private GameObject actor;
         private string animName;
@@ -30,10 +27,10 @@ namespace Assets.scripts
             return true;
         }
 
-        public AnimateMecanim(float startTick, float endTick, string actorName, string animName, bool loop, string endingName) 
+
+        public AnimateMecanim(float startTick, float endTick, string actorName, string animName, bool loop, string endingName) :
+            base(startTick, endTick)
         {
-            this.startTick = startTick;
-            this.endTick = endTick;
             this.actorName = actorName;
             this.animName = animName;
 			this.loop = loop;
@@ -42,7 +39,7 @@ namespace Assets.scripts
             stopTriggerHash = Animator.StringToHash("stop");
         }
 
-        public bool Init()
+        public override bool Init()
         {
 			if (actor != null && animatorOverride != null)
 			{
@@ -73,20 +70,22 @@ namespace Assets.scripts
             if(ElPresidente.Instance.GetActiveAssetBundle().Contains(animName))
             {
                 animation = ElPresidente.Instance.GetActiveAssetBundle().LoadAsset<AnimationClip>(animName);
-                if (ElPresidente.Instance.GetActiveAssetBundle().Contains(stateName) && !stateName.Equals("")) //added by DrW
-                {
-                    assignEndState = true;
-                    state = ElPresidente.Instance.GetActiveAssetBundle().LoadAsset<AnimationClip>(stateName);
-                    if (state == null)
-                    {
-                        Debug.LogError(string.Format("unable to find animation [{0}] in asset bundle[{1}]", stateName, ElPresidente.Instance.GetActiveAssetBundle().name));
-                        if (state == null) return false;
-                    }
-                }
+
                 if (animation == null)
                 {
                     Debug.LogError(string.Format("unable to find animation [{0}] in asset bundle[{1}]",animName, ElPresidente.Instance.GetActiveAssetBundle().name));
                     return false;
+                }
+
+            }
+            if (!string.IsNullOrEmpty(stateName) && ElPresidente.Instance.GetActiveAssetBundle().Contains(stateName) ) 
+            {
+                assignEndState = true;
+                state = ElPresidente.Instance.GetActiveAssetBundle().LoadAsset<AnimationClip>(stateName);
+                if (state == null)
+                {
+                    Debug.LogError(string.Format("unable to find animation [{0}] in asset bundle[{1}]", stateName, ElPresidente.Instance.GetActiveAssetBundle().name));
+                    if (state == null) return false;
                 }
             }
             
@@ -118,35 +117,25 @@ namespace Assets.scripts
             return true;
         }
 
-		public void Undo()
+        public override void Undo()
 		{
 		}
 
-        public void Skip()
+        public override void Skip()
         {
             animator.SetTrigger(stopTriggerHash);
         }
 
-	    public void Execute () 
+        public override void Execute() 
         {
 		    //let it roll          
             float at = Mathf.Repeat ((ElPresidente.currentStoryTime - startTick)/1000, animation.length);
             animator.CrossFade( "animating", 0, 0, at/animation.length);
 	    }
 
-        public void Stop()
+        public override void Stop()
         {
             animator.SetTrigger(stopTriggerHash);
-        }
-
-        public float StartTick()
-        {
-            return startTick;
-        }
-
-        public float EndTick()
-        {
-            return endTick;
         }
     }
 }

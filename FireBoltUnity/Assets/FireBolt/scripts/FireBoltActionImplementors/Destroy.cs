@@ -14,9 +14,8 @@ namespace Assets.scripts
     /// we check for the existence of an actor already in the scene with the same name
     /// and recycle those game objects...which is do-able...then we have limit 1 of everything
     /// </summary>
-    public class Destroy : IFireBoltAction
+    public class Destroy : FireBoltAction
     {
-        float startTick;
         string actorName;
 		GameObject actor;
 
@@ -27,13 +26,13 @@ namespace Assets.scripts
             return true;
         }
 
-        public Destroy(float startTick, string actorName) 
+        public Destroy(float startTick, string actorName) :
+            base(startTick,startTick)
         {
-            this.startTick = startTick;
             this.actorName = actorName;
         }
 
-        public bool Init()
+        public override bool Init()
         {
 			if (actor != null)
 			{
@@ -50,35 +49,25 @@ namespace Assets.scripts
             return true;
         }
 
-		public void Undo()
+		public override void Undo()
 		{
 			if (actor != null)
 			    actor.SetActive (true);
 		}
 
-        public void Skip()
+        public override void Skip()
         {
             // nothing to skip
         }
 
-        public void Execute()
+        public override void Execute()
         {
             //nothing to do
         }
 
-        public void Stop()
+        public override void Stop()
         {
             //nothing to stop
-        }
-
-        public float StartTick()
-        {
-            return startTick;
-        }
-
-        public float EndTick()
-        {
-            return startTick;
         }
     }
 }

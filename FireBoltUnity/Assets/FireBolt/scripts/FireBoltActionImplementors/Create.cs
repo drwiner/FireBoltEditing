@@ -8,9 +8,8 @@ using CM=CinematicModel;
 
 namespace Assets.scripts
 {
-    public class Create : IFireBoltAction
+    public class Create : FireBoltAction
     {
-        float startTick;
         string actorName,modelName;
         Vector3 position;
 		GameObject actor;
@@ -27,7 +26,8 @@ namespace Assets.scripts
             return string.Format ("Create " + actorName);
         }
 
-        public Create(float startTick, string actorName, string modelName, Vector3 position) 
+        public Create(float startTick, string actorName, string modelName, Vector3 position) :
+            base(startTick, startTick)
         {
             this.startTick = startTick;
             this.actorName = actorName;
@@ -36,7 +36,7 @@ namespace Assets.scripts
 			this.actor = null;
         }
 
-        public bool Init()
+        public override bool Init()
         {
             Debug.Log(string.Format("init create model[{0}] for actor [{1}]",modelName, actorName));
             if (actor != null)
@@ -94,36 +94,26 @@ namespace Assets.scripts
             return bounds;
         }
 
-		public void Undo()
+        public override void Undo()
 		{
             Debug.Log ("Undo create");
 			if (actor != null)
 			    actor.SetActive (false);
 		}
 
-        public void Skip()
+        public override void Skip()
         {
             // nothing to skip
         }
 
-        public void Execute()
+        public override void Execute()
         {
             //nothing to do
         }
 
-        public void Stop()
+        public override void Stop()
         {
             //nothing to stop
-        }
-
-        public float StartTick()
-        {
-            return startTick;
-        }
-
-        public float EndTick()
-        {
-            return startTick;
         }
     }
 }
