@@ -14,6 +14,7 @@ namespace Assets.scripts
         private bool initialized = false;
         private string anchor=string.Empty;
         private float? height;
+        private float? pan;
         private string cameraName; //this is actually going to manipulate the rig most likely, but what we call it doesn't matter much from in here
         private CameraBody cameraBody; //need a reference to this guy for setting fstop and lens
         private string lensName;
@@ -45,7 +46,7 @@ namespace Assets.scripts
         ushort newFStopIndex;
         float newfocusDistance;
 
-        public ShotFragmentInit(float startTick, string cameraName, string anchor, float? height, 
+        public ShotFragmentInit(float startTick, string cameraName, string anchor, float? height, float? pan,
                                 string lensName, string fStopName, List<Framing> framings, Oshmirto.Direction direction,
                                 Oshmirto.Angle cameraAngle, string focusTarget) :
             base(startTick, startTick)
@@ -54,6 +55,7 @@ namespace Assets.scripts
             this.cameraName = cameraName;
             this.anchor = anchor;
             this.height = height;
+            this.pan = pan;
             this.lensName = lensName;
             this.fStopName = fStopName;
             this.framings = framings;
@@ -66,8 +68,13 @@ namespace Assets.scripts
         {
             if(initialized) return true;
 
+            //don't throw null refs in the debug statement if framing isn't there.  it's not required
+            string framingDescriptor = string.Empty;
+            if (framings.Count > 0 && framings[0] != null)
+                framingDescriptor = framings[0].ToString();
+
             Debug.Log(string.Format("init shot fragment start[{0}] end[{1}] anchor[{2}] height[{3}] lens[{4}] fStop[{5}] framing[{6}] direction[{7}] angle[{8}] focus[{9}] d:s[{10}:{11}]",
-                                    startTick,endTick,anchor,height,lensName,fStopName,framings[0],direction,cameraAngle,focusTarget,
+                                    startTick,endTick,anchor,height,lensName,fStopName,framingDescriptor,direction,cameraAngle,focusTarget,
                                     ElPresidente.Instance.CurrentDiscourseTime, ElPresidente.Instance.CurrentStoryTime));
             if(!findCamera()) return false;           
             savePreviousCameraState();
@@ -224,6 +231,10 @@ namespace Assets.scripts
                     framings[0].FramingTarget, ElPresidente.Instance.CurrentDiscourseTime, ElPresidente.Instance.CurrentStoryTime));
                 }
             }
+            else if (pan.HasValue) //no framing, we can pay attention to a direct rotate command
+            {
+                tempCameraOrientation.Y = pan.Value.BindToSemiCircle();
+            }
             
             //angling must go after framing(or during), since x,z might not be set til we frame.
             if (tempCameraOrientation.X == null && cameraAngle != null && !string.IsNullOrEmpty(cameraAngle.Target))
@@ -231,7 +242,7 @@ namespace Assets.scripts
                 angleCameraTo(cameraAngle.Target, cameraAngle.AngleSetting);           
             }
 
-            if (!tempCameraPosition.Y.HasValue && framings[0] != null)//we still haven't set height.  place camera at subject's point of interest
+            if (!tempCameraPosition.Y.HasValue && framings.Count > 0 && framings[0] != null)//we still haven't set height.  place camera at subject's point of interest
             {
                 tempCameraPosition.Y = findTargetLookAtPoint(framings[0].FramingTarget, GameObject.Find(framings[0].FramingTarget).GetComponent<BoxCollider>().bounds).y;
             }

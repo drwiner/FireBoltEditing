@@ -31,6 +31,19 @@ namespace Oshmirto
             set { Height = !string.IsNullOrEmpty(value) ? float.Parse(value) : default(float?); }
         }
 
+        [XmlIgnore]
+        public float? Pan { get; set; }
+
+        /// <summary>
+        /// exists for nullable parsing only.  use Pan instead
+        /// </summary>
+        [XmlAttribute("pan")]
+        public string PanAsString
+        {
+            get { return (Pan.HasValue) ? Pan.ToString() : null; }
+            set { Pan = !string.IsNullOrEmpty(value) ? float.Parse(value) : default(float?); }
+        }
+
         [XmlElement("angle")]
         public Angle Angle { get; set; }
 

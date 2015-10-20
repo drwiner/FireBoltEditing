@@ -14,12 +14,12 @@
             --><!--<movement type="Focus" directive="With" subject="Pudge"/>--><!--
           </movements>
         </shotFragment>-->
-      <shotFragment duration="5000" >
+      <shotFragment duration="5000" pan="180">
         <!--height="5"-->
         <angle angleSetting="High" target="Pudge"/>
         <!--<direction heading="Right" target="Pudge"/>-->
         <framings>
-          <framing framingType="Waist" framingTarget="Pudge"/>
+          <!--<framing framingType="Waist" framingTarget="Pudge"/>-->
         </framings>
         <movements>
           <!--<movement type="Focus" directive="With" subject="Pudge"/>-->

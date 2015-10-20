@@ -51,7 +51,7 @@ namespace Assets.scripts
                     if (fragmentEndTime > blockEndTime)
                         blockEndTime = fragmentEndTime;
 
-                    cameraActionList.Add(new ShotFragmentInit(fragmentStartTime, cameraRig, fragment.Anchor, fragment.Height,
+                    cameraActionList.Add(new ShotFragmentInit(fragmentStartTime, cameraRig, fragment.Anchor, fragment.Height, fragment.Pan,
                         fragment.Lens, fragment.FStop, fragment.Framings, fragment.Direction, fragment.Angle, fragment.FocusPosition));
 
                     var movementStartTime = fragmentStartTime + 1; //force moves to sort after inits
