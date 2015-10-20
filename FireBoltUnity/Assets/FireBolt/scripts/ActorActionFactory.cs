@@ -106,7 +106,7 @@ namespace Assets.scripts
                 {
                     if (domainActionParameter.Name == ra.ActorNameParamName)
                     {
-                        if (!getActorName(storyAction, domainActionParameter, out actorName))
+                        if (!getActionParameterValueName(storyAction, domainActionParameter, out actorName))
                         {
                             break;
                         }
@@ -179,7 +179,7 @@ namespace Assets.scripts
                     }
                     else if (domainActionParameter.Name == ta.ActorNameParamName)
                     {
-                        if (!getActorName(storyAction, domainActionParameter, out actorName))
+                        if (!getActionParameterValueName(storyAction, domainActionParameter, out actorName))
                         {
                             break;
                         }
@@ -251,31 +251,22 @@ namespace Assets.scripts
                 CM.AnimationMapping animMapping = null;
                 CM.AnimationMapping stateMapping = null;
                 CM.Animation animation = null;
-                string endName = "";
-                string animationName = "";
-                float addTick = 0;
 
-                //PURPOSE: if domain action parameter is the name of an animateAction, then that animateAction takes the name indicated by the parameter value.
+                string endName = !string.IsNullOrEmpty(animateAction.End) ? animateAction.End : string.Empty;
+                string animateActionName = animateAction.Name;             
+
+                //PURPOSE: if domain action parameter is the name of an animateAction for that domain action as defined in the cinematic model,
+                //then use the parameter value as the animateAction name.
                 // Used when a domain action has a variable for accepting an action to play, handy for spawn actions that require an initial state
                 foreach (CM.DomainActionParameter domainActionParameter in domainAction.Params)
                 {
-                    endName = "";
+                    endName = string.Empty;
                     //  Debug.Log("beforeset: " + animateAction.Name + " " +  domainActionParameter.Name);
                     if (domainActionParameter.Name.Equals(animateAction.Name))
                     {
-                        getActorName(storyAction, domainActionParameter, out animationName);//animationName - name of the animation to play
-                        endName = animationName;
-                        addTick += 1f;
+                        getActionParameterValueName(storyAction, domainActionParameter, out animateActionName);
+                        endName = animateActionName;                        
                         break;
-                    }
-                }
-
-                if (animationName.Equals(""))
-                {
-                    animationName = animateAction.Name; //animationName - name of the animation to play
-                    if (!animateAction.End.Equals(""))
-                    {
-                        endName = animateAction.End;
                     }
                 }
 
@@ -284,14 +275,15 @@ namespace Assets.scripts
 
                     if (domainActionParameter.Name == animateAction.ActorNameParamName)
                     {
-                        if (getActorName(storyAction, domainActionParameter, out actorName))
+                        if (getActionParameterValueName(storyAction, domainActionParameter, out actorName))
                         {
-                            //  animMapping = null;
-                            // Debug.Log(actorName + ", " + animationName);
                             int objectSetIndex = 0;
                             int actorHierarchyStepLevel = 1;
                             string abstractActorName = actorName;
-                            getAnimationMapping(abstractActorName, animationName, out animMapping);
+                            getAnimationMapping(abstractActorName, animateActionName, out animMapping);
+
+                            //TODO extract method
+                            //abstract actor lookup if we didn't find an exact actor name match
                             while (objectSetIndex < orderedObjectSets.Length &&
                                   actorHierarchyStepLevel < cm.SmartModelSettings.ActorMaxSearchDepth &&
                                   animMapping == null)
@@ -302,7 +294,7 @@ namespace Assets.scripts
                                 {
                                     actorHierarchyStepLevel++;
                                     abstractActorName = orderedObjectSets[objectSetIndex];
-                                    if (getAnimationMapping(abstractActorName, animationName, out animMapping))
+                                    if (getAnimationMapping(abstractActorName, animateActionName, out animMapping))
                                     {
                                         break;
                                         //found our mapping
@@ -310,39 +302,43 @@ namespace Assets.scripts
                                 }
                                 objectSetIndex++;
                             }
+
+
                             if (animMapping == null)
                             {
                                 Debug.Log("cinematic model animation instance undefined for actor[" +
-                                    abstractActorName + "] animateAction[" + animationName + "]");
+                                    abstractActorName + "] animateAction[" + animateActionName + "]");
                                 break;
                             }
+                            //we have a valid mapping, let's use it to find an animation for this actor 
                             animation = cm.FindAnimation(animMapping.AnimationName);
                             if (animation == null)
                             {
                                 Debug.Log(string.Format("animation name [{0}] undefined", animMapping.AnimationName));
                                 break;
                             }
+
+                            //end name is optional, we don't have to do this for the animation to be valid
+                            if (!string.IsNullOrEmpty(endName))
+                            {
+                                getAnimationMapping(actorName, endName, out stateMapping);
+                                if (!(stateMapping == null))
+                                {
+                                    endName = cm.FindAnimation(stateMapping.AnimationName).FileName;
+                                    //Debug.Log("end name: " + endName);
+                                }
+                            }
+
                         }
                     }
                 }
-
                 startTick = getStartTick(storyAction, animateAction, effectingAnimation);
                 endTick = getEndTick(storyAction, animateAction, effectingAnimation, startTick);
 
-               
                 if (AnimateMecanim.ValidForConstruction(actorName, animation))
                 {
-                    if (!endName.Equals(""))
-                    {
-                        getAnimationMapping(actorName, endName, out stateMapping);
-                        if (!(animMapping == null))
-                        {
-                            endName = cm.FindAnimation(stateMapping.AnimationName).FileName;
-                            Debug.Log("end name: " + endName);
-                        }
-                    }
-                    Debug.Log("actor: " + actorName + " animMappingName: " + animMapping.AnimationName + " animateActionName: " + animMapping.AnimateActionName + " loop: " + animMapping.LoopAnimation);
-                    aaq.Add(new AnimateMecanim(startTick + addTick, endTick, actorName, animation.FileName, animMapping.LoopAnimation, endName));
+                 //   Debug.Log("actor: " + actorName + " animMappingName: " + animMapping.AnimationName + " animateActionName: " + animMapping.AnimateActionName + " loop: " + animMapping.LoopAnimation);
+                    aaq.Add(new AnimateMecanim(startTick, endTick, actorName, animation.FileName, animMapping.LoopAnimation, endName));
                 }
             }
         }
@@ -380,13 +376,13 @@ namespace Assets.scripts
             return offset;
         }
 
-        private static bool getActorName(IStoryAction<UintT> storyAction, CM.DomainActionParameter domainActionParameter, out string actorName)
+        private static bool getActionParameterValueName(IStoryAction<UintT> storyAction, CM.DomainActionParameter domainActionParameter, out string parameterValueName)
         {
-            actorName = null;
+            parameterValueName = null;
             IActionProperty actorNameProperty;
             if (storyAction.TryGetProperty(domainActionParameter.Name, out actorNameProperty))
             {
-                actorName = actorNameProperty.Value.Name;
+                parameterValueName = actorNameProperty.Value.Name;
                 return true;
             }
             Debug.Log(domainActionParameter.Name + " not set for stepId[" + storyAction.Name + "]");
@@ -440,7 +436,7 @@ namespace Assets.scripts
                 {
                     if (domainActionParameter.Name == ca.ActorNameParamName)
                     {
-                        if (getActorName(storyAction, domainActionParameter, out actorName))//actorName is defined, we can look up a model
+                        if (getActionParameterValueName(storyAction, domainActionParameter, out actorName))//actorName is defined, we can look up a model
                         {
                             getActorModel(actorName, out modelName);
                             int objectSetIndex = 0;
@@ -498,7 +494,7 @@ namespace Assets.scripts
                 {
                     if (domainActionParameter.Name == da.ActorNameParamName)
                     {
-                        if (!getActorName(storyAction, domainActionParameter, out actorName))
+                        if (!getActionParameterValueName(storyAction, domainActionParameter, out actorName))
                         {
                             break;
                         }

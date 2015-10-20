@@ -61,7 +61,7 @@
       <params>
         <param name="actor" />
         <param name="location" />
-		<param name="action"/>
+		    <param name="action"/>
       </params>
       <createActions>
         <createAction actorNameParamName="actor" originParamName="location" />
@@ -85,7 +85,7 @@
         <translateAction  actorNameParamName="actor" destinationParamName="destination" originParamName="origin"/>
       </translateActions>
       <animateActions>
-        <animateAction  name="walk" actorNameParamName="actor" effector="false"/>
+        <animateAction  name="walk" actorNameParamName="actor" effector="false" endingAction="idle"/>
       </animateActions>
       <rotateActions/>
     </domainAction>
@@ -120,6 +120,7 @@
         <animationMapping animateActionName="walk" animationName="walk" loopAnimation="true" />
         <animationMapping animateActionName="buy-item1" animationName="verticalSwipe" loopAnimation="true" />
         <animationMapping animateActionName="idle" animationName="idle" loopAnimation="true" />
+        <animationMapping animateActionName="humanoid_idle" animationName="humanoid_idle" loopAnimation="true"/>
       </animationMappings>
     </actor>
 
