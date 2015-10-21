@@ -5,7 +5,7 @@ using System.Text;
 using UnityEngine;
 using LN.Utilities;
 using Impulse.v_1_336;
-using UintT = Impulse.v_1_336.Interval<Impulse.v_1_336.Constants.ValueConstant<uint>, uint>;
+using UintT = Impulse.v_1_336.Intervals.Interval<Impulse.v_1_336.Constants.ValueConstant<uint>, uint>;
 using UintV = Impulse.v_1_336.Constants.ValueConstant<uint>;
 using Oshmirto;
 
@@ -28,7 +28,7 @@ namespace Assets.scripts
             {"1.4",0}, {"2",1}, {"2.8",2}, {"4",3}, {"5.6",4}, {"8",5}, {"11",6}, {"16",7}, {"22",8}
         };
 
-        public static void CreateActions(AStory<UintV, UintT, IIntervalSet<UintV, UintT>> story, string cameraPlanPath, 
+        public static void CreateActions(Story<UintV, UintT, IIntervalSet<UintV, UintT>> story, string cameraPlanPath, 
                                                      out CameraActionList cameraActionList, out FireBoltActionList discourseActionList)
         {
             cameraActionList = new CameraActionList();

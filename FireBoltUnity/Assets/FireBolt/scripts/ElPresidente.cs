@@ -7,7 +7,7 @@ using Assets.scripts;
 using System.Collections.Generic;
 using System;
 using Impulse.v_1_336;
-using UintT = Impulse.v_1_336.Interval<Impulse.v_1_336.Constants.ValueConstant<uint>, uint>;
+using UintT = Impulse.v_1_336.Intervals.Interval<Impulse.v_1_336.Constants.ValueConstant<uint>, uint>;
 using UintV = Impulse.v_1_336.Constants.ValueConstant<uint>;
 using CM = CinematicModel;
 
@@ -33,7 +33,7 @@ public class ElPresidente : MonoBehaviour {
 	public float myTime;
     public Slider whereWeAt;
     public static readonly ushort MILLIS_PER_FRAME = 5;
-    private AStory<UintV, UintT, IIntervalSet<UintV, UintT>> story;
+    private Story<UintV, UintT, IIntervalSet<UintV, UintT>> story;
 
     public static ElPresidente Instance;
 
