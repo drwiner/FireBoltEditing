@@ -6,7 +6,7 @@ using Impulse.v_1_336;
 using Impulse.v_1_336.Sentences;
 using Impulse.v_1_336.Intervals;
 using Impulse.v_1_336.Constants;
-using UintT = Impulse.v_1_336.Interval<Impulse.v_1_336.Constants.ValueConstant<uint>, uint>;
+using UintT = Impulse.v_1_336.Intervals.Interval<Impulse.v_1_336.Constants.ValueConstant<uint>, uint>;
 using UintV = Impulse.v_1_336.Constants.ValueConstant<uint>;
 
 using System.IO;
@@ -23,7 +23,7 @@ namespace Assets.scripts
         private static CM.CinematicModel cm;
         private static string[] orderedObjectSets;
         //private static string[] orderedActionTypes;
-        private static AStory<UintV, UintT, IIntervalSet<UintV, UintT>> story;
+        private static Story<UintV, UintT, IIntervalSet<UintV, UintT>> story;
 
         /// <summary>
         /// 
@@ -31,7 +31,7 @@ namespace Assets.scripts
         /// <param name="storyPlanPath">path to the story plan to load</param>
         /// <param name="cinematicModelPath">path to the cinematic model to load</param>
         /// <returns></returns>
-        public static FireBoltActionList CreateStoryActions(AStory<UintV, UintT, IIntervalSet<UintV, UintT>> story, CM.CinematicModel cm)
+        public static FireBoltActionList CreateStoryActions(Story<UintV, UintT, IIntervalSet<UintV, UintT>> story, CM.CinematicModel cm)
         {
             ActorActionFactory.cm = cm;
             FireBoltActionList aaq = new FireBoltActionList();            
