@@ -17,9 +17,6 @@ namespace Assets.scripts
         private GameObject actor;
         private Vector3 startOrientation;
 
-        private bool[] rotationAxes = {false,false,false};
-        private bool instant = false;
-
         private bool pan;
         private bool tilt;
 

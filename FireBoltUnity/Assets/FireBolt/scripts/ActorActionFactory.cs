@@ -1,6 +1,12 @@
-﻿using UnityEngine;
-using UnityEngine.UI;
+﻿using System;
+using System.Linq;
 using System.Collections;
+using System.Collections.Generic;
+using System.IO;
+
+using UnityEngine;
+using UnityEngine.UI;
+
 using LN.Utilities;
 using Impulse.v_1_336;
 using Impulse.v_1_336.Sentences;
@@ -9,11 +15,7 @@ using Impulse.v_1_336.Constants;
 using UintT = Impulse.v_1_336.Intervals.Interval<Impulse.v_1_336.Constants.ValueConstant<uint>, uint>;
 using UintV = Impulse.v_1_336.Constants.ValueConstant<uint>;
 
-using System.IO;
 using CM = CinematicModel;
-using System;
-using System.Collections.Generic;
-using System.Linq;
 
 namespace Assets.scripts
 {
