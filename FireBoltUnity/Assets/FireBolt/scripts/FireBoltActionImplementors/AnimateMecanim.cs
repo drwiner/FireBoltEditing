@@ -14,7 +14,7 @@ namespace Assets.scripts
         private AnimationClip animation;
         private AnimationClip state;
         AnimatorOverrideController animatorOverride;
-        private int playTriggerHash, stopTriggerHash;
+        private int stopTriggerHash;
         private bool loop;
         private static readonly string animationToOverride = "_87_a_U1_M_P_idle_Neutral__Fb_p0_No_1";
         private static readonly string stateToOverride = "state";
@@ -35,7 +35,6 @@ namespace Assets.scripts
             this.animName = animName;
 			this.loop = loop;
             this.stateName = endingName; 
-            playTriggerHash = Animator.StringToHash("play");
             stopTriggerHash = Animator.StringToHash("stop");
         }
 

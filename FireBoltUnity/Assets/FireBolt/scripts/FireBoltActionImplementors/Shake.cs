@@ -8,7 +8,6 @@ using LN.Utilities.Collections;
 
 namespace Assets.scripts
 {
-    [Obsolete("functionality being folded into ShotFragmentInit", false)]    
     public class Shake : FireBoltAction
     {
         float lastUpdateTime;
