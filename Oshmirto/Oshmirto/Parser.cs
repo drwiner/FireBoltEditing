@@ -7,22 +7,16 @@ using System.Xml.Serialization;
 
 namespace Oshmirto
 {
-    public class Parser
+    public static class Parser
     {
-
-        static XmlSerializer xs;
-        static Parser parser;
-        private Parser()
+        private static readonly XmlSerializer xs;
+        static Parser()
         {
             xs = new XmlSerializer(typeof(CameraPlan));
         }
 
         public static CameraPlan Parse(string filename)
         {
-            if (parser == null)
-            {
-                parser = new Parser();
-            }
             CameraPlan plan = null;
             using (FileStream fs = new FileStream(filename, FileMode.Open))
             {
@@ -31,12 +25,33 @@ namespace Oshmirto
             return plan;
         }
 
+        public static CameraPlan Parse(Stream stream)
+        {
+            return (CameraPlan)xs.Deserialize(stream);
+        }
+
+        public static void Write(this CameraPlan plan, Stream stream)
+        {
+            xs.Serialize(stream, plan);
+        }
+
+        public static void Write(this CameraPlan plan, string filePath)
+        {
+            Write(filePath, plan);
+        }
+
+        public static string WriteToXml(this CameraPlan plan)
+        {
+            using (StringWriter stream = new StringWriter())
+            {
+                xs.Serialize(stream, plan);
+                stream.Flush();
+                return stream.ToString();
+            }
+        }
+
         public static void Write(string filename, CameraPlan plan)
         {
-            if (parser == null)
-            {
-                parser = new Parser();
-            }
             using (FileStream fs = new FileStream(filename, FileMode.Create))
             {
                 xs.Serialize(fs, plan);
