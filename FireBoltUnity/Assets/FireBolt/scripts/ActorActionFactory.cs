@@ -272,7 +272,7 @@ namespace Assets.scripts
                 // Used when a domain action has a variable for accepting an action to play, handy for spawn actions that require an initial state
                 foreach (CM.DomainActionParameter domainActionParameter in domainAction.Params)
                 {
-                    endName = string.Empty;
+                    //endName = string.Empty; //The endName should not be string.Empty if the below propety is never true.
                     //  Debug.Log("beforeset: " + animateAction.Name + " " +  domainActionParameter.Name);
                     if (domainActionParameter.Name.Equals(animateAction.Name))
                     {
