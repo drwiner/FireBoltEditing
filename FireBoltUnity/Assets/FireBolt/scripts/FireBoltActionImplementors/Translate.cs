@@ -49,7 +49,7 @@ namespace Assets.scripts
                 return false;
             }			
 
-            Debug.Log(string.Format("translate [{0}] from [{1}] to [{2}]",actorName,origin,destination));
+            Debug.Log(string.Format("translate init [{0}] from [{1}] to [{2}] d:s[{3}:{4}]",actorName,origin,destination,ElPresidente.currentDiscourseTime,ElPresidente.currentStoryTime));
             return true;
         }
 
@@ -62,6 +62,9 @@ namespace Assets.scripts
             lerpd.x = destination.X.HasValue ? Mathf.Lerp(origin.x,destination.X.Value, lerpPercent) : actor.transform.position.x;
             lerpd.y = destination.Y.HasValue ? Mathf.Lerp(origin.y, destination.Y.Value, lerpPercent) : actor.transform.position.y;
             lerpd.z = destination.Z.HasValue ? Mathf.Lerp(origin.z, destination.Z.Value, lerpPercent) : actor.transform.position.z;
+            Debug.Log(string.Format("translate execute [{0}] from [{1}] to [{2}] d:s[{3}:{4}]", actorName, actor.transform.position, lerpd, 
+                ElPresidente.currentDiscourseTime, ElPresidente.currentStoryTime));
+
             actor.transform.position = lerpd;
         }
 
@@ -75,6 +78,8 @@ namespace Assets.scripts
 
         public override void Skip()
         {
+            Debug.Log(string.Format("skipping translate [{0}]-[{1}] d:s[{2}:{3}]", 
+                origin, destination, ElPresidente.currentDiscourseTime, ElPresidente.currentStoryTime));
             Vector3 newPosition;
             newPosition.x = destination.X ?? actor.transform.position.x;
             newPosition.y = destination.Y ?? actor.transform.position.y;
