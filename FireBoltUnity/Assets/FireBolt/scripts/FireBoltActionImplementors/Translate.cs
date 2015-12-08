@@ -53,11 +53,11 @@ namespace Assets.scripts
             return true;
         }
 
-        public override void Execute()
+        public override void Execute(float currentTime)
         {
             if (endTick - startTick < 1)
                 return;
-            float lerpPercent = (ElPresidente.currentStoryTime - startTick)/(endTick-startTick);
+            float lerpPercent = (currentTime - startTick)/(endTick-startTick);
             Vector3 lerpd;
             lerpd.x = destination.X.HasValue ? Mathf.Lerp(origin.x,destination.X.Value, lerpPercent) : actor.transform.position.x;
             lerpd.y = destination.Y.HasValue ? Mathf.Lerp(origin.y, destination.Y.Value, lerpPercent) : actor.transform.position.y;

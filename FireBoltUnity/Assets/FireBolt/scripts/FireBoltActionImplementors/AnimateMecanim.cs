@@ -144,10 +144,10 @@ namespace Assets.scripts
             animator.SetTrigger(stopTriggerHash);
         }
 
-        public override void Execute() 
+        public override void Execute(float currentTime) 
         {
 		    //let it roll          
-            float at = Mathf.Repeat ((ElPresidente.currentStoryTime - startTick)/1000, animation.length);
+            float at = Mathf.Repeat ((currentTime - startTick)/1000, animation.length);
             animator.CrossFade( "animating", 0, 0, at/animation.length);
 	    }
 

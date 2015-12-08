@@ -6,7 +6,7 @@
         <shotFragment anchor="2.222222,-5.583335" pan="89.50607" duration="1326" height="1" f-stop="5.6" lens="25mm" shake="0">
           <framings />
           <movements>
-            <!--<movement type="Dolly" directive="To" subject="2.611111,6.277777" />-->
+            <movement type="Dolly" directive="To" subject="2.611111,6.277777" />
             <!--<movement type="Pan" directive="To" subject="89.20425" />-->
           </movements>
         </shotFragment>

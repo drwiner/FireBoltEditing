@@ -525,7 +525,7 @@ namespace Assets.scripts
             }
         }
 
-        public override void Execute()
+        public override void Execute(float currentTime)
         {
             //nothing to see here.  this is all instant
         }

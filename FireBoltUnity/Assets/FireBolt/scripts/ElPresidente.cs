@@ -381,9 +381,9 @@ public class ElPresidente : MonoBehaviour {
         else if (!initialized)
             return;
 
-        executingDiscourseActions.ExecuteList();
-        executingActorActions.ExecuteList();
-        executingCameraActions.ExecuteList();
+        executingDiscourseActions.ExecuteList(ElPresidente.currentDiscourseTime);
+        executingActorActions.ExecuteList(ElPresidente.currentStoryTime);
+        executingCameraActions.ExecuteList(ElPresidente.currentDiscourseTime);
     }
 
     /// <summary>
