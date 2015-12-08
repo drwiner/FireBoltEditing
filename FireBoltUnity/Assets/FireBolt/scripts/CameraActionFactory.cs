@@ -71,7 +71,7 @@ namespace Assets.scripts
                                         if (movement.Subject.TryParsePlanarCoords(out destination))
                                         {
                                             cameraActionList.Add(new Translate(movementStartTime, fragmentEndTime, cameraRig,
-                                                                                Vector3.zero, new Vector3Nullable(destination.x,null,destination.y)));
+                                                                                null, new Vector3Nullable(destination.x,null,destination.y)));
                                         }
                                         break;
                                 }                               
@@ -83,7 +83,7 @@ namespace Assets.scripts
                                         break;
                                     case CameraMovementDirective.To:
                                         cameraActionList.Add(new Translate(movementStartTime, fragmentEndTime, cameraRig,
-                                                                            Vector3.zero, new Vector3Nullable(null, float.Parse(movement.Subject), null)));
+                                                                            null, new Vector3Nullable(null, float.Parse(movement.Subject), null)));
                                         break;
                                 }
                                 break;

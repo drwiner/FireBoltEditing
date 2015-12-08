@@ -11,7 +11,6 @@ namespace Assets.scripts
 {
     public class Translate : FireBoltAction
     {
-        float lastUpdateTime;
         string actorName;
         protected GameObject actor;
         /// <summary>
@@ -23,6 +22,8 @@ namespace Assets.scripts
         /// </summary>
         Vector3Nullable destination;
 
+        Vector3? possibleOrigin;
+
         public static bool ValidForConstruction(string actorName)
         {
             if (string.IsNullOrEmpty(actorName))
@@ -30,11 +31,11 @@ namespace Assets.scripts
             return true;
         }
 
-        public Translate(float startTick, float endTick, string actorName,  Vector3 origin, Vector3Nullable destination) :
+        public Translate(float startTick, float endTick, string actorName,  Vector3? possibleOrigin, Vector3Nullable destination) :
             base(startTick, endTick)
         {
             this.actorName = actorName;
-            this.origin = origin;
+            this.possibleOrigin = possibleOrigin;
             this.destination = destination;
         }
 
@@ -47,7 +48,9 @@ namespace Assets.scripts
             {
                 Debug.LogError("actor name [" + actorName + "] not found. cannot move");
                 return false;
-            }			
+            }
+
+            origin = possibleOrigin.HasValue ? possibleOrigin.Value : actor.transform.position;
 
             Debug.Log(string.Format("translate init [{0}] from [{1}] to [{2}] d:s[{3}:{4}]",actorName,origin,destination,ElPresidente.currentDiscourseTime,ElPresidente.currentStoryTime));
             return true;
