@@ -87,6 +87,7 @@ namespace Assets.scripts
             Vector2 anchorPosition;
             if (calculateAnchor(anchor, out anchorPosition))
             {
+                Debug.Log(string.Format("setting camera anchor[{0}]", anchorPosition));
                 tempCameraPosition.X = anchorPosition.x;
                 tempCameraPosition.Z = anchorPosition.y;
             }
@@ -524,7 +525,7 @@ namespace Assets.scripts
             }
         }
 
-        public override void Execute()
+        public override void Execute(float currentTime)
         {
             //nothing to see here.  this is all instant
         }

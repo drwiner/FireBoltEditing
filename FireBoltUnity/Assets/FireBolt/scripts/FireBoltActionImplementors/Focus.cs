@@ -61,7 +61,7 @@ namespace Assets.scripts
             return true;
         }
 
-        public override void Execute()
+        public override void Execute(float currentTime)
         {
             if (target == null)
             {

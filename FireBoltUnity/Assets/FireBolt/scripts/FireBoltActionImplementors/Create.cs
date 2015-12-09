@@ -106,7 +106,7 @@ namespace Assets.scripts
             // nothing to skip
         }
 
-        public override void Execute()
+        public override void Execute(float currentTime)
         {
             //nothing to do
         }

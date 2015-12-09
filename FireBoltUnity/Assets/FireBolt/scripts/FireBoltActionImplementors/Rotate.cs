@@ -102,7 +102,7 @@ namespace Assets.scripts
         //    return theta;
         //}
 
-        public override void Execute()
+        public override void Execute(float currentTime)
         {
             if (endTick - startTick < 1)
                 return;
@@ -116,7 +116,7 @@ namespace Assets.scripts
                                               targetOrientation.Z.HasValue ? startOrientation.z : currentRotation.z);
 
             //how much of our rotate duration has elapsed?
-            float percentCompleted = (ElPresidente.currentStoryTime - startTick) / (endTick - startTick);
+            float percentCompleted = (currentTime - startTick) / (endTick - startTick);
             
             Vector3 currentRotationAmount = rotationChangeRequired * percentCompleted;
 

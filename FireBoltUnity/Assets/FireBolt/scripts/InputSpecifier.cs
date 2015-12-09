@@ -55,11 +55,11 @@ namespace Assets.scripts
 
         void setNewDefaults()
         {
-            storyField.text = "storyPlans/dragonStory.xml";
-            modelField.text = "cinematicModels/dragonModel.xml";
-            cameraField.text = "cameraPlans/dragonCamera.xml";
-            actorField.text = "AssetBundles/dragonactors";
-            terrainField.text = "AssetBundles/dragonterrain";
+            storyField.text = "storyPlans/600924233.xml";
+            modelField.text = "cinematicModels/DotaHierarchyModel.xml";
+            cameraField.text = "cameraPlans/defaultCamera.xml";
+            actorField.text = "AssetBundles/newAssets/actorsandanimations";
+            terrainField.text = "AssetBundles/newAssets/terrain";
         }
 
         

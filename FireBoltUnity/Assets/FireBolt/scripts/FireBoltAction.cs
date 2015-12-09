@@ -26,7 +26,7 @@ namespace Assets.scripts
         }
 
         public virtual bool Init() { return false; }
-        public virtual void Execute() { }
+        public virtual void Execute(float currentTime) { }
         public virtual void Stop() { }
         public virtual void Undo() { }
         public virtual void Skip() { }

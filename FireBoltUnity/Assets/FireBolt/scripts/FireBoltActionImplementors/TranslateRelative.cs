@@ -40,7 +40,7 @@ namespace Assets.scripts
             return false;
         }
 
-        public override void Execute()
+        public override void Execute(float currentTime)
         {
             Vector3 trackedPositionCurrent = trackedActor.transform.position;
             Vector3 move = trackedPositionCurrent - trackedPositionLast;

@@ -266,6 +266,7 @@ public class ElPresidente : MonoBehaviour {
         currentStoryTime = 0;
         actorActionList.NextActionIndex = 0;
         cameraActionList.NextActionIndex = 0;
+        discourseActionList.NextActionIndex = 0;
 
         executingActorActions = new FireBoltActionList(new ActionTypeComparer());
         executingCameraActions = new FireBoltActionList(new ActionTypeComparer());
@@ -381,9 +382,9 @@ public class ElPresidente : MonoBehaviour {
         else if (!initialized)
             return;
 
-        executingDiscourseActions.ExecuteList();
-        executingActorActions.ExecuteList();
-        executingCameraActions.ExecuteList();
+        executingDiscourseActions.ExecuteList(ElPresidente.currentDiscourseTime);
+        executingActorActions.ExecuteList(ElPresidente.currentStoryTime);
+        executingCameraActions.ExecuteList(ElPresidente.currentDiscourseTime);
     }
 
     /// <summary>

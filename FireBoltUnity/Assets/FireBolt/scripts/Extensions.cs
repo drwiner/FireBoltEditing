@@ -45,7 +45,7 @@ namespace Assets.scripts
                 float.TryParse(values[0], out x )&&
                 float.TryParse(values[1], out z)) //we got two coords
             {
-                v = new Vector2(x, z);
+                v = new Vector2((float)x,(float)z);
                 return true;
             }
             return false;
